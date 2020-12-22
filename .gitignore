@@ -1,3 +1,7 @@
+
+tmp/*
+game
+
 # Prerequisites
 *.d
 
