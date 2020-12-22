@@ -25,7 +25,9 @@ int main(int argc, char* args[]) {
         Entity(Vector2f(0, 0), grassTexture),
         Entity(Vector2f(30, 0), grassTexture),
         Entity(Vector2f(30, 30), grassTexture),
-        Entity(Vector2f(30, 60), grassTexture)
+        Entity(Vector2f(30, 60), grassTexture),
+        Entity(Vector2f(100, 100), grassTexture)
+
     };
 
     {
