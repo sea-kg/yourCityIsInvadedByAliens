@@ -7,64 +7,54 @@
 #include "Entity.hpp"
 
 
-int main(int argc, char* args[])
-{
-	if (SDL_Init(SDL_INIT_VIDEO) > 0)
-		std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+int main(int argc, char* args[]) {
 
-	if (!(IMG_Init(IMG_INIT_PNG)))
-		std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+    if (SDL_Init(SDL_INIT_VIDEO) > 0) {
+        std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+    }
 
-	RenderWindow window("GAME v1.0", 1280, 720);
+    if (!(IMG_Init(IMG_INIT_PNG))) {
+        std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+    }
 
-	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
+    RenderWindow window("GAME v1.0", 1280, 720);
 
-    // Entity entities[4] = {Entity(0, 0, grassTexture),
-    //                       Entity(30, 0, grassTexture),
-    //                       Entity(30, 30, grassTexture),
-    //                       Entity(30, 60, grassTexture)};
+    SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
-    std::vector<Entity> entitiees = {Entity(Vector2f(0, 0), grassTexture),
-                         			 Entity(Vector2f(30, 0), grassTexture),
-                          			 Entity(Vector2f(30, 30), grassTexture),
-                          			 Entity(Vector2f(30, 60), grassTexture)};
+    std::vector<Entity> entitiees = {
+        Entity(Vector2f(0, 0), grassTexture),
+        Entity(Vector2f(30, 0), grassTexture),
+        Entity(Vector2f(30, 30), grassTexture),
+        Entity(Vector2f(30, 60), grassTexture)
+    };
+
     {
-	    Entity wilson(Vector2f(100, 50), grassTexture);
+        Entity wilson(Vector2f(100, 50), grassTexture);
+        entitiees.push_back(wilson);
+    }
 
-	    entitiees.push_back(wilson);
-	    
-	}
+    bool gameRunning = true;
 
+    SDL_Event event;
 
+    while (gameRunning) {
+        // Get our controls and events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                gameRunning = false;
+            }
+                
+        }
 
-	bool gameRunning = true;
+        window.clear();
 
-	SDL_Event event;
+        for (Entity& e : entitiees) {
+            window.render(e);
+        }
+        window.display();
+    }
 
-	while (gameRunning)
-	{
-		// Get our controls and events
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-				gameRunning = false;
-		}
-
-		window.clear();
-		
-
-		for (Entity& e : entitiees)
-		{ 
-			window.render(e);
-		}
-
-
-		window.display();
-
-	}
-
-	window.cleanUp();
-	SDL_Quit();
-
-	return 0;
+    window.cleanUp();
+    SDL_Quit();
+    return 0;
 }
