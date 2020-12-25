@@ -3,9 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "RenderWindow.hpp"
+#include "render_window.h"
 #include "Entity.hpp"
-
 
 int main(int argc, char* args[]) {
 
@@ -17,7 +16,7 @@ int main(int argc, char* args[]) {
         std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
     }
 
-    RenderWindow window("GAME v1.0", 1280, 720);
+    RenderWindow window("yourCityIsInvadedByAliens_Tomsk (v0.0.1)", 1280, 720);
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
@@ -27,7 +26,6 @@ int main(int argc, char* args[]) {
         Entity(Vector2f(30, 30), grassTexture),
         Entity(Vector2f(30, 60), grassTexture),
         Entity(Vector2f(100, 100), grassTexture)
-
     };
 
     {
@@ -39,13 +37,14 @@ int main(int argc, char* args[]) {
 
     SDL_Event event;
 
+    int nNumberOfFrames = 0;
+    
     while (gameRunning) {
         // Get our controls and events
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 gameRunning = false;
             }
-                
         }
 
         window.clear();

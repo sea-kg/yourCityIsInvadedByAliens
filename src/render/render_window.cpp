@@ -2,7 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "RenderWindow.hpp"
+#include "render_window.h"
 #include "Entity.hpp"
 
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
