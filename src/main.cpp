@@ -16,9 +16,13 @@ int main(int argc, char* args[]) {
     if (!(IMG_Init(IMG_INIT_PNG))) {
         std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
     }
-    RenderStateObjects stateObjects;
+    RenderStateObjects stateObjects(1280, 720);
 
-    RenderWindow window("yourCityIsInvadedByAliens_Tomsk (v0.0.1)", 1280, 720);
+    RenderWindow window(
+        "yourCityIsInvadedByAliens_Tomsk (v0.0.1)",
+        stateObjects.windowWidth(),
+        stateObjects.windowHeight()
+    );
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
@@ -36,13 +40,11 @@ int main(int argc, char* args[]) {
     }
 
     // triangle
-    CoordXY p0(320, 200);
-    CoordXY p1(300, 240);
-    CoordXY p2(340, 240);
-    window.addObject(new RenderLine(p0, p1));
-    window.addObject(new RenderLine(p1, p2));
-    window.addObject(new RenderLine(p2, p0));
-
+    window.addObject(new RenderTriangleAnimated1(
+        CoordXY(320, 200),
+        CoordXY(300, 240),
+        CoordXY(340, 240)
+    ));
     window.sortObjectsByPositionZ();
 
     bool gameRunning = true;
@@ -52,6 +54,7 @@ int main(int argc, char* args[]) {
     long nNumberOfFrames = 0;
     long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
     long nElapsed = 0;
+    stateObjects.init();
     while (gameRunning) {
 
         // Get our controls and events
@@ -60,11 +63,12 @@ int main(int argc, char* args[]) {
                 gameRunning = false;
             }
         }
-
+        stateObjects.updateElapsedTime();
         window.clear();
         for (Entity& e : entitiees) {
             window.render(e);
         }
+        window.modifyObjects(stateObjects);
         window.drawObjects();
 
         // FPS

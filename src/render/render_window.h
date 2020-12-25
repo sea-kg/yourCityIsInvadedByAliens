@@ -15,8 +15,8 @@ class RenderWindow  {
         void cleanUp();
         void clear();
         void render(Entity& p_entity);
+        void modifyObjects(const RenderStateObjects& state);
         void drawObjects();
-        
         
     private:
         SDL_Window* window;

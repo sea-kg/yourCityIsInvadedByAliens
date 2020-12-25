@@ -83,6 +83,12 @@ void RenderWindow::render(Entity& p_entity) {
     SDL_RenderCopy(renderer, p_entity.getTex(), &src, &dst);
 }
 
+void RenderWindow::modifyObjects(const RenderStateObjects& state) {
+    for (auto pObj: m_vObjects) {
+        pObj->modify(state);
+    }
+}
+
 void RenderWindow::drawObjects() {
     for (auto pObj: m_vObjects) {
         pObj->draw(renderer);
