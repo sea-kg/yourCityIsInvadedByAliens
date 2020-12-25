@@ -75,8 +75,8 @@ void RenderWindow::render(Entity& p_entity) {
 
     SDL_Rect dst;
     // 4 is scale
-    dst.x = p_entity.getPos().x * 4;
-    dst.y = p_entity.getPos().y * 4;
+    dst.x = p_entity.getPos().x() * 4;
+    dst.y = p_entity.getPos().y() * 4;
     dst.w = p_entity.getCurrentFrame().w * 4;
     dst.h = p_entity.getCurrentFrame().h * 4;
 

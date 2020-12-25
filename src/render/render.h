@@ -3,6 +3,16 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 
+class CoordXY {
+    public:
+        CoordXY();
+        CoordXY(int x, int y);
+        int x();
+        int y();
+    private:
+        int m_nX, m_nY;
+};
+
 class RenderStateObjects {
 
     public:
@@ -30,12 +40,27 @@ class RenderObject {
 class RenderLine : public RenderObject {
 
     public:
-        RenderLine(int x1, int y1, int x2, int y2, int nPositionZ = 0);
+        RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ = 0);
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        int m_beginX1;
-        int m_beginY1;
-        int m_beginX2;
-        int m_beginY2;
+        CoordXY m_coord1;
+        CoordXY m_coord2;
+};
+
+class RenderTriangle : public RenderObject {
+
+    public:
+        RenderTriangle(
+            const CoordXY &p1,
+            const CoordXY &p2,
+            const CoordXY &p3,
+            int nPositionZ = 0
+        );
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        CoordXY m_coord1;
+        CoordXY m_coord2;
+        CoordXY m_coord3;
 };

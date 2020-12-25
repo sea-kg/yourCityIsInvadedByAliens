@@ -23,22 +23,25 @@ int main(int argc, char* args[]) {
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
     std::vector<Entity> entitiees = {
-        Entity(Vector2f(0, 0), grassTexture),
-        Entity(Vector2f(30, 0), grassTexture),
-        Entity(Vector2f(30, 30), grassTexture),
-        Entity(Vector2f(30, 60), grassTexture),
-        Entity(Vector2f(100, 100), grassTexture)
+        Entity(CoordXY(0, 0), grassTexture),
+        Entity(CoordXY(30, 0), grassTexture),
+        Entity(CoordXY(30, 30), grassTexture),
+        Entity(CoordXY(30, 60), grassTexture),
+        Entity(CoordXY(100, 100), grassTexture)
     };
 
     {
-        Entity wilson(Vector2f(100, 50), grassTexture);
+        Entity wilson(CoordXY(100, 50), grassTexture);
         entitiees.push_back(wilson);
     }
 
     // triangle
-    window.addObject(new RenderLine(320, 200, 300, 240));
-    window.addObject(new RenderLine(300, 240, 340, 240));
-    window.addObject(new RenderLine(340, 240, 320, 200));
+    CoordXY p0(320, 200);
+    CoordXY p1(300, 240);
+    CoordXY p2(340, 240);
+    window.addObject(new RenderLine(p0, p1));
+    window.addObject(new RenderLine(p1, p2));
+    window.addObject(new RenderLine(p2, p0));
 
     window.sortObjectsByPositionZ();
 

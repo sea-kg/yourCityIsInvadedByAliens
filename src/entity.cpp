@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-Entity::Entity(Vector2f p_pos, SDL_Texture* p_tex) {
+Entity::Entity(CoordXY p_pos, SDL_Texture* p_tex) {
     pos = p_pos;
     tex = p_tex;
     currentFrame.x = 0;
@@ -11,7 +11,7 @@ Entity::Entity(Vector2f p_pos, SDL_Texture* p_tex) {
     currentFrame.h = 32;
 }
 
-Vector2f& Entity::getPos() {
+CoordXY& Entity::getPos() {
     return pos;
 }
 

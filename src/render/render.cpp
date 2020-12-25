@@ -2,6 +2,27 @@
 #include "wsjcpp_core.h"
 
 // ---------------------------------------------------------------------
+// CoordXY
+
+CoordXY::CoordXY() {
+    m_nX = 0;
+    m_nY = 0;
+}
+
+CoordXY::CoordXY(int x, int y) {
+    m_nX = x;
+    m_nY = y;
+}
+
+int CoordXY::x() {
+    return m_nX;
+}
+
+int CoordXY::y() {
+    return m_nY;
+}
+
+// ---------------------------------------------------------------------
 // RenderStateObjects
 
 RenderStateObjects::RenderStateObjects() {
@@ -35,15 +56,13 @@ void RenderObject::modify(const RenderStateObjects& state) {
 // ---------------------------------------------------------------------
 // RenderLine
 
-RenderLine::RenderLine(int x1, int y1, int x2, int y2, int nPositionZ) 
+RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ) 
 : RenderObject(nPositionZ) {
-    m_beginX1 = x1;
-    m_beginY1 = y1;
-    m_beginX2 = x2;
-    m_beginY2 = y2;
+    m_coord1 = p1;
+    m_coord2 = p2;
 }
 
 void RenderLine::draw(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderDrawLine(renderer, m_beginX1, m_beginY1, m_beginX2, m_beginY2);
+    SDL_RenderDrawLine(renderer, m_coord1.x(), m_coord1.y(), m_coord2.x(), m_coord2.y());
 }
