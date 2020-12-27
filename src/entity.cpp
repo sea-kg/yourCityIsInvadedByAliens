@@ -1,6 +1,6 @@
 #include "Entity.hpp"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 Entity::Entity(CoordXY p_pos, SDL_Texture* p_tex) {
     pos = p_pos;
