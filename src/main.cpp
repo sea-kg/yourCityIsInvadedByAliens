@@ -14,7 +14,10 @@ int main(int argc, char* args[]) {
     if (!(IMG_Init(IMG_INIT_PNG))) {
         std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
     }
-    RenderStateObjects stateObjects(1280, 720);
+    int nWindowWidth = 1280;
+    int nWindowHeight = 720;
+
+    RenderStateObjects stateObjects(nWindowWidth, nWindowHeight);
 
     RenderWindow window(
         "yourCityIsInvadedByAliens_Tomsk (v0.0.1)",
@@ -37,7 +40,11 @@ int main(int argc, char* args[]) {
         entitiees.push_back(wilson);
     }
 
-    // triangle
+    
+    // player
+    window.addObject(new RenderPlayer0(CoordXY(nWindowWidth/2, nWindowHeight/2), 100));
+
+    // object
     window.addObject(new RenderTriangle(
         CoordXY(320, 200),
         CoordXY(300, 240),

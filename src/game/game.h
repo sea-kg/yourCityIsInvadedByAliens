@@ -10,6 +10,7 @@ class CoordXY {
         void update(int x, int y);
 
         CoordXY& operator+=(const CoordXY& other);
+        CoordXY& operator-=(const CoordXY& other);
 
     private:
         int m_nX, m_nY;

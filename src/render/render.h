@@ -70,3 +70,37 @@ class RenderTriangleAnimated1 : public RenderObject {
         RenderLine m_line3;
         CoordXY m_coordDirection;
 };
+
+class RenderPlayer0 : public RenderObject {
+
+    public:
+        RenderPlayer0(
+            const CoordXY &p0,
+            float nSpeedAnimation
+        );
+        virtual void modify(const RenderStateObjects& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        CoordXY m_coordCenter;
+        int m_nSize;
+        float m_nSpeedAnimation;
+        SDL_Rect m_rectFrame;
+        RenderLine *m_pLine1;
+        RenderLine *m_pLine2;
+        RenderLine *m_pLine3;
+};
+
+class RenderRectTexture : public RenderObject {
+
+    public:
+        RenderRectTexture(
+            const CoordXY &p0, 
+            int nPositionZ = 0
+        );
+        virtual void modify(const RenderStateObjects& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        CoordXY m_coordCenter;
+};

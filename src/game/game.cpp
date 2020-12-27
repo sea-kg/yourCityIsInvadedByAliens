@@ -33,6 +33,12 @@ CoordXY& CoordXY::operator+=(const CoordXY& other) {
     return *this;
 }
 
+CoordXY& CoordXY::operator-=(const CoordXY& other) {
+    m_nX = m_nX - other.x();
+    m_nY = m_nY - other.y();
+    return *this;
+}
+
 // ---------------------------------------------------------------------
 // RenderStateObjects
 
