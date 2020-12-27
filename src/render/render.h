@@ -85,7 +85,8 @@ class RenderPlayer0 : public RenderObject {
         CoordXY m_coordCenter;
         int m_nSize;
         float m_nSpeedAnimation;
-        SDL_Rect m_rectFrame;
+        SDL_Rect m_rectFrame1;
+        SDL_Rect m_rectFrame2;
         RenderLine *m_pLine1;
         RenderLine *m_pLine2;
         RenderLine *m_pLine3;

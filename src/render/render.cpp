@@ -154,10 +154,10 @@ RenderPlayer0::RenderPlayer0(
     m_pLine2 = new RenderLine(p2,p3);
     m_pLine3 = new RenderLine(p3,p1);
 
-    m_rectFrame.x = m_coordCenter.x() - m_nSize/4;
-    m_rectFrame.y = m_coordCenter.y() - m_nSize/4;
-    m_rectFrame.w = m_nSize/2;
-    m_rectFrame.h = m_nSize/2;
+    m_rectFrame1.x = m_coordCenter.x() - m_nSize/4;
+    m_rectFrame1.y = m_coordCenter.y() - m_nSize/4;
+    m_rectFrame1.w = m_nSize/2;
+    m_rectFrame1.h = m_nSize/2;
 }
 
 void RenderPlayer0::modify(const RenderStateObjects& state) {
@@ -192,21 +192,31 @@ void RenderPlayer0::modify(const RenderStateObjects& state) {
     m_pLine3->modify(state);
 
     // rect pulsation
-    float nHartPulsation = float(state.getElapsedTime() / m_nSpeedAnimation*0.5 );
-    int nBorderLength = m_nSize/2;
-    nBorderLength = 3 + sin(nHartPulsation)*nBorderLength; 
-    m_rectFrame.x = m_coordCenter.x() - nBorderLength/2;
-    m_rectFrame.y = m_coordCenter.y() - nBorderLength/2;
-    m_rectFrame.w = nBorderLength;
-    m_rectFrame.h = nBorderLength;
+    float nHartPulsation = float(state.getElapsedTime()/m_nSpeedAnimation*0.5);
+
+    int nBorderLength = m_nSize/3;
+    { 
+        int nBorderLength1 = sin(nHartPulsation)*nBorderLength; 
+        m_rectFrame1.x = m_coordCenter.x() - nBorderLength1/2 + nBorderLength/3;
+        m_rectFrame1.y = m_coordCenter.y() - nBorderLength1/2 + nBorderLength/3;
+        m_rectFrame1.w = nBorderLength1;
+        m_rectFrame1.h = nBorderLength1;
+    }
+    { 
+        int nBorderLength2 = sin(nHartPulsation + PI/3)*nBorderLength; 
+        m_rectFrame2.x = m_coordCenter.x() - nBorderLength2/2 + nBorderLength/2;
+        m_rectFrame2.y = m_coordCenter.y() - nBorderLength2/2 + nBorderLength/2;
+        m_rectFrame2.w = nBorderLength2;
+        m_rectFrame2.h = nBorderLength2;
+    }
 }
 
 void RenderPlayer0::draw(SDL_Renderer* renderer) {
     m_pLine1->draw(renderer);
     m_pLine2->draw(renderer);
     m_pLine3->draw(renderer);
-    SDL_RenderFillRect( renderer, &m_rectFrame);
-
+    SDL_RenderFillRect( renderer, &m_rectFrame1);
+    SDL_RenderFillRect( renderer, &m_rectFrame2);
     // SDL_RenderDrawRect(renderer, &m_rectFrame)
 }
 
