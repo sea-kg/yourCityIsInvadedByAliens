@@ -30,14 +30,8 @@ RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ)
 }
 
 void RenderLine::modify(const RenderStateObjects& state) {
-    m_coord1.update(
-        state.getCoordLeftTop().x() + m_startCoord1.x(),
-        state.getCoordLeftTop().y() + m_startCoord1.y()
-    );
-    m_coord2.update(
-        state.getCoordLeftTop().x() + m_startCoord2.x(),
-        state.getCoordLeftTop().y() + m_startCoord2.y()
-    );
+    m_coord1 = state.getCoordLeftTop() + m_startCoord1;
+    m_coord2 = state.getCoordLeftTop() + m_startCoord2;
 }
 
 void RenderLine::draw(SDL_Renderer* renderer) {
@@ -219,16 +213,29 @@ void RenderPlayer0::draw(SDL_Renderer* renderer) {
 // ---------------------------------------------------------------------
 // RenderRectTexture
 
-RenderRectTexture::RenderRectTexture(const CoordXY &p0, int nPositionZ) 
+RenderRectTexture::RenderRectTexture(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
 : RenderObject(nPositionZ) {
+    m_pTexture = tex;
     m_coordCenter = p0;
+    currentFrame.x = 0;
+    currentFrame.y = 0;
+    currentFrame.w = 32;
+    currentFrame.h = 32; // HARD code aiyayai
 }
 
 void RenderRectTexture::modify(const RenderStateObjects& state) {
+    m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
 };
 
 void RenderRectTexture::draw(SDL_Renderer* renderer) {
+    SDL_Rect dst;
+    // 4 is scale
+    dst.x = m_coordReal.x();
+    dst.y = m_coordReal.y();
+    dst.w = currentFrame.w * 4;
+    dst.h = currentFrame.h * 4;
 
+    SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
 };
 

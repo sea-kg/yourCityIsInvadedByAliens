@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "render_window.h"
-#include "Entity.hpp"
 #include "wsjcpp_core.h"
 
 int main(int argc, char* args[]) {
@@ -26,23 +25,15 @@ int main(int argc, char* args[]) {
     );
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
-
-    std::vector<Entity> entitiees = {
-        Entity(CoordXY(0, 0), grassTexture),
-        Entity(CoordXY(30, 0), grassTexture),
-        Entity(CoordXY(30, 30), grassTexture),
-        Entity(CoordXY(30, 60), grassTexture),
-        Entity(CoordXY(100, 100), grassTexture)
-    };
-
-    {
-        Entity wilson(CoordXY(100, 50), grassTexture);
-        entitiees.push_back(wilson);
-    }
-
     
     // player
     window.addObject(new RenderPlayer0(CoordXY(nWindowWidth/2, nWindowHeight/2), 100));
+    window.addObject(new RenderRectTexture(CoordXY(0, 0), grassTexture));
+    window.addObject(new RenderRectTexture(CoordXY(128, 0), grassTexture));
+    window.addObject(new RenderRectTexture(CoordXY(128, 128), grassTexture));
+    window.addObject(new RenderRectTexture(CoordXY(128, 256), grassTexture));
+    window.addObject(new RenderRectTexture(CoordXY(400, 400), grassTexture));
+    window.addObject(new RenderRectTexture(CoordXY(400, 250), grassTexture));
 
     // object
     window.addObject(new RenderTriangle(
@@ -83,9 +74,6 @@ int main(int argc, char* args[]) {
 
         stateObjects.updateElapsedTime();
         window.clear();
-        for (Entity& e : entitiees) {
-            window.render(e);
-        }
         window.modifyObjects(stateObjects);
         window.drawObjects();
 

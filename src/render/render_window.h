@@ -1,8 +1,6 @@
 #pragma once
 #include "render.h"
 
-#include "Entity.hpp"
-
 class RenderWindow  {
 
     public:
@@ -14,7 +12,6 @@ class RenderWindow  {
         SDL_Texture* loadTexture(const char* p_filePath);
         void cleanUp();
         void clear();
-        void render(Entity& p_entity);
         void modifyObjects(const RenderStateObjects& state);
         void drawObjects();
         

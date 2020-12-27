@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "render_window.h"
-#include "Entity.hpp"
 
 RenderWindow::RenderWindow(const char* title, int w, int h) {
     window = NULL;
@@ -64,23 +63,6 @@ void RenderWindow::cleanUp() {
 void RenderWindow::clear() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
-}
-
-void RenderWindow::render(Entity& p_entity) {
-    SDL_Rect src; 
-    src.x = p_entity.getCurrentFrame().x;
-    src.y = p_entity.getCurrentFrame().y;
-    src.w = p_entity.getCurrentFrame().w;
-    src.h = p_entity.getCurrentFrame().h;
-
-    SDL_Rect dst;
-    // 4 is scale
-    dst.x = p_entity.getPos().x() * 4;
-    dst.y = p_entity.getPos().y() * 4;
-    dst.w = p_entity.getCurrentFrame().w * 4;
-    dst.h = p_entity.getCurrentFrame().h * 4;
-
-    SDL_RenderCopy(renderer, p_entity.getTex(), &src, &dst);
 }
 
 void RenderWindow::modifyObjects(const RenderStateObjects& state) {

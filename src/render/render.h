@@ -95,7 +95,8 @@ class RenderRectTexture : public RenderObject {
 
     public:
         RenderRectTexture(
-            const CoordXY &p0, 
+            const CoordXY &p0,
+            SDL_Texture* tex,
             int nPositionZ = 0
         );
         virtual void modify(const RenderStateObjects& state) override;
@@ -103,4 +104,8 @@ class RenderRectTexture : public RenderObject {
 
     private:
         CoordXY m_coordCenter;
+        CoordXY m_coordReal;
+
+        SDL_Rect currentFrame;
+        SDL_Texture* m_pTexture;
 };

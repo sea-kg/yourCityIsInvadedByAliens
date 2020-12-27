@@ -39,6 +39,12 @@ CoordXY& CoordXY::operator-=(const CoordXY& other) {
     return *this;
 }
 
+CoordXY CoordXY::operator+(const CoordXY& other) const {
+    CoordXY c(m_nX, m_nY);
+    c += other;
+    return c;
+}
+
 // ---------------------------------------------------------------------
 // RenderStateObjects
 
