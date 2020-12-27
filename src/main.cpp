@@ -59,14 +59,14 @@ int main(int argc, char* args[]) {
                 gameRunning = false;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_LEFT:  stateObjects.incrementCoordLeftTopX(-5); break;
-                    case SDLK_RIGHT: stateObjects.incrementCoordLeftTopX(5); break;
-                    case SDLK_UP:    stateObjects.incrementCoordLeftTopY(-5); break;
-                    case SDLK_DOWN:  stateObjects.incrementCoordLeftTopY(5); break;
-                    case SDLK_w: stateObjects.incrementCoordLeftTopY(-5); break;
-                    case SDLK_s: stateObjects.incrementCoordLeftTopY(5); break;
-                    case SDLK_a:  stateObjects.incrementCoordLeftTopX(-5); break;
-                    case SDLK_d: stateObjects.incrementCoordLeftTopX(5); break;
+                    case SDLK_LEFT:  stateObjects.incrementCoordLeftTopX(5); break;
+                    case SDLK_RIGHT: stateObjects.incrementCoordLeftTopX(-5); break;
+                    case SDLK_UP:    stateObjects.incrementCoordLeftTopY(5); break;
+                    case SDLK_DOWN:  stateObjects.incrementCoordLeftTopY(-5); break;
+                    case SDLK_w: stateObjects.incrementCoordLeftTopY(5); break;
+                    case SDLK_s: stateObjects.incrementCoordLeftTopY(-5); break;
+                    case SDLK_a:  stateObjects.incrementCoordLeftTopX(5); break;
+                    case SDLK_d: stateObjects.incrementCoordLeftTopX(-5); break;
                 }
                 std::cout << "SDL_KEYDOWN" << std::endl;
             }
