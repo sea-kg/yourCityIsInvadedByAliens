@@ -18,3 +18,7 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
     installation-datetime: "Fri, 25 Dec 2020 14:39:49 GMT"
+unit-tests:
+  cases:
+    - name: "CoordXY"
+      description: ""

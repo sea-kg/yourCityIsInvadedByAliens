@@ -1,38 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include "game.h"
 #include <vector>
-
-class CoordXY {
-    public:
-        CoordXY();
-        CoordXY(int x, int y);
-        int x() const;
-        int y() const;
-        void update(int x, int y);
-    private:
-        int m_nX, m_nY;
-};
-
-class RenderStateObjects {
-
-    public:
-        RenderStateObjects(int windowWidth, int windowHeight);
-        void init();
-        void updateElapsedTime();
-        long getElapsedTime() const;
-        const CoordXY &getCoordLeftTop() const;
-        
-        const int windowWidth() const;
-        const int windowHeight() const;
-
-    private:
-        long m_nElapsedTime;
-        long m_nStartTime;
-        CoordXY m_coordLeftTop;
-        int m_nWindowWidth;
-        int m_nWindowHeight;
-};
 
 class RenderObject {
 

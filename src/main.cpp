@@ -38,7 +38,7 @@ int main(int argc, char* args[]) {
     }
 
     // triangle
-    window.addObject(new RenderTriangleAnimated1(
+    window.addObject(new RenderTriangle(
         CoordXY(320, 200),
         CoordXY(300, 240),
         CoordXY(340, 240)
@@ -59,8 +59,21 @@ int main(int argc, char* args[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 gameRunning = false;
+            } else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_LEFT:  stateObjects.incrementCoordLeftTopX(-5); break;
+                    case SDLK_RIGHT: stateObjects.incrementCoordLeftTopX(5); break;
+                    case SDLK_UP:    stateObjects.incrementCoordLeftTopY(-5); break;
+                    case SDLK_DOWN:  stateObjects.incrementCoordLeftTopY(5); break;
+                    case SDLK_w: stateObjects.incrementCoordLeftTopY(-5); break;
+                    case SDLK_s: stateObjects.incrementCoordLeftTopY(5); break;
+                    case SDLK_a:  stateObjects.incrementCoordLeftTopX(-5); break;
+                    case SDLK_d: stateObjects.incrementCoordLeftTopX(5); break;
+                }
+                std::cout << "SDL_KEYDOWN" << std::endl;
             }
         }
+
         stateObjects.updateElapsedTime();
         window.clear();
         for (Entity& e : entitiees) {
