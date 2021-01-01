@@ -1,8 +1,10 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include "game.h"
 #include <vector>
+#include <string>
 
 class RenderObject {
 
@@ -109,4 +111,26 @@ class RenderRectTexture : public RenderObject {
 
         SDL_Rect currentFrame;
         SDL_Texture* m_pTexture;
+};
+
+class RenderAbsoluteTextBlock : public RenderObject {
+
+    public:
+        RenderAbsoluteTextBlock(
+            const CoordXY &p0,
+            const std::string &sText,
+            int nPositionZ = 0
+        );
+        virtual void modify(const RenderStateObjects& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+        void updateText(const std::string &sNewText);
+
+    private:
+        CoordXY m_coordCenter;
+        std::string m_sText;
+        std::string m_sUpdateText;
+        TTF_Font* m_pFont;
+        SDL_Color m_color;
+
+        SDL_Rect currentFrame;
 };

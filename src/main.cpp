@@ -7,12 +7,20 @@
 int main(int argc, char* args[]) {
 
     if (SDL_Init(SDL_INIT_VIDEO) > 0) {
-        std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+        std::cerr << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+        return -1;
     }
 
     if (!(IMG_Init(IMG_INIT_PNG))) {
-        std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+        std::cerr << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+        return -1;
     }
+
+    if (TTF_Init() == -1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        return -1;
+    }
+
     int nWindowWidth = 1280;
     int nWindowHeight = 720;
 
@@ -28,6 +36,12 @@ int main(int argc, char* args[]) {
     
     // player
     window.addObject(new RenderPlayer0(CoordXY(nWindowWidth/2, nWindowHeight/2), 100));
+    
+    // text
+    RenderAbsoluteTextBlock *pFpsText = new RenderAbsoluteTextBlock(CoordXY(10, 10), "FPS: ????", 1000);
+    window.addObject(pFpsText);
+
+    // textures
     window.addObject(new RenderRectTexture(CoordXY(0, 0), grassTexture));
     window.addObject(new RenderRectTexture(CoordXY(128, 0), grassTexture));
     window.addObject(new RenderRectTexture(CoordXY(128, 128), grassTexture));
@@ -84,6 +98,7 @@ int main(int argc, char* args[]) {
             double nFPS = nNumberOfFrames;
             nFPS /= nElapsed;
             nFPS *= 1000;
+            pFpsText->updateText("FPS: " + std::to_string(nFPS));
             std::cout << "FPS: " << nFPS << std::endl;
             nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
