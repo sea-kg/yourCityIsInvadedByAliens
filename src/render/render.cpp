@@ -316,19 +316,80 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
 : RenderObject(600) {
     m_pBuilding = pBuilding;
     const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
+    int nMaxX = vPoints[0].x();
+    int nMinX = vPoints[0].x();
+    int nMaxY = vPoints[0].y();
+    int nMinY = vPoints[0].y();
+
     for (int i = 0; i < vPoints.size(); i++) {
-        m_vLines.push_back(new RenderLine(vPoints[i], vPoints[(i+1) % vPoints.size()]));
+        CoordXY p0 = vPoints[i];
+        CoordXY p1 = vPoints[(i+1) % vPoints.size()];
+        m_vBorderLines.push_back(new RenderLine(p0, p1));
+        nMaxX = std::max(p0.x(), nMaxX);
+        nMinX = std::min(p0.x(), nMinX);
+        nMaxY = std::max(p0.y(), nMaxY);
+        nMinY = std::min(p0.y(), nMinY);
+    }
+    int nStepWidth = 10;
+    for (int x = nMinX + nStepWidth; x <= nMaxX; x = x + nStepWidth) {
+        int nMinCrossY = nMaxY;
+        int nMaxCrossY = nMinY;
+        findMinMaxYCross(x, nMinCrossY, nMaxCrossY);
+        CoordXY p0(x, nMinCrossY);
+        CoordXY p1(x, nMaxCrossY);
+
+        // find min cross with Y
+        m_vFillLines.push_back(new RenderLine(p0, p1));
     }
 }
 
 void RenderBuilding::modify(const GameState& state) {
-    for (int i = 0; i < m_vLines.size(); i++) {
-        m_vLines[i]->modify(state);
+    for (int i = 0; i < m_vBorderLines.size(); i++) {
+        m_vBorderLines[i]->modify(state);
+    }
+    for (int i = 0; i < m_vFillLines.size(); i++) {
+        m_vFillLines[i]->modify(state);
     }
 }
 
 void RenderBuilding::draw(SDL_Renderer* renderer) {
-    for (int i = 0; i < m_vLines.size(); i++) {
-        m_vLines[i]->draw(renderer);
+    for (int i = 0; i < m_vBorderLines.size(); i++) {
+        m_vBorderLines[i]->draw(renderer);
+    }
+    for (int i = 0; i < m_vFillLines.size(); i++) {
+        m_vFillLines[i]->draw(renderer);
+    }
+}
+
+void RenderBuilding::findMinMaxYCross(int nX, int &nMinY, int &nMaxY) {
+    for (int i = 0; i < m_vBorderLines.size(); i++) {
+        CoordXY p0 = m_vBorderLines[i]->getAbsoluteCoord1();
+        CoordXY p1 = m_vBorderLines[i]->getAbsoluteCoord2();
+        int nMinX = std::min(p0.x(), p1.x());
+        int nMaxX = std::max(p0.x(), p1.x());
+        if (nMinX == nMaxX && nMaxX == nX) {
+            nMinY = std::min(p0.y(), p1.y());
+            nMaxY = std::max(p0.y(), p1.y());
+            return;
+        }
+
+        if (nMinX <= nX && nX <= nMaxX) {
+            if (p0.y() == p1.y()) {
+                nMinY = std::min(nMinY, p0.y());
+                nMaxY = std::max(nMaxY, p0.y());
+            } else {
+                double a1 = p0.y() - p1.y();
+                double b1 = p1.x() - p0.x();
+                double c1 = p0.x() * p1.y() - p1.x() * p0.y();
+                double a2 = p0.y() - p1.y();
+                double c2 = nX * p1.y() - nX * p0.y();
+
+                double det = - a2 * b1;
+                int nFoundY = double(a2 * c1 - a1 * c2) / det;
+                
+                nMinY = std::min(nMinY, nFoundY);
+                nMaxY = std::max(nMaxY, nFoundY);
+            }
+        }
     }
 }

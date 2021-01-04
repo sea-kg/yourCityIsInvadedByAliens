@@ -144,5 +144,8 @@ class RenderBuilding : public RenderObject {
 
     private:
         GameBuilding *m_pBuilding;
-        std::vector<RenderLine *> m_vLines;
+        std::vector<RenderLine *> m_vBorderLines;
+        std::vector<RenderLine *> m_vFillLines;
+
+        void findMinMaxYCross(int nX, int &nMinY, int &nMaxY);
 };
