@@ -134,3 +134,15 @@ class RenderAbsoluteTextBlock : public RenderObject {
 
         SDL_Rect currentFrame;
 };
+
+class RenderBuilding : public RenderObject {
+
+    public:
+        RenderBuilding(GameBuilding *pBuilding);
+        virtual void modify(const RenderStateObjects& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        GameBuilding *m_pBuilding;
+        std::vector<RenderLine *> m_vLines;
+};

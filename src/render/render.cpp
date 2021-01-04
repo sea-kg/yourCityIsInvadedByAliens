@@ -308,3 +308,27 @@ void RenderAbsoluteTextBlock::draw(SDL_Renderer* renderer) {
 void RenderAbsoluteTextBlock::updateText(const std::string &sNewText) {
     m_sUpdateText = sNewText;
 }
+
+// ---------------------------------------------------------------------
+// RenderBuilding
+
+RenderBuilding::RenderBuilding(GameBuilding *pBuilding) 
+: RenderObject(600) {
+    m_pBuilding = pBuilding;
+    const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
+    for (int i = 0; i < vPoints.size(); i++) {
+        m_vLines.push_back(new RenderLine(vPoints[i], vPoints[(i+1) % vPoints.size()]));
+    }
+}
+
+void RenderBuilding::modify(const RenderStateObjects& state) {
+    for (int i = 0; i < m_vLines.size(); i++) {
+        m_vLines[i]->modify(state);
+    }
+}
+
+void RenderBuilding::draw(SDL_Renderer* renderer) {
+    for (int i = 0; i < m_vLines.size(); i++) {
+        m_vLines[i]->draw(renderer);
+    }
+}

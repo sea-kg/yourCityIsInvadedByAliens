@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 #include "render_window.h"
 #include "wsjcpp_core.h"
+
 
 int main(int argc, char* args[]) {
 
@@ -31,6 +33,19 @@ int main(int argc, char* args[]) {
         stateObjects.windowWidth(),
         stateObjects.windowHeight()
     );
+
+    // load map from json
+    std::ifstream ifs("./res/data.json");
+    nlohmann::json jf = nlohmann::json::parse(ifs);
+    
+    nlohmann::json jsonBuildings = jf["buildings"];
+    int nBuildingsSize = jsonBuildings.size();
+    for (int i = 0; i < nBuildingsSize; i++) {
+        nlohmann::json jsonBuilding = jsonBuildings[i];
+        GameBuilding *pBuilding = new GameBuilding(jsonBuilding);
+        stateObjects.addBuilding(pBuilding);
+        window.addObject(new RenderBuilding(pBuilding));
+    }
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     
