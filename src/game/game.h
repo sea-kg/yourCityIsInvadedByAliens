@@ -28,10 +28,10 @@ class GameBuilding {
         std::vector<CoordXY> m_vPoints;
 };
 
-class RenderStateObjects {
+class GameState {
 
     public:
-        RenderStateObjects(int windowWidth, int windowHeight);
+        GameState(int windowWidth, int windowHeight);
         void init();
         void updateElapsedTime();
         void addBuilding(GameBuilding *);

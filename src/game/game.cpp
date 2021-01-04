@@ -67,47 +67,47 @@ const std::vector<CoordXY> &GameBuilding::getPoints() {
 }
 
 // ---------------------------------------------------------------------
-// RenderStateObjects
+// GameState
 
-RenderStateObjects::RenderStateObjects(int windowWidth, int windowHeight) {
+GameState::GameState(int windowWidth, int windowHeight) {
     m_nStartTime = 0;
     m_nElapsedTime = 0;
     m_nWindowWidth = windowWidth;
     m_nWindowHeight = windowHeight;
 }
 
-void RenderStateObjects::init() {
+void GameState::init() {
     m_nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
 }
 
-void RenderStateObjects::updateElapsedTime() {
+void GameState::updateElapsedTime() {
     m_nElapsedTime = WsjcppCore::getCurrentTimeInMilliseconds() - m_nStartTime;
 }
 
-void RenderStateObjects::addBuilding(GameBuilding *pBuilding) {
+void GameState::addBuilding(GameBuilding *pBuilding) {
     m_vBuildings.push_back(pBuilding);
 }
 
-long RenderStateObjects::getElapsedTime() const {
+long GameState::getElapsedTime() const {
     return m_nElapsedTime;
 }
 
-const CoordXY &RenderStateObjects::getCoordLeftTop() const {
+const CoordXY &GameState::getCoordLeftTop() const {
     return m_coordLeftTop;
 }
 
-void RenderStateObjects::incrementCoordLeftTopX(int nX) {
+void GameState::incrementCoordLeftTopX(int nX) {
     m_coordLeftTop += CoordXY(nX, 0);
 }
 
-void RenderStateObjects::incrementCoordLeftTopY(int nY) {
+void GameState::incrementCoordLeftTopY(int nY) {
     m_coordLeftTop += CoordXY(0, nY);
 }
 
-const int RenderStateObjects::windowWidth() const {
+const int GameState::windowWidth() const {
     return m_nWindowWidth;
 }
 
-const int RenderStateObjects::windowHeight() const {
+const int GameState::windowHeight() const {
     return m_nWindowHeight;
 }

@@ -12,7 +12,7 @@ class RenderWindow  {
         SDL_Texture* loadTexture(const char* p_filePath);
         void cleanUp();
         void clear();
-        void modifyObjects(const RenderStateObjects& state);
+        void modifyObjects(const GameState& state);
         void drawObjects();
         
     private:

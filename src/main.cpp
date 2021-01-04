@@ -26,7 +26,7 @@ int main(int argc, char* args[]) {
     int nWindowWidth = 1280;
     int nWindowHeight = 720;
 
-    RenderStateObjects stateObjects(nWindowWidth, nWindowHeight);
+    GameState stateObjects(nWindowWidth, nWindowHeight);
 
     RenderWindow window(
         "yourCityIsInvadedByAliens_Tomsk (v0.0.1)",

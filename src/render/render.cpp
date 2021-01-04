@@ -14,7 +14,7 @@ int RenderObject::getPositionZ() {
     return m_nPositionZ;
 }
 
-void RenderObject::modify(const RenderStateObjects& state) {
+void RenderObject::modify(const GameState& state) {
     // nothing modify in base object
 }
 
@@ -29,7 +29,7 @@ RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ)
     m_startCoord2 = p2;
 }
 
-void RenderLine::modify(const RenderStateObjects& state) {
+void RenderLine::modify(const GameState& state) {
     m_coord1 = state.getCoordLeftTop() + m_startCoord1;
     m_coord2 = state.getCoordLeftTop() + m_startCoord2;
 }
@@ -64,7 +64,7 @@ RenderTriangle::RenderTriangle(
     // nothing
 }
 
-void RenderTriangle::modify(const RenderStateObjects& state) {
+void RenderTriangle::modify(const GameState& state) {
     m_line1.modify(state);
     m_line2.modify(state);
     m_line3.modify(state);
@@ -89,7 +89,7 @@ RenderTriangleAnimated1::RenderTriangleAnimated1(
     m_coordDirection = CoordXY(10, 10);
 }
 
-void RenderTriangleAnimated1::modify(const RenderStateObjects& state) {
+void RenderTriangleAnimated1::modify(const GameState& state) {
     if (state.getElapsedTime() > 2000) {
         CoordXY p1 = m_line1.getAbsoluteCoord1();
         CoordXY p2 = m_line1.getAbsoluteCoord2();
@@ -160,7 +160,7 @@ RenderPlayer0::RenderPlayer0(
     m_rectFrame1.h = m_nSize/2;
 }
 
-void RenderPlayer0::modify(const RenderStateObjects& state) {
+void RenderPlayer0::modify(const GameState& state) {
     float nTimePosition = float(state.getElapsedTime() / m_nSpeedAnimation);
     // nTimePosition = nTimePosition / 1000;
     int diffX1 = sin(nTimePosition) * m_nSize;
@@ -233,7 +233,7 @@ RenderRectTexture::RenderRectTexture(const CoordXY &p0, SDL_Texture* tex, int nP
     currentFrame.h = 32; // HARD code aiyayai
 }
 
-void RenderRectTexture::modify(const RenderStateObjects& state) {
+void RenderRectTexture::modify(const GameState& state) {
     m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
 };
@@ -268,7 +268,7 @@ RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::s
     // SDL_Rect currentFrame;
 }
 
-void RenderAbsoluteTextBlock::modify(const RenderStateObjects& state) {
+void RenderAbsoluteTextBlock::modify(const GameState& state) {
     // nothing i think
     if (m_sUpdateText != m_sText) {
         m_sText = m_sUpdateText;
@@ -321,7 +321,7 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
     }
 }
 
-void RenderBuilding::modify(const RenderStateObjects& state) {
+void RenderBuilding::modify(const GameState& state) {
     for (int i = 0; i < m_vLines.size(); i++) {
         m_vLines[i]->modify(state);
     }

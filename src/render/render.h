@@ -11,7 +11,7 @@ class RenderObject {
     public:
         RenderObject(int nPositionZ);
         int getPositionZ();
-        virtual void modify(const RenderStateObjects& state);
+        virtual void modify(const GameState& state);
         virtual void draw(SDL_Renderer* pRenderer) = 0;
 
     private:
@@ -22,7 +22,7 @@ class RenderLine : public RenderObject {
 
     public:
         RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ = 0);
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
         const CoordXY &getAbsoluteCoord1();
@@ -45,7 +45,7 @@ class RenderTriangle : public RenderObject {
             const CoordXY &p3,
             int nPositionZ = 0
         );
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
@@ -63,7 +63,7 @@ class RenderTriangleAnimated1 : public RenderObject {
             const CoordXY &p3,
             int nPositionZ = 0
         );
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
@@ -80,7 +80,7 @@ class RenderPlayer0 : public RenderObject {
             const CoordXY &p0,
             float nSpeedAnimation
         );
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
@@ -102,7 +102,7 @@ class RenderRectTexture : public RenderObject {
             SDL_Texture* tex,
             int nPositionZ = 0
         );
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
@@ -121,7 +121,7 @@ class RenderAbsoluteTextBlock : public RenderObject {
             const std::string &sText,
             int nPositionZ = 0
         );
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         void updateText(const std::string &sNewText);
 
@@ -139,7 +139,7 @@ class RenderBuilding : public RenderObject {
 
     public:
         RenderBuilding(GameBuilding *pBuilding);
-        virtual void modify(const RenderStateObjects& state) override;
+        virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
