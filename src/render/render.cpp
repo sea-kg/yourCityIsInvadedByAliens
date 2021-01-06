@@ -393,3 +393,36 @@ void RenderBuilding::findMinMaxYCross(int nX, int &nMinY, int &nMaxY) {
         }
     }
 }
+
+// ---------------------------------------------------------------------
+// RenderEnemySpriteXenomorph1
+
+RenderEnemySpriteXenomorph1::RenderEnemySpriteXenomorph1(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
+: RenderObject(nPositionZ) {
+    m_pTexture = tex;
+    m_coordCenter = p0;
+    currentFrame.x = 240;
+    currentFrame.y = 0;
+    currentFrame.w = 150;
+    currentFrame.h = 100;
+}
+
+void RenderEnemySpriteXenomorph1::modify(const GameState& state) {
+    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    
+    long m_nSpeedAnimation = 100;
+
+    long position = state.getElapsedTime() / m_nSpeedAnimation;
+
+    currentFrame.y = (position % 5) * 115;
+};
+
+void RenderEnemySpriteXenomorph1::draw(SDL_Renderer* renderer) {
+    SDL_Rect dst;
+    dst.x = m_coordReal.x();
+    dst.y = m_coordReal.y();
+    dst.w = currentFrame.w;
+    dst.h = currentFrame.h;
+
+    SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
+};
