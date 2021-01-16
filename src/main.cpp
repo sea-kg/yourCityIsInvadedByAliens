@@ -49,7 +49,8 @@ int main(int argc, char* args[]) {
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     SDL_Texture* pTextureXenomorph1 = window.loadTexture("res/sprites/pngkit_xenomorph-png_1465291.png");
-    
+    SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
+
     // player
     window.addObject(new RenderPlayer0(CoordXY(nWindowWidth/2, nWindowHeight/2), 100));
     
@@ -57,6 +58,7 @@ int main(int argc, char* args[]) {
     RenderAbsoluteTextBlock *pFpsText = new RenderAbsoluteTextBlock(CoordXY(10, 10), "FPS: ????", 1000);
     window.addObject(pFpsText);
     window.addObject(new RenderEnemySpriteXenomorph1(CoordXY(100, -20), pTextureXenomorph1));
+    window.addObject(new RenderEnemyAlienShip1(CoordXY(400, 300), pTextureAlienShip1));
     
 
     // textures

@@ -426,3 +426,37 @@ void RenderEnemySpriteXenomorph1::draw(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
 };
+
+
+// ---------------------------------------------------------------------
+// RenderEnemyAlienShip1
+
+RenderEnemyAlienShip1::RenderEnemyAlienShip1(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
+: RenderObject(nPositionZ) {
+    m_pTexture = tex;
+    m_coordCenter = p0;
+    currentFrame.x = 0;
+    currentFrame.y = 0;
+    currentFrame.w = 100;
+    currentFrame.h = 100;
+}
+
+void RenderEnemyAlienShip1::modify(const GameState& state) {
+    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    
+    long m_nSpeedAnimation = 100;
+
+    long position = state.getElapsedTime() / m_nSpeedAnimation;
+
+    currentFrame.y = (position % 25) * 100;
+};
+
+void RenderEnemyAlienShip1::draw(SDL_Renderer* renderer) {
+    SDL_Rect dst;
+    dst.x = m_coordReal.x();
+    dst.y = m_coordReal.y();
+    dst.w = currentFrame.w;
+    dst.h = currentFrame.h;
+
+    SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
+};
