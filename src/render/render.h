@@ -150,25 +150,6 @@ class RenderBuilding : public RenderObject {
         void findMinMaxYCross(int nX, int &nMinY, int &nMaxY);
 };
 
-class RenderEnemySpriteXenomorph1 : public RenderObject {
-
-    public:
-        RenderEnemySpriteXenomorph1(
-            const CoordXY &p0,
-            SDL_Texture* tex,
-            int nPositionZ = 0
-        );
-        virtual void modify(const GameState& state) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
-
-        SDL_Rect currentFrame;
-        SDL_Texture* m_pTexture;
-};
-
 class RenderEnemyAlienShip1 : public RenderObject {
 
     public:

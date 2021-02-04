@@ -46,16 +46,7 @@ int main(int argc, char* args[]) {
         window.addObject(new RenderBuilding(pBuilding));
     }
 
-    // int nBuildingsSize = jsonBuildings.size();
-    // for (int i = 0; i < nBuildingsSize; i++) {
-    //     nlohmann::json jsonBuilding = jsonBuildings[i];
-    //     GameBuilding *pBuilding = new GameBuilding(jsonBuilding);
-    //     stateObjects.addBuilding(pBuilding);
-    //     window.addObject(new RenderBuilding(pBuilding));
-    // }
-
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
-    SDL_Texture* pTextureXenomorph1 = window.loadTexture("res/sprites/pngkit_xenomorph-png_1465291.png");
     SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
 
     // player
@@ -64,7 +55,6 @@ int main(int argc, char* args[]) {
     // text
     RenderAbsoluteTextBlock *pFpsText = new RenderAbsoluteTextBlock(CoordXY(10, 10), "FPS: ????", 1000);
     window.addObject(pFpsText);
-    window.addObject(new RenderEnemySpriteXenomorph1(CoordXY(100, -20), pTextureXenomorph1));
     window.addObject(new RenderEnemyAlienShip1(CoordXY(400, 300), pTextureAlienShip1));
     
 
