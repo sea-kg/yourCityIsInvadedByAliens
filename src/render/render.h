@@ -24,9 +24,12 @@ class RenderLine : public RenderObject {
         RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ = 0);
         virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
-
+        
+        void setColor(int nR, int nG, int nB, int nA);
         const CoordXY &getAbsoluteCoord1();
         const CoordXY &getAbsoluteCoord2();
+        const CoordXY &getCoord1();
+        const CoordXY &getCoord2();
         void updateAbsoluteCoords(const CoordXY &p1, const CoordXY &p2);
 
     private:
@@ -34,6 +37,11 @@ class RenderLine : public RenderObject {
         CoordXY m_startCoord2;
         CoordXY m_coord1;
         CoordXY m_coord2;
+
+        int m_nR;
+        int m_nG;
+        int m_nB;
+        int m_nA;
 };
 
 class RenderTriangle : public RenderObject {
@@ -127,6 +135,22 @@ class RenderBuilding : public RenderObject {
         std::vector<RenderLine *> m_vFillLines;
 
         void findMinMaxYCross(int nX, int &nMinY, int &nMaxY);
+};
+
+
+class RenderBuilding2 : public RenderObject {
+
+    public:
+        RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture);
+        virtual void modify(const GameState& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        GameBuilding *m_pBuilding;
+        std::vector<RenderLine *> m_vBorderLines;
+        std::vector<CoordXY> m_vFillPoints;
+        SDL_Rect m_currentFrame;
+        SDL_Texture* m_pTexture;
 };
 
 class RenderPlayerAlienShip1 : public RenderObject {

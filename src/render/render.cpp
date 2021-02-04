@@ -27,6 +27,10 @@ RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ)
     m_coord2 = p2;
     m_startCoord1 = p1;
     m_startCoord2 = p2;
+    m_nR = 255;
+    m_nG = 255;
+    m_nB = 255;
+    m_nA = 255;
 }
 
 void RenderLine::modify(const GameState& state) {
@@ -35,8 +39,15 @@ void RenderLine::modify(const GameState& state) {
 }
 
 void RenderLine::draw(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(renderer, m_nR, m_nG, m_nB, m_nA);
     SDL_RenderDrawLine(renderer, m_coord1.x(), m_coord1.y(), m_coord2.x(), m_coord2.y());
+}
+
+void RenderLine::setColor(int nR, int nG, int nB, int nA) {
+    m_nR = nR;
+    m_nG = nG;
+    m_nB = nB;
+    m_nA = nA;
 }
 
 const CoordXY &RenderLine::getAbsoluteCoord1() {
@@ -45,6 +56,14 @@ const CoordXY &RenderLine::getAbsoluteCoord1() {
 
 const CoordXY &RenderLine::getAbsoluteCoord2() {
     return m_startCoord2;
+}
+
+const CoordXY &RenderLine::getCoord1() {
+    return m_coord1;
+}
+
+const CoordXY &RenderLine::getCoord2() {
+    return m_coord2;
 }
 
 void RenderLine::updateAbsoluteCoords(const CoordXY &p1, const CoordXY &p2) {
@@ -235,7 +254,9 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
     for (int i = 0; i < vPoints.size(); i++) {
         CoordXY p0 = vPoints[i];
         CoordXY p1 = vPoints[(i+1) % vPoints.size()];
-        m_vBorderLines.push_back(new RenderLine(p0, p1));
+        RenderLine *pLine = new RenderLine(p0, p1);
+        pLine->setColor(122, 17, 17, 255);
+        m_vBorderLines.push_back(pLine);
         nMaxX = std::max(p0.x(), nMaxX);
         nMinX = std::min(p0.x(), nMinX);
         nMaxY = std::max(p0.y(), nMaxY);
@@ -250,7 +271,9 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
         CoordXY p1(x, nMaxCrossY);
 
         // find min cross with Y
-        m_vFillLines.push_back(new RenderLine(p0, p1));
+        RenderLine *pLine = new RenderLine(p0, p1);
+        pLine->setColor(255, 60, 70, 255);
+        m_vFillLines.push_back(pLine);
     }
 }
 
@@ -304,6 +327,67 @@ void RenderBuilding::findMinMaxYCross(int nX, int &nMinY, int &nMaxY) {
         }
     }
 }
+
+
+// ---------------------------------------------------------------------
+// RenderBuilding2
+
+RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture) 
+: RenderObject(600) {
+    m_pBuilding = pBuilding;
+    m_pTexture = pTexture;
+    m_currentFrame.x = 0;
+    m_currentFrame.y = 0;
+    m_currentFrame.w = 20;
+    m_currentFrame.h = 20;
+
+    const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
+    int nMaxX = vPoints[0].x();
+    int nMinX = vPoints[0].x();
+    int nMaxY = vPoints[0].y();
+    int nMinY = vPoints[0].y();
+
+    for (int i = 0; i < vPoints.size(); i++) {
+        CoordXY p0 = vPoints[i];
+        CoordXY p1 = vPoints[(i+1) % vPoints.size()];
+        RenderLine *pLine = new RenderLine(p0, p1);
+        pLine->setColor(255, 57, 57, 255);
+        m_vBorderLines.push_back(pLine);
+        nMaxX = std::max(p0.x(), nMaxX);
+        nMinX = std::min(p0.x(), nMinX);
+        nMaxY = std::max(p0.y(), nMaxY);
+        nMinY = std::min(p0.y(), nMinY);
+    }
+
+    for (int x = nMinX; x < nMaxX; x += 10) {
+        for (int y = nMinX; y < nMaxX; y += 10) {
+            // m_vFillPoints.
+        }
+    }
+}
+
+void RenderBuilding2::modify(const GameState& state) {
+    for (int i = 0; i < m_vBorderLines.size(); i++) {
+        m_vBorderLines[i]->modify(state);
+    }
+}
+
+void RenderBuilding2::draw(SDL_Renderer* renderer) {
+    for (int i = 0; i < m_vBorderLines.size(); i++) {
+        m_vBorderLines[i]->draw(renderer);
+    }
+
+    CoordXY p0 = m_vBorderLines[0]->getCoord1();
+
+    SDL_Rect dst;
+    dst.x = p0.x();
+    dst.y = p0.y();
+    dst.w = m_currentFrame.w;
+    dst.h = m_currentFrame.h;
+
+    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
+}
+
 
 // ---------------------------------------------------------------------
 // RenderPlayerAlienShip1

@@ -38,12 +38,14 @@ int main(int argc, char* args[]) {
     std::ifstream ifs("./res/data.json");
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
+    SDL_Texture* buildingTexture = window.loadTexture("res/gfx/building.png");
+
     nlohmann::json jsonBuildings = jf["buildings"];
     for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         stateObjects.addBuilding(pBuilding);
-        window.addObject(new RenderBuilding(pBuilding));
+        window.addObject(new RenderBuilding2(pBuilding, buildingTexture));
     }
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
@@ -62,15 +64,6 @@ int main(int argc, char* args[]) {
     // coordinates of player
     RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
     window.addObject(pCoordText);
-    
-
-    // textures
-    // window.addObject(new RenderRectTexture(CoordXY(0, 0), grassTexture));
-    // window.addObject(new RenderRectTexture(CoordXY(128, 0), grassTexture));
-    // window.addObject(new RenderRectTexture(CoordXY(128, 128), grassTexture));
-    // window.addObject(new RenderRectTexture(CoordXY(128, 256), grassTexture));
-    // window.addObject(new RenderRectTexture(CoordXY(400, 400), grassTexture));
-    // window.addObject(new RenderRectTexture(CoordXY(400, 250), grassTexture));
 
     // object
     // window.addObject(new RenderTriangle(
