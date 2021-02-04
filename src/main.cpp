@@ -39,13 +39,20 @@ int main(int argc, char* args[]) {
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
     nlohmann::json jsonBuildings = jf["buildings"];
-    int nBuildingsSize = jsonBuildings.size();
-    for (int i = 0; i < nBuildingsSize; i++) {
-        nlohmann::json jsonBuilding = jsonBuildings[i];
-        GameBuilding *pBuilding = new GameBuilding(jsonBuilding);
+    for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
+        // std::cout << it.key() << " | " << it.value() << "\n";
+        GameBuilding *pBuilding = new GameBuilding(it.value());
         stateObjects.addBuilding(pBuilding);
         window.addObject(new RenderBuilding(pBuilding));
     }
+
+    // int nBuildingsSize = jsonBuildings.size();
+    // for (int i = 0; i < nBuildingsSize; i++) {
+    //     nlohmann::json jsonBuilding = jsonBuildings[i];
+    //     GameBuilding *pBuilding = new GameBuilding(jsonBuilding);
+    //     stateObjects.addBuilding(pBuilding);
+    //     window.addObject(new RenderBuilding(pBuilding));
+    // }
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     SDL_Texture* pTextureXenomorph1 = window.loadTexture("res/sprites/pngkit_xenomorph-png_1465291.png");
