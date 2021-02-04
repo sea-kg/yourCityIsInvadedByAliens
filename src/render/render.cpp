@@ -132,95 +132,6 @@ void RenderTriangleAnimated1::draw(SDL_Renderer* renderer) {
 }
 
 // ---------------------------------------------------------------------
-// RenderPlayer0
-
-RenderPlayer0::RenderPlayer0(
-    const CoordXY &p0,
-    float nSpeedAnimation
-) : RenderObject(1000) {
-
-
-    m_nSpeedAnimation = nSpeedAnimation;
-    m_nSize = 20;
-    m_coordCenter = p0;
-    CoordXY p1 = p0;
-    p1 += CoordXY(-m_nSize,m_nSize);
-    CoordXY p2 = p0;
-    p2 += CoordXY(m_nSize,m_nSize);
-    CoordXY p3 = p0;
-    p3 += CoordXY(0,-m_nSize);
-
-    m_pLine1 = new RenderLine(p1,p2);
-    m_pLine2 = new RenderLine(p2,p3);
-    m_pLine3 = new RenderLine(p3,p1);
-
-    m_rectFrame1.x = m_coordCenter.x() - m_nSize/4;
-    m_rectFrame1.y = m_coordCenter.y() - m_nSize/4;
-    m_rectFrame1.w = m_nSize/2;
-    m_rectFrame1.h = m_nSize/2;
-}
-
-void RenderPlayer0::modify(const GameState& state) {
-    float nTimePosition = float(state.getElapsedTime() / m_nSpeedAnimation);
-    // nTimePosition = nTimePosition / 1000;
-    int diffX1 = sin(nTimePosition) * m_nSize;
-    int diffY1 = cos(nTimePosition) * m_nSize;
-    
-    int diffX2 = sin(nTimePosition + PI/3) * m_nSize;
-    int diffY2 = cos(nTimePosition + PI/3) * m_nSize;
-
-    int diffX3 = sin(nTimePosition + 2*PI/3) * m_nSize;
-    int diffY3 = cos(nTimePosition + 2*PI/3) * m_nSize;
-
-    CoordXY p1 = m_coordCenter;
-    p1 += CoordXY(diffX1, diffY1);
-    p1 -= state.getCoordLeftTop();
-    CoordXY p2 = m_coordCenter;
-    p2 += CoordXY(diffX2, diffY2);
-    p2 -= state.getCoordLeftTop();
-    CoordXY p3 = m_coordCenter;
-    p3 += CoordXY(diffX3, diffY3);
-    p3 -= state.getCoordLeftTop();
-
-    // std::cout << diffX1 << " " << diffY1 << std::endl;
-    m_pLine1->updateAbsoluteCoords(p1, p2);
-    m_pLine2->updateAbsoluteCoords(p2, p3);
-    m_pLine3->updateAbsoluteCoords(p3, p1);
-
-    m_pLine1->modify(state);
-    m_pLine2->modify(state);
-    m_pLine3->modify(state);
-
-    // rect pulsation
-    float nHartPulsation = float(state.getElapsedTime()/m_nSpeedAnimation*0.5);
-
-    int nBorderLength = m_nSize/3;
-    { 
-        int nBorderLength1 = sin(nHartPulsation)*nBorderLength; 
-        m_rectFrame1.x = m_coordCenter.x() - nBorderLength1/2 + nBorderLength/3;
-        m_rectFrame1.y = m_coordCenter.y() - nBorderLength1/2 + nBorderLength/3;
-        m_rectFrame1.w = nBorderLength1;
-        m_rectFrame1.h = nBorderLength1;
-    }
-    { 
-        int nBorderLength2 = sin(nHartPulsation + PI/3)*nBorderLength; 
-        m_rectFrame2.x = m_coordCenter.x() - nBorderLength2/2 + nBorderLength/2;
-        m_rectFrame2.y = m_coordCenter.y() - nBorderLength2/2 + nBorderLength/2;
-        m_rectFrame2.w = nBorderLength2;
-        m_rectFrame2.h = nBorderLength2;
-    }
-}
-
-void RenderPlayer0::draw(SDL_Renderer* renderer) {
-    m_pLine1->draw(renderer);
-    m_pLine2->draw(renderer);
-    m_pLine3->draw(renderer);
-    SDL_RenderFillRect( renderer, &m_rectFrame1);
-    SDL_RenderFillRect( renderer, &m_rectFrame2);
-    // SDL_RenderDrawRect(renderer, &m_rectFrame)
-}
-
-// ---------------------------------------------------------------------
 // RenderRectTexture
 
 RenderRectTexture::RenderRectTexture(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
@@ -394,11 +305,10 @@ void RenderBuilding::findMinMaxYCross(int nX, int &nMinY, int &nMaxY) {
     }
 }
 
-
 // ---------------------------------------------------------------------
-// RenderEnemyAlienShip1
+// RenderPlayerAlienShip1
 
-RenderEnemyAlienShip1::RenderEnemyAlienShip1(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
+RenderPlayerAlienShip1::RenderPlayerAlienShip1(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
 : RenderObject(nPositionZ) {
     m_pTexture = tex;
     m_coordCenter = p0;
@@ -408,8 +318,8 @@ RenderEnemyAlienShip1::RenderEnemyAlienShip1(const CoordXY &p0, SDL_Texture* tex
     currentFrame.h = 100;
 }
 
-void RenderEnemyAlienShip1::modify(const GameState& state) {
-    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+void RenderPlayerAlienShip1::modify(const GameState& state) {
+    // m_coordReal = m_coordCenter + state.getCoordLeftTop();
     
     long m_nSpeedAnimation = 100;
 
@@ -418,10 +328,10 @@ void RenderEnemyAlienShip1::modify(const GameState& state) {
     currentFrame.y = (position % 25) * 100;
 };
 
-void RenderEnemyAlienShip1::draw(SDL_Renderer* renderer) {
+void RenderPlayerAlienShip1::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
-    dst.x = m_coordReal.x();
-    dst.y = m_coordReal.y();
+    dst.x = m_coordCenter.x();
+    dst.y = m_coordCenter.y();
     dst.w = currentFrame.w;
     dst.h = currentFrame.h;
 

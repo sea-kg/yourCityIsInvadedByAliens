@@ -48,14 +48,20 @@ int main(int argc, char* args[]) {
 
     SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
-
-    // player
-    window.addObject(new RenderPlayer0(CoordXY(nWindowWidth/2, nWindowHeight/2), 100));
+    int nCenterX = nWindowWidth/2;
+    int nCenterY = nWindowHeight/2;
+    CoordXY coordCenter(nCenterX, nCenterY);
     
+    // player
+    window.addObject(new RenderPlayerAlienShip1(coordCenter, pTextureAlienShip1, 1000));
+
     // text
     RenderAbsoluteTextBlock *pFpsText = new RenderAbsoluteTextBlock(CoordXY(10, 10), "FPS: ????", 1000);
     window.addObject(pFpsText);
-    window.addObject(new RenderEnemyAlienShip1(CoordXY(400, 300), pTextureAlienShip1));
+
+    // coordinates of player
+    RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
+    window.addObject(pCoordText);
     
 
     // textures
@@ -119,6 +125,9 @@ int main(int argc, char* args[]) {
             std::cout << "FPS: " << nFPS << std::endl;
             nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
+            std::string sCoordPlayer = "X=" + std::to_string(stateObjects.getCoordLeftTop().x() + nCenterX)
+                + " Y=" + std::to_string(stateObjects.getCoordLeftTop().y() + nCenterY);
+            pCoordText->updateText(sCoordPlayer);
         }
     }
 

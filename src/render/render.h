@@ -73,27 +73,6 @@ class RenderTriangleAnimated1 : public RenderObject {
         CoordXY m_coordDirection;
 };
 
-class RenderPlayer0 : public RenderObject {
-
-    public:
-        RenderPlayer0(
-            const CoordXY &p0,
-            float nSpeedAnimation
-        );
-        virtual void modify(const GameState& state) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        CoordXY m_coordCenter;
-        int m_nSize;
-        float m_nSpeedAnimation;
-        SDL_Rect m_rectFrame1;
-        SDL_Rect m_rectFrame2;
-        RenderLine *m_pLine1;
-        RenderLine *m_pLine2;
-        RenderLine *m_pLine3;
-};
-
 class RenderRectTexture : public RenderObject {
 
     public:
@@ -150,10 +129,10 @@ class RenderBuilding : public RenderObject {
         void findMinMaxYCross(int nX, int &nMinY, int &nMaxY);
 };
 
-class RenderEnemyAlienShip1 : public RenderObject {
+class RenderPlayerAlienShip1 : public RenderObject {
 
     public:
-        RenderEnemyAlienShip1(
+        RenderPlayerAlienShip1(
             const CoordXY &p0,
             SDL_Texture* tex,
             int nPositionZ = 0
