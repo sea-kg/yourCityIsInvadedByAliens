@@ -63,10 +63,12 @@ f = open('../res/data.json',)
 prev_data = json.load(f) 
 prev_buildings = prev_data["buildings"]
 
-zero_lat = 56.4587663
-zero_lon = 84.9798699
-k_lat = 400000
-k_lon = 400000
+# zero_lat = 56.4587663
+# zero_lon = 84.9798699
+zero_lat = 56.4587400
+zero_lon = 84.9798400
+k_lat = 400000 # x
+k_lon = 250000 # y
 # zero point: lat="56.4587663" lon="84.9798699"
 
 for b in buildings:
