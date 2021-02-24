@@ -81,9 +81,8 @@ int main(int argc, char* args[]) {
     long nElapsed = 0;
     stateObjects.init();
 
-    RenderColor cursorPointer(255,0,0,190);
-    RenderMouse *pMouse = new RenderMouse(coordCenter, cursorPointer, 2000);
-    pMouse->changeCursorToMoveble();
+    SDL_Texture* pTextureCursor = window.loadTexture("res/gfx/mouse-target.png");
+    RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
     window.addObject(pMouse);
 
     while (gameRunning) {
@@ -113,7 +112,6 @@ int main(int argc, char* args[]) {
                 if (stateObjects.isMouseCaptured()) {
                     CoordXY p0(event.motion.x, event.motion.y);
                     pMouse->updateCoord(p0);
-                    pMouse->changeCursorToArrow();
                 }
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (!stateObjects.isMouseCaptured()) {

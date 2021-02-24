@@ -195,29 +195,17 @@ class RenderMouse : public RenderObject {
     public:
         RenderMouse(
             const CoordXY &p1,
-            const RenderColor &color = RenderColor(255,255,255,255),
+            SDL_Texture* pTextureCursorTarget,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         void updateCoord(const CoordXY &p0);
-        void changeCursorToArrow();
-        void changeCursorToMoveble();
-        
 
     private:
         int m_nCursorType;
         CoordXY m_p1;
-        CoordXY m_pDiff2;
-        CoordXY m_pDiff3;
-        CoordXY m_pDiff4;
-        RenderLine *m_pLine1;
-        RenderLine *m_pLine2;
-        RenderLine *m_pLine3;
 
-        RenderLine *m_pLineMoveble1;
-        RenderLine *m_pLineMoveble2;
-
-        RenderColor m_color;
-        CoordXY m_middlePoint;
+        SDL_Texture* m_pTextureCursorTarget;
+        SDL_Rect m_currentFrame;
 };

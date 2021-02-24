@@ -469,70 +469,36 @@ void RenderPlayerAlienShip1::draw(SDL_Renderer* renderer) {
 
 RenderMouse::RenderMouse(
     const CoordXY &p1,
-    const RenderColor &color,
+    SDL_Texture* pTextureCursorTarget,
     int nPositionZ
 ) : RenderObject(nPositionZ),
     m_p1(p1),
-    m_color(color),
     m_nCursorType(0)
 {
-    m_pDiff2 = CoordXY(10,10);
-    m_pDiff3 = CoordXY(7,3);
-    m_pDiff4 = CoordXY(3,7);
+    m_pTextureCursorTarget = pTextureCursorTarget;
 
-    m_pLine1 = new RenderLine(p1, p1, color);
-    m_pLine2 = new RenderLine(p1, p1, color);
-    m_pLine3 = new RenderLine(p1, p1, color);
-
-    m_pLineMoveble1 = new RenderLine(p1, p1, color);
-    m_pLineMoveble2 = new RenderLine(p1, p1, color);
+    m_currentFrame.x = 0;
+    m_currentFrame.y = 0;
+    m_currentFrame.w = 24;
+    m_currentFrame.h = 24;
 
     this->updateCoord(p1);
 }
 
 void RenderMouse::modify(const GameState& state) {
-    m_pLine1->modify(state);
-    m_pLine2->modify(state);
-    m_pLine3->modify(state);
-    m_pLineMoveble1->modify(state);
-    m_pLineMoveble2->modify(state);
+    // m_pLineMoveble1->modify(state);
+    // m_pLineMoveble2->modify(state);
 }
 
 void RenderMouse::draw(SDL_Renderer* renderer) {
-    if (m_nCursorType == 0) {
-        m_pLine1->draw(renderer);
-        m_pLine2->draw(renderer);
-        m_pLine3->draw(renderer);
-    } else if (m_nCursorType == 1) {
-        m_pLineMoveble1->draw(renderer);
-        m_pLineMoveble2->draw(renderer);
-    }
+    SDL_Rect dst;
+    dst.x = m_p1.x() - 12;
+    dst.y = m_p1.y() - 12;
+    dst.w = m_currentFrame.w;
+    dst.h = m_currentFrame.h;
+    SDL_RenderCopy(renderer, m_pTextureCursorTarget, &m_currentFrame, &dst);
 }
 
 void RenderMouse::updateCoord(const CoordXY &p0) {
-    // arrow
-    CoordXY p1 = p0;
-    CoordXY p2 = p1 + m_pDiff2;
-    CoordXY p3 = p1 + m_pDiff3;
-    CoordXY p4 = p1 + m_pDiff4;
-    
-    m_pLine1->updateAbsoluteCoords(p1,p2);
-    m_pLine2->updateAbsoluteCoords(p1,p3);
-    m_pLine3->updateAbsoluteCoords(p1,p4);
-
-    // moveble
-    CoordXY p5 = p1 - CoordXY(0,5);
-    CoordXY p6 = p1 + CoordXY(0,5);
-    CoordXY p7 = p1 - CoordXY(5,0);
-    CoordXY p8 = p1 + CoordXY(5,0);
-    m_pLineMoveble1->updateAbsoluteCoords(p5,p6);
-    m_pLineMoveble2->updateAbsoluteCoords(p7,p8);
-}
-
-void RenderMouse::changeCursorToArrow() {
-    m_nCursorType = 0;
-}
-
-void RenderMouse::changeCursorToMoveble() {
-    m_nCursorType = 1;
+    m_p1 = p0;
 }
