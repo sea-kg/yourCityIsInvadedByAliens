@@ -18,14 +18,30 @@ class RenderObject {
         int m_nPositionZ;
 };
 
+class RenderColor {
+    public:
+        RenderColor(int nR, int nG, int nB, int nA);
+        void changeRenderColor(SDL_Renderer* renderer);
+
+    private:
+        int m_nR;
+        int m_nG;
+        int m_nB;
+        int m_nA;
+};
+
 class RenderLine : public RenderObject {
 
     public:
-        RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ = 0);
+        RenderLine(
+            const CoordXY &p1,
+            const CoordXY &p2,
+            const RenderColor &color,
+            int nPositionZ = 0
+        );
         virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
-        
-        void setColor(int nR, int nG, int nB, int nA);
+
         const CoordXY &getAbsoluteCoord1();
         const CoordXY &getAbsoluteCoord2();
         const CoordXY &getCoord1();
@@ -37,11 +53,7 @@ class RenderLine : public RenderObject {
         CoordXY m_startCoord2;
         CoordXY m_coord1;
         CoordXY m_coord2;
-
-        int m_nR;
-        int m_nG;
-        int m_nB;
-        int m_nA;
+        RenderColor m_color;
 };
 
 class RenderTriangle : public RenderObject {
@@ -60,6 +72,7 @@ class RenderTriangle : public RenderObject {
         RenderLine m_line1;
         RenderLine m_line2;
         RenderLine m_line3;
+        RenderColor m_color;
 };
 
 class RenderTriangleAnimated1 : public RenderObject {
@@ -79,6 +92,7 @@ class RenderTriangleAnimated1 : public RenderObject {
         RenderLine m_line2;
         RenderLine m_line3;
         CoordXY m_coordDirection;
+        RenderColor m_color;
 };
 
 class RenderRectTexture : public RenderObject {
@@ -148,9 +162,12 @@ class RenderBuilding2 : public RenderObject {
     private:
         GameBuilding *m_pBuilding;
         std::vector<RenderLine *> m_vBorderLines;
+        std::vector<CoordXY> m_vFillPointsAbsolute;
         std::vector<CoordXY> m_vFillPoints;
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
+
+        bool containsPoint(const std::vector<CoordXY> &vPoints, const CoordXY &p);
 };
 
 class RenderPlayerAlienShip1 : public RenderObject {
@@ -170,4 +187,37 @@ class RenderPlayerAlienShip1 : public RenderObject {
 
         SDL_Rect currentFrame;
         SDL_Texture* m_pTexture;
+};
+
+
+class RenderMouse : public RenderObject {
+
+    public:
+        RenderMouse(
+            const CoordXY &p1,
+            const RenderColor &color = RenderColor(255,255,255,255),
+            int nPositionZ = 0
+        );
+        virtual void modify(const GameState& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+        void updateCoord(const CoordXY &p0);
+        void changeCursorToArrow();
+        void changeCursorToMoveble();
+        
+
+    private:
+        int m_nCursorType;
+        CoordXY m_p1;
+        CoordXY m_pDiff2;
+        CoordXY m_pDiff3;
+        CoordXY m_pDiff4;
+        RenderLine *m_pLine1;
+        RenderLine *m_pLine2;
+        RenderLine *m_pLine3;
+
+        RenderLine *m_pLineMoveble1;
+        RenderLine *m_pLineMoveble2;
+
+        RenderColor m_color;
+        CoordXY m_middlePoint;
 };

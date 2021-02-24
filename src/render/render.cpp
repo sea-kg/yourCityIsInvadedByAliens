@@ -19,18 +19,28 @@ void RenderObject::modify(const GameState& state) {
 }
 
 // ---------------------------------------------------------------------
+// RenderColor
+
+RenderColor::RenderColor(int nR, int nG, int nB, int nA) {
+    m_nR = nR;
+    m_nG = nG;
+    m_nB = nB;
+    m_nA = nA;
+}
+
+void RenderColor::changeRenderColor(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, m_nR, m_nG, m_nB, m_nA);
+}
+
+// ---------------------------------------------------------------------
 // RenderLine
 
-RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, int nPositionZ) 
-: RenderObject(nPositionZ) {
+RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, const RenderColor &color, int nPositionZ) 
+: RenderObject(nPositionZ), m_color(color) {
     m_coord1 = p1;
     m_coord2 = p2;
     m_startCoord1 = p1;
     m_startCoord2 = p2;
-    m_nR = 255;
-    m_nG = 255;
-    m_nB = 255;
-    m_nA = 255;
 }
 
 void RenderLine::modify(const GameState& state) {
@@ -39,15 +49,8 @@ void RenderLine::modify(const GameState& state) {
 }
 
 void RenderLine::draw(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, m_nR, m_nG, m_nB, m_nA);
+    m_color.changeRenderColor(renderer);
     SDL_RenderDrawLine(renderer, m_coord1.x(), m_coord1.y(), m_coord2.x(), m_coord2.y());
-}
-
-void RenderLine::setColor(int nR, int nG, int nB, int nA) {
-    m_nR = nR;
-    m_nG = nG;
-    m_nB = nB;
-    m_nA = nA;
 }
 
 const CoordXY &RenderLine::getAbsoluteCoord1() {
@@ -79,7 +82,12 @@ RenderTriangle::RenderTriangle(
     const CoordXY &p2,
     const CoordXY &p3,
     int nPositionZ
-) : RenderObject(nPositionZ), m_line1(p1,p2), m_line2(p2,p3), m_line3(p3,p1) {
+) : RenderObject(nPositionZ),
+    m_color(255,255,255,255),
+    m_line1(p1,p2, m_color),
+    m_line2(p2,p3, m_color),
+    m_line3(p3,p1, m_color)
+{
     // nothing
 }
 
@@ -104,7 +112,12 @@ RenderTriangleAnimated1::RenderTriangleAnimated1(
     const CoordXY &p2,
     const CoordXY &p3,
     int nPositionZ
-) : RenderObject(nPositionZ), m_line1(p1,p2), m_line2(p2,p3), m_line3(p3,p1) {
+) : RenderObject(nPositionZ),
+    m_color(255,255,255,255),
+    m_line1(p1,p2, m_color),
+    m_line2(p2,p3, m_color),
+    m_line3(p3,p1, m_color) 
+{
     m_coordDirection = CoordXY(10, 10);
 }
 
@@ -254,8 +267,8 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
     for (int i = 0; i < vPoints.size(); i++) {
         CoordXY p0 = vPoints[i];
         CoordXY p1 = vPoints[(i+1) % vPoints.size()];
-        RenderLine *pLine = new RenderLine(p0, p1);
-        pLine->setColor(122, 17, 17, 255);
+        RenderColor color(122, 17, 17, 255);
+        RenderLine *pLine = new RenderLine(p0, p1, color);
         m_vBorderLines.push_back(pLine);
         nMaxX = std::max(p0.x(), nMaxX);
         nMinX = std::min(p0.x(), nMinX);
@@ -271,8 +284,8 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
         CoordXY p1(x, nMaxCrossY);
 
         // find min cross with Y
-        RenderLine *pLine = new RenderLine(p0, p1);
-        pLine->setColor(255, 60, 70, 255);
+        RenderColor color(255, 60, 70, 255);
+        RenderLine *pLine = new RenderLine(p0, p1, color);
         m_vFillLines.push_back(pLine);
     }
 }
@@ -346,12 +359,14 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     int nMinX = vPoints[0].x();
     int nMaxY = vPoints[0].y();
     int nMinY = vPoints[0].y();
+    
+    RenderColor buildingColor(255, 57, 57, 255);
 
     for (int i = 0; i < vPoints.size(); i++) {
         CoordXY p0 = vPoints[i];
         CoordXY p1 = vPoints[(i+1) % vPoints.size()];
-        RenderLine *pLine = new RenderLine(p0, p1);
-        pLine->setColor(255, 57, 57, 255);
+        
+        RenderLine *pLine = new RenderLine(p0, p1, buildingColor);
         m_vBorderLines.push_back(pLine);
         nMaxX = std::max(p0.x(), nMaxX);
         nMinX = std::min(p0.x(), nMinX);
@@ -359,9 +374,15 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
         nMinY = std::min(p0.y(), nMinY);
     }
 
-    for (int x = nMinX; x < nMaxX; x += 10) {
-        for (int y = nMinX; y < nMaxX; y += 10) {
-            // m_vFillPoints.
+    int step = 20;
+    for (int x = nMinX; x < nMaxX; x += step) {
+        for (int y = nMinY; y < nMaxY; y += step) {
+            CoordXY p(x,y);
+           
+            if (containsPoint(vPoints, p)) {
+                m_vFillPointsAbsolute.push_back(CoordXY(x,y));
+                m_vFillPoints.push_back(CoordXY(x,y));
+            }
         }
     }
 }
@@ -370,6 +391,10 @@ void RenderBuilding2::modify(const GameState& state) {
     for (int i = 0; i < m_vBorderLines.size(); i++) {
         m_vBorderLines[i]->modify(state);
     }
+
+    for (int i = 0; i < m_vFillPointsAbsolute.size(); i++) {
+        m_vFillPoints[i] = state.getCoordLeftTop() + m_vFillPointsAbsolute[i];
+    }
 }
 
 void RenderBuilding2::draw(SDL_Renderer* renderer) {
@@ -377,15 +402,31 @@ void RenderBuilding2::draw(SDL_Renderer* renderer) {
         m_vBorderLines[i]->draw(renderer);
     }
 
-    CoordXY p0 = m_vBorderLines[0]->getCoord1();
-
     SDL_Rect dst;
-    dst.x = p0.x();
-    dst.y = p0.y();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
-    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
+    for (int i = 0; i < m_vFillPoints.size(); i++) {
+        dst.x = m_vFillPoints[i].x();
+        dst.y = m_vFillPoints[i].y();
+        SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
+    }
+}
+
+bool RenderBuilding2::containsPoint(const std::vector<CoordXY> &vPoints, const CoordXY &point) {
+    // https://ru.stackoverflow.com/questions/464787/%D0%A2%D0%BE%D1%87%D0%BA%D0%B0-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B8-%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%83%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0
+
+    bool bResult = false;
+    int size = vPoints.size();
+    int j = size - 1;
+    for (int i = 0; i < size; i++) {
+        if ( (vPoints[i].y() < point.y() && vPoints[j].y() >= point.y() || vPoints[j].y() < point.y() && vPoints[i].y() >= point.y()) &&
+            (vPoints[i].x() + (point.y() - vPoints[i].y()) / (vPoints[j].y() - vPoints[i].y()) * (vPoints[j].x() - vPoints[i].x()) < point.x()) ) {
+            bResult = !bResult;
+        }
+        j = i;
+    }
+    return bResult;
 }
 
 
@@ -421,3 +462,77 @@ void RenderPlayerAlienShip1::draw(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
 };
+
+
+// ---------------------------------------------------------------------
+// RenderMouse
+
+RenderMouse::RenderMouse(
+    const CoordXY &p1,
+    const RenderColor &color,
+    int nPositionZ
+) : RenderObject(nPositionZ),
+    m_p1(p1),
+    m_color(color),
+    m_nCursorType(0)
+{
+    m_pDiff2 = CoordXY(10,10);
+    m_pDiff3 = CoordXY(7,3);
+    m_pDiff4 = CoordXY(3,7);
+
+    m_pLine1 = new RenderLine(p1, p1, color);
+    m_pLine2 = new RenderLine(p1, p1, color);
+    m_pLine3 = new RenderLine(p1, p1, color);
+
+    m_pLineMoveble1 = new RenderLine(p1, p1, color);
+    m_pLineMoveble2 = new RenderLine(p1, p1, color);
+
+    this->updateCoord(p1);
+}
+
+void RenderMouse::modify(const GameState& state) {
+    m_pLine1->modify(state);
+    m_pLine2->modify(state);
+    m_pLine3->modify(state);
+    m_pLineMoveble1->modify(state);
+    m_pLineMoveble2->modify(state);
+}
+
+void RenderMouse::draw(SDL_Renderer* renderer) {
+    if (m_nCursorType == 0) {
+        m_pLine1->draw(renderer);
+        m_pLine2->draw(renderer);
+        m_pLine3->draw(renderer);
+    } else if (m_nCursorType == 1) {
+        m_pLineMoveble1->draw(renderer);
+        m_pLineMoveble2->draw(renderer);
+    }
+}
+
+void RenderMouse::updateCoord(const CoordXY &p0) {
+    // arrow
+    CoordXY p1 = p0;
+    CoordXY p2 = p1 + m_pDiff2;
+    CoordXY p3 = p1 + m_pDiff3;
+    CoordXY p4 = p1 + m_pDiff4;
+    
+    m_pLine1->updateAbsoluteCoords(p1,p2);
+    m_pLine2->updateAbsoluteCoords(p1,p3);
+    m_pLine3->updateAbsoluteCoords(p1,p4);
+
+    // moveble
+    CoordXY p5 = p1 - CoordXY(0,5);
+    CoordXY p6 = p1 + CoordXY(0,5);
+    CoordXY p7 = p1 - CoordXY(5,0);
+    CoordXY p8 = p1 + CoordXY(5,0);
+    m_pLineMoveble1->updateAbsoluteCoords(p5,p6);
+    m_pLineMoveble2->updateAbsoluteCoords(p7,p8);
+}
+
+void RenderMouse::changeCursorToArrow() {
+    m_nCursorType = 0;
+}
+
+void RenderMouse::changeCursorToMoveble() {
+    m_nCursorType = 1;
+}

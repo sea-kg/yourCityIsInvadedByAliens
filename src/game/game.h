@@ -13,6 +13,7 @@ class CoordXY {
         CoordXY& operator+=(const CoordXY& other);
         CoordXY& operator-=(const CoordXY& other);
         CoordXY operator+(const CoordXY& other) const;
+        CoordXY operator-(const CoordXY& other) const;
     private:
         int m_nX, m_nY;
 };
@@ -43,7 +44,11 @@ class GameState {
         const int windowWidth() const;
         const int windowHeight() const;
 
+        void setMouseCaptured(bool bMouseCaptured);
+        bool isMouseCaptured() const;
+
     private:
+        bool m_bMouseCaptured;
         long m_nElapsedTime;
         long m_nStartTime;
         CoordXY m_coordLeftTop;
@@ -51,3 +56,5 @@ class GameState {
         int m_nWindowHeight;
         std::vector<GameBuilding *> m_vBuildings;
 };
+
+

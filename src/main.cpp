@@ -48,7 +48,6 @@ int main(int argc, char* args[]) {
         window.addObject(new RenderBuilding2(pBuilding, buildingTexture));
     }
 
-    SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
     int nCenterX = nWindowWidth/2;
     int nCenterY = nWindowHeight/2;
@@ -81,6 +80,12 @@ int main(int argc, char* args[]) {
     long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
     long nElapsed = 0;
     stateObjects.init();
+
+    RenderColor cursorPointer(255,0,0,190);
+    RenderMouse *pMouse = new RenderMouse(coordCenter, cursorPointer, 2000);
+    pMouse->changeCursorToMoveble();
+    window.addObject(pMouse);
+
     while (gameRunning) {
 
         // Get our controls and events
@@ -97,8 +102,23 @@ int main(int argc, char* args[]) {
                     case SDLK_s: stateObjects.incrementCoordLeftTopY(-5); break;
                     case SDLK_a:  stateObjects.incrementCoordLeftTopX(5); break;
                     case SDLK_d: stateObjects.incrementCoordLeftTopX(-5); break;
+                    case SDLK_ESCAPE: 
+                        if (stateObjects.isMouseCaptured()) {
+                            stateObjects.setMouseCaptured(false);
+                        }
+                        break;
                 }
                 std::cout << "SDL_KEYDOWN" << std::endl;
+            } else if (event.type == SDL_MOUSEMOTION) {
+                if (stateObjects.isMouseCaptured()) {
+                    CoordXY p0(event.motion.x, event.motion.y);
+                    pMouse->updateCoord(p0);
+                    pMouse->changeCursorToArrow();
+                }
+            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                if (!stateObjects.isMouseCaptured()) {
+                    stateObjects.setMouseCaptured(true);
+                }
             }
         }
 

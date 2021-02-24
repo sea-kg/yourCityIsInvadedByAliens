@@ -1,5 +1,6 @@
 #include "game.h"
 #include "wsjcpp_core.h"
+#include <SDL.h>
 
 // ---------------------------------------------------------------------
 // CoordXY
@@ -42,6 +43,12 @@ CoordXY& CoordXY::operator-=(const CoordXY& other) {
 CoordXY CoordXY::operator+(const CoordXY& other) const {
     CoordXY c(m_nX, m_nY);
     c += other;
+    return c;
+}
+
+CoordXY CoordXY::operator-(const CoordXY& other) const {
+    CoordXY c(m_nX, m_nY);
+    c -= other;
     return c;
 }
 
@@ -110,4 +117,13 @@ const int GameState::windowWidth() const {
 
 const int GameState::windowHeight() const {
     return m_nWindowHeight;
+}
+
+void GameState::setMouseCaptured(bool bMouseCaptured) {
+    m_bMouseCaptured = bMouseCaptured;
+    SDL_SetRelativeMouseMode(m_bMouseCaptured ? SDL_TRUE : SDL_FALSE);
+}
+
+bool GameState::isMouseCaptured() const {
+    return m_bMouseCaptured;
 }
