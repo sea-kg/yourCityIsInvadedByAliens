@@ -16,14 +16,19 @@ set(EXECUTABLE_OUTPUT_PATH ${yourCityIsInvadedByAliens_Tomsk_SOURCE_DIR})
 
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/ai")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
+list (APPEND WSJCPP_SOURCES "src/game/coordxy.cpp")
+list (APPEND WSJCPP_SOURCES "src/game/coordxy.h")
 list (APPEND WSJCPP_SOURCES "src/game/game.h")
 list (APPEND WSJCPP_SOURCES "src/game/game.cpp")
+list (APPEND WSJCPP_SOURCES "src/ai/ai_tank0.h")
+list (APPEND WSJCPP_SOURCES "src/ai/ai_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render.h")
 list (APPEND WSJCPP_SOURCES "src/render/render.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.h")

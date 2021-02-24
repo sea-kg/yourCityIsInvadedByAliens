@@ -1,22 +1,7 @@
 #pragma once
 #include <vector>
+#include "coordxy.h"
 #include "json.hpp"
-
-class CoordXY {
-    public:
-        CoordXY();
-        CoordXY(int x, int y);
-        int x() const;
-        int y() const;
-        void update(int x, int y);
-
-        CoordXY& operator+=(const CoordXY& other);
-        CoordXY& operator-=(const CoordXY& other);
-        CoordXY operator+(const CoordXY& other) const;
-        CoordXY operator-(const CoordXY& other) const;
-    private:
-        int m_nX, m_nY;
-};
 
 class GameBuilding {
     public:
@@ -27,6 +12,32 @@ class GameBuilding {
     private:
         std::string m_sName;
         std::vector<CoordXY> m_vPoints;
+};
+
+enum class MoveObjectDirection {
+    UP,
+    DOWN,
+    UP_LEFT,
+    DOWN_LEFT,
+    UP_RIGHT,
+    DOWN_RIGHT,
+    LEFT,
+    RIGHT
+};
+
+class GameTank0State {
+    public:
+        GameTank0State(const CoordXY &p0);
+        MoveObjectDirection getDirection();
+        const CoordXY &getPosition();
+        void turnLeft();
+        void turnRight();
+        void move();
+        void shot();
+
+    private:
+        CoordXY m_p0;
+        MoveObjectDirection m_nDirection;
 };
 
 class GameState {
@@ -56,5 +67,3 @@ class GameState {
         int m_nWindowHeight;
         std::vector<GameBuilding *> m_vBuildings;
 };
-
-

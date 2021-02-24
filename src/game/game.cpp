@@ -2,55 +2,6 @@
 #include "wsjcpp_core.h"
 #include <SDL.h>
 
-// ---------------------------------------------------------------------
-// CoordXY
-
-CoordXY::CoordXY() {
-    m_nX = 0;
-    m_nY = 0;
-}
-
-CoordXY::CoordXY(int x, int y) {
-    m_nX = x;
-    m_nY = y;
-}
-
-int CoordXY::x() const {
-    return m_nX;
-}
-
-int CoordXY::y() const {
-    return m_nY;
-}
-
-void CoordXY::update(int x, int y) {
-    m_nX = x;
-    m_nY = y;
-}
-
-CoordXY& CoordXY::operator+=(const CoordXY& other) {
-    m_nX = m_nX + other.x();
-    m_nY = m_nY + other.y();
-    return *this;
-}
-
-CoordXY& CoordXY::operator-=(const CoordXY& other) {
-    m_nX = m_nX - other.x();
-    m_nY = m_nY - other.y();
-    return *this;
-}
-
-CoordXY CoordXY::operator+(const CoordXY& other) const {
-    CoordXY c(m_nX, m_nY);
-    c += other;
-    return c;
-}
-
-CoordXY CoordXY::operator-(const CoordXY& other) const {
-    CoordXY c(m_nX, m_nY);
-    c -= other;
-    return c;
-}
 
 // ---------------------------------------------------------------------
 // GameBuilding
@@ -71,6 +22,105 @@ const std::string &GameBuilding::getName() {
 
 const std::vector<CoordXY> &GameBuilding::getPoints() {
     return m_vPoints;
+}
+
+// ---------------------------------------------------------------------
+// GameTank0State
+
+GameTank0State::GameTank0State(const CoordXY &p0) 
+: m_nDirection(MoveObjectDirection::UP) {
+    m_p0 = p0;
+}
+
+MoveObjectDirection GameTank0State::getDirection() {
+    return m_nDirection;
+}
+
+const CoordXY &GameTank0State::getPosition() {
+    return m_p0;
+}
+
+void GameTank0State::turnLeft() {
+    switch (m_nDirection) {
+        case MoveObjectDirection::UP:
+            m_nDirection = MoveObjectDirection::UP_LEFT;
+            break;
+        case MoveObjectDirection::UP_LEFT:
+            m_nDirection = MoveObjectDirection::LEFT;
+            break;
+        case MoveObjectDirection::UP_RIGHT:
+            m_nDirection = MoveObjectDirection::UP;
+            break;
+        case MoveObjectDirection::DOWN:
+            m_nDirection = MoveObjectDirection::DOWN_RIGHT;
+            break;
+        case MoveObjectDirection::DOWN_LEFT:
+            m_nDirection = MoveObjectDirection::DOWN;
+            break;
+        case MoveObjectDirection::DOWN_RIGHT:
+            m_nDirection = MoveObjectDirection::RIGHT;
+            break;
+        case MoveObjectDirection::LEFT:
+            m_nDirection = MoveObjectDirection::DOWN_LEFT;
+            break;
+        case MoveObjectDirection::RIGHT:
+            m_nDirection = MoveObjectDirection::UP_RIGHT;
+            break;
+    }
+}
+
+void GameTank0State::turnRight() {
+    switch (m_nDirection) {
+        case MoveObjectDirection::UP:
+            m_nDirection = MoveObjectDirection::UP_RIGHT;
+            break;
+        case MoveObjectDirection::UP_LEFT:
+            m_nDirection = MoveObjectDirection::UP;
+            break;
+        case MoveObjectDirection::UP_RIGHT:
+            m_nDirection = MoveObjectDirection::RIGHT;
+            break;
+        case MoveObjectDirection::DOWN:
+            m_nDirection = MoveObjectDirection::DOWN_LEFT;
+            break;
+        case MoveObjectDirection::DOWN_LEFT:
+            m_nDirection = MoveObjectDirection::LEFT;
+            break;
+        case MoveObjectDirection::DOWN_RIGHT:
+            m_nDirection = MoveObjectDirection::DOWN;
+            break;
+        case MoveObjectDirection::LEFT:
+            m_nDirection = MoveObjectDirection::UP_LEFT;
+            break;
+        case MoveObjectDirection::RIGHT:
+            m_nDirection = MoveObjectDirection::DOWN_RIGHT;
+            break;
+    }
+}
+
+void GameTank0State::move() {
+    int nStep = 10;
+    if (m_nDirection == MoveObjectDirection::UP) {
+        m_p0 += CoordXY(0,-1 * nStep);
+    } else if (m_nDirection == MoveObjectDirection::UP_LEFT) {
+        m_p0 += CoordXY(-1*nStep, -1*nStep);
+    } else if (m_nDirection == MoveObjectDirection::UP_RIGHT) {
+        m_p0 += CoordXY(nStep, -1*nStep);
+    } else if (m_nDirection == MoveObjectDirection::DOWN) {
+        m_p0 += CoordXY(0, nStep);
+    } else if (m_nDirection == MoveObjectDirection::DOWN_LEFT) {
+        m_p0 += CoordXY(-1*nStep, nStep);
+    } else if (m_nDirection == MoveObjectDirection::DOWN_RIGHT) {
+        m_p0 += CoordXY(nStep, nStep);
+    } else if (m_nDirection == MoveObjectDirection::LEFT) {
+        m_p0 += CoordXY(-1*nStep, 0);
+    } else if (m_nDirection == MoveObjectDirection::RIGHT) {
+        m_p0 += CoordXY(nStep, 0);
+    }
+}
+
+void GameTank0State::shot() {
+    // TODO
 }
 
 // ---------------------------------------------------------------------

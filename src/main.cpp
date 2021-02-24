@@ -41,6 +41,7 @@ int main(int argc, char* args[]) {
     SDL_Texture* pTextureBackground = window.loadTexture("res/gfx/background.png");
     SDL_Texture* pTextureBuildingBlock = window.loadTexture("res/gfx/building-block.png");
     SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
+    SDL_Texture* pTextureTank0 = window.loadTexture("res/sprites/tank0.png");
     SDL_Texture* pTextureCursor = window.loadTexture("res/gfx/mouse-target.png");
 
     nlohmann::json jsonBuildings = jf["buildings"];
@@ -95,11 +96,16 @@ int main(int argc, char* args[]) {
         }
     }
 
-    window.sortObjectsByPositionZ();
+    GameTank0State *pTank0State = new GameTank0State(CoordXY(100,100));
+    window.addObject(new RenderTank0(
+        pTank0State,
+        pTextureTank0,
+        1000
+    ));
 
     bool gameRunning = true;
 
-    SDL_Event event;
+    
 
     long nNumberOfFrames = 0;
     long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
@@ -109,29 +115,73 @@ int main(int argc, char* args[]) {
     RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
     window.addObject(pMouse);
 
+
+    window.sortObjectsByPositionZ();
     while (gameRunning) {
+        stateObjects.updateElapsedTime();
+        window.clear();
+        window.modifyObjects(stateObjects);
+        window.drawObjects();
+
+        SDL_Event event;
+        const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 
         // Get our controls and events
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 gameRunning = false;
-            } else if (event.type == SDL_KEYDOWN) {
+            } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+                std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
+
+                if (
+                    !keyboard_state_array[SDL_SCANCODE_UP]
+                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
+                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+                    && keyboard_state_array[SDL_SCANCODE_DOWN]
+                ) {
+                    stateObjects.incrementCoordLeftTopY(-5);
+                } else if (
+                    keyboard_state_array[SDL_SCANCODE_UP]
+                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
+                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
+                ) {
+                    stateObjects.incrementCoordLeftTopY(5);
+                } else if (
+                    !keyboard_state_array[SDL_SCANCODE_UP]
+                    && keyboard_state_array[SDL_SCANCODE_LEFT]
+                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
+                ) {
+                    stateObjects.incrementCoordLeftTopX(5);
+                } else if (
+                    !keyboard_state_array[SDL_SCANCODE_UP]
+                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
+                    && keyboard_state_array[SDL_SCANCODE_RIGHT]
+                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
+                ) {
+                    stateObjects.incrementCoordLeftTopX(-5);
+                } /*else if (
+                    keyboard_state_array[SDL_SCANCODE_UP]
+                    && keyboard_state_array[SDL_SCANCODE_LEFT]
+                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
+                ) {
+                    stateObjects.incrementCoordLeftTopX(5);
+                    stateObjects.incrementCoordLeftTopY(5);
+                }*/
+
                 switch (event.key.keysym.sym) {
-                    case SDLK_LEFT:  stateObjects.incrementCoordLeftTopX(5); break;
-                    case SDLK_RIGHT: stateObjects.incrementCoordLeftTopX(-5); break;
-                    case SDLK_UP:    stateObjects.incrementCoordLeftTopY(5); break;
-                    case SDLK_DOWN:  stateObjects.incrementCoordLeftTopY(-5); break;
                     case SDLK_w: stateObjects.incrementCoordLeftTopY(5); break;
                     case SDLK_s: stateObjects.incrementCoordLeftTopY(-5); break;
                     case SDLK_a:  stateObjects.incrementCoordLeftTopX(5); break;
                     case SDLK_d: stateObjects.incrementCoordLeftTopX(-5); break;
-                    case SDLK_ESCAPE: 
+                    case SDLK_ESCAPE:
                         if (stateObjects.isMouseCaptured()) {
                             stateObjects.setMouseCaptured(false);
                         }
                         break;
                 }
-                std::cout << "SDL_KEYDOWN" << std::endl;
             } else if (event.type == SDL_MOUSEMOTION) {
                 if (stateObjects.isMouseCaptured()) {
                     CoordXY p0(event.motion.x, event.motion.y);
@@ -144,10 +194,7 @@ int main(int argc, char* args[]) {
             }
         }
 
-        stateObjects.updateElapsedTime();
-        window.clear();
-        window.modifyObjects(stateObjects);
-        window.drawObjects();
+        
 
         // FPS
         nNumberOfFrames++;
