@@ -1,5 +1,5 @@
-name: "yourCityIsInvadedByAliens_Tomsk.git"
-version: "v0.0.1"
+name: "sea5kg-triangulation"
+version: "v0.0.2"
 cmake_minimum_required: "3.0"
 cmake_cxx_standard: "11"
 description: "Game"
@@ -7,7 +7,7 @@ authors:
   - name: "Evgenii Sopov"
     email: "mrseakg@gmail.com"
 origins:
-  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+  - address: "https://wsjcpp.org/packages/"
     type: "package-registry"
 keywords:
   - "c++"
@@ -24,13 +24,16 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/nlohmann_json"
     installation-datetime: "Mon, 28 Dec 2020 04:03:07 GMT"
-  - name: "sea5kg-triangulation"
-    version: "v0.0.2"
-    url: "https://github.com/sea-kg/sea5kg-triangulation:master"
-    origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/sea5kg_triangulation"
-    installation-datetime: "Wed, 24 Feb 2021 09:40:50 GMT"
 unit-tests:
   cases:
-    - name: "CoordXY"
+    - name: "Sea5kgTriangulationPoint"
       description: ""
+distribution:
+  - source-file: "src/sea5kg_triangulation.cpp"
+    target-file: "sea5kg_triangulation.cpp"
+    type: "source-code"
+    sha1: "3fdfec925e690a9146ec8d8c85cfd18358a5b176"
+  - source-file: "src/sea5kg_triangulation.h"
+    target-file: "sea5kg_triangulation.h"
+    type: "source-code"
+    sha1: "4d5472e6e4736ecbfc77b1c8e853911c4c376688"

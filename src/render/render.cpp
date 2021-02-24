@@ -230,7 +230,7 @@ RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::s
     m_sText = sText;
     m_sUpdateText = m_sText;
     // m_pFont = TTF_OpenFont("./res/fonts/amatic/AmaticSC-Regular.ttf", 42);
-    m_pFont = TTF_OpenFont("./res/fonts/fff/FFF_Tusj.ttf", 24);
+    m_pFont = TTF_OpenFont("./res/fonts/roboto/Roboto-Black.ttf", 24);
     m_color = {255, 255, 255};
     if (!m_pFont) {
         printf("TTF_OpenFont: %s\n", TTF_GetError());
@@ -389,6 +389,8 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     m_nMaxY = vPoints[0].y();
     m_nMinY = vPoints[0].y();
 
+
+    
     RenderColor buildingColor(255, 57, 57, 255);
 
     for (int i = 0; i < vPoints.size(); i++) {
@@ -491,6 +493,9 @@ void RenderPlayerAlienShip1::modify(const GameState& state) {
 };
 
 void RenderPlayerAlienShip1::draw(SDL_Renderer* renderer) {
+    RenderColor emptyColor(0, 0, 0, 0);
+    emptyColor.changeRenderColor(renderer);
+
     SDL_Rect dst;
     dst.x = m_coordCenter.x();
     dst.y = m_coordCenter.y();

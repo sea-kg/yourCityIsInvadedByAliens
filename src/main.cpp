@@ -156,8 +156,8 @@ int main(int argc, char* args[]) {
             double nFPS = nNumberOfFrames;
             nFPS /= nElapsed;
             nFPS *= 1000;
-            pFpsText->updateText("FPS: " + std::to_string(nFPS));
-            std::cout << "FPS: " << nFPS << std::endl;
+            pFpsText->updateText("FPS: ~" + std::to_string(int(nFPS)));
+            std::cout << "FPS: ~" << int(nFPS) << std::endl;
             nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
             std::string sCoordPlayer = "X=" + std::to_string(stateObjects.getCoordLeftTop().x() + nCenterX)

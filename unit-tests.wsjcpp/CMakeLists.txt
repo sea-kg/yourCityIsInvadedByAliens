@@ -31,6 +31,11 @@ list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_unit_tests_main.cp
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/nlohmann_json/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/nlohmann_json/json.hpp")
 
+# sea5kg-triangulation:v0.0.2
+list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/sea5kg_triangulation/")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/sea5kg_triangulation/sea5kg_triangulation.cpp")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/sea5kg_triangulation/sea5kg_triangulation.h")
+
 # yourCityIsInvadedByAliens_Tomsk.git:v0.0.1
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
 
