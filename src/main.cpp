@@ -39,7 +39,7 @@ int main(int argc, char* args[]) {
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
     SDL_Texture* pTextureBackground = window.loadTexture("res/gfx/background.png");
-    SDL_Texture* pTextureBuilding = window.loadTexture("res/gfx/building.png");
+    SDL_Texture* pTextureBuildingBlock = window.loadTexture("res/gfx/building-block.png");
     SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
     SDL_Texture* pTextureCursor = window.loadTexture("res/gfx/mouse-target.png");
 
@@ -50,7 +50,7 @@ int main(int argc, char* args[]) {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         stateObjects.addBuilding(pBuilding);
-        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureBuilding);
+        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureBuildingBlock);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
         minPointMap.update(
             std::min(min0.x(), minPointMap.x()),

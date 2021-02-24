@@ -380,8 +380,8 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     m_pTexture = pTexture;
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
-    m_currentFrame.w = 20;
-    m_currentFrame.h = 20;
+    m_currentFrame.w = 50;
+    m_currentFrame.h = 50;
 
     const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
     m_nMaxX = vPoints[0].x();
@@ -403,7 +403,7 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
         m_nMinY = std::min(p0.y(), m_nMinY);
     }
 
-    int step = 20;
+    int step = 50;
     for (int x = m_nMinX; x < m_nMaxX; x += step) {
         for (int y = m_nMinY; y < m_nMaxY; y += step) {
             CoordXY p(x,y);
