@@ -114,6 +114,26 @@ class RenderRectTexture : public RenderObject {
         SDL_Texture* m_pTexture;
 };
 
+
+class RenderBackground : public RenderObject {
+
+    public:
+        RenderBackground(
+            const CoordXY &p0,
+            SDL_Texture* tex,
+            int nPositionZ = 0
+        );
+        virtual void modify(const GameState& state) override;
+        virtual void draw(SDL_Renderer* renderer) override;
+
+    private:
+        CoordXY m_coordCenter;
+        CoordXY m_coordReal;
+
+        SDL_Rect m_currentFrame;
+        SDL_Texture* m_pTexture;
+};
+
 class RenderAbsoluteTextBlock : public RenderObject {
 
     public:
@@ -158,8 +178,14 @@ class RenderBuilding2 : public RenderObject {
         RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture);
         virtual void modify(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
-
+        CoordXY getMinPoint();
+        CoordXY getMaxPoint();
     private:
+        int m_nMaxX;
+        int m_nMinX;
+        int m_nMaxY;
+        int m_nMinY;
+
         GameBuilding *m_pBuilding;
         std::vector<RenderLine *> m_vBorderLines;
         std::vector<CoordXY> m_vFillPointsAbsolute;

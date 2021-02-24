@@ -192,6 +192,35 @@ void RenderRectTexture::draw(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
 };
 
+
+// ---------------------------------------------------------------------
+// RenderBackground
+
+RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
+: RenderObject(nPositionZ) {
+    m_pTexture = tex;
+    m_coordCenter = p0;
+    m_currentFrame.x = 0;
+    m_currentFrame.y = 0;
+    m_currentFrame.w = 500;
+    m_currentFrame.h = 500; // HARD code aiyayai
+}
+
+void RenderBackground::modify(const GameState& state) {
+    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+
+};
+
+void RenderBackground::draw(SDL_Renderer* renderer) {
+    SDL_Rect dst;
+    dst.x = m_coordReal.x();
+    dst.y = m_coordReal.y();
+    dst.w = m_currentFrame.w;
+    dst.h = m_currentFrame.h;
+
+    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
+};
+
 // ---------------------------------------------------------------------
 // RenderTextBlock
 
@@ -355,28 +384,28 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     m_currentFrame.h = 20;
 
     const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
-    int nMaxX = vPoints[0].x();
-    int nMinX = vPoints[0].x();
-    int nMaxY = vPoints[0].y();
-    int nMinY = vPoints[0].y();
-    
+    m_nMaxX = vPoints[0].x();
+    m_nMinX = vPoints[0].x();
+    m_nMaxY = vPoints[0].y();
+    m_nMinY = vPoints[0].y();
+
     RenderColor buildingColor(255, 57, 57, 255);
 
     for (int i = 0; i < vPoints.size(); i++) {
         CoordXY p0 = vPoints[i];
         CoordXY p1 = vPoints[(i+1) % vPoints.size()];
         
-        RenderLine *pLine = new RenderLine(p0, p1, buildingColor);
+        RenderLine *pLine = new RenderLine(p0, p1, buildingColor, getPositionZ());
         m_vBorderLines.push_back(pLine);
-        nMaxX = std::max(p0.x(), nMaxX);
-        nMinX = std::min(p0.x(), nMinX);
-        nMaxY = std::max(p0.y(), nMaxY);
-        nMinY = std::min(p0.y(), nMinY);
+        m_nMaxX = std::max(p0.x(), m_nMaxX);
+        m_nMinX = std::min(p0.x(), m_nMinX);
+        m_nMaxY = std::max(p0.y(), m_nMaxY);
+        m_nMinY = std::min(p0.y(), m_nMinY);
     }
 
     int step = 20;
-    for (int x = nMinX; x < nMaxX; x += step) {
-        for (int y = nMinY; y < nMaxY; y += step) {
+    for (int x = m_nMinX; x < m_nMaxX; x += step) {
+        for (int y = m_nMinY; y < m_nMaxY; y += step) {
             CoordXY p(x,y);
            
             if (containsPoint(vPoints, p)) {
@@ -411,6 +440,14 @@ void RenderBuilding2::draw(SDL_Renderer* renderer) {
         dst.y = m_vFillPoints[i].y();
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
     }
+}
+
+CoordXY RenderBuilding2::getMinPoint() {
+    return CoordXY(m_nMinX, m_nMinY);
+}
+
+CoordXY RenderBuilding2::getMaxPoint() {
+    return CoordXY(m_nMaxX, m_nMaxY);
 }
 
 bool RenderBuilding2::containsPoint(const std::vector<CoordXY> &vPoints, const CoordXY &point) {

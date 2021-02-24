@@ -34,7 +34,7 @@ void RenderWindow::sortObjectsByPositionZ() {
     int nPermutations = 1; // 1 for start
     while (nPermutations > 0) {
         nPermutations = 0;
-        for (int i = 0; i < nSize - 2; i++) {
+        for (int i = 0; i < nSize - 1; i++) {
             if (m_vObjects[i]->getPositionZ() > m_vObjects[i+1]->getPositionZ()) {
                 RenderObject *pObject = m_vObjects[i+1];
                 m_vObjects[i+1] = m_vObjects[i];
@@ -42,6 +42,7 @@ void RenderWindow::sortObjectsByPositionZ() {
                 nPermutations++;
             }
         }
+        // std::cout << "nPermutations:" << nPermutations << std::endl;
     }
 }
 

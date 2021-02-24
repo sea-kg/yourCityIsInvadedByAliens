@@ -38,17 +38,32 @@ int main(int argc, char* args[]) {
     std::ifstream ifs("./res/data.json");
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
-    SDL_Texture* buildingTexture = window.loadTexture("res/gfx/building.png");
+    SDL_Texture* pTextureBackground = window.loadTexture("res/gfx/background.png");
+    SDL_Texture* pTextureBuilding = window.loadTexture("res/gfx/building.png");
+    SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
+    SDL_Texture* pTextureCursor = window.loadTexture("res/gfx/mouse-target.png");
 
     nlohmann::json jsonBuildings = jf["buildings"];
+    CoordXY minPointMap(0,0);
+    CoordXY maxPointMap(0,0);
     for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         stateObjects.addBuilding(pBuilding);
-        window.addObject(new RenderBuilding2(pBuilding, buildingTexture));
+        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureBuilding);
+        CoordXY min0 = pRenderBuilding2->getMinPoint();
+        minPointMap.update(
+            std::min(min0.x(), minPointMap.x()),
+            std::min(min0.y(), minPointMap.y())
+        );
+        CoordXY max0 = pRenderBuilding2->getMaxPoint();
+        maxPointMap.update(
+            std::max(max0.x(), maxPointMap.x()),
+            std::max(max0.y(), maxPointMap.y())
+        );
+        window.addObject(pRenderBuilding2);
     }
 
-    SDL_Texture* pTextureAlienShip1 = window.loadTexture("res/sprites/alien-ship.png");
     int nCenterX = nWindowWidth/2;
     int nCenterY = nWindowHeight/2;
     CoordXY coordCenter(nCenterX, nCenterY);
@@ -64,12 +79,22 @@ int main(int argc, char* args[]) {
     RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
     window.addObject(pCoordText);
 
-    // object
-    // window.addObject(new RenderTriangle(
-    //     CoordXY(320, 200),
-    //     CoordXY(300, 240),
-    //     CoordXY(340, 240)
-    // ));
+    // background
+    // around to 500px
+    minPointMap.update(
+        minPointMap.x() - ((minPointMap.x() - 500) % 500) - 500,
+        minPointMap.y() - ((minPointMap.y() - 500) % 500) - 500
+    );
+    maxPointMap.update(
+        maxPointMap.x() - ((maxPointMap.x() + 500) % 500) + 500,
+        maxPointMap.y() - ((maxPointMap.y() + 500) % 500) + 500
+    );
+    for (int x = minPointMap.x(); x <= maxPointMap.x(); x += 500) {
+        for (int y = minPointMap.y(); y <= maxPointMap.y(); y += 500) {
+            window.addObject(new RenderBackground(CoordXY(x, y), pTextureBackground, -10));        
+        }
+    }
+
     window.sortObjectsByPositionZ();
 
     bool gameRunning = true;
@@ -80,8 +105,7 @@ int main(int argc, char* args[]) {
     long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
     long nElapsed = 0;
     stateObjects.init();
-
-    SDL_Texture* pTextureCursor = window.loadTexture("res/gfx/mouse-target.png");
+    
     RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
     window.addObject(pMouse);
 
