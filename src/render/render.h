@@ -190,6 +190,7 @@ class RenderBuilding2 : public RenderObject {
         std::vector<RenderLine *> m_vBorderLines;
         std::vector<CoordXY> m_vFillPointsAbsolute;
         std::vector<CoordXY> m_vFillPoints;
+        std::vector<RenderLine *> m_vLines;
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
 

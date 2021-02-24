@@ -1,5 +1,6 @@
 #include "render.h"
 #include "wsjcpp_core.h"
+#include "sea5kg_triangulation.h"
 #include <cmath>
 #define PI 3.14159265
 
@@ -389,8 +390,6 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     m_nMaxY = vPoints[0].y();
     m_nMinY = vPoints[0].y();
 
-
-    
     RenderColor buildingColor(255, 57, 57, 255);
 
     for (int i = 0; i < vPoints.size(); i++) {
@@ -405,7 +404,53 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
         m_nMinY = std::min(p0.y(), m_nMinY);
     }
 
-    int step = 50;
+    Sea5kgTriangulationTriangulator *pTriangulator = new Sea5kgTriangulationTriangulator();
+    Sea5kgTriangulationArea area("some");
+    area.setCountTriangles(25);
+    for (int i = 0; i < vPoints.size(); i++) {
+        area.addPoint(vPoints[i].x(), vPoints[i].y());
+    }
+    pTriangulator->addArea(area);
+    pTriangulator->triangulate();
+    const std::vector<Sea5kgTriangulationTriangle> &vTriangles = pTriangulator->getTriangles();
+    if (vTriangles.size() > 0) {
+        std::cout << "vTriangles.size() : " <<  vTriangles.size() << std::endl;
+    }
+    for (int i = 0; i < vTriangles.size(); i++) {
+        Sea5kgTriangulationTriangle tr = vTriangles[i];
+        // calculate center of triangle
+        int x = (tr.p1.getXint() + tr.p2.getXint() + tr.p3.getXint()) / 3;
+        int y = (tr.p1.getYint() + tr.p2.getYint() + tr.p3.getYint()) / 3;
+        m_vFillPointsAbsolute.push_back(CoordXY(x,y));
+        m_vFillPoints.push_back(CoordXY(x,y));
+
+        m_vLines.push_back(
+            new RenderLine(
+                CoordXY(tr.p1.getXint(),tr.p1.getYint()),
+                CoordXY(tr.p2.getXint(),tr.p2.getYint()),
+                buildingColor
+            )
+        );
+        m_vLines.push_back(
+            new RenderLine(
+                CoordXY(tr.p2.getXint(),tr.p2.getYint()),
+                CoordXY(tr.p3.getXint(),tr.p3.getYint()),
+                buildingColor
+            )
+        );
+        m_vLines.push_back(
+            new RenderLine(
+                CoordXY(tr.p3.getXint(),tr.p3.getYint()),
+                CoordXY(tr.p1.getXint(),tr.p1.getYint()),
+                buildingColor
+            )
+        );
+    }
+
+    // pTriangulator->getAreas();
+    // vAreas[i].getCountTriangles();
+
+    /*int step = 50;
     for (int x = m_nMinX; x < m_nMaxX; x += step) {
         for (int y = m_nMinY; y < m_nMaxY; y += step) {
             CoordXY p(x,y);
@@ -415,7 +460,7 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
                 m_vFillPoints.push_back(CoordXY(x,y));
             }
         }
-    }
+    }*/
 }
 
 void RenderBuilding2::modify(const GameState& state) {
@@ -426,6 +471,10 @@ void RenderBuilding2::modify(const GameState& state) {
     for (int i = 0; i < m_vFillPointsAbsolute.size(); i++) {
         m_vFillPoints[i] = state.getCoordLeftTop() + m_vFillPointsAbsolute[i];
     }
+
+    for (int i = 0; i < m_vLines.size(); i++) {
+        m_vLines[i]->modify(state);
+    }
 }
 
 void RenderBuilding2::draw(SDL_Renderer* renderer) {
@@ -433,13 +482,17 @@ void RenderBuilding2::draw(SDL_Renderer* renderer) {
         m_vBorderLines[i]->draw(renderer);
     }
 
+    for (int i = 0; i < m_vLines.size(); i++) {
+        m_vLines[i]->draw(renderer);
+    }
+
     SDL_Rect dst;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
     for (int i = 0; i < m_vFillPoints.size(); i++) {
-        dst.x = m_vFillPoints[i].x();
-        dst.y = m_vFillPoints[i].y();
+        dst.x = m_vFillPoints[i].x() - 18;
+        dst.y = m_vFillPoints[i].y() - 32;
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
     }
 }
