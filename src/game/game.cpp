@@ -30,6 +30,7 @@ const std::vector<CoordXY> &GameBuilding::getPoints() {
 GameTank0State::GameTank0State(const CoordXY &p0) 
 : m_nDirection(MoveObjectDirection::UP) {
     m_p0 = p0;
+    m_bHasRocket = true;
 }
 
 MoveObjectDirection GameTank0State::getDirection() {
@@ -119,8 +120,17 @@ void GameTank0State::move() {
     }
 }
 
-void GameTank0State::shot() {
-    // TODO
+bool GameTank0State::hasRocket() {
+    return m_bHasRocket;
+}
+
+void GameTank0State::shotRocket() {
+    m_bHasRocket = false;
+    // TODO init fly rocket
+}
+
+void GameTank0State::rechargeRocket() {
+    m_bHasRocket = true;
 }
 
 // ---------------------------------------------------------------------

@@ -632,41 +632,81 @@ void RenderTank0::modify(const GameState& state) {
     m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
     MoveObjectDirection dr = m_pTank0State->getDirection();
+    
     int nWidth = 50;
-    switch(dr) {
-        case MoveObjectDirection::UP:
-            m_currentFrame.x = nWidth;
-            m_currentFrame.y = 0;
-            break;
-        case MoveObjectDirection::UP_LEFT:
-            m_currentFrame.x = 0;
-            m_currentFrame.y = 0;
-            break;
-        case MoveObjectDirection::UP_RIGHT:
-            m_currentFrame.x = nWidth*2;
-            m_currentFrame.y = 0;
-            break;
-        case MoveObjectDirection::DOWN:
-            m_currentFrame.x = nWidth;
-            m_currentFrame.y = nWidth*2;
-            break;
-        case MoveObjectDirection::DOWN_LEFT:
-            m_currentFrame.x = 0;
-            m_currentFrame.y = nWidth*2;
-            break;
-        case MoveObjectDirection::DOWN_RIGHT:
-            m_currentFrame.x = nWidth*2;
-            m_currentFrame.y = nWidth*2;
-            break;
-        case MoveObjectDirection::LEFT:
-            m_currentFrame.x = 0;
-            m_currentFrame.y = nWidth;
-            break;
-        case MoveObjectDirection::RIGHT:
-            m_currentFrame.x = nWidth*2;
-            m_currentFrame.y = nWidth;
-            break;
+    if (!m_pTank0State->hasRocket()) {
+        switch(dr) {
+            case MoveObjectDirection::UP:
+                m_currentFrame.x = nWidth*2;
+                m_currentFrame.y = nWidth;
+                break;
+            case MoveObjectDirection::UP_LEFT:
+                m_currentFrame.x = nWidth;
+                m_currentFrame.y = nWidth;
+                break;
+            case MoveObjectDirection::UP_RIGHT:
+                m_currentFrame.x = nWidth*3;
+                m_currentFrame.y = nWidth;
+                break;
+            case MoveObjectDirection::DOWN:
+                m_currentFrame.x = nWidth*2;
+                m_currentFrame.y = nWidth*3;
+                break;
+            case MoveObjectDirection::DOWN_LEFT:
+                m_currentFrame.x = nWidth;
+                m_currentFrame.y = nWidth*3;
+                break;
+            case MoveObjectDirection::DOWN_RIGHT:
+                m_currentFrame.x = nWidth*3;
+                m_currentFrame.y = nWidth*3;
+                break;
+            case MoveObjectDirection::LEFT:
+                m_currentFrame.x = nWidth;
+                m_currentFrame.y = nWidth*2;
+                break;
+            case MoveObjectDirection::RIGHT:
+                m_currentFrame.x = nWidth*3;
+                m_currentFrame.y = nWidth*2;
+                break;
+        }
+    } else {
+        switch(dr) {
+            case MoveObjectDirection::UP:
+                m_currentFrame.x = nWidth*2;
+                m_currentFrame.y = 0;
+                break;
+            case MoveObjectDirection::UP_LEFT:
+                m_currentFrame.x = 0;
+                m_currentFrame.y = 0;
+                break;
+            case MoveObjectDirection::UP_RIGHT:
+                m_currentFrame.x = nWidth*4;
+                m_currentFrame.y = 0;
+                break;
+            case MoveObjectDirection::DOWN:
+                m_currentFrame.x = nWidth*2;
+                m_currentFrame.y = nWidth*4;
+                break;
+            case MoveObjectDirection::DOWN_LEFT:
+                m_currentFrame.x = 0;
+                m_currentFrame.y = nWidth*4;
+                break;
+            case MoveObjectDirection::DOWN_RIGHT:
+                m_currentFrame.x = nWidth*4;
+                m_currentFrame.y = nWidth*4;
+                break;
+            case MoveObjectDirection::LEFT:
+                m_currentFrame.x = 0;
+                m_currentFrame.y = nWidth*2;
+                break;
+            case MoveObjectDirection::RIGHT:
+                m_currentFrame.x = nWidth*4;
+                m_currentFrame.y = nWidth*2;
+                break;
+        }
     }
+
+    
 };
 
 void RenderTank0::draw(SDL_Renderer* renderer) {

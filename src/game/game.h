@@ -33,10 +33,13 @@ class GameTank0State {
         void turnLeft();
         void turnRight();
         void move();
-        void shot();
+        bool hasRocket();
+        void rechargeRocket();
+        void shotRocket();
 
     private:
         CoordXY m_p0;
+        bool m_bHasRocket;
         MoveObjectDirection m_nDirection;
 };
 
