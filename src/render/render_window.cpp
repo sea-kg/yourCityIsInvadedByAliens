@@ -4,6 +4,24 @@
 
 #include "render_window.h"
 
+// ---------------------------------------------------------------------
+// RenderObject
+
+RenderObject::RenderObject(int nPositionZ) {
+    m_nPositionZ = nPositionZ;
+}
+
+int RenderObject::getPositionZ() {
+    return m_nPositionZ;
+}
+
+void RenderObject::modify(const GameState& state) {
+    // nothing modify in base object
+}
+
+// ---------------------------------------------------------------------
+// RenderWindow
+
 RenderWindow::RenderWindow(const char* title, int w, int h) {
     window = NULL;
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
@@ -12,18 +30,25 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
         std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
     }
 
-    renderer = NULL;
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    m_pRenderer = NULL;
+    m_pRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
 RenderWindow::~RenderWindow() {
-    if (renderer) {
-        SDL_DestroyRenderer(renderer);
+    if (m_pRenderer) {
+        SDL_DestroyRenderer(m_pRenderer);
     }
 }
 
 void RenderWindow::addObject(RenderObject *pObject) {
     m_vObjects.push_back(pObject);
+}
+
+void RenderWindow::removeObject(RenderObject *pObject) {
+    auto it = std::find(m_vObjects.begin(), m_vObjects.end(), pObject);
+    if (it != m_vObjects.end()) {
+        m_vObjects.erase(it);
+    }
 }
 
 void RenderWindow::sortObjectsByPositionZ() {
@@ -48,7 +73,7 @@ void RenderWindow::sortObjectsByPositionZ() {
 
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath) {
     SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(renderer, p_filePath);
+    texture = IMG_LoadTexture(m_pRenderer, p_filePath);
 
     if (texture == NULL) {
         std::cout << "Failed to load texture. Error: " << SDL_GetError() << std::endl;
@@ -62,11 +87,11 @@ void RenderWindow::cleanUp() {
 }
 
 void RenderWindow::clear() {
-    // SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    // SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     // background color
-    SDL_SetRenderDrawColor(renderer, 0, 75, 92, 195);
+    SDL_SetRenderDrawColor(m_pRenderer, 0, 75, 92, 195);
     
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(m_pRenderer);
 }
 
 void RenderWindow::modifyObjects(const GameState& state) {
@@ -77,11 +102,14 @@ void RenderWindow::modifyObjects(const GameState& state) {
 
 void RenderWindow::drawObjects() {
     for (auto pObj: m_vObjects) {
-        pObj->draw(renderer);
+        pObj->draw(m_pRenderer);
     }
 
     // finish
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(m_pRenderer);
 }
 
+SDL_Renderer* RenderWindow::getRenderer() {
+    return m_pRenderer;
+}
 

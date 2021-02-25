@@ -1,23 +1,10 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include "game.h"
-#include "ai_tank0.h"
+#include "render_window.h"
+
+#include "game_state.h"
+
 #include <vector>
 #include <string>
-
-class RenderObject {
-
-    public:
-        RenderObject(int nPositionZ);
-        int getPositionZ();
-        virtual void modify(const GameState& state);
-        virtual void draw(SDL_Renderer* pRenderer) = 0;
-
-    private:
-        int m_nPositionZ;
-};
 
 class RenderColor {
     public:
@@ -236,26 +223,4 @@ class RenderMouse : public RenderObject {
 
         SDL_Texture* m_pTextureCursorTarget;
         SDL_Rect m_currentFrame;
-};
-
-class RenderTank0 : public RenderObject {
-
-    public:
-        RenderTank0(
-            GameTank0State *pTank0State,
-            SDL_Texture* tex,
-            int nPositionZ = 0
-        );
-        virtual void modify(const GameState& state) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
-        long m_nPrevPosition;
-        GameTank0State *m_pTank0State;
-        AiTank0 *m_pAiTank0;
-
-        SDL_Rect m_currentFrame;
-        SDL_Texture* m_pTexture;
 };

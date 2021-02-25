@@ -18,6 +18,6 @@ void AiTank0::makeStep(GameTank0State &tank0State) {
     } else if (nRandom == 2) {
         tank0State.move();
     } else if (nRandom == 3) {
-        // tank0State.shotRocket();
+        tank0State.shotRocket();
     }
 }
