@@ -12,7 +12,7 @@ class RenderTank0 : public RenderObject {
             SDL_Texture* tex,
             int nPositionZ = 0
         );
-        virtual void modify(const GameState& state) override;
+        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:

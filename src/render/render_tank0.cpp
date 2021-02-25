@@ -18,7 +18,7 @@ RenderTank0::RenderTank0(GameTank0State *pTank0State, SDL_Texture* tex,  int nPo
     m_nPrevPosition = 0;
 }
 
-void RenderTank0::modify(const GameState& state) {
+void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     long m_nSpeedAnimation = 200;
 
     long position = state.getElapsedTime() / m_nSpeedAnimation;
@@ -36,7 +36,12 @@ void RenderTank0::modify(const GameState& state) {
     m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
     MoveObjectDirection dr = m_pTank0State->getDirection();
-    
+
+    GameRocketState *pRocketState = m_pTank0State->popRocket();
+    if (pRocketState != nullptr) {
+        // pRenderWindow->addObject(new RenderRocket(pRocketState));
+    }
+
     int nWidth = 50;
     if (!m_pTank0State->hasRocket()) {
         switch(dr) {

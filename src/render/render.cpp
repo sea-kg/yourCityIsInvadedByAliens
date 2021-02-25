@@ -15,7 +15,7 @@ RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, const RenderColor &
     m_startCoord2 = p2;
 }
 
-void RenderLine::modify(const GameState& state) {
+void RenderLine::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coord1 = state.getCoordLeftTop() + m_startCoord1;
     m_coord2 = state.getCoordLeftTop() + m_startCoord2;
 }
@@ -63,10 +63,10 @@ RenderTriangle::RenderTriangle(
     // nothing
 }
 
-void RenderTriangle::modify(const GameState& state) {
-    m_line1.modify(state);
-    m_line2.modify(state);
-    m_line3.modify(state);
+void RenderTriangle::modify(const GameState& state, IRenderWindow* pRenderWindow) {
+    m_line1.modify(state, pRenderWindow);
+    m_line2.modify(state, pRenderWindow);
+    m_line3.modify(state, pRenderWindow);
 }
 
 void RenderTriangle::draw(SDL_Renderer* renderer) {
@@ -93,7 +93,7 @@ RenderTriangleAnimated1::RenderTriangleAnimated1(
     m_coordDirection = CoordXY(10, 10);
 }
 
-void RenderTriangleAnimated1::modify(const GameState& state) {
+void RenderTriangleAnimated1::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     if (state.getElapsedTime() > 2000) {
         CoordXY p1 = m_line1.getAbsoluteCoord1();
         CoordXY p2 = m_line1.getAbsoluteCoord2();
@@ -124,9 +124,9 @@ void RenderTriangleAnimated1::modify(const GameState& state) {
         m_line3.updateAbsoluteCoords(p3, p1);
     }
 
-    m_line1.modify(state);
-    m_line2.modify(state);
-    m_line3.modify(state);
+    m_line1.modify(state, pRenderWindow);
+    m_line2.modify(state, pRenderWindow);
+    m_line3.modify(state, pRenderWindow);
 }
 
 void RenderTriangleAnimated1::draw(SDL_Renderer* renderer) {
@@ -148,7 +148,7 @@ RenderRectTexture::RenderRectTexture(const CoordXY &p0, SDL_Texture* tex, int nP
     currentFrame.h = 32; // HARD code aiyayai
 }
 
-void RenderRectTexture::modify(const GameState& state) {
+void RenderRectTexture::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
 };
@@ -178,7 +178,7 @@ RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPos
     m_currentFrame.h = 500; // HARD code aiyayai
 }
 
-void RenderBackground::modify(const GameState& state) {
+void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coordReal = m_coordCenter + state.getCoordLeftTop();
 
 };
@@ -212,7 +212,7 @@ RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::s
     // SDL_Rect currentFrame;
 }
 
-void RenderAbsoluteTextBlock::modify(const GameState& state) {
+void RenderAbsoluteTextBlock::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // nothing i think
     if (m_sUpdateText != m_sText) {
         m_sText = m_sUpdateText;
@@ -291,12 +291,12 @@ RenderBuilding::RenderBuilding(GameBuilding *pBuilding)
     }
 }
 
-void RenderBuilding::modify(const GameState& state) {
+void RenderBuilding::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     for (int i = 0; i < m_vBorderLines.size(); i++) {
-        m_vBorderLines[i]->modify(state);
+        m_vBorderLines[i]->modify(state, pRenderWindow);
     }
     for (int i = 0; i < m_vFillLines.size(); i++) {
-        m_vFillLines[i]->modify(state);
+        m_vFillLines[i]->modify(state, pRenderWindow);
     }
 }
 
@@ -434,9 +434,9 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     }*/
 }
 
-void RenderBuilding2::modify(const GameState& state) {
+void RenderBuilding2::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     for (int i = 0; i < m_vBorderLines.size(); i++) {
-        m_vBorderLines[i]->modify(state);
+        m_vBorderLines[i]->modify(state, pRenderWindow);
     }
 
     for (int i = 0; i < m_vFillPointsAbsolute.size(); i++) {
@@ -444,7 +444,7 @@ void RenderBuilding2::modify(const GameState& state) {
     }
 
     for (int i = 0; i < m_vLines.size(); i++) {
-        m_vLines[i]->modify(state);
+        m_vLines[i]->modify(state, pRenderWindow);
     }
 }
 
@@ -506,7 +506,7 @@ RenderPlayerAlienShip1::RenderPlayerAlienShip1(const CoordXY &p0, SDL_Texture* t
     currentFrame.h = 100;
 }
 
-void RenderPlayerAlienShip1::modify(const GameState& state) {
+void RenderPlayerAlienShip1::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // m_coordReal = m_coordCenter + state.getCoordLeftTop();
     
     long m_nSpeedAnimation = 100;
@@ -551,7 +551,7 @@ RenderMouse::RenderMouse(
     this->updateCoord(p1);
 }
 
-void RenderMouse::modify(const GameState& state) {
+void RenderMouse::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // m_pLineMoveble1->modify(state);
     // m_pLineMoveble2->modify(state);
 }

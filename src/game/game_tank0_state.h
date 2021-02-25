@@ -2,6 +2,7 @@
 #include <vector>
 #include "coordxy.h"
 #include "move_object_direction.h"
+#include "game_rocket_state.h"
 #include "json.hpp"
 
 class GameTank0State {
@@ -15,9 +16,11 @@ class GameTank0State {
         bool hasRocket();
         void rechargeRocket();
         void shotRocket();
+        GameRocketState *popRocket();
 
     private:
         CoordXY m_p0;
         bool m_bHasRocket;
         MoveObjectDirection m_nDirection;
+        std::vector<GameRocketState *> m_vRockets;
 };

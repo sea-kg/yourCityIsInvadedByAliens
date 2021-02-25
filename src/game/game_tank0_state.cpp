@@ -103,9 +103,18 @@ bool GameTank0State::hasRocket() {
 
 void GameTank0State::shotRocket() {
     m_bHasRocket = false;
-    // TODO init fly rocket
+    m_vRockets.push_back(new GameRocketState(m_p0, m_nDirection));
 }
 
 void GameTank0State::rechargeRocket() {
     m_bHasRocket = true;
+}
+
+GameRocketState *GameTank0State::popRocket() {
+    GameRocketState *pRet = nullptr;
+    if (m_vRockets.empty()) {
+        pRet = m_vRockets.back();
+        m_vRockets.pop_back();
+    }
+    return pRet;
 }
