@@ -6,18 +6,6 @@
 #include <vector>
 #include <string>
 
-class RenderColor {
-    public:
-        RenderColor(int nR, int nG, int nB, int nA);
-        void changeRenderColor(SDL_Renderer* renderer);
-
-    private:
-        int m_nR;
-        int m_nG;
-        int m_nB;
-        int m_nA;
-};
-
 class RenderLine : public RenderObject {
 
     public:
@@ -203,7 +191,6 @@ class RenderPlayerAlienShip1 : public RenderObject {
         SDL_Rect currentFrame;
         SDL_Texture* m_pTexture;
 };
-
 
 class RenderMouse : public RenderObject {
 

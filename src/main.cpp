@@ -15,46 +15,16 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    int nWindowWidth = 1280;
-    int nWindowHeight = 720;
+    pMainController->loadGameDataWithProgressBar();
 
-    GameState gameState(nWindowWidth, nWindowHeight);
+    SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture("res/gfx/background.png");
+    SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture("res/gfx/building-block.png");
+    SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture("res/sprites/alien-ship.png");
+    SDL_Texture* pTextureTank0 = pMainController->getWindow()->loadTexture("res/sprites/tank0.png");
+    // SDL_Texture* pTextureRocket = pMainController->getWindow()->loadTexture("res/sprites/rocket.png");
+    SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture("res/gfx/mouse-target.png");
 
-    // load map from json
-    std::ifstream ifs("./res/data.json");
-    nlohmann::json jf = nlohmann::json::parse(ifs);
-    
-    SDL_Texture* pTextureBackground = pMainController->loadTexture("res/gfx/background.png");
-    SDL_Texture* pTextureBuildingBlock = pMainController->loadTexture("res/gfx/building-block.png");
-    SDL_Texture* pTextureAlienShip1 = pMainController->loadTexture("res/sprites/alien-ship.png");
-    SDL_Texture* pTextureTank0 = pMainController->loadTexture("res/sprites/tank0.png");
-    // SDL_Texture* pTextureRocket = pMainController->loadTexture("res/sprites/rocket.png");
-    SDL_Texture* pTextureCursor = pMainController->loadTexture("res/gfx/mouse-target.png");
-
-    nlohmann::json jsonBuildings = jf["buildings"];
-    CoordXY minPointMap(0,0);
-    CoordXY maxPointMap(0,0);
-    for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
-        // std::cout << it.key() << " | " << it.value() << "\n";
-        GameBuilding *pBuilding = new GameBuilding(it.value());
-        gameState.addBuilding(pBuilding);
-        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureBuildingBlock);
-        CoordXY min0 = pRenderBuilding2->getMinPoint();
-        minPointMap.update(
-            std::min(min0.x(), minPointMap.x()),
-            std::min(min0.y(), minPointMap.y())
-        );
-        CoordXY max0 = pRenderBuilding2->getMaxPoint();
-        maxPointMap.update(
-            std::max(max0.x(), maxPointMap.x()),
-            std::max(max0.y(), maxPointMap.y())
-        );
-        pMainController->getWindow()->addObject(pRenderBuilding2);
-    }
-
-    int nCenterX = nWindowWidth/2;
-    int nCenterY = nWindowHeight/2;
-    CoordXY coordCenter(nCenterX, nCenterY);
+    CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
     pMainController->getWindow()->addObject(new RenderPlayerAlienShip1(coordCenter, pTextureAlienShip1, 1000));
@@ -66,22 +36,6 @@ int main(int argc, char* args[]) {
     // coordinates of player
     RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
     pMainController->getWindow()->addObject(pCoordText);
-
-    // background
-    // around to 500px
-    minPointMap.update(
-        minPointMap.x() - ((minPointMap.x() - 500) % 500) - 500,
-        minPointMap.y() - ((minPointMap.y() - 500) % 500) - 500
-    );
-    maxPointMap.update(
-        maxPointMap.x() - ((maxPointMap.x() + 500) % 500) + 500,
-        maxPointMap.y() - ((maxPointMap.y() + 500) % 500) + 500
-    );
-    for (int x = minPointMap.x(); x <= maxPointMap.x(); x += 500) {
-        for (int y = minPointMap.y(); y <= maxPointMap.y(); y += 500) {
-            pMainController->getWindow()->addObject(new RenderBackground(CoordXY(x, y), pTextureBackground, -10));        
-        }
-    }
 
     GameTank0State *pTank0State = new GameTank0State(CoordXY(100,100));
     pMainController->getWindow()->addObject(new RenderTank0(
@@ -95,7 +49,7 @@ int main(int argc, char* args[]) {
     long nNumberOfFrames = 0;
     long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
     long nElapsed = 0;
-    gameState.init();
+    pMainController->getGameState()->init();
     
     RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
     pMainController->getWindow()->addObject(pMouse);
@@ -103,9 +57,9 @@ int main(int argc, char* args[]) {
 
     pMainController->getWindow()->sortObjectsByPositionZ();
     while (gameRunning) {
-        gameState.updateElapsedTime();
+        pMainController->getGameState()->updateElapsedTime();
         pMainController->getWindow()->clear();
-        pMainController->getWindow()->modifyObjects(gameState);
+        pMainController->getWindow()->modifyObjects(*(pMainController->getGameState()));
         pMainController->getWindow()->drawObjects();
 
         SDL_Event event;
@@ -124,62 +78,60 @@ int main(int argc, char* args[]) {
                     && !keyboard_state_array[SDL_SCANCODE_RIGHT]
                     && keyboard_state_array[SDL_SCANCODE_DOWN]
                 ) {
-                    gameState.incrementCoordLeftTopY(-5);
+                    pMainController->getGameState()->incrementCoordLeftTopY(-5);
                 } else if (
                     keyboard_state_array[SDL_SCANCODE_UP]
                     && !keyboard_state_array[SDL_SCANCODE_LEFT]
                     && !keyboard_state_array[SDL_SCANCODE_RIGHT]
                     && !keyboard_state_array[SDL_SCANCODE_DOWN]
                 ) {
-                    gameState.incrementCoordLeftTopY(5);
+                    pMainController->getGameState()->incrementCoordLeftTopY(5);
                 } else if (
                     !keyboard_state_array[SDL_SCANCODE_UP]
                     && keyboard_state_array[SDL_SCANCODE_LEFT]
                     && !keyboard_state_array[SDL_SCANCODE_RIGHT]
                     && !keyboard_state_array[SDL_SCANCODE_DOWN]
                 ) {
-                    gameState.incrementCoordLeftTopX(5);
+                    pMainController->getGameState()->incrementCoordLeftTopX(5);
                 } else if (
                     !keyboard_state_array[SDL_SCANCODE_UP]
                     && !keyboard_state_array[SDL_SCANCODE_LEFT]
                     && keyboard_state_array[SDL_SCANCODE_RIGHT]
                     && !keyboard_state_array[SDL_SCANCODE_DOWN]
                 ) {
-                    gameState.incrementCoordLeftTopX(-5);
+                    pMainController->getGameState()->incrementCoordLeftTopX(-5);
                 } /*else if (
                     keyboard_state_array[SDL_SCANCODE_UP]
                     && keyboard_state_array[SDL_SCANCODE_LEFT]
                     && !keyboard_state_array[SDL_SCANCODE_RIGHT]
                     && !keyboard_state_array[SDL_SCANCODE_DOWN]
                 ) {
-                    gameState.incrementCoordLeftTopX(5);
-                    gameState.incrementCoordLeftTopY(5);
+                    pMainController->getGameState()->incrementCoordLeftTopX(5);
+                    pMainController->getGameState()->incrementCoordLeftTopY(5);
                 }*/
 
                 switch (event.key.keysym.sym) {
-                    case SDLK_w: gameState.incrementCoordLeftTopY(5); break;
-                    case SDLK_s: gameState.incrementCoordLeftTopY(-5); break;
-                    case SDLK_a:  gameState.incrementCoordLeftTopX(5); break;
-                    case SDLK_d: gameState.incrementCoordLeftTopX(-5); break;
+                    case SDLK_w: pMainController->getGameState()->incrementCoordLeftTopY(5); break;
+                    case SDLK_s: pMainController->getGameState()->incrementCoordLeftTopY(-5); break;
+                    case SDLK_a:  pMainController->getGameState()->incrementCoordLeftTopX(5); break;
+                    case SDLK_d: pMainController->getGameState()->incrementCoordLeftTopX(-5); break;
                     case SDLK_ESCAPE:
-                        if (gameState.isMouseCaptured()) {
-                            gameState.setMouseCaptured(false);
+                        if (pMainController->getGameState()->isMouseCaptured()) {
+                            pMainController->getGameState()->setMouseCaptured(false);
                         }
                         break;
                 }
             } else if (event.type == SDL_MOUSEMOTION) {
-                if (gameState.isMouseCaptured()) {
+                if (pMainController->getGameState()->isMouseCaptured()) {
                     CoordXY p0(event.motion.x, event.motion.y);
                     pMouse->updateCoord(p0);
                 }
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (!gameState.isMouseCaptured()) {
-                    gameState.setMouseCaptured(true);
+                if (!pMainController->getGameState()->isMouseCaptured()) {
+                    pMainController->getGameState()->setMouseCaptured(true);
                 }
             }
         }
-
-        
 
         // FPS
         nNumberOfFrames++;
@@ -192,8 +144,8 @@ int main(int argc, char* args[]) {
             std::cout << "FPS: ~" << int(nFPS) << std::endl;
             nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
-            std::string sCoordPlayer = "X=" + std::to_string(gameState.getCoordLeftTop().x() + nCenterX)
-                + " Y=" + std::to_string(gameState.getCoordLeftTop().y() + nCenterY);
+            std::string sCoordPlayer = "X=" + std::to_string(pMainController->getGameState()->getCoordLeftTop().x() + coordCenter.x())
+                + " Y=" + std::to_string(pMainController->getGameState()->getCoordLeftTop().y() + coordCenter.y());
             pCoordText->updateText(sCoordPlayer);
         }
     }

@@ -5,6 +5,20 @@
 #include "render_window.h"
 
 // ---------------------------------------------------------------------
+// RenderColor
+
+RenderColor::RenderColor(int nR, int nG, int nB, int nA) {
+    m_nR = nR;
+    m_nG = nG;
+    m_nB = nB;
+    m_nA = nA;
+}
+
+void RenderColor::changeRenderColor(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, m_nR, m_nG, m_nB, m_nA);
+}
+
+// ---------------------------------------------------------------------
 // RenderObject
 
 RenderObject::RenderObject(int nPositionZ) {

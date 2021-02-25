@@ -5,20 +5,6 @@
 #define PI 3.14159265
 
 // ---------------------------------------------------------------------
-// RenderColor
-
-RenderColor::RenderColor(int nR, int nG, int nB, int nA) {
-    m_nR = nR;
-    m_nG = nG;
-    m_nB = nB;
-    m_nA = nA;
-}
-
-void RenderColor::changeRenderColor(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, m_nR, m_nG, m_nB, m_nA);
-}
-
-// ---------------------------------------------------------------------
 // RenderLine
 
 RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, const RenderColor &color, int nPositionZ) 
