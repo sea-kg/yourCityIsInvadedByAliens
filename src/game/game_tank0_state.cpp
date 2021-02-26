@@ -112,7 +112,7 @@ void GameTank0State::rechargeRocket() {
 
 GameRocketState *GameTank0State::popRocket() {
     GameRocketState *pRet = nullptr;
-    if (m_vRockets.empty()) {
+    if (!m_vRockets.empty()) {
         pRet = m_vRockets.back();
         m_vRockets.pop_back();
     }

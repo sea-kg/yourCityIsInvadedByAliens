@@ -39,7 +39,7 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 
     GameRocketState *pRocketState = m_pTank0State->popRocket();
     if (pRocketState != nullptr) {
-        // pRenderWindow->addObject(new RenderRocket(pRocketState));
+        pRenderWindow->addRocket(pRocketState);
     }
 
     int nWidth = 50;

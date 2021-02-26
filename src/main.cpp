@@ -21,7 +21,6 @@ int main(int argc, char* args[]) {
     SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture("res/gfx/building-block.png");
     SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture("res/sprites/alien-ship.png");
     SDL_Texture* pTextureTank0 = pMainController->getWindow()->loadTexture("res/sprites/tank0.png");
-    // SDL_Texture* pTextureRocket = pMainController->getWindow()->loadTexture("res/sprites/rocket.png");
     SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture("res/gfx/mouse-target.png");
 
     CoordXY coordCenter = pMainController->getCoordCenter();

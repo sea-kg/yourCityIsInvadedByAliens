@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "render_window.h"
+#include "render_rocket.h"
 
 // ---------------------------------------------------------------------
 // RenderWindow
@@ -16,6 +17,7 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
     }
 
     m_pRenderer = NULL;
+    m_pTextureRocket = nullptr;
     m_pRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
@@ -27,6 +29,11 @@ RenderWindow::~RenderWindow() {
 
 void RenderWindow::addObject(RenderObject *pObject) {
     m_vObjects.push_back(pObject);
+}
+
+void RenderWindow::addRocket(GameRocketState *pRocketState) {
+    std::cout << "Add rocket" << std::endl;
+    m_vObjects.push_back(new RenderRocket(pRocketState, m_pTextureRocket, 3000));
 }
 
 void RenderWindow::removeObject(RenderObject *pObject) {
@@ -67,6 +74,10 @@ SDL_Texture* RenderWindow::loadTexture(const char* p_filePath) {
     return texture;
 }
 
+void RenderWindow::loadTextureRocket(const char* p_filePath) {
+    m_pTextureRocket = this->loadTexture(p_filePath);
+}
+
 void RenderWindow::cleanUp() {
     SDL_DestroyWindow(window);
 }
@@ -80,16 +91,22 @@ void RenderWindow::clear() {
 }
 
 void RenderWindow::modifyObjects(const GameState& state) {
+    int nSize = m_vObjects.size();
     for (auto pObj: m_vObjects) {
         pObj->modify(state, this);
+    }
+    if (nSize > m_vObjects.size()) {
+        for (int i = nSize; i < m_vObjects.size(); i++) {
+            m_vObjects[i]->modify(state, this);
+        }
     }
 }
 
 void RenderWindow::drawObjects() {
+    
     for (auto pObj: m_vObjects) {
         pObj->draw(m_pRenderer);
     }
-
     // finish
     SDL_RenderPresent(m_pRenderer);
 }
