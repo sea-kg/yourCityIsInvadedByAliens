@@ -20,10 +20,23 @@ void RenderColor::changeRenderColor(SDL_Renderer* renderer) {
 
 RenderObject::RenderObject(int nPositionZ) {
     m_nPositionZ = nPositionZ;
+    m_bDestroyed = false;
+}
+
+RenderObject::~RenderObject() {
+    // nothing
 }
 
 int RenderObject::getPositionZ() {
     return m_nPositionZ;
+}
+
+bool RenderObject::isDestroyed() {
+    return m_bDestroyed;
+}
+
+void RenderObject::destroy() {
+    m_bDestroyed = true;
 }
 
 void RenderObject::modify(const GameState& state, IRenderWindow* pRenderWindow) {

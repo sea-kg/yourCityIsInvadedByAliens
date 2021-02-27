@@ -1,6 +1,7 @@
 
 
 #include "render_rocket.h"
+#include <iostream>
 
 // ---------------------------------------------------------------------
 // RenderRocket
@@ -15,6 +16,11 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
     m_currentFrame.w = 50;
     m_currentFrame.h = 50;
     m_nPrevPosition = 0;
+    m_nLifeTime = 0;
+}
+
+RenderRocket::~RenderRocket() {
+    delete m_pRocketState;
 }
 
 void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -29,7 +35,25 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
 
     m_nPrevPosition = position;
     
+    if (m_nLifeTime == 25) {
+        m_pRocketState->destroy();
+        m_nLifeTime++;
+        m_currentFrame.x = 50;
+        m_currentFrame.y = 50;
+        return;
+    }
+
+    if (m_nLifeTime > 25) {
+        m_nLifeTime++;
+        if (m_nLifeTime > 28) {
+            // remove object from rendering
+            this->destroy();
+        }
+        return;
+    }
+
     m_pRocketState->move();
+    m_nLifeTime++;
 
     m_coordCenter = m_pRocketState->getPosition();
     m_coordReal = m_coordCenter + state.getCoordLeftTop();

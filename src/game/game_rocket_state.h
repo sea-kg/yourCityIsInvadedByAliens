@@ -11,6 +11,7 @@ class GameRocketState {
         const CoordXY &getPosition();
         void move();
         bool hasDestroyed();
+        void destroy();
 
     private:
         CoordXY m_p0;

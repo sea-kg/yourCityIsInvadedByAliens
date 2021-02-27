@@ -42,3 +42,7 @@ void GameRocketState::move() {
 bool GameRocketState::hasDestroyed() {
     return m_bDestroyed;
 }
+
+void GameRocketState::destroy() {
+    m_bDestroyed = true;
+}

@@ -92,13 +92,24 @@ void RenderWindow::clear() {
 
 void RenderWindow::modifyObjects(const GameState& state) {
     int nSize = m_vObjects.size();
+    std::vector<RenderObject *> vDestroyedObjects;
     for (auto pObj: m_vObjects) {
         pObj->modify(state, this);
+        if (pObj->isDestroyed()) {
+            vDestroyedObjects.push_back(pObj);
+        }
     }
     if (nSize > m_vObjects.size()) {
         for (int i = nSize; i < m_vObjects.size(); i++) {
             m_vObjects[i]->modify(state, this);
+            if (m_vObjects[i]->isDestroyed()) {
+                vDestroyedObjects.push_back(m_vObjects[i]);
+            }
         }
+    }
+    for (auto pObj : vDestroyedObjects) {
+        this->removeObject(pObj);
+        delete pObj;
     }
 }
 

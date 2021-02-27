@@ -30,9 +30,15 @@ class RenderObject {
 
     public:
         RenderObject(int nPositionZ);
+        virtual ~RenderObject();
         int getPositionZ();
+        bool isDestroyed();
+        void destroy();
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow);
         virtual void draw(SDL_Renderer* pRenderer) = 0;
+
+    protected:
+        bool m_bDestroyed;
 
     private:
         int m_nPositionZ;
