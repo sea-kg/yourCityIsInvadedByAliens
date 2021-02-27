@@ -157,6 +157,10 @@ void MainController::loadGameDataWithProgressBar() {
         }
     }
 
+    m_pGameState->setMinPoint(minPointMap);
+    m_pGameState->setMaxPoint(maxPointMap);
+    
+
     // int SDL_RenderFillRect(SDL_Renderer* renderer, const SDL_Rect* rect)
 
 

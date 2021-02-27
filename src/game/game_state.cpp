@@ -57,3 +57,19 @@ void GameState::setMouseCaptured(bool bMouseCaptured) {
 bool GameState::isMouseCaptured() const {
     return m_bMouseCaptured;
 }
+
+void GameState::setMinPoint(const CoordXY &p) {
+    m_minPoint = p;
+}
+
+const CoordXY &GameState::getMinPoint() {
+    return m_minPoint;
+}
+
+void GameState::setMaxPoint(const CoordXY &p) {
+    m_maxPoint = p;
+}
+
+const CoordXY &GameState::getMaxPoint() {
+    return m_maxPoint;
+}
