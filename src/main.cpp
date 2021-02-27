@@ -20,7 +20,6 @@ int main(int argc, char* args[]) {
     SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture("res/gfx/background.png");
     SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture("res/gfx/building-block.png");
     SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture("res/sprites/alien-ship.png");
-    SDL_Texture* pTextureTank0 = pMainController->getWindow()->loadTexture("res/sprites/tank0.png");
     SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture("res/gfx/mouse-target.png");
 
     CoordXY coordCenter = pMainController->getCoordCenter();
@@ -36,30 +35,6 @@ int main(int argc, char* args[]) {
     RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
     pMainController->getWindow()->addObject(pCoordText);
 
-    pMainController->getWindow()->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(100,100)),
-        pTextureTank0,
-        1000
-    ));
-
-    pMainController->getWindow()->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(100,200)),
-        pTextureTank0,
-        1000
-    ));
-
-    pMainController->getWindow()->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(200,100)),
-        pTextureTank0,
-        1000
-    ));
-
-    pMainController->getWindow()->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(200,200)),
-        pTextureTank0,
-        1000
-    ));
-
     bool gameRunning = true;
 
     long nNumberOfFrames = 0;
@@ -72,6 +47,7 @@ int main(int argc, char* args[]) {
 
 
     pMainController->getWindow()->sortObjectsByPositionZ();
+    pMainController->getGameState()->setMouseCaptured(false);
     while (gameRunning) {
         pMainController->getGameState()->updateElapsedTime();
         pMainController->getWindow()->clear();
@@ -83,60 +59,44 @@ int main(int argc, char* args[]) {
 
         // Get our controls and events
         while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_KEYDOWN) {
+                std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
+            }
+
+            if (event.type == SDL_KEYUP) {
+                std::cout << "SDL_KEYUP " << event.key.keysym.sym << std::endl;
+            }
+
             if (event.type == SDL_QUIT) {
                 gameRunning = false;
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-                std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
 
-                if (
-                    !keyboard_state_array[SDL_SCANCODE_UP]
-                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
-                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-                    && keyboard_state_array[SDL_SCANCODE_DOWN]
-                ) {
-                    pMainController->getGameState()->incrementCoordLeftTopY(-5);
-                } else if (
-                    keyboard_state_array[SDL_SCANCODE_UP]
-                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
-                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
-                ) {
-                    pMainController->getGameState()->incrementCoordLeftTopY(5);
-                } else if (
-                    !keyboard_state_array[SDL_SCANCODE_UP]
-                    && keyboard_state_array[SDL_SCANCODE_LEFT]
-                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
-                ) {
-                    pMainController->getGameState()->incrementCoordLeftTopX(5);
-                } else if (
-                    !keyboard_state_array[SDL_SCANCODE_UP]
-                    && !keyboard_state_array[SDL_SCANCODE_LEFT]
-                    && keyboard_state_array[SDL_SCANCODE_RIGHT]
-                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
-                ) {
-                    pMainController->getGameState()->incrementCoordLeftTopX(-5);
-                } /*else if (
-                    keyboard_state_array[SDL_SCANCODE_UP]
-                    && keyboard_state_array[SDL_SCANCODE_LEFT]
-                    && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-                    && !keyboard_state_array[SDL_SCANCODE_DOWN]
-                ) {
-                    pMainController->getGameState()->incrementCoordLeftTopX(5);
-                    pMainController->getGameState()->incrementCoordLeftTopY(5);
-                }*/
-
-                switch (event.key.keysym.sym) {
-                    case SDLK_w: pMainController->getGameState()->incrementCoordLeftTopY(5); break;
-                    case SDLK_s: pMainController->getGameState()->incrementCoordLeftTopY(-5); break;
-                    case SDLK_a:  pMainController->getGameState()->incrementCoordLeftTopX(5); break;
-                    case SDLK_d: pMainController->getGameState()->incrementCoordLeftTopX(-5); break;
-                    case SDLK_ESCAPE:
-                        if (pMainController->getGameState()->isMouseCaptured()) {
-                            pMainController->getGameState()->setMouseCaptured(false);
-                        }
-                        break;
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    if (pMainController->getGameState()->isMouseCaptured()) {
+                        pMainController->getGameState()->setMouseCaptured(false);
+                    }
                 }
+
+                if (pMainController->isKeyboardUp(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP);
+                } else if (pMainController->isKeyboardUpLeft(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP_LEFT);
+                } else if (pMainController->isKeyboardUpRight(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP_RIGHT);
+                } else if (pMainController->isKeyboardDown(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN);
+                } else if (pMainController->isKeyboardDownLeft(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN_LEFT);
+                } else if (pMainController->isKeyboardDownRight(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN_RIGHT);
+                } else if (pMainController->isKeyboardLeft(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::LEFT);
+                } else if (pMainController->isKeyboardRight(keyboard_state_array)) {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::RIGHT);
+                } else {
+                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::NONE);
+                }
+
             } else if (event.type == SDL_MOUSEMOTION) {
                 if (pMainController->getGameState()->isMouseCaptured()) {
                     CoordXY p0(event.motion.x, event.motion.y);
@@ -148,6 +108,8 @@ int main(int argc, char* args[]) {
                 }
             }
         }
+        
+        pMainController->getGameState()->movePlayer();
 
         // FPS
         nNumberOfFrames++;

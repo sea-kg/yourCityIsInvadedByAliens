@@ -11,8 +11,21 @@ class MainController {
         GameState *getGameState();
         CoordXY getCoordCenter();
         void loadGameDataWithProgressBar();
+        
+        // keyboard
+        bool isKeyboardUp(const Uint8 *keyboard_state_array);
+        bool isKeyboardUpLeft(const Uint8 *keyboard_state_array);
+        bool isKeyboardUpRight(const Uint8 *keyboard_state_array);
+        bool isKeyboardDown(const Uint8 *keyboard_state_array);
+        bool isKeyboardDownLeft(const Uint8 *keyboard_state_array);
+        bool isKeyboardDownRight(const Uint8 *keyboard_state_array);
+        bool isKeyboardLeft(const Uint8 *keyboard_state_array);
+        bool isKeyboardRight(const Uint8 *keyboard_state_array);
+        
 
     private:
+        void generateTanks();
+
         std::string m_sWindowName;
         int m_nWindowWidth;
         int m_nWindowHeight;

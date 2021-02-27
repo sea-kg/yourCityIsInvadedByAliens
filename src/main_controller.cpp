@@ -2,6 +2,7 @@
 #include "main_controller.h"
 #include <iostream>
 #include "render.h"
+#include "render_tank0.h"
 #include "json.hpp"
 #include <fstream>
 
@@ -161,10 +162,151 @@ void MainController::loadGameDataWithProgressBar() {
     m_pGameState->setMaxPoint(maxPointMap);
     
 
+    this->generateTanks();
+
     // int SDL_RenderFillRect(SDL_Renderer* renderer, const SDL_Rect* rect)
-
-
     m_pRenderWindow->removeObject(pLine0);
     m_pRenderWindow->removeObject(pLine1);
     m_pRenderWindow->removeObject(pText);
 }
+
+bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        keyboard_state_array[SDL_SCANCODE_UP]
+        && !keyboard_state_array[SDL_SCANCODE_LEFT]
+        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && !keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        keyboard_state_array[SDL_SCANCODE_W]
+        && !keyboard_state_array[SDL_SCANCODE_A]
+        && !keyboard_state_array[SDL_SCANCODE_D]
+        && !keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardUpLeft(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        keyboard_state_array[SDL_SCANCODE_UP]
+        && keyboard_state_array[SDL_SCANCODE_LEFT]
+        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && !keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        keyboard_state_array[SDL_SCANCODE_W]
+        && keyboard_state_array[SDL_SCANCODE_A]
+        && !keyboard_state_array[SDL_SCANCODE_D]
+        && !keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardUpRight(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        keyboard_state_array[SDL_SCANCODE_UP]
+        && !keyboard_state_array[SDL_SCANCODE_LEFT]
+        && keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && !keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        keyboard_state_array[SDL_SCANCODE_W]
+        && !keyboard_state_array[SDL_SCANCODE_A]
+        && keyboard_state_array[SDL_SCANCODE_D]
+        && !keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardDown(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        !keyboard_state_array[SDL_SCANCODE_UP]
+        && !keyboard_state_array[SDL_SCANCODE_LEFT]
+        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        !keyboard_state_array[SDL_SCANCODE_W]
+        && !keyboard_state_array[SDL_SCANCODE_A]
+        && !keyboard_state_array[SDL_SCANCODE_D]
+        && keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardDownLeft(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        !keyboard_state_array[SDL_SCANCODE_UP]
+        && keyboard_state_array[SDL_SCANCODE_LEFT]
+        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        !keyboard_state_array[SDL_SCANCODE_W]
+        && keyboard_state_array[SDL_SCANCODE_A]
+        && !keyboard_state_array[SDL_SCANCODE_D]
+        && keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardDownRight(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        !keyboard_state_array[SDL_SCANCODE_UP]
+        && !keyboard_state_array[SDL_SCANCODE_LEFT]
+        && keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        !keyboard_state_array[SDL_SCANCODE_W]
+        && !keyboard_state_array[SDL_SCANCODE_A]
+        && keyboard_state_array[SDL_SCANCODE_D]
+        && keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardLeft(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        !keyboard_state_array[SDL_SCANCODE_UP]
+        && keyboard_state_array[SDL_SCANCODE_LEFT]
+        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && !keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        !keyboard_state_array[SDL_SCANCODE_W]
+        && keyboard_state_array[SDL_SCANCODE_A]
+        && !keyboard_state_array[SDL_SCANCODE_D]
+        && !keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+bool MainController::isKeyboardRight(const Uint8 *keyboard_state_array) {
+    bool bArrowUp =
+        !keyboard_state_array[SDL_SCANCODE_UP]
+        && !keyboard_state_array[SDL_SCANCODE_LEFT]
+        && keyboard_state_array[SDL_SCANCODE_RIGHT]
+        && !keyboard_state_array[SDL_SCANCODE_DOWN];
+    bool bWasdUp = 
+        !keyboard_state_array[SDL_SCANCODE_W]
+        && !keyboard_state_array[SDL_SCANCODE_A]
+        && keyboard_state_array[SDL_SCANCODE_D]
+        && !keyboard_state_array[SDL_SCANCODE_S];
+    return bArrowUp || bWasdUp;
+}
+
+
+void MainController::generateTanks() {
+     m_pRenderWindow->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(100,100)),
+        m_pTextureTank0,
+        1000
+    ));
+
+    m_pRenderWindow->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(100,200)),
+        m_pTextureTank0,
+        1000
+    ));
+
+    m_pRenderWindow->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(200,100)),
+        m_pTextureTank0,
+        1000
+    ));
+
+    m_pRenderWindow->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(200,200)),
+        m_pTextureTank0,
+        1000
+    ));
+}
+
+

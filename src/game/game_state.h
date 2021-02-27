@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include <vector>
 #include "game_building.h"
+#include "move_object_direction.h"
 
 class GameState {
 
@@ -14,9 +15,9 @@ class GameState {
         void addBuilding(GameBuilding *);
         long getElapsedTime() const;
         const CoordXY &getCoordLeftTop() const;
-        void incrementCoordLeftTopX(int nX);
-        void incrementCoordLeftTopY(int nY);
-        
+        void setMovePlayerDirection(MoveObjectDirection direction);
+        void movePlayer();
+       
         const int windowWidth() const;
         const int windowHeight() const;
 
@@ -29,6 +30,8 @@ class GameState {
         const CoordXY &getMaxPoint();
 
     private:
+        MoveObjectDirection m_playerDirection;
+        long m_nPlayerPrevTime;
         bool m_bMouseCaptured;
         long m_nElapsedTime;
         long m_nStartTime;

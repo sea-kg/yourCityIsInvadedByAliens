@@ -1,6 +1,7 @@
 #pragma once
 
 enum class MoveObjectDirection {
+    NONE,
     UP,
     DOWN,
     UP_LEFT,
