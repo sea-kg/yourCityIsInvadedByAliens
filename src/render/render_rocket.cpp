@@ -17,6 +17,7 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
     m_currentFrame.h = 50;
     m_nPrevPosition = 0;
     m_nLifeTime = 0;
+    m_nMaxLifeTime = 50;
 }
 
 RenderRocket::~RenderRocket() {
@@ -35,7 +36,7 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
 
     m_nPrevPosition = position;
     
-    if (m_nLifeTime == 25) {
+    if (m_nLifeTime == m_nMaxLifeTime) {
         m_pRocketState->destroy();
         m_nLifeTime++;
         m_currentFrame.x = 50;
@@ -43,9 +44,9 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
         return;
     }
 
-    if (m_nLifeTime > 25) {
+    if (m_nLifeTime > m_nMaxLifeTime) {
         m_nLifeTime++;
-        if (m_nLifeTime > 28) {
+        if (m_nLifeTime > m_nMaxLifeTime + 2) {
             // remove object from rendering
             this->destroy();
         }

@@ -21,6 +21,7 @@ class RenderRocket : public RenderObject {
         CoordXY m_coordReal;
         long m_nPrevPosition;
         int m_nLifeTime;
+        int m_nMaxLifeTime;
         GameRocketState *m_pRocketState;
 
         SDL_Rect m_currentFrame;

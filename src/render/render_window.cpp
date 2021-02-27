@@ -32,7 +32,6 @@ void RenderWindow::addObject(RenderObject *pObject) {
 }
 
 void RenderWindow::addRocket(GameRocketState *pRocketState) {
-    std::cout << "Add rocket" << std::endl;
     m_vObjects.push_back(new RenderRocket(pRocketState, m_pTextureRocket, 3000));
 }
 

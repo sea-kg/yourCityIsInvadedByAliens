@@ -36,9 +36,26 @@ int main(int argc, char* args[]) {
     RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
     pMainController->getWindow()->addObject(pCoordText);
 
-    GameTank0State *pTank0State = new GameTank0State(CoordXY(100,100));
     pMainController->getWindow()->addObject(new RenderTank0(
-        pTank0State,
+        new GameTank0State(CoordXY(100,100)),
+        pTextureTank0,
+        1000
+    ));
+
+    pMainController->getWindow()->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(100,200)),
+        pTextureTank0,
+        1000
+    ));
+
+    pMainController->getWindow()->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(200,100)),
+        pTextureTank0,
+        1000
+    ));
+
+    pMainController->getWindow()->addObject(new RenderTank0(
+        new GameTank0State(CoordXY(200,200)),
         pTextureTank0,
         1000
     ));
