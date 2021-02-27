@@ -10,7 +10,7 @@ Ubuntu requirements
 $ sudo apt install cmake g++
 $ sudo apt install libsdl2-dev
 $ sudo apt install libsdl2-image-dev
-$ sudo apt install libsdl2-ttf
+$ sudo apt install libsdl2-ttf-dev
 ```
 
 MacOS 
