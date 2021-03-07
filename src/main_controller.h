@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "render_window.h"
+#include "render.h"
 
 class MainController {
     public:
@@ -25,6 +26,8 @@ class MainController {
         bool isKeyboardF1(const Uint8 *keyboard_state_array);
         bool isKeyboardF12(const Uint8 *keyboard_state_array);
 
+        void updatePlayerCoord();
+        void updateFpsValue(int nFps);
     private:
         void generateTanks();
 
@@ -42,4 +45,8 @@ class MainController {
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;
+        SDL_Texture* m_pTextureLeftPanel;
+
+        RenderAbsoluteTextBlock *m_pCoordText;
+        RenderAbsoluteTextBlock *m_pFpsText;
 };

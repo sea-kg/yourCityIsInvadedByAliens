@@ -21,6 +21,7 @@ class RenderWindow : public IRenderWindow {
         void drawObjects();
         SDL_Renderer* getRenderer();
 
+        void getWindowSize(int* w, int* h);
     private:
         bool m_bFullsreeen;
         SDL_Window* m_pWindow;

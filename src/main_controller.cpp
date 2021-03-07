@@ -3,6 +3,7 @@
 #include <iostream>
 #include "render.h"
 #include "render_tank0.h"
+#include "render_left_panel_info.h"
 #include "json.hpp"
 #include <fstream>
 
@@ -109,6 +110,7 @@ void MainController::loadGameDataWithProgressBar() {
     m_pTextureTank0 = m_pRenderWindow->loadTexture("res/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket("res/sprites/rocket.png");
     m_pTextureCursor = m_pRenderWindow->loadTexture("res/gfx/mouse-target.png");
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture("res/textures/left-panel-info.png");
 
     pText->updateText("Loading... buildings");
     m_pRenderWindow->clear();
@@ -161,13 +163,25 @@ void MainController::loadGameDataWithProgressBar() {
     m_pGameState->setMinPoint(minPointMap);
     m_pGameState->setMaxPoint(maxPointMap);
     
-
     this->generateTanks();
 
     // int SDL_RenderFillRect(SDL_Renderer* renderer, const SDL_Rect* rect)
     m_pRenderWindow->removeObject(pLine0);
     m_pRenderWindow->removeObject(pLine1);
     m_pRenderWindow->removeObject(pText);
+
+    m_pRenderWindow->addObject(
+        new RenderLeftPanelInfo(m_pTextureLeftPanel, 5000)
+    );
+
+
+    // text
+    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 20), "FPS: ...", 5001);
+    m_pRenderWindow->addObject(m_pFpsText);
+
+    // coordinates of player
+    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
+    m_pRenderWindow->addObject(m_pCoordText);
 }
 
 bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {
@@ -288,6 +302,17 @@ bool MainController::isKeyboardF1(const Uint8 *keyboard_state_array) {
 
 bool MainController::isKeyboardF12(const Uint8 *keyboard_state_array) {
     return keyboard_state_array[SDL_SCANCODE_F12];
+}
+
+void MainController::updatePlayerCoord() {
+    std::string sCoordPlayer = "X=" + std::to_string(m_pGameState->getCoordLeftTop().x() + m_nWindowWidth/2)
+            + " Y=" + std::to_string(m_pGameState->getCoordLeftTop().y() + m_nWindowHeight/2);
+    m_pCoordText->updateText(sCoordPlayer);
+}
+
+void MainController::updateFpsValue(int nFps) {
+    m_pFpsText->updateText("FPS: ~" + std::to_string(nFps));
+    std::cout << "FPS: ~" << nFps << std::endl;
 }
 
 void MainController::generateTanks() {

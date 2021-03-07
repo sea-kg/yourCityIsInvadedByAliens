@@ -106,15 +106,15 @@ void RenderTriangleAnimated1::modify(const GameState& state, IRenderWindow* pRen
             p1.x() < 0
             || p2.x() < 0
             || p3.x() < 0
-            || p1.x() > state.windowWidth() 
-            || p2.x() > state.windowWidth()
-            || p3.x() > state.windowWidth()
+            || p1.x() > state.getWindowWidth() 
+            || p2.x() > state.getWindowWidth()
+            || p3.x() > state.getWindowWidth()
             || p1.y() < 0
             || p2.y() < 0
             || p3.y() < 0
-            || p1.y() > state.windowHeight() 
-            || p2.y() > state.windowHeight()
-            || p3.y() > state.windowHeight()
+            || p1.y() > state.getWindowHeight() 
+            || p2.y() > state.getWindowHeight()
+            || p3.y() > state.getWindowHeight()
         ) {
             m_coordDirection.update(m_coordDirection.x()*-1, m_coordDirection.y()*-1);
         }
@@ -202,7 +202,7 @@ RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::s
     m_sText = sText;
     m_sUpdateText = m_sText;
     // m_pFont = TTF_OpenFont("./res/fonts/amatic/AmaticSC-Regular.ttf", 42);
-    m_pFont = TTF_OpenFont("./res/fonts/roboto/Roboto-Black.ttf", 24);
+    m_pFont = TTF_OpenFont("./res/fonts/roboto/Roboto-Black.ttf", 16);
     m_color = {255, 255, 255};
     if (!m_pFont) {
         printf("TTF_OpenFont: %s\n", TTF_GetError());

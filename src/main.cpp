@@ -27,14 +27,6 @@ int main(int argc, char* args[]) {
     // player
     pMainController->getWindow()->addObject(new RenderPlayerAlienShip1(coordCenter, pTextureAlienShip1, 1000));
 
-    // text
-    RenderAbsoluteTextBlock *pFpsText = new RenderAbsoluteTextBlock(CoordXY(10, 10), "FPS: ????", 1000);
-    pMainController->getWindow()->addObject(pFpsText);
-
-    // coordinates of player
-    RenderAbsoluteTextBlock *pCoordText = new RenderAbsoluteTextBlock(CoordXY(10, 40), "x = ? y = ?", 1000);
-    pMainController->getWindow()->addObject(pCoordText);
-
     bool gameRunning = true;
 
     long nNumberOfFrames = 0;
@@ -79,6 +71,10 @@ int main(int argc, char* args[]) {
 
                 if (pMainController->isKeyboardF12(keyboard_state_array)) {
                     pMainController->getWindow()->toggleFullscreen();
+                    int w,h;
+                    pMainController->getWindow()->getWindowSize(&w,&h);
+                    std::cout << "w,h = (" << w << "," << h << ")";
+                    pMainController->getGameState()->updateWindowSize(w,h);
                 }
 
                 if (pMainController->isKeyboardF1(keyboard_state_array)) {
@@ -127,13 +123,13 @@ int main(int argc, char* args[]) {
             double nFPS = nNumberOfFrames;
             nFPS /= nElapsed;
             nFPS *= 1000;
-            pFpsText->updateText("FPS: ~" + std::to_string(int(nFPS)));
-            std::cout << "FPS: ~" << int(nFPS) << std::endl;
+            pMainController->updateFpsValue(nFPS);
             nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
-            std::string sCoordPlayer = "X=" + std::to_string(pMainController->getGameState()->getCoordLeftTop().x() + coordCenter.x())
-                + " Y=" + std::to_string(pMainController->getGameState()->getCoordLeftTop().y() + coordCenter.y());
-            pCoordText->updateText(sCoordPlayer);
+        }
+
+        if (nElapsed > 500) {
+            pMainController->updatePlayerCoord();
         }
     }
 

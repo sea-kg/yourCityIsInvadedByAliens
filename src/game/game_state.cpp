@@ -11,6 +11,7 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_nWindowWidth = windowWidth;
     m_nWindowHeight = windowHeight;
     m_nPlayerPrevTime = 0;
+    m_bIsChangedWindowSize = true;
 }
 
 void GameState::init() {
@@ -76,12 +77,22 @@ void GameState::movePlayer() {
     }
 }
 
-const int GameState::windowWidth() const {
+bool GameState::isChangedWindowSize() const {
+    return m_bIsChangedWindowSize;
+}
+
+const int GameState::getWindowWidth() const {
     return m_nWindowWidth;
 }
 
-const int GameState::windowHeight() const {
+const int GameState::getWindowHeight() const {
     return m_nWindowHeight;
+}
+
+void GameState::updateWindowSize(int w, int h) {
+    m_bIsChangedWindowSize = true;
+    m_nWindowWidth = w;
+    m_nWindowHeight = h;
 }
 
 // TODO move to MainController

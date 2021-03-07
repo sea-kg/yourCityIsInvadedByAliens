@@ -105,7 +105,6 @@ void RenderWindow::clear() {
     // SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     // background color
     SDL_SetRenderDrawColor(m_pRenderer, 0, 75, 92, 195);
-    
     SDL_RenderClear(m_pRenderer);
 }
 
@@ -145,3 +144,6 @@ SDL_Renderer* RenderWindow::getRenderer() {
     return m_pRenderer;
 }
 
+void RenderWindow::getWindowSize(int* w, int* h) {
+    SDL_GetWindowSize(m_pWindow, w, h);
+}

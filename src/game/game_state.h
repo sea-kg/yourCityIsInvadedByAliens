@@ -17,9 +17,11 @@ class GameState {
         const CoordXY &getCoordLeftTop() const;
         void setMovePlayerDirection(MoveObjectDirection direction);
         void movePlayer();
-       
-        const int windowWidth() const;
-        const int windowHeight() const;
+
+        bool isChangedWindowSize() const;
+        const int getWindowWidth() const;
+        const int getWindowHeight() const;
+        void updateWindowSize(int w, int h);
 
         void setMouseCaptured(bool bMouseCaptured);
         bool isMouseCaptured() const;
@@ -38,6 +40,7 @@ class GameState {
         CoordXY m_coordLeftTop;
         CoordXY m_maxPoint;
         CoordXY m_minPoint;
+        bool m_bIsChangedWindowSize;
         int m_nWindowWidth;
         int m_nWindowHeight;
         std::vector<GameBuilding *> m_vBuildings;
