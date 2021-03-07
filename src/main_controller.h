@@ -22,6 +22,8 @@ class MainController {
         bool isKeyboardLeft(const Uint8 *keyboard_state_array);
         bool isKeyboardRight(const Uint8 *keyboard_state_array);
         
+        bool isKeyboardF1(const Uint8 *keyboard_state_array);
+        bool isKeyboardF12(const Uint8 *keyboard_state_array);
 
     private:
         void generateTanks();

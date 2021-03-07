@@ -9,16 +9,27 @@
 // RenderWindow
 
 RenderWindow::RenderWindow(const char* title, int w, int h) {
-    window = NULL;
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
+    m_pWindow = NULL;
+    m_bFullsreeen = false;
+    m_pWindow = SDL_CreateWindow(
+        title,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        w, h,
+        SDL_WINDOW_SHOWN // | SDL_WINDOW_FULLSCREEN_DESKTOP
+    );
 
-    if (window == NULL) {
+    if (m_pWindow == NULL) {
         std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
     }
 
     m_pRenderer = NULL;
     m_pTextureRocket = nullptr;
-    m_pRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    // if (SDL_GetDesktopDisplayMode(0, &m_displayMode)) {
+    //     printf("Error getting desktop display mode\n");
+    // }
 }
 
 RenderWindow::~RenderWindow() {
@@ -33,6 +44,15 @@ void RenderWindow::addObject(RenderObject *pObject) {
 
 void RenderWindow::addRocket(GameRocketState *pRocketState) {
     m_vObjects.push_back(new RenderRocket(pRocketState, m_pTextureRocket, 3000));
+}
+
+void RenderWindow::toggleFullscreen() {
+    m_bFullsreeen = !m_bFullsreeen;
+    if (m_bFullsreeen) {
+        SDL_SetWindowFullscreen(m_pWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    } else {
+        SDL_SetWindowFullscreen(m_pWindow, 0);
+    }
 }
 
 void RenderWindow::removeObject(RenderObject *pObject) {
@@ -78,7 +98,7 @@ void RenderWindow::loadTextureRocket(const char* p_filePath) {
 }
 
 void RenderWindow::cleanUp() {
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(m_pWindow);
 }
 
 void RenderWindow::clear() {

@@ -9,6 +9,7 @@ class RenderWindow : public IRenderWindow {
         ~RenderWindow();
         virtual void addObject(RenderObject *pObject) override;
         virtual void addRocket(GameRocketState *pRocketState) override;
+        void toggleFullscreen();
         void removeObject(RenderObject *pObject);
         void sortObjectsByPositionZ();
 
@@ -21,8 +22,10 @@ class RenderWindow : public IRenderWindow {
         SDL_Renderer* getRenderer();
 
     private:
-        SDL_Window* window;
+        bool m_bFullsreeen;
+        SDL_Window* m_pWindow;
         SDL_Renderer* m_pRenderer;
+        SDL_DisplayMode m_displayMode;
         std::vector<RenderObject *> m_vObjects;
         SDL_Texture* m_pTextureRocket;
 };

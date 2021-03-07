@@ -282,6 +282,13 @@ bool MainController::isKeyboardRight(const Uint8 *keyboard_state_array) {
     return bArrowUp || bWasdUp;
 }
 
+bool MainController::isKeyboardF1(const Uint8 *keyboard_state_array) {
+    return keyboard_state_array[SDL_SCANCODE_F12];
+}
+
+bool MainController::isKeyboardF12(const Uint8 *keyboard_state_array) {
+    return keyboard_state_array[SDL_SCANCODE_F12];
+}
 
 void MainController::generateTanks() {
      m_pRenderWindow->addObject(new RenderTank0(

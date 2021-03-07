@@ -77,6 +77,15 @@ int main(int argc, char* args[]) {
                     }
                 }
 
+                if (pMainController->isKeyboardF12(keyboard_state_array)) {
+                    pMainController->getWindow()->toggleFullscreen();
+                }
+
+                if (pMainController->isKeyboardF1(keyboard_state_array)) {
+                    // pMainController->getWindow()->toggleFullscreen();
+                    // TODO show help and pause of the game
+                }
+
                 if (pMainController->isKeyboardUp(keyboard_state_array)) {
                     pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP);
                 } else if (pMainController->isKeyboardUpLeft(keyboard_state_array)) {
