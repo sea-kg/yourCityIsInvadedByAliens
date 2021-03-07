@@ -138,14 +138,19 @@ void RenderTriangleAnimated1::draw(SDL_Renderer* renderer) {
 // ---------------------------------------------------------------------
 // RenderRectTexture
 
-RenderRectTexture::RenderRectTexture(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
-: RenderObject(nPositionZ) {
+RenderRectTexture::RenderRectTexture(
+    const CoordXY &p0, 
+    SDL_Texture* tex,
+    int nTextureWidth, 
+    int nTextureHeight,
+    int nPositionZ
+) : RenderObject(nPositionZ) {
     m_pTexture = tex;
     m_coordCenter = p0;
     currentFrame.x = 0;
     currentFrame.y = 0;
-    currentFrame.w = 32;
-    currentFrame.h = 32; // HARD code aiyayai
+    currentFrame.w = nTextureWidth;
+    currentFrame.h = nTextureHeight;
 }
 
 void RenderRectTexture::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -158,8 +163,8 @@ void RenderRectTexture::draw(SDL_Renderer* renderer) {
     // 4 is scale
     dst.x = m_coordReal.x();
     dst.y = m_coordReal.y();
-    dst.w = currentFrame.w * 4;
-    dst.h = currentFrame.h * 4;
+    dst.w = currentFrame.w;
+    dst.h = currentFrame.h;
 
     SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
 };

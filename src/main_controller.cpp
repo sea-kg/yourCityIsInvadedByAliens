@@ -4,6 +4,7 @@
 #include "render.h"
 #include "render_tank0.h"
 #include "render_left_panel_info.h"
+#include "utils_loader_screen.h"
 #include "json.hpp"
 #include <fstream>
 
@@ -70,39 +71,9 @@ CoordXY MainController::getCoordCenter() {
 }
 
 void MainController::loadGameDataWithProgressBar() {
-    // TODO redesign to some nice RenderProgressBar
-    // std::vector<RenderObject *> vProgressBarState;
-    // vProgressBarState.push_back()
-
-    RenderColor progressBarColor(255,255,255,255);
-
-    RenderLine *pLine0 = new RenderLine(
-        CoordXY(300, m_nWindowHeight/2 - 50),
-        CoordXY(m_nWindowWidth - 300, m_nWindowHeight/2 - 50),
-        progressBarColor
-    );
-
-    RenderLine *pLine1 = new RenderLine(
-        CoordXY(300, m_nWindowHeight/2 + 50),
-        CoordXY(m_nWindowWidth - 300, m_nWindowHeight/2 + 50),
-        progressBarColor
-    );
-
-    RenderAbsoluteTextBlock *pText = new RenderAbsoluteTextBlock(
-        CoordXY(300, m_nWindowHeight/2 + 50),
-        "Loading..."
-    );
-    m_pRenderWindow->addObject(pLine0);
-    m_pRenderWindow->addObject(pLine1);
-    m_pRenderWindow->addObject(pText);
-    m_pRenderWindow->clear();
-    m_pRenderWindow->drawObjects();
-
-
-    pText->updateText("Loading... textures");
-    m_pRenderWindow->clear();
-    m_pRenderWindow->modifyObjects(*m_pGameState);
-    m_pRenderWindow->drawObjects();
+    UtilsLoaderScreen loader(m_pRenderWindow, m_pGameState);
+    loader.init();
+    loader.updateText("Loading... textures");
 
     m_pTextureBackground = m_pRenderWindow->loadTexture("res/gfx/background.png");
     m_pTextureBuildingBlock = m_pRenderWindow->loadTexture("res/gfx/building-block.png");
@@ -112,11 +83,7 @@ void MainController::loadGameDataWithProgressBar() {
     m_pTextureCursor = m_pRenderWindow->loadTexture("res/gfx/mouse-target.png");
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture("res/textures/left-panel-info.png");
 
-    pText->updateText("Loading... buildings");
-    m_pRenderWindow->clear();
-    m_pRenderWindow->modifyObjects(*m_pGameState);
-    m_pRenderWindow->drawObjects();
-
+    loader.updateText("Loading... buildings");
 
     // load map from json
     std::ifstream ifs("./res/data.json");
@@ -163,17 +130,12 @@ void MainController::loadGameDataWithProgressBar() {
     m_pGameState->setMinPoint(minPointMap);
     m_pGameState->setMaxPoint(maxPointMap);
     
+    loader.updateText("Generating enimies...");
     this->generateTanks();
-
-    // int SDL_RenderFillRect(SDL_Renderer* renderer, const SDL_Rect* rect)
-    m_pRenderWindow->removeObject(pLine0);
-    m_pRenderWindow->removeObject(pLine1);
-    m_pRenderWindow->removeObject(pText);
 
     m_pRenderWindow->addObject(
         new RenderLeftPanelInfo(m_pTextureLeftPanel, 5000)
     );
-
 
     // text
     m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 20), "FPS: ...", 5001);
