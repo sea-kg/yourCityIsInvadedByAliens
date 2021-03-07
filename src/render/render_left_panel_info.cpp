@@ -11,7 +11,7 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(SDL_Texture* tex,  int nPositionZ)
     // m_coordCenter = pTank0State->getPosition();
     int nTopHeight = 105;
     int nBottomHeight = 105;
-    int nWidth = 300;
+    int nWidth = 320;
     int nHeight = 500;
     
     m_currentFrameTop.x = 0;

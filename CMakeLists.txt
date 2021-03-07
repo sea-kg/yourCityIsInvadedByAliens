@@ -19,7 +19,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ai")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
-
+list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
@@ -51,7 +51,8 @@ list (APPEND WSJCPP_SOURCES "src/render/render_tank0.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
-
+list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.h")
+list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.cpp")
 
 ############################
 # SDL2
