@@ -83,6 +83,19 @@ if ( SDL2TTF_FOUND )
 endif( SDL2TTF_FOUND )
 ############################
 
+############################
+# SDL2_ttf
+find_package(SDL2TTF REQUIRED)
+if ( SDL2TTF_FOUND )
+    list (APPEND WSJCPP_INCLUDE_DIRS ${SDL2TTF_INCLUDE_DIRS})
+    list (APPEND WSJCPP_LIBRARIES ${SDL2TTF_LIBRARY})
+endif( SDL2TTF_FOUND )
+############################
+
+include(FindPkgConfig)
+pkg_check_modules(SDL2_Mixer REQUIRED IMPORTED_TARGET SDL2_mixer)
+list (APPEND WSJCPP_LIBRARIES PkgConfig::SDL2_Mixer)
+
 include_directories(${WSJCPP_INCLUDE_DIRS})
 
 add_executable (yourCityIsInvadedByAliens_Tomsk ${WSJCPP_SOURCES})

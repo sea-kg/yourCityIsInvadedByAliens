@@ -8,6 +8,9 @@
 #include "json.hpp"
 #include <fstream>
 
+
+static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
+
 // MainController
 
 MainController::MainController(const std::string &sWindowName) {
@@ -34,6 +37,23 @@ bool MainController::initSDL2() {
         printf("TTF_Init: %s\n", TTF_GetError());
         return false;
     }
+    
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        printf("Failed to init SDL\n");
+        exit(1);
+    }
+
+    int result = 0;
+    int flags = MIX_INIT_MP3;
+    if (flags != (result = Mix_Init(flags))) {
+        printf("Could not initialize mixer (result: %d).\n", result);
+        printf("Mix_Init: %s\n", Mix_GetError());
+        exit(1);
+    }
+    Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+    Mix_Music *music = Mix_LoadMUS(MY_COOL_MP3);
+    Mix_PlayMusic(music, 1);
+
     return true;
 }
 

@@ -134,6 +134,7 @@ int main(int argc, char* args[]) {
     }
 
     pMainController->getWindow()->cleanUp();
+    // Mix_FreeMusic(music);
     SDL_Quit();
     return 0;
 }
