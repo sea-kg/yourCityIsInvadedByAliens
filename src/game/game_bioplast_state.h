@@ -15,4 +15,6 @@ class GameBioplastState {
         CoordXY m_pEnd;
         CoordXY m_p0;
         bool m_bDestroyed;
+        double m_nDistance;
+        CoordXY m_step;
 };

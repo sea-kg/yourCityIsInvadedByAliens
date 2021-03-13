@@ -26,7 +26,14 @@ int main(int argc, char* args[]) {
     CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
-    pMainController->getWindow()->addObject(new RenderPlayerAlienShip(coordCenter, pTextureAlienShip1, 1000));
+    pMainController->getWindow()->addObject(
+        new RenderPlayerAlienShip(
+            new GameAlienShipState(coordCenter),
+            coordCenter,
+            pTextureAlienShip1,
+            1000
+        )
+    );
 
     bool gameRunning = true;
 
@@ -84,11 +91,9 @@ int main(int argc, char* args[]) {
                 }
 
                 if (pMainController->isKeyboardSpace(keyboard_state_array)) {
-                    if (event.type == SDL_KEYDOWN) {
-                        pMainController->getGameState()->setPlayerShooting(true);
-                    } else {
-                        pMainController->getGameState()->setPlayerShooting(false);
-                    }
+                    pMainController->getGameState()->setPlayerShooting(true);
+                } else {
+                    pMainController->getGameState()->setPlayerShooting(false);
                 }
 
                 if (pMainController->isKeyboardUp(keyboard_state_array)) {

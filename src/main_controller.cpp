@@ -99,9 +99,10 @@ void MainController::loadGameDataWithProgressBar() {
     m_pTextureBuildingBlock = m_pRenderWindow->loadTexture("res/gfx/building-block.png");
     m_pTextureAlienShip1 = m_pRenderWindow->loadTexture("res/sprites/alien-ship.png");
     m_pTextureTank0 = m_pRenderWindow->loadTexture("res/sprites/tank0.png");
-    m_pRenderWindow->loadTextureRocket("res/sprites/rocket.png");
+    m_pRenderWindow->loadTextureRocket("res/sprites/tank0-rocket.png");
     m_pTextureCursor = m_pRenderWindow->loadTexture("res/gfx/mouse-target.png");
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture("res/textures/left-panel-info.png");
+    m_pRenderWindow->loadTextureBioplast("res/sprites/alient-bioplast.png");
 
     loader.updateText("Loading... buildings");
 

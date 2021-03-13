@@ -8,13 +8,15 @@ class RenderWindow : public IRenderWindow {
         RenderWindow(const char* p_title, int p_w, int p_h);
         ~RenderWindow();
         virtual void addObject(RenderObject *pObject) override;
-        virtual void addRocket(GameRocketState *pRocketState) override;
+        virtual void addRocket(GameRocketState *pState) override;
+        virtual void addBioplast(GameBioplastState *pState) override;
         void toggleFullscreen();
         void removeObject(RenderObject *pObject);
         void sortObjectsByPositionZ();
 
         SDL_Texture* loadTexture(const char* p_filePath);
         void loadTextureRocket(const char* p_filePath);
+        void loadTextureBioplast(const char* p_filePath);
         void cleanUp();
         void clear();
         void modifyObjects(const GameState& state);
@@ -29,4 +31,5 @@ class RenderWindow : public IRenderWindow {
         SDL_DisplayMode m_displayMode;
         std::vector<RenderObject *> m_vObjects;
         SDL_Texture* m_pTextureRocket;
+        SDL_Texture* m_pTextureBioplast;
 };

@@ -1,5 +1,6 @@
 #include "game_bioplast_state.h"
 #include "wsjcpp_core.h"
+#include <cmath>
 
 // ---------------------------------------------------------------------
 // GameBioplastState
@@ -9,6 +10,15 @@ GameBioplastState::GameBioplastState(const CoordXY &pStart, const CoordXY &pEnd)
     m_pStart = pStart;
     m_pEnd = pEnd;
     m_bDestroyed = false;
+
+    // distance
+    double dx = m_pStart.x() - m_pEnd.x();
+    double dy = m_pStart.y() - m_pEnd.y();
+    m_nDistance = 0.0;
+    m_nDistance = sqrt(dx * dx + dy * dy);
+
+    // int nStep
+    m_step = CoordXY(0, m_nDistance/10); // TODO 10 must be size of bioplast
 }
 
 const CoordXY &GameBioplastState::getPosition() {
@@ -16,8 +26,10 @@ const CoordXY &GameBioplastState::getPosition() {
 }
 
 void GameBioplastState::move() {
-    int nStep = 10;
-
+    m_p0 += m_step;
+    if (m_p0.y() > m_pEnd.y()) {
+        m_bDestroyed = true;
+    }
     /*if (m_nDirection == MoveObjectDirection::UP) {
         m_p0 += CoordXY(0,-1 * nStep);
     } else if (m_nDirection == MoveObjectDirection::UP_LEFT) {

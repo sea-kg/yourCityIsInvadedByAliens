@@ -6,6 +6,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "game_state.h"
 #include "game_rocket_state.h"
+#include "game_bioplast_state.h"
 
 class RenderColor {
     public:
@@ -25,6 +26,7 @@ class IRenderWindow {
     public:
         virtual void addObject(RenderObject *pObject) = 0;
         virtual void addRocket(GameRocketState *pRocketState) = 0;
+        virtual void addBioplast(GameBioplastState *pState) = 0;
 };
 
 class RenderObject {

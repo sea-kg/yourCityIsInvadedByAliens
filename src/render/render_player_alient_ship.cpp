@@ -5,8 +5,14 @@
 // ---------------------------------------------------------------------
 // RenderPlayerAlienShip
 
-RenderPlayerAlienShip::RenderPlayerAlienShip(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
+RenderPlayerAlienShip::RenderPlayerAlienShip(
+    GameAlienShipState *pState,
+    const CoordXY &p0,
+    SDL_Texture* tex,
+    int nPositionZ
+) 
 : RenderObject(nPositionZ) {
+    m_pState = pState;
     m_pTexture = tex;
     m_coordCenter = p0;
     currentFrame.x = 0;
@@ -33,6 +39,13 @@ void RenderPlayerAlienShip::modify(const GameState& state, IRenderWindow* pRende
 
     if (state.isPlayerShooting()) {
         std::cout << "Shooting!!!!";
+        m_pState->shot();
+    }
+
+    GameBioplastState *pBioplastState = m_pState->popRocket();
+    while (pBioplastState != nullptr) {
+        pRenderWindow->addBioplast(pBioplastState);
+        pBioplastState = m_pState->popRocket();
     }
 };
 

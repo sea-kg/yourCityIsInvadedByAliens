@@ -4,6 +4,7 @@
 
 #include "render_window.h"
 #include "render_rocket.h"
+#include "render_bioplast.h"
 
 // ---------------------------------------------------------------------
 // RenderWindow
@@ -42,8 +43,12 @@ void RenderWindow::addObject(RenderObject *pObject) {
     m_vObjects.push_back(pObject);
 }
 
-void RenderWindow::addRocket(GameRocketState *pRocketState) {
-    m_vObjects.push_back(new RenderRocket(pRocketState, m_pTextureRocket, 3000));
+void RenderWindow::addRocket(GameRocketState *pState) {
+    m_vObjects.push_back(new RenderRocket(pState, m_pTextureRocket, 3000));
+}
+
+void RenderWindow::addBioplast(GameBioplastState *pState) {
+    m_vObjects.push_back(new RenderBioplast(pState, m_pTextureBioplast, 3000));
 }
 
 void RenderWindow::toggleFullscreen() {
@@ -95,6 +100,10 @@ SDL_Texture* RenderWindow::loadTexture(const char* p_filePath) {
 
 void RenderWindow::loadTextureRocket(const char* p_filePath) {
     m_pTextureRocket = this->loadTexture(p_filePath);
+}
+
+void RenderWindow::loadTextureBioplast(const char* p_filePath) {
+    m_pTextureBioplast = this->loadTexture(p_filePath);
 }
 
 void RenderWindow::cleanUp() {
