@@ -1,26 +1,24 @@
-#include "game_rocket_state.h"
+#include "game_bioplast_state.h"
 #include "wsjcpp_core.h"
 
 // ---------------------------------------------------------------------
-// GameRocketState
+// GameBioplastState
 
-GameRocketState::GameRocketState(const CoordXY &p0, MoveObjectDirection direction) 
-: m_nDirection(direction) {
-    m_p0 = p0;
+GameBioplastState::GameBioplastState(const CoordXY &pStart, const CoordXY &pEnd) {
+    m_p0 = pStart;
+    m_pStart = pStart;
+    m_pEnd = pEnd;
     m_bDestroyed = false;
 }
 
-MoveObjectDirection GameRocketState::getDirection() {
-    return m_nDirection;
-}
-
-const CoordXY &GameRocketState::getPosition() {
+const CoordXY &GameBioplastState::getPosition() {
     return m_p0;
 }
 
-void GameRocketState::move() {
+void GameBioplastState::move() {
     int nStep = 10;
-    if (m_nDirection == MoveObjectDirection::UP) {
+
+    /*if (m_nDirection == MoveObjectDirection::UP) {
         m_p0 += CoordXY(0,-1 * nStep);
     } else if (m_nDirection == MoveObjectDirection::UP_LEFT) {
         m_p0 += CoordXY(-1*nStep, -1*nStep);
@@ -36,13 +34,13 @@ void GameRocketState::move() {
         m_p0 += CoordXY(-1*nStep, 0);
     } else if (m_nDirection == MoveObjectDirection::RIGHT) {
         m_p0 += CoordXY(nStep, 0);
-    }
+    }*/
 }
 
-bool GameRocketState::hasDestroyed() {
+bool GameBioplastState::hasDestroyed() {
     return m_bDestroyed;
 }
 
-void GameRocketState::destroy() {
+void GameBioplastState::destroy() {
     m_bDestroyed = true;
 }
