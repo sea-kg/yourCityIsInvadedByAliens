@@ -18,7 +18,7 @@ RenderBioplast::RenderBioplast(GameBioplastState *pState, SDL_Texture* tex,  int
     m_nPrevPosition = 0;
     m_nLifeTime = 0;
     m_nMaxLifeTime = 10;
-    m_nSpeedAnimation = 50;
+    m_nSpeedAnimation = 80;
 }
 
 RenderBioplast::~RenderBioplast() {
