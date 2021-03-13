@@ -4,6 +4,7 @@
 
 #include "render_window.h"
 #include "render_tank0.h"
+#include "render_player_alient_ship.h"
 #include "main_controller.h"
 #include "wsjcpp_core.h"
 
@@ -25,7 +26,7 @@ int main(int argc, char* args[]) {
     CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
-    pMainController->getWindow()->addObject(new RenderPlayerAlienShip1(coordCenter, pTextureAlienShip1, 1000));
+    pMainController->getWindow()->addObject(new RenderPlayerAlienShip(coordCenter, pTextureAlienShip1, 1000));
 
     bool gameRunning = true;
 
@@ -80,6 +81,14 @@ int main(int argc, char* args[]) {
                 if (pMainController->isKeyboardF1(keyboard_state_array)) {
                     // pMainController->getWindow()->toggleFullscreen();
                     // TODO show help and pause of the game
+                }
+
+                if (pMainController->isKeyboardSpace(keyboard_state_array)) {
+                    if (event.type == SDL_KEYDOWN) {
+                        pMainController->getGameState()->setPlayerShooting(true);
+                    } else {
+                        pMainController->getGameState()->setPlayerShooting(false);
+                    }
                 }
 
                 if (pMainController->isKeyboardUp(keyboard_state_array)) {

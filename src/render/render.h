@@ -175,25 +175,6 @@ class RenderBuilding2 : public RenderObject {
         bool containsPoint(const std::vector<CoordXY> &vPoints, const CoordXY &p);
 };
 
-class RenderPlayerAlienShip1 : public RenderObject {
-
-    public:
-        RenderPlayerAlienShip1(
-            const CoordXY &p0,
-            SDL_Texture* tex,
-            int nPositionZ = 0
-        );
-        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
-
-        SDL_Rect currentFrame;
-        SDL_Texture* m_pTexture;
-};
-
 class RenderMouse : public RenderObject {
 
     public:

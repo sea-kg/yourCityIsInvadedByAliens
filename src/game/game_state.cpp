@@ -12,6 +12,7 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_nWindowHeight = windowHeight;
     m_nPlayerPrevTime = 0;
     m_bIsChangedWindowSize = true;
+    m_bPlayerShooting = false;
 }
 
 void GameState::init() {
@@ -75,6 +76,14 @@ void GameState::movePlayer() {
             m_coordLeftTop += CoordXY(-1*nStep, 0);
             break;
     }
+}
+
+void GameState::setPlayerShooting(bool bShooting) {
+    m_bPlayerShooting = bShooting;
+}
+
+bool GameState::isPlayerShooting() const {
+    return m_bPlayerShooting;
 }
 
 bool GameState::isChangedWindowSize() const {

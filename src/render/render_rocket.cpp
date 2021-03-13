@@ -18,6 +18,7 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
     m_nPrevPosition = 0;
     m_nLifeTime = 0;
     m_nMaxLifeTime = 50;
+    m_nSpeedAnimation = 50;
 }
 
 RenderRocket::~RenderRocket() {
@@ -25,8 +26,6 @@ RenderRocket::~RenderRocket() {
 }
 
 void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    long m_nSpeedAnimation = 50;
-
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {

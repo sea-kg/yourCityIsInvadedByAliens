@@ -17,6 +17,8 @@ class GameState {
         const CoordXY &getCoordLeftTop() const;
         void setMovePlayerDirection(MoveObjectDirection direction);
         void movePlayer();
+        void setPlayerShooting(bool bShooting);
+        bool isPlayerShooting() const;
 
         bool isChangedWindowSize() const;
         const int getWindowWidth() const;
@@ -35,6 +37,7 @@ class GameState {
         MoveObjectDirection m_playerDirection;
         long m_nPlayerPrevTime;
         bool m_bMouseCaptured;
+        bool m_bPlayerShooting;
         long m_nElapsedTime;
         long m_nStartTime;
         CoordXY m_coordLeftTop;

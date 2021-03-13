@@ -286,6 +286,10 @@ bool MainController::isKeyboardF12(const Uint8 *keyboard_state_array) {
     return keyboard_state_array[SDL_SCANCODE_F12];
 }
 
+bool MainController::isKeyboardSpace(const Uint8 *keyboard_state_array) {
+    return keyboard_state_array[SDL_SCANCODE_SPACE];
+}
+
 void MainController::updatePlayerCoord() {
     std::string sCoordPlayer = "X=" + std::to_string(m_pGameState->getCoordLeftTop().x() + m_nWindowWidth/2)
             + " Y=" + std::to_string(m_pGameState->getCoordLeftTop().y() + m_nWindowHeight/2);
