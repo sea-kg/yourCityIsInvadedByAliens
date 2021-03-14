@@ -18,7 +18,7 @@ GameBioplastState::GameBioplastState(const CoordXY &pStart, const CoordXY &pEnd)
     m_nDistance = sqrt(dx * dx + dy * dy);
 
     // int nStep
-    m_step = CoordXY(0, m_nDistance/10); // TODO 10 must be size of bioplast
+    m_step = CoordXY(dx/10, dy/10); // TODO 10 must be size of bioplast
 }
 
 const CoordXY &GameBioplastState::getPosition() {

@@ -67,7 +67,9 @@ void GameAlienShipState::move(long nElapsedTime) {
 }
 
 void GameAlienShipState::shot() {
-    m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(0,250)));
+    int nX = std::rand() % 500 - 250;
+    int nY = std::rand() % 500 - 250;
+    m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(nX,nY)));
 }
 
 GameBioplastState *GameAlienShipState::popRocket() {
