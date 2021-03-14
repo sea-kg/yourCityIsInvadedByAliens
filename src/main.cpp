@@ -26,10 +26,10 @@ int main(int argc, char* args[]) {
     CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
+    GameAlienShipState *pAlientShipState = new GameAlienShipState(coordCenter);
     pMainController->getWindow()->addObject(
         new RenderPlayerAlienShip(
-            new GameAlienShipState(coordCenter),
-            coordCenter,
+            pAlientShipState,
             pTextureAlienShip1,
             1000
         )
@@ -42,9 +42,8 @@ int main(int argc, char* args[]) {
     long nElapsed = 0;
     pMainController->getGameState()->init();
     
-    RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
-    pMainController->getWindow()->addObject(pMouse);
-
+    // RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
+    // pMainController->getWindow()->addObject(pMouse);
 
     pMainController->getWindow()->sortObjectsByPositionZ();
     pMainController->getGameState()->setMouseCaptured(false);
@@ -116,16 +115,16 @@ int main(int argc, char* args[]) {
                     pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::NONE);
                 }
 
-            } else if (event.type == SDL_MOUSEMOTION) {
-                if (pMainController->getGameState()->isMouseCaptured()) {
-                    CoordXY p0(event.motion.x, event.motion.y);
-                    pMouse->updateCoord(p0);
-                }
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (!pMainController->getGameState()->isMouseCaptured()) {
-                    pMainController->getGameState()->setMouseCaptured(true);
-                }
-            }
+            } // else if (event.type == SDL_MOUSEMOTION) {
+              //   if (pMainController->getGameState()->isMouseCaptured()) {
+              //       CoordXY p0(event.motion.x, event.motion.y);
+              //       pMouse->updateCoord(p0);
+              //   }
+            // } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            //     if (!pMainController->getGameState()->isMouseCaptured()) {
+            //         pMainController->getGameState()->setMouseCaptured(true);
+            //     }
+            // }
         }
         
         pMainController->getGameState()->movePlayer();

@@ -8,6 +8,10 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_p0 = p0;
 }
 
+const CoordXY &GameAlienShipState::getPosition() {
+    return m_p0;
+}
+
 void GameAlienShipState::shot() {
     m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(0,250)));
 }

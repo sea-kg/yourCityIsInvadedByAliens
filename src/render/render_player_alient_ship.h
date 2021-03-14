@@ -13,7 +13,6 @@ class RenderPlayerAlienShip : public RenderObject {
     public:
         RenderPlayerAlienShip(
             GameAlienShipState *pState,
-            const CoordXY &p0,
             SDL_Texture* tex,
             int nPositionZ = 0
         );
@@ -22,8 +21,7 @@ class RenderPlayerAlienShip : public RenderObject {
 
     private:
         GameAlienShipState *m_pState;
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
+        // CoordXY m_coordReal;
         long m_nPrevPosition;
         long m_nSpeedAnimation;
         SDL_Rect currentFrame;

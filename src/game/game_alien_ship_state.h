@@ -8,6 +8,7 @@
 class GameAlienShipState {
     public:
         GameAlienShipState(const CoordXY &p0);
+        const CoordXY &getPosition();
         void shot();
         GameBioplastState *popRocket();
 

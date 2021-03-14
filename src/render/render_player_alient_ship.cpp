@@ -7,14 +7,12 @@
 
 RenderPlayerAlienShip::RenderPlayerAlienShip(
     GameAlienShipState *pState,
-    const CoordXY &p0,
     SDL_Texture* tex,
     int nPositionZ
 ) 
 : RenderObject(nPositionZ) {
     m_pState = pState;
     m_pTexture = tex;
-    m_coordCenter = p0;
     currentFrame.x = 0;
     currentFrame.y = 0;
     currentFrame.w = 100;
@@ -30,6 +28,7 @@ void RenderPlayerAlienShip::modify(const GameState& state, IRenderWindow* pRende
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
+        
         // m_coordReal = m_coordCenter + state.getCoordLeftTop();
         return; // skip - already desition done
     }
@@ -54,8 +53,8 @@ void RenderPlayerAlienShip::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x = m_coordCenter.x();
-    dst.y = m_coordCenter.y();
+    dst.x =  m_pState->getPosition().x();
+    dst.y = m_pState->getPosition().y();
     dst.w = currentFrame.w;
     dst.h = currentFrame.h;
 
