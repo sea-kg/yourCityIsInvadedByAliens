@@ -10,7 +10,6 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
 : RenderObject(nPositionZ) {
     m_pRocketState = pRocketState;
     m_pTexture = tex;
-    m_coordCenter = pRocketState->getPosition();
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
     m_currentFrame.w = 50;
@@ -29,7 +28,7 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        m_coordReal = m_coordCenter + state.getCoordLeftTop();
+        m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
         return; // skip - already desition done
     }
 
@@ -55,11 +54,9 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_pRocketState->move();
     m_nLifeTime++;
 
-    m_coordCenter = m_pRocketState->getPosition();
-    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
 
     MoveObjectDirection dr = m_pRocketState->getDirection();
-
 
     int nWidth = 50;
 
@@ -105,8 +102,8 @@ void RenderRocket::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x = m_coordReal.x() - 25;
-    dst.y = m_coordReal.y() - 25;
+    dst.x = m_coordRender.x() - 25;
+    dst.y = m_coordRender.y() - 25;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 

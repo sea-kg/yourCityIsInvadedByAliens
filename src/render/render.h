@@ -51,26 +51,6 @@ class RenderTriangle : public RenderObject {
         RenderColor m_color;
 };
 
-class RenderTriangleAnimated1 : public RenderObject {
-
-    public:
-        RenderTriangleAnimated1(
-            const CoordXY &p1,
-            const CoordXY &p2,
-            const CoordXY &p3,
-            int nPositionZ = 0
-        );
-        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        RenderLine m_line1;
-        RenderLine m_line2;
-        RenderLine m_line3;
-        CoordXY m_coordDirection;
-        RenderColor m_color;
-};
-
 class RenderRectTexture : public RenderObject {
 
     public:
@@ -105,7 +85,7 @@ class RenderBackground : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordCenter;
+        CoordXY m_coordRender;
         CoordXY m_coordReal;
 
         SDL_Rect m_currentFrame;

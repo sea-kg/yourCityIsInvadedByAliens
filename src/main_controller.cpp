@@ -167,6 +167,20 @@ void MainController::loadGameDataWithProgressBar() {
     m_pRenderWindow->addObject(m_pCoordText);
 }
 
+bool MainController::isFullscreen() {
+    return m_pRenderWindow->isFullscreen();
+}
+
+void MainController::toggleFullscreen() {
+    m_pRenderWindow->toggleFullscreen();
+    int w,h;
+    m_pRenderWindow->getWindowSize(&w,&h);
+    std::cout << "w,h = (" << w << "," << h << ")";
+    m_pGameState->updateWindowSize(w,h);
+    m_nWindowWidth = w;
+    m_nWindowHeight = h;
+}
+
 bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {
     bool bArrowUp =
         keyboard_state_array[SDL_SCANCODE_UP]
@@ -291,9 +305,9 @@ bool MainController::isKeyboardSpace(const Uint8 *keyboard_state_array) {
     return keyboard_state_array[SDL_SCANCODE_SPACE];
 }
 
-void MainController::updatePlayerCoord() {
-    std::string sCoordPlayer = "X=" + std::to_string(m_pGameState->getCoordLeftTop().x() + m_nWindowWidth/2)
-            + " Y=" + std::to_string(m_pGameState->getCoordLeftTop().y() + m_nWindowHeight/2);
+void MainController::updatePlayerCoord(const CoordXY &playerCoord) {
+    std::string sCoordPlayer = "X=" + std::to_string(playerCoord.x())
+            + " Y=" + std::to_string(playerCoord.y());
     m_pCoordText->updateText(sCoordPlayer);
 }
 

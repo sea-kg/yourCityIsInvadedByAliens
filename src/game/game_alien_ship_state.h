@@ -9,13 +9,18 @@ class GameAlienShipState {
     public:
         GameAlienShipState(const CoordXY &p0);
         const CoordXY &getPosition();
+        void setShooting(bool bShooting);
+        bool isShooting() const;
+        void setMoveDirection(MoveObjectDirection direction);
+        void move(long nElapsedTime);
         void shot();
         GameBioplastState *popRocket();
 
-        void setShooting(bool bShooting);
-        bool isShooting() const;
     private:
         CoordXY m_p0;
+        MoveObjectDirection m_moveDirection;
+        long m_nMovePrevTime;
+        long m_nSpeedMoving;
         bool m_bShooting;
         std::vector<GameBioplastState *> m_vBioplasts;
 };

@@ -15,8 +15,7 @@ class GameState {
         void addBuilding(GameBuilding *);
         long getElapsedTime() const;
         const CoordXY &getCoordLeftTop() const;
-        void setMovePlayerDirection(MoveObjectDirection direction);
-        void movePlayer();
+        void setCoordLeftTop(const CoordXY &);
 
         bool isChangedWindowSize() const;
         const int getWindowWidth() const;
@@ -32,8 +31,6 @@ class GameState {
         const CoordXY &getMaxPoint();
 
     private:
-        MoveObjectDirection m_playerDirection;
-        long m_nPlayerPrevTime;
         bool m_bMouseCaptured;
         long m_nElapsedTime;
         long m_nStartTime;

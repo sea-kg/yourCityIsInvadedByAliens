@@ -16,8 +16,7 @@ class RenderTank0 : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
+        CoordXY m_coordRender;
         long m_nPrevPosition;
         GameTank0State *m_pTank0State;
         AiTank0 *m_pAiTank0;

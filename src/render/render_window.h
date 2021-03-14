@@ -10,6 +10,7 @@ class RenderWindow : public IRenderWindow {
         virtual void addObject(RenderObject *pObject) override;
         virtual void addRocket(GameRocketState *pState) override;
         virtual void addBioplast(GameBioplastState *pState) override;
+        bool isFullscreen();
         void toggleFullscreen();
         void removeObject(RenderObject *pObject);
         void sortObjectsByPositionZ();

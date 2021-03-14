@@ -60,6 +60,10 @@ void RenderWindow::toggleFullscreen() {
     }
 }
 
+bool RenderWindow::isFullscreen() {
+    return m_bFullsreeen;
+}
+
 void RenderWindow::removeObject(RenderObject *pObject) {
     auto it = std::find(m_vObjects.begin(), m_vObjects.end(), pObject);
     if (it != m_vObjects.end()) {

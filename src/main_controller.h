@@ -13,6 +13,10 @@ class MainController {
         CoordXY getCoordCenter();
         void loadGameDataWithProgressBar();
         
+        // window
+        bool isFullscreen();
+        void toggleFullscreen();
+
         // keyboard
         bool isKeyboardUp(const Uint8 *keyboard_state_array);
         bool isKeyboardUpLeft(const Uint8 *keyboard_state_array);
@@ -28,7 +32,7 @@ class MainController {
         bool isKeyboardSpace(const Uint8 *keyboard_state_array);
             
 
-        void updatePlayerCoord();
+        void updatePlayerCoord(const CoordXY &playerCoord);
         void updateFpsValue(int nFps);
     private:
         void generateTanks();

@@ -71,17 +71,17 @@ int main(int argc, char* args[]) {
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
 
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    if (pMainController->getGameState()->isMouseCaptured()) {
-                        pMainController->getGameState()->setMouseCaptured(false);
+                    if (pMainController->isFullscreen()) {
+                        pMainController->toggleFullscreen();
+                    } else {
+                        if (pMainController->getGameState()->isMouseCaptured()) {
+                            pMainController->getGameState()->setMouseCaptured(false);
+                        }
                     }
                 }
 
                 if (pMainController->isKeyboardF12(keyboard_state_array)) {
-                    pMainController->getWindow()->toggleFullscreen();
-                    int w,h;
-                    pMainController->getWindow()->getWindowSize(&w,&h);
-                    std::cout << "w,h = (" << w << "," << h << ")";
-                    pMainController->getGameState()->updateWindowSize(w,h);
+                    pMainController->toggleFullscreen();
                 }
 
                 if (pMainController->isKeyboardF1(keyboard_state_array)) {
@@ -96,24 +96,23 @@ int main(int argc, char* args[]) {
                 }
 
                 if (pMainController->isKeyboardUp(keyboard_state_array)) {
-                    // pAlientShipState->setMovePlayerDirection(MoveObjectDirection::UP);
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP);
                 } else if (pMainController->isKeyboardUpLeft(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP_LEFT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP_LEFT);
                 } else if (pMainController->isKeyboardUpRight(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP_RIGHT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP_RIGHT);
                 } else if (pMainController->isKeyboardDown(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN);
                 } else if (pMainController->isKeyboardDownLeft(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN_LEFT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_LEFT);
                 } else if (pMainController->isKeyboardDownRight(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::DOWN_RIGHT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_RIGHT);
                 } else if (pMainController->isKeyboardLeft(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::LEFT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::LEFT);
                 } else if (pMainController->isKeyboardRight(keyboard_state_array)) {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::RIGHT);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::RIGHT);
                 } else {
-                    pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::NONE);
+                    pAlientShipState->setMoveDirection(MoveObjectDirection::NONE);
                 }
 
             } // else if (event.type == SDL_MOUSEMOTION) {
@@ -127,8 +126,24 @@ int main(int argc, char* args[]) {
             //     }
             // }
         }
-        // pAlientShipState->->movePlayer();
-        pMainController->getGameState()->movePlayer();
+        pAlientShipState->move(pMainController->getGameState()->getElapsedTime());
+
+        // window must move to the player
+        /*
+        0
+            360 - w/2 - 320/2
+        */
+        // std::cout << "------" << std::endl;
+        // std::cout << pMainController->getCoordCenter().x() << std::endl;
+        // std::cout << pMainController->getCoordCenter().y() << std::endl;
+        // std::cout << pAlientShipState->getPosition().x() << std::endl;
+        // std::cout << pAlientShipState->getPosition().y() << std::endl;
+
+        CoordXY newLeftTop = pAlientShipState->getPosition() - pMainController->getCoordCenter() + CoordXY(320/2, 0);
+        // std::cout << newLeftTop.x() << std::endl;
+        // std::cout << newLeftTop.y() << std::endl;
+
+        pMainController->getGameState()->setCoordLeftTop(newLeftTop);
 
         // FPS
         nNumberOfFrames++;
@@ -143,7 +158,7 @@ int main(int argc, char* args[]) {
         }
 
         if (nElapsed > 500) {
-            pMainController->updatePlayerCoord();
+            pMainController->updatePlayerCoord(pAlientShipState->getPosition());
         }
     }
 

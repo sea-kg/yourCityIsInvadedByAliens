@@ -10,7 +10,6 @@ RenderTank0::RenderTank0(GameTank0State *pTank0State, SDL_Texture* tex,  int nPo
     m_pTank0State = pTank0State;
     m_pAiTank0 = new AiTank0();
     m_pTexture = tex;
-    m_coordCenter = pTank0State->getPosition();
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
     m_currentFrame.w = 50;
@@ -24,7 +23,7 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        m_coordReal = m_coordCenter + state.getCoordLeftTop();
+        m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
         return; // skip - already desition done
     }
 
@@ -32,8 +31,7 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 
     m_pAiTank0->makeStep(*m_pTank0State);
 
-    m_coordCenter = m_pTank0State->getPosition();
-    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
 
     MoveObjectDirection dr = m_pTank0State->getDirection();
 
@@ -123,8 +121,8 @@ void RenderTank0::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x = m_coordReal.x() - 25;
-    dst.y = m_coordReal.y() - 25;
+    dst.x = m_coordRender.x() - 25;
+    dst.y = m_coordRender.y() - 25;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 

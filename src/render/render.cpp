@@ -16,8 +16,8 @@ RenderLine::RenderLine(const CoordXY &p1, const CoordXY &p2, const RenderColor &
 }
 
 void RenderLine::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coord1 = state.getCoordLeftTop() + m_startCoord1;
-    m_coord2 = state.getCoordLeftTop() + m_startCoord2;
+    m_coord1 = m_startCoord1 - state.getCoordLeftTop();
+    m_coord2 = m_startCoord2 - state.getCoordLeftTop() ;
 }
 
 void RenderLine::draw(SDL_Renderer* renderer) {
@@ -75,66 +75,6 @@ void RenderTriangle::draw(SDL_Renderer* renderer) {
     m_line3.draw(renderer);
 }
 
-
-// ---------------------------------------------------------------------
-// RenderTriangleAnimated1
-
-RenderTriangleAnimated1::RenderTriangleAnimated1(
-    const CoordXY &p1,
-    const CoordXY &p2,
-    const CoordXY &p3,
-    int nPositionZ
-) : RenderObject(nPositionZ),
-    m_color(255,255,255,255),
-    m_line1(p1,p2, m_color),
-    m_line2(p2,p3, m_color),
-    m_line3(p3,p1, m_color) 
-{
-    m_coordDirection = CoordXY(10, 10);
-}
-
-void RenderTriangleAnimated1::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    if (state.getElapsedTime() > 2000) {
-        CoordXY p1 = m_line1.getAbsoluteCoord1();
-        CoordXY p2 = m_line1.getAbsoluteCoord2();
-        CoordXY p3 = m_line2.getAbsoluteCoord2();
-        p1.update(p1.x() + m_coordDirection.x(), p1.y() + m_coordDirection.y());
-        p2.update(p2.x() + m_coordDirection.x(), p2.y() + m_coordDirection.y());
-        p3.update(p3.x() + m_coordDirection.x(), p3.y() + m_coordDirection.y());
-
-        if (
-            p1.x() < 0
-            || p2.x() < 0
-            || p3.x() < 0
-            || p1.x() > state.getWindowWidth() 
-            || p2.x() > state.getWindowWidth()
-            || p3.x() > state.getWindowWidth()
-            || p1.y() < 0
-            || p2.y() < 0
-            || p3.y() < 0
-            || p1.y() > state.getWindowHeight() 
-            || p2.y() > state.getWindowHeight()
-            || p3.y() > state.getWindowHeight()
-        ) {
-            m_coordDirection.update(m_coordDirection.x()*-1, m_coordDirection.y()*-1);
-        }
-
-        m_line1.updateAbsoluteCoords(p1, p2);
-        m_line2.updateAbsoluteCoords(p2, p3);
-        m_line3.updateAbsoluteCoords(p3, p1);
-    }
-
-    m_line1.modify(state, pRenderWindow);
-    m_line2.modify(state, pRenderWindow);
-    m_line3.modify(state, pRenderWindow);
-}
-
-void RenderTriangleAnimated1::draw(SDL_Renderer* renderer) {
-    m_line1.draw(renderer);
-    m_line2.draw(renderer);
-    m_line3.draw(renderer);
-}
-
 // ---------------------------------------------------------------------
 // RenderRectTexture
 
@@ -154,7 +94,7 @@ RenderRectTexture::RenderRectTexture(
 }
 
 void RenderRectTexture::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    m_coordReal = m_coordCenter - state.getCoordLeftTop();
 
 };
 
@@ -176,7 +116,7 @@ void RenderRectTexture::draw(SDL_Renderer* renderer) {
 RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
 : RenderObject(nPositionZ) {
     m_pTexture = tex;
-    m_coordCenter = p0;
+    m_coordReal = p0;
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
     m_currentFrame.w = 500;
@@ -184,14 +124,14 @@ RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPos
 }
 
 void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordReal = m_coordCenter + state.getCoordLeftTop();
+    m_coordRender = m_coordReal - state.getCoordLeftTop();
 
 };
 
 void RenderBackground::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
-    dst.x = m_coordReal.x();
-    dst.y = m_coordReal.y();
+    dst.x = m_coordRender.x();
+    dst.y = m_coordRender.y();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
@@ -445,7 +385,7 @@ void RenderBuilding2::modify(const GameState& state, IRenderWindow* pRenderWindo
     }
 
     for (int i = 0; i < m_vFillPointsAbsolute.size(); i++) {
-        m_vFillPoints[i] = state.getCoordLeftTop() + m_vFillPointsAbsolute[i];
+        m_vFillPoints[i] = m_vFillPointsAbsolute[i] - state.getCoordLeftTop();
     }
 
     for (int i = 0; i < m_vLines.size(); i++) {

@@ -10,7 +10,6 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_nElapsedTime = 0;
     m_nWindowWidth = windowWidth;
     m_nWindowHeight = windowHeight;
-    m_nPlayerPrevTime = 0;
     m_bIsChangedWindowSize = true;
 }
 
@@ -34,47 +33,8 @@ const CoordXY &GameState::getCoordLeftTop() const {
     return m_coordLeftTop;
 }
 
-void GameState::setMovePlayerDirection(MoveObjectDirection direction) {
-    m_playerDirection = direction;
-}
-
-void GameState::movePlayer() {
-    long nSpeedAnimation = 25;
-    long position = getElapsedTime() / nSpeedAnimation;
-
-    if (m_nPlayerPrevTime == position) {
-        return; // skip - already desition done
-    }
-
-    m_nPlayerPrevTime = position;
-
-    int nStep = 5;
-    switch(m_playerDirection) {
-        case MoveObjectDirection::UP:
-            m_coordLeftTop += CoordXY(0, nStep);
-            break;
-        case MoveObjectDirection::UP_LEFT:
-            m_coordLeftTop += CoordXY(nStep, nStep);
-            break;
-        case MoveObjectDirection::UP_RIGHT:
-            m_coordLeftTop += CoordXY(-1*nStep, nStep);
-            break;
-        case MoveObjectDirection::DOWN:
-            m_coordLeftTop += CoordXY(0, -1*nStep);
-            break;
-        case MoveObjectDirection::DOWN_LEFT:
-            m_coordLeftTop += CoordXY(nStep, -1*nStep);
-            break;
-        case MoveObjectDirection::DOWN_RIGHT:
-            m_coordLeftTop += CoordXY(-1*nStep, -1*nStep);
-            break;
-        case MoveObjectDirection::LEFT:
-            m_coordLeftTop += CoordXY(nStep, 0);
-            break;
-        case MoveObjectDirection::RIGHT:
-            m_coordLeftTop += CoordXY(-1*nStep, 0);
-            break;
-    }
+void GameState::setCoordLeftTop(const CoordXY &coordLeftTop) {
+    m_coordLeftTop = coordLeftTop;
 }
 
 bool GameState::isChangedWindowSize() const {
