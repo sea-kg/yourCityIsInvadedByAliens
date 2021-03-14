@@ -90,12 +90,13 @@ int main(int argc, char* args[]) {
                 }
 
                 if (pMainController->isKeyboardSpace(keyboard_state_array)) {
-                    pMainController->getGameState()->setPlayerShooting(true);
+                    pAlientShipState->setShooting(true);
                 } else {
-                    pMainController->getGameState()->setPlayerShooting(false);
+                    pAlientShipState->setShooting(false);
                 }
 
                 if (pMainController->isKeyboardUp(keyboard_state_array)) {
+                    // pAlientShipState->setMovePlayerDirection(MoveObjectDirection::UP);
                     pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP);
                 } else if (pMainController->isKeyboardUpLeft(keyboard_state_array)) {
                     pMainController->getGameState()->setMovePlayerDirection(MoveObjectDirection::UP_LEFT);
@@ -126,7 +127,7 @@ int main(int argc, char* args[]) {
             //     }
             // }
         }
-        
+        // pAlientShipState->->movePlayer();
         pMainController->getGameState()->movePlayer();
 
         // FPS

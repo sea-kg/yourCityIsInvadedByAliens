@@ -12,7 +12,10 @@ class GameAlienShipState {
         void shot();
         GameBioplastState *popRocket();
 
+        void setShooting(bool bShooting);
+        bool isShooting() const;
     private:
         CoordXY m_p0;
+        bool m_bShooting;
         std::vector<GameBioplastState *> m_vBioplasts;
 };

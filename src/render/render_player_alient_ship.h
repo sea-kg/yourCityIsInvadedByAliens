@@ -21,7 +21,7 @@ class RenderPlayerAlienShip : public RenderObject {
 
     private:
         GameAlienShipState *m_pState;
-        // CoordXY m_coordReal;
+        CoordXY m_coordPositionRendering;
         long m_nPrevPosition;
         long m_nSpeedAnimation;
         SDL_Rect currentFrame;

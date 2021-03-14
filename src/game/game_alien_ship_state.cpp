@@ -6,6 +6,7 @@
 
 GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_p0 = p0;
+    m_bShooting = false;
 }
 
 const CoordXY &GameAlienShipState::getPosition() {
@@ -14,6 +15,14 @@ const CoordXY &GameAlienShipState::getPosition() {
 
 void GameAlienShipState::shot() {
     m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(0,250)));
+}
+
+void GameAlienShipState::setShooting(bool bShooting) {
+    m_bShooting = bShooting;
+}
+
+bool GameAlienShipState::isShooting() const {
+    return m_bShooting;
 }
 
 GameBioplastState *GameAlienShipState::popRocket() {

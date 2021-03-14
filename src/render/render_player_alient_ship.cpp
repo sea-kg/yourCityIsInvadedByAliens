@@ -22,21 +22,18 @@ RenderPlayerAlienShip::RenderPlayerAlienShip(
 }
 
 void RenderPlayerAlienShip::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    // m_coordReal = m_coordCenter + state.getCoordLeftTop();
-    
     long m_nSpeedAnimation = 100;
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        
-        // m_coordReal = m_coordCenter + state.getCoordLeftTop();
+        m_coordPositionRendering = m_pState->getPosition() + state.getCoordLeftTop();
         return; // skip - already desition done
     }
     m_nPrevPosition = position;
 
     currentFrame.y = (position % 25) * 100;
 
-    if (state.isPlayerShooting()) {
+    if (m_pState->isShooting()) {
         std::cout << "Shooting!!!!";
         m_pState->shot();
     }
@@ -53,8 +50,8 @@ void RenderPlayerAlienShip::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x =  m_pState->getPosition().x();
-    dst.y = m_pState->getPosition().y();
+    dst.x =  m_coordPositionRendering.x();
+    dst.y = m_coordPositionRendering.y();
     dst.w = currentFrame.w;
     dst.h = currentFrame.h;
 
