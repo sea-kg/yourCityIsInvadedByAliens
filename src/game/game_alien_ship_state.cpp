@@ -1,5 +1,4 @@
 #include "game_alien_ship_state.h"
-#include "wsjcpp_core.h"
 
 // ---------------------------------------------------------------------
 // GameAlienShipState

@@ -1,6 +1,11 @@
 #include "game_state.h"
-#include "wsjcpp_core.h"
 #include <SDL.h>
+#include <chrono>
+
+long getCurrentTimeInMilliseconds() {
+    long nTimeStart = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    return nTimeStart;
+}
 
 // ---------------------------------------------------------------------
 // GameState
@@ -14,11 +19,11 @@ GameState::GameState(int windowWidth, int windowHeight) {
 }
 
 void GameState::init() {
-    m_nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
+    m_nStartTime = getCurrentTimeInMilliseconds();
 }
 
 void GameState::updateElapsedTime() {
-    m_nElapsedTime = WsjcppCore::getCurrentTimeInMilliseconds() - m_nStartTime;
+    m_nElapsedTime = getCurrentTimeInMilliseconds() - m_nStartTime;
 }
 
 void GameState::addBuilding(GameBuilding *pBuilding) {

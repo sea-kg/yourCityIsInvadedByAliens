@@ -1,6 +1,9 @@
 
-tmp
+tmp/
+tmp-win/
+bin/
 yourCityIsInvadedByAliens_Tomsk
+yourCityIsInvadedByAliens_Tomsk.exe
 .wsjcpp
 .vscode
 .DS_Store

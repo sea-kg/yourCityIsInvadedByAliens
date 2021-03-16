@@ -2,9 +2,11 @@
 #include <vector>
 #include "coordxy.h"
 #include "json.hpp"
-#include <vector>
+#include <iostream>
 #include "game_building.h"
 #include "move_object_direction.h"
+
+long getCurrentTimeInMilliseconds();
 
 class GameState {
 

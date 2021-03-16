@@ -1,5 +1,4 @@
 #include "game_building.h"
-#include "wsjcpp_core.h"
 #include <SDL.h>
 
 

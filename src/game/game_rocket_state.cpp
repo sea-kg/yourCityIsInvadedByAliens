@@ -1,5 +1,4 @@
 #include "game_rocket_state.h"
-#include "wsjcpp_core.h"
 
 // ---------------------------------------------------------------------
 // GameRocketState

@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <chrono>
 
 #include "render_window.h"
 #include "render_tank0.h"
 #include "render_player_alient_ship.h"
 #include "main_controller.h"
-#include "wsjcpp_core.h"
 
 int main(int argc, char* args[]) {
 
@@ -38,7 +38,7 @@ int main(int argc, char* args[]) {
     bool gameRunning = true;
 
     long nNumberOfFrames = 0;
-    long nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
+    long nStartTime = getCurrentTimeInMilliseconds();
     long nElapsed = 0;
     pMainController->getGameState()->init();
     
@@ -147,13 +147,13 @@ int main(int argc, char* args[]) {
 
         // FPS
         nNumberOfFrames++;
-        nElapsed = WsjcppCore::getCurrentTimeInMilliseconds() - nStartTime;
+        nElapsed = getCurrentTimeInMilliseconds() - nStartTime;
         if (nElapsed > 3000) {
             double nFPS = nNumberOfFrames;
             nFPS /= nElapsed;
             nFPS *= 1000;
             pMainController->updateFpsValue(nFPS);
-            nStartTime = WsjcppCore::getCurrentTimeInMilliseconds();
+            nStartTime = getCurrentTimeInMilliseconds();
             nNumberOfFrames = 0;
         }
 

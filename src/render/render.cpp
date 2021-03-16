@@ -1,5 +1,4 @@
 #include "render.h"
-#include "wsjcpp_core.h"
 #include "sea5kg_triangulation.h"
 #include <cmath>
 #define PI 3.14159265

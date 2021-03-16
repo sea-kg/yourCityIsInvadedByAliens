@@ -1,5 +1,4 @@
 #include "render_player_alient_ship.h"
-#include "wsjcpp_core.h"
 #include "sea5kg_triangulation.h"
 
 // ---------------------------------------------------------------------

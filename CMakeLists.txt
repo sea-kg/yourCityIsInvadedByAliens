@@ -81,7 +81,6 @@ if ( SDL2_image_FOUND )
 endif( SDL2_image_FOUND )
 ############################
 
-
 ############################
 # SDL2_ttf
 find_package(SDL2TTF REQUIRED)
@@ -92,17 +91,17 @@ endif( SDL2TTF_FOUND )
 ############################
 
 ############################
-# SDL2_ttf
-find_package(SDL2TTF REQUIRED)
-if ( SDL2TTF_FOUND )
-    list (APPEND WSJCPP_INCLUDE_DIRS ${SDL2TTF_INCLUDE_DIRS})
-    list (APPEND WSJCPP_LIBRARIES ${SDL2TTF_LIBRARY})
-endif( SDL2TTF_FOUND )
+# SDL2_mixer
+find_package(SDL2_mixer REQUIRED)
+if ( SDL2_MIXER_FOUND )
+    list (APPEND WSJCPP_INCLUDE_DIRS ${SDL2_MIXER_INCLUDE_DIRS})
+    list (APPEND WSJCPP_LIBRARIES ${SDL2_MIXER_LIBRARY})
+endif( SDL2_MIXER_FOUND )
 ############################
 
-include(FindPkgConfig)
-pkg_check_modules(SDL2_Mixer REQUIRED IMPORTED_TARGET SDL2_mixer)
-list (APPEND WSJCPP_LIBRARIES PkgConfig::SDL2_Mixer)
+# include(FindPkgConfig)
+# pkg_check_modules(SDL2_Mixer REQUIRED IMPORTED_TARGET SDL2_mixer)
+# list (APPEND WSJCPP_LIBRARIES PkgConfig::SDL2_Mixer)
 
 include_directories(${WSJCPP_INCLUDE_DIRS})
 

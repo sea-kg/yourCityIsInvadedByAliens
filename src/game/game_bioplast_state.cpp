@@ -1,5 +1,4 @@
 #include "game_bioplast_state.h"
-#include "wsjcpp_core.h"
 #include <cmath>
 
 // ---------------------------------------------------------------------

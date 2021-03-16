@@ -1,5 +1,4 @@
 #include "game_tank0_state.h"
-#include "wsjcpp_core.h"
 
 // ---------------------------------------------------------------------
 // GameTank0State
