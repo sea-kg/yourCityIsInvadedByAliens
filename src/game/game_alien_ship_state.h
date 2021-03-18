@@ -15,7 +15,8 @@ class GameAlienShipState {
         void move(long nElapsedTime);
         void shot();
         GameBioplastState *popRocket();
-
+        void rocketAttack();
+        
     private:
         CoordXY m_p0;
         MoveObjectDirection m_moveDirection;

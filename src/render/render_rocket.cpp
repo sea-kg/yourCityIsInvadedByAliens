@@ -32,7 +32,7 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
         return; // skip - already desition done
     }
 
-    if (m_pRocketState->isExploded()) {
+    if (m_nLifeTime < m_nMaxLifeTime && m_pRocketState->isExploded()) {
         m_nLifeTime = m_nMaxLifeTime;
     }
 

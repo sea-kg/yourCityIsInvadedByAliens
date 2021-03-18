@@ -1,4 +1,5 @@
 #include "game_alien_ship_state.h"
+#include <iostream>
 
 // ---------------------------------------------------------------------
 // GameAlienShipState
@@ -78,4 +79,8 @@ GameBioplastState *GameAlienShipState::popRocket() {
         m_vBioplasts.pop_back();
     }
     return pRet;
+}
+
+void GameAlienShipState::rocketAttack() {
+    std::cout << "GameAlienShipState::rocketAttack, negative hit points" << std::endl;
 }

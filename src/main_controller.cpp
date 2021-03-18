@@ -194,7 +194,23 @@ void MainController::toggleFullscreen() {
 void MainController::modifyObjects() {
     m_pRenderWindow->modifyObjects(*m_pGameState);
 
+    CoordXY p0 = m_pAlientShipState->getPosition();
     // calculate intersection rockets and player
+    for (int i = 0; i < m_pRenderWindow->m_vRockets.size(); i++) {
+        GameRocketState *pRocket = m_pRenderWindow->m_vRockets[i];
+        if (pRocket->isExploded() || pRocket->hasDestroyed()) {
+            continue;
+        }
+        CoordXY p1 = pRocket->getPosition();
+         // distance
+        double dx = p0.x() - p1.x();
+        double dy = p0.y() - p1.y();
+        double nDistance = sqrt(dx * dx + dy * dy);
+        if (nDistance < 20.0) {
+            pRocket->explode();
+            m_pAlientShipState->rocketAttack();
+        }
+    }
     // TODO delete rockets from vector after finish objects
 }
 
