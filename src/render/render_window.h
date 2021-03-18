@@ -25,6 +25,9 @@ class RenderWindow : public IRenderWindow {
         SDL_Renderer* getRenderer();
 
         void getWindowSize(int* w, int* h);
+
+        std::vector<GameRocketState *> m_vRockets;
+        
     private:
         bool m_bFullsreeen;
         SDL_Window* m_pWindow;

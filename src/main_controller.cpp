@@ -7,7 +7,7 @@
 #include "utils_loader_screen.h"
 #include "json.hpp"
 #include <fstream>
-
+#include "render_player_alient_ship.h"
 
 static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
 
@@ -20,6 +20,7 @@ MainController::MainController(const std::string &sWindowName) {
     m_pRenderWindow = nullptr;
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
+    m_pAlientShipState = nullptr;
 }
 
 bool MainController::initSDL2() {
@@ -165,6 +166,15 @@ void MainController::loadGameDataWithProgressBar() {
     // coordinates of player
     m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
     m_pRenderWindow->addObject(m_pCoordText);
+
+    m_pAlientShipState = new GameAlienShipState(getCoordCenter());
+    m_pRenderWindow->addObject(
+        new RenderPlayerAlienShip(
+            m_pAlientShipState,
+            m_pTextureAlienShip1,
+            1000
+        )
+    );
 }
 
 bool MainController::isFullscreen() {
@@ -179,6 +189,13 @@ void MainController::toggleFullscreen() {
     m_pGameState->updateWindowSize(w,h);
     m_nWindowWidth = w;
     m_nWindowHeight = h;
+}
+
+void MainController::modifyObjects() {
+    m_pRenderWindow->modifyObjects(*m_pGameState);
+
+    // calculate intersection rockets and player
+    // TODO delete rockets from vector after finish objects
 }
 
 bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {
@@ -305,7 +322,8 @@ bool MainController::isKeyboardSpace(const Uint8 *keyboard_state_array) {
     return keyboard_state_array[SDL_SCANCODE_SPACE];
 }
 
-void MainController::updatePlayerCoord(const CoordXY &playerCoord) {
+void MainController::updatePlayerCoord() {
+    const CoordXY &playerCoord = m_pAlientShipState->getPosition();
     std::string sCoordPlayer = "X=" + std::to_string(playerCoord.x())
             + " Y=" + std::to_string(playerCoord.y());
     m_pCoordText->updateText(sCoordPlayer);
@@ -314,6 +332,10 @@ void MainController::updatePlayerCoord(const CoordXY &playerCoord) {
 void MainController::updateFpsValue(int nFps) {
     m_pFpsText->updateText("FPS: ~" + std::to_string(nFps));
     std::cout << "FPS: ~" << nFps << std::endl;
+}
+
+GameAlienShipState *MainController::getGameAlienShipState() {
+    return m_pAlientShipState;
 }
 
 void MainController::generateTanks() {

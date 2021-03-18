@@ -44,6 +44,7 @@ void RenderWindow::addObject(RenderObject *pObject) {
 }
 
 void RenderWindow::addRocket(GameRocketState *pState) {
+    m_vRockets.push_back(pState);
     m_vObjects.push_back(new RenderRocket(pState, m_pTextureRocket, 3000));
 }
 

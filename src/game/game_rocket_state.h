@@ -12,9 +12,12 @@ class GameRocketState {
         void move();
         bool hasDestroyed();
         void destroy();
+        void explode();
+        bool isExploded();
 
     private:
         CoordXY m_p0;
         bool m_bDestroyed;
+        bool m_bExploded;
         MoveObjectDirection m_nDirection;
 };

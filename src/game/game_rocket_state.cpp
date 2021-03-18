@@ -7,6 +7,7 @@ GameRocketState::GameRocketState(const CoordXY &p0, MoveObjectDirection directio
 : m_nDirection(direction) {
     m_p0 = p0;
     m_bDestroyed = false;
+    m_bExploded = false;
 }
 
 MoveObjectDirection GameRocketState::getDirection() {
@@ -44,4 +45,12 @@ bool GameRocketState::hasDestroyed() {
 
 void GameRocketState::destroy() {
     m_bDestroyed = true;
+}
+
+void GameRocketState::explode() {
+    m_bExploded = true;
+}
+
+bool GameRocketState::isExploded() {
+    return m_bExploded;
 }

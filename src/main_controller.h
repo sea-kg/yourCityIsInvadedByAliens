@@ -2,6 +2,7 @@
 #include <string>
 #include "render_window.h"
 #include "render.h"
+#include "game_alien_ship_state.h"
 
 class MainController {
     public:
@@ -16,6 +17,7 @@ class MainController {
         // window
         bool isFullscreen();
         void toggleFullscreen();
+        void modifyObjects();
 
         // keyboard
         bool isKeyboardUp(const Uint8 *keyboard_state_array);
@@ -32,8 +34,10 @@ class MainController {
         bool isKeyboardSpace(const Uint8 *keyboard_state_array);
             
 
-        void updatePlayerCoord(const CoordXY &playerCoord);
+        void updatePlayerCoord();
         void updateFpsValue(int nFps);
+        GameAlienShipState *getGameAlienShipState();
+
     private:
         void generateTanks();
 
@@ -55,4 +59,5 @@ class MainController {
 
         RenderAbsoluteTextBlock *m_pCoordText;
         RenderAbsoluteTextBlock *m_pFpsText;
+        GameAlienShipState *m_pAlientShipState;
 };

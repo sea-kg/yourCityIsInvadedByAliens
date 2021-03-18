@@ -26,15 +26,7 @@ int main(int argc, char* args[]) {
     CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
-    GameAlienShipState *pAlientShipState = new GameAlienShipState(coordCenter);
-    pMainController->getWindow()->addObject(
-        new RenderPlayerAlienShip(
-            pAlientShipState,
-            pTextureAlienShip1,
-            1000
-        )
-    );
-
+    GameAlienShipState *pAlientShipState = pMainController->getGameAlienShipState();
     bool gameRunning = true;
 
     long nNumberOfFrames = 0;
@@ -50,7 +42,7 @@ int main(int argc, char* args[]) {
     while (gameRunning) {
         pMainController->getGameState()->updateElapsedTime();
         pMainController->getWindow()->clear();
-        pMainController->getWindow()->modifyObjects(*(pMainController->getGameState()));
+        pMainController->modifyObjects();
         pMainController->getWindow()->drawObjects();
 
         SDL_Event event;
@@ -158,7 +150,7 @@ int main(int argc, char* args[]) {
         }
 
         if (nElapsed > 500) {
-            pMainController->updatePlayerCoord(pAlientShipState->getPosition());
+            pMainController->updatePlayerCoord();
         }
     }
 

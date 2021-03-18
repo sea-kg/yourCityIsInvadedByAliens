@@ -21,7 +21,7 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
 }
 
 RenderRocket::~RenderRocket() {
-    delete m_pRocketState;
+    // delete m_pRocketState;
 }
 
 void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -30,6 +30,10 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     if (m_nPrevPosition == position) {
         m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
         return; // skip - already desition done
+    }
+
+    if (m_pRocketState->isExploded()) {
+        m_nLifeTime = m_nMaxLifeTime;
     }
 
     m_nPrevPosition = position;
