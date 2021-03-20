@@ -50,7 +50,7 @@ class MainController {
         GameState *m_pGameState;
 
         SDL_Texture* m_pTextureBackground;
-        SDL_Texture* m_pTextureBuildingBlock;
+        SDL_Texture* m_pTextureTower0;
         SDL_Texture* m_pTextureAlienShip1;
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;

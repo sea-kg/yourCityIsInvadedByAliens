@@ -97,7 +97,7 @@ void MainController::loadGameDataWithProgressBar() {
     loader.updateText("Loading... textures");
 
     m_pTextureBackground = m_pRenderWindow->loadTexture("res/gfx/background.png");
-    m_pTextureBuildingBlock = m_pRenderWindow->loadTexture("res/gfx/building-block.png");
+    m_pTextureTower0 = m_pRenderWindow->loadTexture("res/buildings/tower0/texture.png");
     m_pTextureAlienShip1 = m_pRenderWindow->loadTexture("res/sprites/alien-ship.png");
     m_pTextureTank0 = m_pRenderWindow->loadTexture("res/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket("res/sprites/tank0-rocket.png");
@@ -118,7 +118,7 @@ void MainController::loadGameDataWithProgressBar() {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         m_pGameState->addBuilding(pBuilding);
-        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, m_pTextureBuildingBlock);
+        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, m_pTextureTower0);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
         minPointMap.update(
             std::min(min0.x(), minPointMap.x()),
