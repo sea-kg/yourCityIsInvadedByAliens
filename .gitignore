@@ -10,6 +10,7 @@ yourCityIsInvadedByAliens_Tomsk.exe
 
 # Prerequisites
 *.d
+*.log
 
 # Compiled Object files
 *.slo

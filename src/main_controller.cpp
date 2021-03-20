@@ -8,6 +8,7 @@
 #include "json.hpp"
 #include <fstream>
 #include "render_player_alient_ship.h"
+#include "wsjcpp_core.h"
 
 static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
 
@@ -21,6 +22,7 @@ MainController::MainController(const std::string &sWindowName) {
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
     m_pAlientShipState = nullptr;
+    TAG = "MainController";
 }
 
 bool MainController::initSDL2() {
@@ -91,13 +93,12 @@ CoordXY MainController::getCoordCenter() {
     );
 }
 
-void MainController::loadGameDataWithProgressBar() {
+bool MainController::loadGameDataWithProgressBar() {
     UtilsLoaderScreen loader(m_pRenderWindow, m_pGameState);
     loader.init();
     loader.updateText("Loading... textures");
 
     m_pTextureBackground = m_pRenderWindow->loadTexture("res/gfx/background.png");
-    m_pTextureTower0 = m_pRenderWindow->loadTexture("res/buildings/tower0/texture.png");
     m_pTextureAlienShip1 = m_pRenderWindow->loadTexture("res/sprites/alien-ship.png");
     m_pTextureTank0 = m_pRenderWindow->loadTexture("res/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket("res/sprites/tank0-rocket.png");
@@ -105,7 +106,23 @@ void MainController::loadGameDataWithProgressBar() {
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture("res/textures/left-panel-info.png");
     m_pRenderWindow->loadTextureBioplast("res/sprites/alient-bioplast.png");
 
+    loader.updateText("Loading... buildings textures");
+
+    std::vector<std::string> vBuildings = WsjcppCore::getListOfDirs("res/buildings");
+    for (int i = 0; i < vBuildings.size(); i++) {
+        std::string sName = vBuildings[i];
+        std::string sPathTexture = "res/buildings/" + sName + "/texture.png";
+        if (!WsjcppCore::fileExists(sPathTexture)) {
+            WsjcppLog::err(TAG, "Not found " + sPathTexture);
+            loader.updateText("Not found " + sPathTexture);
+            return false;
+        }
+        m_mapBuildingsTextures[sName] = m_pRenderWindow->loadTexture(sPathTexture.c_str());
+    }
+
     loader.updateText("Loading... buildings");
+    
+    SDL_Texture* pTextureTower0 = m_mapBuildingsTextures["tower0"];
 
     // load map from json
     std::ifstream ifs("./res/data.json");
@@ -118,7 +135,7 @@ void MainController::loadGameDataWithProgressBar() {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         m_pGameState->addBuilding(pBuilding);
-        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, m_pTextureTower0);
+        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureTower0);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
         minPointMap.update(
             std::min(min0.x(), minPointMap.x()),
@@ -175,6 +192,7 @@ void MainController::loadGameDataWithProgressBar() {
             1000
         )
     );
+    return true;
 }
 
 bool MainController::isFullscreen() {

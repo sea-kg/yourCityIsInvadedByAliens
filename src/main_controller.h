@@ -12,7 +12,7 @@ class MainController {
         RenderWindow *getWindow();
         GameState *getGameState();
         CoordXY getCoordCenter();
-        void loadGameDataWithProgressBar();
+        bool loadGameDataWithProgressBar();
         
         // window
         bool isFullscreen();
@@ -39,6 +39,8 @@ class MainController {
         GameAlienShipState *getGameAlienShipState();
 
     private:
+        std::string TAG;
+
         void generateTanks();
 
         std::string m_sWindowName;
@@ -50,12 +52,12 @@ class MainController {
         GameState *m_pGameState;
 
         SDL_Texture* m_pTextureBackground;
-        SDL_Texture* m_pTextureTower0;
         SDL_Texture* m_pTextureAlienShip1;
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
+        std::map<std::string, SDL_Texture*> m_mapBuildingsTextures;
 
         RenderAbsoluteTextBlock *m_pCoordText;
         RenderAbsoluteTextBlock *m_pFpsText;

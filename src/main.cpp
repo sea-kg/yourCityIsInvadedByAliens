@@ -16,7 +16,9 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    pMainController->loadGameDataWithProgressBar();
+    if (!pMainController->loadGameDataWithProgressBar()) {
+        return -1;
+    }
 
     SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture("res/gfx/background.png");
     SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture("res/gfx/building-block.png");
