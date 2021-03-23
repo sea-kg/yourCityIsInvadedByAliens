@@ -229,7 +229,28 @@ void MainController::modifyObjects() {
             m_pAlientShipState->rocketAttack();
         }
     }
-    // TODO delete rockets from vector after finish objects
+
+    for (int i = 0; i < m_pRenderWindow->m_vRockets.size(); i++) {
+        GameRocketState *pRocket = m_pRenderWindow->m_vRockets[i];
+        if (pRocket->isExploded() || pRocket->hasDestroyed()) {
+            continue;
+        }
+        CoordXY p1 = pRocket->getPosition();
+
+        for (int b = 0; b < m_pRenderWindow->m_vBioplasts.size(); b++) {
+            GameBioplastState *pBioplast = m_pRenderWindow->m_vBioplasts[b];
+            CoordXY p2 = pBioplast->getPosition();
+            // distance
+            double dx = p1.x() - p2.x();
+            double dy = p1.y() - p2.y();
+            double nDistance = sqrt(dx * dx + dy * dy);
+            if (nDistance < 15.0) {
+                pRocket->explode();
+                // m_pAlientShipState->rocketAttack();
+            }
+        }
+    }
+
 }
 
 bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {

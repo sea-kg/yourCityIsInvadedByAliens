@@ -27,6 +27,7 @@ class RenderWindow : public IRenderWindow {
         void getWindowSize(int* w, int* h);
 
         std::vector<GameRocketState *> m_vRockets;
+        std::vector<GameBioplastState *> m_vBioplasts;
         
     private:
         bool m_bFullsreeen;

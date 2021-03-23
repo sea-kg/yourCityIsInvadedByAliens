@@ -49,6 +49,7 @@ void RenderWindow::addRocket(GameRocketState *pState) {
 }
 
 void RenderWindow::addBioplast(GameBioplastState *pState) {
+    m_vBioplasts.push_back(pState);
     m_vObjects.push_back(new RenderBioplast(pState, m_pTextureBioplast, 3000));
 }
 
