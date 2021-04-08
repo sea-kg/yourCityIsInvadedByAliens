@@ -1,6 +1,6 @@
 # Game: Your City Is Invaded By Aliens - Tomsk
 
-![Alt text](/contrib/main-screen.png?raw=true "Main Screen")
+![Alt text](/contrib/main-screen.jpg?raw=true "Main Screen")
 
 ## Build
 
