@@ -4,7 +4,11 @@
 
 class UtilsLoaderScreen {
     public:
-        UtilsLoaderScreen(RenderWindow *pRenderWindow, GameState *pGameState);
+        UtilsLoaderScreen(
+            const std::string &sResourceDir,
+            RenderWindow *pRenderWindow,
+            GameState *pGameState
+        );
         ~UtilsLoaderScreen();
         void init();
         void updateText(const std::string &sNewText);
@@ -12,6 +16,7 @@ class UtilsLoaderScreen {
 
     private:
         void addObject(RenderObject *pObject);
+        std::string m_sResourceDir;
         GameState *m_pGameState;
 
         RenderWindow *m_pRenderWindow;

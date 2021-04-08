@@ -1,6 +1,11 @@
 #include "utils_loader_screen.h"
 
-UtilsLoaderScreen::UtilsLoaderScreen(RenderWindow *pRenderWindow, GameState *pGameState) {
+UtilsLoaderScreen::UtilsLoaderScreen(
+    const std::string &sResourceDir,
+    RenderWindow *pRenderWindow,
+    GameState *pGameState
+) {
+    m_sResourceDir = sResourceDir;
     m_pRenderWindow = pRenderWindow;
     m_pGameState = pGameState;
 }
@@ -13,10 +18,10 @@ UtilsLoaderScreen::~UtilsLoaderScreen() {
 }
 
 void UtilsLoaderScreen::init() {
-    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture("res/textures/loader-screen-background.png");
+    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/loader-screen-background.png");
     int nBackW = 840;
     int nBackH = 840;
-    // m_pTextureLogo = m_pRenderWindow->loadTexture("res/textures/logo.png");
+    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/logo.png");
     int nWindowWidth, nWindowHeight;
 
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);

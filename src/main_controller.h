@@ -7,6 +7,8 @@
 class MainController {
     public:
         MainController(const std::string &sWindowName);
+        bool findResourceDir();
+        std::string getResourceDir();
         bool initSDL2();
         bool initRenderWindow();
         RenderWindow *getWindow();
@@ -19,7 +21,7 @@ class MainController {
         void toggleFullscreen();
         void modifyObjects();
 
-        // keyboard
+        // keyboard - TODO redesign keyboard class
         bool isKeyboardUp(const Uint8 *keyboard_state_array);
         bool isKeyboardUpLeft(const Uint8 *keyboard_state_array);
         bool isKeyboardUpRight(const Uint8 *keyboard_state_array);
@@ -44,6 +46,7 @@ class MainController {
         void generateTanks();
 
         std::string m_sWindowName;
+        std::string m_sResourceDir;
         int m_nWindowWidth;
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;

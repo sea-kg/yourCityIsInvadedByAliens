@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
+#include <wsjcpp_core.h>
 
 #include "render_window.h"
 #include "render_tank0.h"
@@ -12,6 +13,10 @@ int main(int argc, char* args[]) {
 
     MainController *pMainController = new MainController("yourCityIsInvadedByAliens_Tomsk (v0.0.1)");
 
+    if (!pMainController->findResourceDir()) {
+        return -1;
+    }
+
     if (!pMainController->initRenderWindow()) {
         return -1;
     }
@@ -19,11 +24,12 @@ int main(int argc, char* args[]) {
     if (!pMainController->loadGameDataWithProgressBar()) {
         return -1;
     }
+    std::string sResourceDir = pMainController->getResourceDir();
 
-    SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture("res/gfx/background.png");
-    SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture("res/gfx/building-block.png");
-    SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture("res/sprites/alien-ship.png");
-    SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture("res/gfx/mouse-target.png");
+    SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/background.png");
+    SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/building-block.png");
+    SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture(sResourceDir + "/sprites/alien-ship.png");
+    SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/mouse-target.png");
 
     CoordXY coordCenter = pMainController->getCoordCenter();
     

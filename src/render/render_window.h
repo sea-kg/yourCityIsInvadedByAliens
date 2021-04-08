@@ -15,9 +15,9 @@ class RenderWindow : public IRenderWindow {
         void removeObject(RenderObject *pObject);
         void sortObjectsByPositionZ();
 
-        SDL_Texture* loadTexture(const char* p_filePath);
-        void loadTextureRocket(const char* p_filePath);
-        void loadTextureBioplast(const char* p_filePath);
+        SDL_Texture* loadTexture(const std::string &sFilePath);
+        void loadTextureRocket(const std::string &sFilePath);
+        void loadTextureBioplast(const std::string &sFilePath);
         void cleanUp();
         void clear();
         void modifyObjects(const GameState& state);

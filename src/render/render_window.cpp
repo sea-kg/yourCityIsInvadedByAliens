@@ -93,23 +93,23 @@ void RenderWindow::sortObjectsByPositionZ() {
     }
 }
 
-SDL_Texture* RenderWindow::loadTexture(const char* p_filePath) {
+SDL_Texture* RenderWindow::loadTexture(const std::string &sFilePath) {
     SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(m_pRenderer, p_filePath);
+    texture = IMG_LoadTexture(m_pRenderer, sFilePath.c_str());
 
     if (texture == NULL) {
-        std::cout << "Failed to load texture. Error: " << SDL_GetError() << std::endl;
+        std::cout << "Failed to load texture by path " << sFilePath << ". Error: " << SDL_GetError() << std::endl;
     }
 
     return texture;
 }
 
-void RenderWindow::loadTextureRocket(const char* p_filePath) {
-    m_pTextureRocket = this->loadTexture(p_filePath);
+void RenderWindow::loadTextureRocket(const std::string &sFilePath) {
+    m_pTextureRocket = this->loadTexture(sFilePath.c_str());
 }
 
-void RenderWindow::loadTextureBioplast(const char* p_filePath) {
-    m_pTextureBioplast = this->loadTexture(p_filePath);
+void RenderWindow::loadTextureBioplast(const std::string &sFilePath) {
+    m_pTextureBioplast = this->loadTexture(sFilePath.c_str());
 }
 
 void RenderWindow::cleanUp() {

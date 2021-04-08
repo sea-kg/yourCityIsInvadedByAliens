@@ -10,6 +10,7 @@
 #include "render_player_alient_ship.h"
 #include "wsjcpp_core.h"
 
+// TODO redesign to load filelist from res
 static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
 
 // MainController
@@ -21,8 +22,32 @@ MainController::MainController(const std::string &sWindowName) {
     m_pRenderWindow = nullptr;
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
+    m_sResourceDir = "./res";
     m_pAlientShipState = nullptr;
     TAG = "MainController";
+}
+
+bool MainController::findResourceDir() {
+    std::vector<std::string> vPaths;
+    vPaths.push_back("/usr/share/yourCityIsInvadedByAliens_Tomsk");
+    vPaths.push_back("./res");
+    m_sResourceDir = "";
+    for (int i = 0; i < vPaths.size(); i++) {
+        if (WsjcppCore::dirExists(vPaths[i])) {
+            m_sResourceDir = vPaths[i];
+            break;
+        }
+    }
+    if (m_sResourceDir == "") {
+        std::cerr << "Not found resource dir (./res by default)" << std::endl;
+        return false;
+    }
+    std::cout << "Resource dir: " << m_sResourceDir << std::endl;
+    return true;
+}
+
+std::string MainController::getResourceDir() {
+    return m_sResourceDir;
 }
 
 bool MainController::initSDL2() {
@@ -94,24 +119,28 @@ CoordXY MainController::getCoordCenter() {
 }
 
 bool MainController::loadGameDataWithProgressBar() {
-    UtilsLoaderScreen loader(m_pRenderWindow, m_pGameState);
+    UtilsLoaderScreen loader(
+        m_sResourceDir,
+        m_pRenderWindow,
+        m_pGameState
+    );
     loader.init();
     loader.updateText("Loading... textures");
 
-    m_pTextureBackground = m_pRenderWindow->loadTexture("res/gfx/background.png");
-    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture("res/sprites/alien-ship.png");
-    m_pTextureTank0 = m_pRenderWindow->loadTexture("res/sprites/tank0.png");
-    m_pRenderWindow->loadTextureRocket("res/sprites/tank0-rocket.png");
-    m_pTextureCursor = m_pRenderWindow->loadTexture("res/gfx/mouse-target.png");
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture("res/textures/left-panel-info.png");
-    m_pRenderWindow->loadTextureBioplast("res/sprites/alient-bioplast.png");
+    m_pTextureBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/gfx/background.png");
+    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/alien-ship.png");
+    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/tank0.png");
+    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/sprites/tank0-rocket.png");
+    m_pTextureCursor = m_pRenderWindow->loadTexture(m_sResourceDir + "/gfx/mouse-target.png");
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/left-panel-info.png");
+    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
 
     loader.updateText("Loading... buildings textures");
 
-    std::vector<std::string> vBuildings = WsjcppCore::getListOfDirs("res/buildings");
+    std::vector<std::string> vBuildings = WsjcppCore::getListOfDirs(m_sResourceDir + "/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
         std::string sName = vBuildings[i];
-        std::string sPathTexture = "res/buildings/" + sName + "/texture.png";
+        std::string sPathTexture = m_sResourceDir + "/buildings/" + sName + "/texture.png";
         if (!WsjcppCore::fileExists(sPathTexture)) {
             WsjcppLog::err(TAG, "Not found " + sPathTexture);
             loader.updateText("Not found " + sPathTexture);
@@ -125,7 +154,7 @@ bool MainController::loadGameDataWithProgressBar() {
     SDL_Texture* pTextureTower0 = m_mapBuildingsTextures["tower0"];
 
     // load map from json
-    std::ifstream ifs("./res/data.json");
+    std::ifstream ifs(m_sResourceDir + "/data.json");
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
     nlohmann::json jsonBuildings = jf["buildings"];
