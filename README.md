@@ -1,6 +1,6 @@
-# yourCityIsInvadedByAliens_Tomsk
+# Game: Your City Is Invaded By Aliens - Tomsk
 
-Game: Your City Is Invaded By Aliens - Tomsk
+![Alt text](/contrib/main-screen.png?raw=true "Main Screen")
 
 ## Build
 
