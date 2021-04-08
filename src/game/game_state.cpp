@@ -38,8 +38,8 @@ const CoordXY &GameState::getCoordLeftTop() const {
     return m_coordLeftTop;
 }
 
-void GameState::setCoordLeftTop(const CoordXY &coordLeftTop) {
-    m_coordLeftTop = coordLeftTop;
+void GameState::setCoordLeftTop(const CoordXY &newCoordLeftTop) {
+    m_coordLeftTop = newCoordLeftTop;
 }
 
 bool GameState::isChangedWindowSize() const {

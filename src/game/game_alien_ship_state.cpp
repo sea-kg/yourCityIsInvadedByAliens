@@ -28,7 +28,15 @@ void GameAlienShipState::setMoveDirection(MoveObjectDirection direction) {
     m_moveDirection = direction;
 }
 
-void GameAlienShipState::move(long nElapsedTime) {
+void GameAlienShipState::move(
+    long nElapsedTime,
+    const CoordXY &minPointMap,
+    const CoordXY &maxPointMap,
+    int nLeftPad,
+    int nRightPad,
+    int nTopPad,
+    int nBottomPad
+) {
     long position = nElapsedTime / m_nSpeedMoving;
 
     if (m_nMovePrevTime == position) {
@@ -38,32 +46,49 @@ void GameAlienShipState::move(long nElapsedTime) {
     m_nMovePrevTime = position;
 
     int nStep = 5;
+    CoordXY p0;
     switch(m_moveDirection) {
         case MoveObjectDirection::UP:
-            m_p0 = m_p0 + CoordXY(0, -1*nStep);
+            p0 = m_p0 + CoordXY(0, -1*nStep);
             break;
         case MoveObjectDirection::UP_LEFT:
-            m_p0 = m_p0 + CoordXY(-1*nStep, -1*nStep);
+            p0 = m_p0 + CoordXY(-1*nStep, -1*nStep);
             break;
         case MoveObjectDirection::UP_RIGHT:
-            m_p0 = m_p0 + CoordXY(nStep, -1*nStep);
+            p0 = m_p0 + CoordXY(nStep, -1*nStep);
             break;
         case MoveObjectDirection::DOWN:
-            m_p0 = m_p0 + CoordXY(0, nStep);
+            p0 = m_p0 + CoordXY(0, nStep);
             break;
         case MoveObjectDirection::DOWN_LEFT:
-            m_p0 = m_p0 + CoordXY(-1*nStep, nStep);
+            p0 = m_p0 + CoordXY(-1*nStep, nStep);
             break;
         case MoveObjectDirection::DOWN_RIGHT:
-            m_p0 = m_p0 + CoordXY(nStep, nStep);
+            p0 = m_p0 + CoordXY(nStep, nStep);
             break;
         case MoveObjectDirection::LEFT:
-            m_p0 = m_p0 + CoordXY(-1*nStep, 0);
+            p0 = m_p0 + CoordXY(-1*nStep, 0);
             break;
         case MoveObjectDirection::RIGHT:
-            m_p0 = m_p0 + CoordXY(nStep, 0);
+            p0 = m_p0 + CoordXY(nStep, 0);
             break;
+        default:
+            p0 = m_p0;
     }
+    // game map borders
+    if (p0.x() > maxPointMap.x() - nRightPad) {
+        p0.setX(maxPointMap.x() - nRightPad);
+    }
+    if (p0.x() < minPointMap.x() + nLeftPad) {
+        p0.setX(minPointMap.x() + nLeftPad);
+    }
+    if (p0.y() > maxPointMap.y() - nBottomPad) {
+        p0.setY(maxPointMap.y() - nBottomPad);
+    }
+    if (p0.y() < minPointMap.y() + nTopPad) {
+        p0.setY(minPointMap.y() + nTopPad);
+    }
+    m_p0.update(p0);
 }
 
 void GameAlienShipState::shot() {

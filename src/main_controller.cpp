@@ -129,45 +129,42 @@ bool MainController::loadGameDataWithProgressBar() {
     nlohmann::json jf = nlohmann::json::parse(ifs);
     
     nlohmann::json jsonBuildings = jf["buildings"];
-    CoordXY minPointMap(0,0);
-    CoordXY maxPointMap(0,0);
     for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
         // std::cout << it.key() << " | " << it.value() << "\n";
         GameBuilding *pBuilding = new GameBuilding(it.value());
         m_pGameState->addBuilding(pBuilding);
         RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureTower0);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
-        minPointMap.update(
-            std::min(min0.x(), minPointMap.x()),
-            std::min(min0.y(), minPointMap.y())
+        m_minPointMap.update(
+            std::min(min0.x(), m_minPointMap.x()),
+            std::min(min0.y(), m_minPointMap.y())
         );
         CoordXY max0 = pRenderBuilding2->getMaxPoint();
-        maxPointMap.update(
-            std::max(max0.x(), maxPointMap.x()),
-            std::max(max0.y(), maxPointMap.y())
+        m_maxPointMap.update(
+            std::max(max0.x(), m_maxPointMap.x()),
+            std::max(max0.y(), m_maxPointMap.y())
         );
         m_pRenderWindow->addObject(pRenderBuilding2);
     }
 
-
     // background
     // around to 500px
-    minPointMap.update(
-        minPointMap.x() - ((minPointMap.x() - 500) % 500) - 500,
-        minPointMap.y() - ((minPointMap.y() - 500) % 500) - 500
+    m_minPointMap.update(
+        m_minPointMap.x() - ((m_minPointMap.x() - 500) % 500) - 500,
+        m_minPointMap.y() - ((m_minPointMap.y() - 500) % 500) - 500
     );
-    maxPointMap.update(
-        maxPointMap.x() - ((maxPointMap.x() + 500) % 500) + 500,
-        maxPointMap.y() - ((maxPointMap.y() + 500) % 500) + 500
+    m_maxPointMap.update(
+        m_maxPointMap.x() - ((m_maxPointMap.x() + 500) % 500) + 500,
+        m_maxPointMap.y() - ((m_maxPointMap.y() + 500) % 500) + 500
     );
-    for (int x = minPointMap.x(); x <= maxPointMap.x(); x += 500) {
-        for (int y = minPointMap.y(); y <= maxPointMap.y(); y += 500) {
+    for (int x = m_minPointMap.x(); x <= m_maxPointMap.x(); x += 500) {
+        for (int y = m_minPointMap.y(); y <= m_maxPointMap.y(); y += 500) {
             m_pRenderWindow->addObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
         }
     }
 
-    m_pGameState->setMinPoint(minPointMap);
-    m_pGameState->setMaxPoint(maxPointMap);
+    m_pGameState->setMinPoint(m_minPointMap);
+    m_pGameState->setMaxPoint(m_maxPointMap);
     
     loader.updateText("Generating enimies...");
     this->generateTanks();

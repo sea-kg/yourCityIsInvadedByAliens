@@ -45,6 +45,8 @@ class MainController {
 
         std::string m_sWindowName;
         int m_nWindowWidth;
+        CoordXY m_minPointMap;
+        CoordXY m_maxPointMap;
         int m_nWindowHeight;
         int m_nProgressBarStatus;
         int m_nProgressBarMax;

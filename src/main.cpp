@@ -120,7 +120,20 @@ int main(int argc, char* args[]) {
             //     }
             // }
         }
-        pAlientShipState->move(pMainController->getGameState()->getElapsedTime());
+
+        int nLeftPad = pMainController->getCoordCenter().x() + 320/2;
+        int nRightPad = pMainController->getCoordCenter().x() - 320/2;
+        int nTopPad = pMainController->getCoordCenter().y();
+        int nBottomPad = pMainController->getCoordCenter().y();
+        pAlientShipState->move(
+            pMainController->getGameState()->getElapsedTime(),
+            pMainController->getGameState()->getMinPoint(),
+            pMainController->getGameState()->getMaxPoint(),
+            nLeftPad,
+            nRightPad,
+            nTopPad,
+            nBottomPad
+        );
 
         // window must move to the player
         /*

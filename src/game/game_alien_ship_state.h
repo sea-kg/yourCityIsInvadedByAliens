@@ -12,7 +12,15 @@ class GameAlienShipState {
         void setShooting(bool bShooting);
         bool isShooting() const;
         void setMoveDirection(MoveObjectDirection direction);
-        void move(long nElapsedTime);
+        void move(
+            long nElapsedTime,
+            const CoordXY &minPointMap,
+            const CoordXY &maxPointMap,
+            int nLeftPad,
+            int nRightPad,
+            int nTopPad,
+            int nBottomPad
+        );
         void shot();
         GameBioplastState *popRocket();
         void rocketAttack();

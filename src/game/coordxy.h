@@ -7,6 +7,9 @@ class CoordXY {
         int x() const;
         int y() const;
         void update(int x, int y);
+        void update(const CoordXY& coord);
+        void setX(int x);
+        void setY(int y);
 
         CoordXY& operator+=(const CoordXY& other);
         CoordXY& operator-=(const CoordXY& other);
