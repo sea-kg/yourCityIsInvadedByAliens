@@ -1,5 +1,7 @@
 # Game: Your City Is Invaded By Aliens - Tomsk
 
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6InNlYS1rZyIsInJlcG8xIjoieW91ckNpdHlJc0ludmFkZWRCeUFsaWVuc19Ub21zayIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjE1NjQxLCJpYXQiOjE2MTgwMzAxNzV9.AB1eykM0StzM0E-oNfTiJ0ixJ5jIIXoXvwjUO7NRJXY)](https://www.deepcode.ai/app/gh/sea-kg/yourCityIsInvadedByAliens_Tomsk/_/dashboard?utm_content=gh%2Fsea-kg%2FyourCityIsInvadedByAliens_Tomsk)
+
 ![Alt text](/contrib/main-screen.jpg?raw=true "Main Screen")
 
 ## Build
