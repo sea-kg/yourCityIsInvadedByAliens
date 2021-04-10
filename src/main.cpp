@@ -24,9 +24,12 @@ int main(int argc, char* args[]) {
     if (!pMainController->loadGameDataWithProgressBar()) {
         return -1;
     }
-    std::string sResourceDir = pMainController->getResourceDir();
 
-    SDL_Texture* pTextureBackground = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/background.png");
+    if (!pMainController->pausedSettingsDialog()) {
+        return -1;
+    }
+
+    std::string sResourceDir = pMainController->getResourceDir();
     SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/building-block.png");
     SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture(sResourceDir + "/sprites/alien-ship.png");
     SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/mouse-target.png");

@@ -71,7 +71,7 @@ bool MainController::initSDL2() {
         exit(1);
     }
 
-    int result = 0;
+    /*int result = 0;
     int flags = MIX_INIT_MP3;
     if (flags != (result = Mix_Init(flags))) {
         printf("Could not initialize mixer (result: %d).\n", result);
@@ -80,7 +80,7 @@ bool MainController::initSDL2() {
     }
     Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
     Mix_Music *music = Mix_LoadMUS(MY_COOL_MP3);
-    Mix_PlayMusic(music, 1);
+    Mix_PlayMusic(music, 1);*/
 
     return true;
 }
@@ -218,6 +218,10 @@ bool MainController::loadGameDataWithProgressBar() {
             1000
         )
     );
+    return true;
+}
+
+bool MainController::pausedSettingsDialog() {
     return true;
 }
 

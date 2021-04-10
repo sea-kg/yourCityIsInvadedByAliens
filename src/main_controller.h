@@ -15,6 +15,7 @@ class MainController {
         GameState *getGameState();
         CoordXY getCoordCenter();
         bool loadGameDataWithProgressBar();
+        bool pausedSettingsDialog();
         
         // window
         bool isFullscreen();
