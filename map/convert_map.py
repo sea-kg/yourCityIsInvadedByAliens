@@ -39,8 +39,6 @@ for nd in root:
         pass
     elif nd.tag == 'way':
         parse_building(nd)
-        # buildings
-        pass
     elif nd.tag == 'bounds':
         pass
     elif nd.tag == 'node':
@@ -49,7 +47,6 @@ for nd in root:
             'lat': float(nd.attrib['lat']),
             'lon': float(nd.attrib['lon'])
         }
-        pass
     else:
         print(nd.tag)
     # id = page.findtext('id', default = 'None')
