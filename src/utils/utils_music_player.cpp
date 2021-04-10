@@ -3,7 +3,7 @@
 #include <thread>
 
 // TODO redesign to load filelist from res
-static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
+static const char *MY_COOL_MP3 = "res/app/music/sea5kg - InvitedByAliens.mp3";
 
 UtilsMusicPlayer::UtilsMusicPlayer(
     const std::string &sResourceDir,
