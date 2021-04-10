@@ -1,8 +1,6 @@
 
 #pragma once
 #include "render.h"
-#include "game_tank0_state.h"
-#include "ai_tank0.h"
 
 class RenderLeftPanelInfo : public RenderObject {
 

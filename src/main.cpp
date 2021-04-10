@@ -8,6 +8,7 @@
 #include "render_tank0.h"
 #include "render_player_alient_ship.h"
 #include "main_controller.h"
+#include "utils_music_player.h"
 
 int main(int argc, char* args[]) {
 
@@ -25,15 +26,13 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    if (!pMainController->pausedSettingsDialog()) {
+    if (!pMainController->showStartDialog()) {
         return -1;
     }
 
     std::string sResourceDir = pMainController->getResourceDir();
-    SDL_Texture* pTextureBuildingBlock = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/building-block.png");
+    
     SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture(sResourceDir + "/sprites/alien-ship.png");
-    SDL_Texture* pTextureCursor = pMainController->getWindow()->loadTexture(sResourceDir + "/gfx/mouse-target.png");
-
     CoordXY coordCenter = pMainController->getCoordCenter();
     
     // player
@@ -44,12 +43,14 @@ int main(int argc, char* args[]) {
     long nStartTime = getCurrentTimeInMilliseconds();
     long nElapsed = 0;
     pMainController->getGameState()->init();
-    
-    // RenderMouse *pMouse = new RenderMouse(coordCenter, pTextureCursor, 2000);
-    // pMainController->getWindow()->addObject(pMouse);
-
     pMainController->getWindow()->sortObjectsByPositionZ();
-    pMainController->getGameState()->setMouseCaptured(false);
+
+    UtilsMusicPlayer *pMusicPlayer = new UtilsMusicPlayer(
+        sResourceDir,
+        pMainController->getGameState()
+    );
+    pMusicPlayer->init();
+
     while (gameRunning) {
         pMainController->getGameState()->updateElapsedTime();
         pMainController->getWindow()->clear();
@@ -77,9 +78,9 @@ int main(int argc, char* args[]) {
                     if (pMainController->isFullscreen()) {
                         pMainController->toggleFullscreen();
                     } else {
-                        if (pMainController->getGameState()->isMouseCaptured()) {
-                            pMainController->getGameState()->setMouseCaptured(false);
-                        }
+                        // if (pMainController->getGameState()->isMouseCaptured()) {
+                        //     pMainController->getGameState()->setMouseCaptured(false);
+                        // }
                     }
                 }
 
@@ -117,17 +118,7 @@ int main(int argc, char* args[]) {
                 } else {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::NONE);
                 }
-
-            } // else if (event.type == SDL_MOUSEMOTION) {
-              //   if (pMainController->getGameState()->isMouseCaptured()) {
-              //       CoordXY p0(event.motion.x, event.motion.y);
-              //       pMouse->updateCoord(p0);
-              //   }
-            // } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-            //     if (!pMainController->getGameState()->isMouseCaptured()) {
-            //         pMainController->getGameState()->setMouseCaptured(true);
-            //     }
-            // }
+            }
         }
 
         int nLeftPad = pMainController->getCoordCenter().x() + 320/2;

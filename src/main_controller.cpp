@@ -5,13 +5,13 @@
 #include "render_tank0.h"
 #include "render_left_panel_info.h"
 #include "utils_loader_screen.h"
+#include "utils_start_dialog.h"
 #include "json.hpp"
 #include <fstream>
 #include "render_player_alient_ship.h"
 #include "wsjcpp_core.h"
 
-// TODO redesign to load filelist from res
-static const char *MY_COOL_MP3 = "res/sound/music/sea5kg - InvitedByAliens.mp3";
+
 
 // MainController
 
@@ -70,18 +70,13 @@ bool MainController::initSDL2() {
         printf("Failed to init SDL\n");
         exit(1);
     }
-
-    /*int result = 0;
+    int result = 0;
     int flags = MIX_INIT_MP3;
     if (flags != (result = Mix_Init(flags))) {
         printf("Could not initialize mixer (result: %d).\n", result);
         printf("Mix_Init: %s\n", Mix_GetError());
         exit(1);
     }
-    Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
-    Mix_Music *music = Mix_LoadMUS(MY_COOL_MP3);
-    Mix_PlayMusic(music, 1);*/
-
     return true;
 }
 
@@ -127,12 +122,11 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.init();
     loader.updateText("Loading... textures");
 
-    m_pTextureBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/gfx/background.png");
+    m_pTextureBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/background.png");
     m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/alien-ship.png");
     m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/sprites/tank0-rocket.png");
-    m_pTextureCursor = m_pRenderWindow->loadTexture(m_sResourceDir + "/gfx/mouse-target.png");
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/left-panel-info.png");
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
 
     loader.updateText("Loading... buildings textures");
@@ -221,8 +215,14 @@ bool MainController::loadGameDataWithProgressBar() {
     return true;
 }
 
-bool MainController::pausedSettingsDialog() {
-    return true;
+bool MainController::showStartDialog() {
+     UtilsStartDialog dialog(
+        m_sResourceDir,
+        m_pRenderWindow,
+        m_pGameState
+    );
+    dialog.init();
+    return dialog.start();
 }
 
 bool MainController::isFullscreen() {

@@ -62,3 +62,12 @@ CoordXY CoordXY::operator-(const CoordXY& other) const {
     c -= other;
     return c;
 }
+
+bool CoordXY::isInsideRect(const CoordXY& topLeft, const CoordXY& bottomRight) const {
+    return
+        m_nX >= topLeft.x()
+        && m_nX <= bottomRight.x()
+        && m_nY >= topLeft.y()
+        && m_nY <= bottomRight.y()
+    ;
+}

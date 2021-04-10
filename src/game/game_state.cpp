@@ -16,6 +16,7 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_nWindowWidth = windowWidth;
     m_nWindowHeight = windowHeight;
     m_bIsChangedWindowSize = true;
+    m_bPlayMusic = false;
 }
 
 void GameState::init() {
@@ -68,6 +69,18 @@ void GameState::setMouseCaptured(bool bMouseCaptured) {
 
 bool GameState::isMouseCaptured() const {
     return m_bMouseCaptured;
+}
+
+void GameState::setPlayMusic(bool bPlayMusic) {
+    m_bPlayMusic = bPlayMusic;
+}
+
+void GameState::togglePlayMusic() {
+    m_bPlayMusic = !m_bPlayMusic;
+}
+
+bool GameState::isPlayMusic() const {
+    return m_bPlayMusic;
 }
 
 void GameState::setMinPoint(const CoordXY &p) {

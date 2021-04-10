@@ -18,10 +18,10 @@ UtilsLoaderScreen::~UtilsLoaderScreen() {
 }
 
 void UtilsLoaderScreen::init() {
-    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/loader-screen-background.png");
+    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/loader-screen-background.png");
     int nBackW = 840;
     int nBackH = 840;
-    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/textures/logo.png");
+    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo.png");
     int nWindowWidth, nWindowHeight;
 
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);
