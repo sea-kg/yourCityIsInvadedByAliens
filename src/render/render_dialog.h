@@ -15,6 +15,7 @@ class RenderDialog : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
+
         CoordXY m_coordCenter;
         CoordXY m_coordReal;
         int m_nWindowWidth;

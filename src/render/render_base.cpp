@@ -42,3 +42,9 @@ void RenderObject::destroy() {
 void RenderObject::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // nothing modify in base object
 }
+
+int RenderObject::randomNoise() {
+    int n = 7;
+    int nRandom = std::rand() % n;
+    return nRandom - (n / 2);
+}

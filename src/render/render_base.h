@@ -39,6 +39,7 @@ class RenderObject {
         void destroy();
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow);
         virtual void draw(SDL_Renderer* pRenderer) = 0;
+        int randomNoise();
 
     protected:
         bool m_bDestroyed;

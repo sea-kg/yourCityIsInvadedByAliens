@@ -87,10 +87,10 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
 
     // top left 
     SDL_Rect dstTopLeft;
-    dstTopLeft.x = nWindowWidthCenter - m_nDialogWidth/2;
-    dstTopLeft.y = nWindowHeightCenter - m_nDialogHeight/2;
-    dstTopLeft.w = m_currentFrameTopLeft.w;
-    dstTopLeft.h = m_currentFrameTopLeft.h;
+    dstTopLeft.x = nWindowWidthCenter - m_nDialogWidth/2 + randomNoise();
+    dstTopLeft.y = nWindowHeightCenter - m_nDialogHeight/2 + randomNoise();
+    dstTopLeft.w = m_currentFrameTopLeft.w + randomNoise();
+    dstTopLeft.h = m_currentFrameTopLeft.h + randomNoise();
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameTopLeft, &dstTopLeft);
 
     // top middle
@@ -99,19 +99,19 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
     nMax = dstTopLeft.x + m_nDialogWidth - m_currentFrameTopLeft.w;
     for (int nPosX = nStart; nPosX <= nMax; nPosX += nStep) {
         SDL_Rect dstMiddle;
-        dstMiddle.x = nPosX;
-        dstMiddle.y = dstTopLeft.y;
-        dstMiddle.w = m_currentFrameTopMiddle.w;
-        dstMiddle.h = m_currentFrameTopMiddle.h;
+        dstMiddle.x = nPosX + randomNoise();
+        dstMiddle.y = dstTopLeft.y + randomNoise();
+        dstMiddle.w = m_currentFrameTopMiddle.w + randomNoise();
+        dstMiddle.h = m_currentFrameTopMiddle.h + randomNoise();
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameTopMiddle, &dstMiddle);
     }
 
     // top right
     SDL_Rect dstTopRight;
-    dstTopRight.x = nWindowWidthCenter + m_nDialogWidth/2 - m_currentFrameTopRight.w;
-    dstTopRight.y = nWindowHeightCenter - m_nDialogHeight/2;
-    dstTopRight.w = m_currentFrameTopRight.w;
-    dstTopRight.h = m_currentFrameTopRight.h;
+    dstTopRight.x = nWindowWidthCenter + m_nDialogWidth/2 - m_currentFrameTopRight.w + randomNoise();
+    dstTopRight.y = nWindowHeightCenter - m_nDialogHeight/2 + randomNoise();
+    dstTopRight.w = m_currentFrameTopRight.w + randomNoise();
+    dstTopRight.h = m_currentFrameTopRight.h + randomNoise();
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameTopRight, &dstTopRight);
 
     // left middle
@@ -120,10 +120,10 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
     nMax = dstTopLeft.y + m_nDialogHeight - m_currentFrameBottomLeft.h;
     for (int nPosY = nStart; nPosY <= nMax; nPosY += nStep) {
         SDL_Rect dstMiddle;
-        dstMiddle.x = dstTopLeft.x;
-        dstMiddle.y = nPosY;
-        dstMiddle.w = m_currentFrameLeftMiddle.w;
-        dstMiddle.h = m_currentFrameLeftMiddle.h;
+        dstMiddle.x = dstTopLeft.x + randomNoise();
+        dstMiddle.y = nPosY + randomNoise();
+        dstMiddle.w = m_currentFrameLeftMiddle.w + randomNoise();
+        dstMiddle.h = m_currentFrameLeftMiddle.h + randomNoise();
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameLeftMiddle, &dstMiddle);
     }
 
@@ -137,10 +137,10 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
     for (int nPosX = nStartX; nPosX <= nMaxX; nPosX += nStepX) {
         for (int nPosY = nStartY; nPosY <= nMaxY; nPosY += nStepY) {
             SDL_Rect dstMiddle;
-            dstMiddle.x = nPosX;
-            dstMiddle.y = nPosY;
-            dstMiddle.w = m_currentFrameCenter.w;
-            dstMiddle.h = m_currentFrameCenter.h;
+            dstMiddle.x = nPosX + randomNoise();
+            dstMiddle.y = nPosY + randomNoise();
+            dstMiddle.w = m_currentFrameCenter.w + randomNoise();
+            dstMiddle.h = m_currentFrameCenter.h + randomNoise();
             SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameCenter, &dstMiddle);
         }
     }
@@ -151,19 +151,19 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
     nMax = dstTopRight.y + m_nDialogHeight - m_currentFrameBottomRight.h;
     for (int nPosY = nStart; nPosY <= nMax; nPosY += nStep) {
         SDL_Rect dstMiddle;
-        dstMiddle.x = dstTopRight.x;
-        dstMiddle.y = nPosY;
-        dstMiddle.w = m_currentFrameRightMiddle.w;
-        dstMiddle.h = m_currentFrameRightMiddle.h;
+        dstMiddle.x = dstTopRight.x + randomNoise();
+        dstMiddle.y = nPosY + randomNoise();
+        dstMiddle.w = m_currentFrameRightMiddle.w + randomNoise();
+        dstMiddle.h = m_currentFrameRightMiddle.h + randomNoise();
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameRightMiddle, &dstMiddle);
     }
 
     // bottom left 
     SDL_Rect dstBottomLeft;
-    dstBottomLeft.x = nWindowWidthCenter - m_nDialogWidth/2;
-    dstBottomLeft.y = nWindowHeightCenter + m_nDialogHeight/2 - m_currentFrameBottomLeft.h;
-    dstBottomLeft.w = m_currentFrameBottomLeft.w;
-    dstBottomLeft.h = m_currentFrameBottomLeft.h;
+    dstBottomLeft.x = nWindowWidthCenter - m_nDialogWidth/2 + randomNoise();
+    dstBottomLeft.y = nWindowHeightCenter + m_nDialogHeight/2 - m_currentFrameBottomLeft.h + randomNoise();
+    dstBottomLeft.w = m_currentFrameBottomLeft.w + randomNoise();
+    dstBottomLeft.h = m_currentFrameBottomLeft.h + randomNoise();
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameBottomLeft, &dstBottomLeft);
 
     // bottom middle for
@@ -172,18 +172,18 @@ void RenderDialog::draw(SDL_Renderer* renderer) {
     nMax = dstBottomLeft.x + m_nDialogWidth - m_currentFrameBottomLeft.w;
     for (int nPosX = nStart; nPosX <= nMax; nPosX += nStep) {
         SDL_Rect dstMiddle;
-        dstMiddle.x = nPosX;
-        dstMiddle.y = dstBottomLeft.y;
-        dstMiddle.w = m_currentFrameBottomMiddle.w;
-        dstMiddle.h = m_currentFrameBottomMiddle.h;
+        dstMiddle.x = nPosX + randomNoise();
+        dstMiddle.y = dstBottomLeft.y + randomNoise();
+        dstMiddle.w = m_currentFrameBottomMiddle.w + randomNoise();
+        dstMiddle.h = m_currentFrameBottomMiddle.h + randomNoise();
         SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameBottomMiddle, &dstMiddle);
     }
 
     // bottom right
     SDL_Rect dstBottomRight;
-    dstBottomRight.x = nWindowWidthCenter + m_nDialogWidth/2 - m_currentFrameBottomRight.w;
-    dstBottomRight.y = nWindowHeightCenter + m_nDialogHeight/2 - m_currentFrameBottomRight.h;
-    dstBottomRight.w = m_currentFrameBottomRight.w;
-    dstBottomRight.h = m_currentFrameBottomRight.h;
+    dstBottomRight.x = nWindowWidthCenter + m_nDialogWidth/2 - m_currentFrameBottomRight.w + randomNoise();
+    dstBottomRight.y = nWindowHeightCenter + m_nDialogHeight/2 - m_currentFrameBottomRight.h + randomNoise();
+    dstBottomRight.w = m_currentFrameBottomRight.w + randomNoise();
+    dstBottomRight.h = m_currentFrameBottomRight.h + randomNoise();
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameBottomRight, &dstBottomRight);
 };
