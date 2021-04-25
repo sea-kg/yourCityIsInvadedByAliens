@@ -44,6 +44,7 @@ int main(int argc, char* args[]) {
     long nElapsed = 0;
     pMainController->getGameState()->init();
     pMainController->getWindow()->sortObjectsByPositionZ();
+    pMainController->startAllThreads();
 
     UtilsMusicPlayer *pMusicPlayer = new UtilsMusicPlayer(
         sResourceDir,

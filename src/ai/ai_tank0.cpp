@@ -1,23 +1,23 @@
 
 #include "ai_tank0.h"
 
-AiTank0::AiTank0() {
-
+AiTank0::AiTank0(GameTank0State *pTank0State) : AiObject() {
+    m_pTank0State = pTank0State;
 }
 
-void AiTank0::makeStep(GameTank0State &tank0State) {
-    if (!tank0State.hasRocket()) {
-        tank0State.rechargeRocket();
+void AiTank0::makeStep() {
+    if (!m_pTank0State->hasRocket()) {
+        m_pTank0State->rechargeRocket();
         return;
     }
     int nRandom = std::rand() % 4;
     if (nRandom == 0) {
-        tank0State.turnLeft();
+        m_pTank0State->turnLeft();
     } else if (nRandom == 1) {
-        tank0State.turnRight();
+        m_pTank0State->turnRight();
     } else if (nRandom == 2) {
-        tank0State.move();
+        m_pTank0State->move();
     } else if (nRandom == 3) {
-        tank0State.shotRocket();
+        m_pTank0State->shotRocket();
     }
 }

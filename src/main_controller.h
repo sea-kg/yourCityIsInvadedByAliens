@@ -2,6 +2,7 @@
 #include <string>
 #include "render_window.h"
 #include "render.h"
+#include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
 
 class MainController {
@@ -16,7 +17,8 @@ class MainController {
         CoordXY getCoordCenter();
         bool loadGameDataWithProgressBar();
         bool showStartDialog();
-        
+        void startAllThreads();
+
         // window
         bool isFullscreen();
         void toggleFullscreen();
@@ -48,14 +50,15 @@ class MainController {
 
         std::string m_sWindowName;
         std::string m_sResourceDir;
-        int m_nWindowWidth;
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
+        int m_nWindowWidth;
         int m_nWindowHeight;
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
         RenderWindow *m_pRenderWindow;
         GameState *m_pGameState;
+        MainAiThread *m_pMainAiThread;
 
         SDL_Texture* m_pTextureBackground;
         SDL_Texture* m_pTextureAlienShip1;

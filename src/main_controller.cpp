@@ -4,14 +4,13 @@
 #include "render.h"
 #include "render_tank0.h"
 #include "render_left_panel_info.h"
+#include "ai_tank0.h"
 #include "utils_loader_screen.h"
 #include "utils_start_dialog.h"
 #include "json.hpp"
 #include <fstream>
 #include "render_player_alient_ship.h"
 #include "wsjcpp_core.h"
-
-
 
 // MainController
 
@@ -25,6 +24,7 @@ MainController::MainController(const std::string &sWindowName) {
     m_sResourceDir = "./res";
     m_pAlientShipState = nullptr;
     TAG = "MainController";
+    m_pMainAiThread = new MainAiThread();
 }
 
 bool MainController::findResourceDir() {
@@ -223,6 +223,10 @@ bool MainController::showStartDialog() {
     );
     dialog.init();
     return dialog.start();
+}
+
+void MainController::startAllThreads() {
+    m_pMainAiThread->start();
 }
 
 bool MainController::isFullscreen() {
@@ -424,29 +428,22 @@ GameAlienShipState *MainController::getGameAlienShipState() {
 }
 
 void MainController::generateTanks() {
-     m_pRenderWindow->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(100,100)),
-        m_pTextureTank0,
-        1000
-    ));
 
-    m_pRenderWindow->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(100,200)),
-        m_pTextureTank0,
-        1000
-    ));
+    for (int i = 0; i < 25; i++) {
+        int nXpos = std::rand() % m_nWindowWidth;
+        int nYpos = std::rand() % m_nWindowHeight;
+        
+        GameTank0State *pTankState = new GameTank0State(CoordXY(nXpos,nYpos));
+        AiTank0 *pAiTank0 = new AiTank0(pTankState);
 
-    m_pRenderWindow->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(200,100)),
-        m_pTextureTank0,
-        1000
-    ));
+        m_pRenderWindow->addObject(new RenderTank0(
+            pTankState,
+            m_pTextureTank0,
+            1000
+        ));
 
-    m_pRenderWindow->addObject(new RenderTank0(
-        new GameTank0State(CoordXY(200,200)),
-        m_pTextureTank0,
-        1000
-    ));
+        m_pMainAiThread->addAiObject(pAiTank0);
+    }
 }
 
 

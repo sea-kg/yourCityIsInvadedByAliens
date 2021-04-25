@@ -8,7 +8,6 @@
 RenderTank0::RenderTank0(GameTank0State *pTank0State, SDL_Texture* tex,  int nPositionZ) 
 : RenderObject(nPositionZ) {
     m_pTank0State = pTank0State;
-    m_pAiTank0 = new AiTank0();
     m_pTexture = tex;
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
@@ -28,8 +27,6 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     }
 
     m_nPrevPosition = position;
-
-    m_pAiTank0->makeStep(*m_pTank0State);
 
     m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
 

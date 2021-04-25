@@ -2,7 +2,6 @@
 #pragma once
 #include "render.h"
 #include "game_tank0_state.h"
-#include "ai_tank0.h"
 
 class RenderTank0 : public RenderObject {
 
@@ -19,7 +18,6 @@ class RenderTank0 : public RenderObject {
         CoordXY m_coordRender;
         long m_nPrevPosition;
         GameTank0State *m_pTank0State;
-        AiTank0 *m_pAiTank0;
 
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
