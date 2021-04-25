@@ -258,9 +258,9 @@ void MainController::modifyObjects() {
         double dx = p0.x() - p1.x();
         double dy = p0.y() - p1.y();
         double nDistance = sqrt(dx * dx + dy * dy);
-        if (nDistance < 20.0) {
+        if (nDistance < 30.0) {
             pRocket->explode();
-            m_pAlientShipState->rocketAttack();
+            m_pAlientShipState->rocketAttack(pRocket);
         }
     }
 

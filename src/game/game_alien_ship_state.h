@@ -3,6 +3,7 @@
 #include "coordxy.h"
 #include "move_object_direction.h"
 #include "game_bioplast_state.h"
+#include "game_rocket_state.h"
 #include "json.hpp"
 
 class GameAlienShipState {
@@ -23,7 +24,7 @@ class GameAlienShipState {
         );
         void shot();
         GameBioplastState *popRocket();
-        void rocketAttack();
+        void rocketAttack(GameRocketState *pRocket);
         
     private:
         CoordXY m_p0;
@@ -32,4 +33,5 @@ class GameAlienShipState {
         long m_nSpeedMoving;
         bool m_bShooting;
         std::vector<GameBioplastState *> m_vBioplasts;
+        int m_nHealthPoints;
 };

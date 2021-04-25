@@ -9,6 +9,7 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_bShooting = false;
     m_nMovePrevTime = 0;
     m_nSpeedMoving = 25;
+    m_nHealthPoints = 100;
     m_moveDirection = MoveObjectDirection::NONE;
 }
 
@@ -106,6 +107,42 @@ GameBioplastState *GameAlienShipState::popRocket() {
     return pRet;
 }
 
-void GameAlienShipState::rocketAttack() {
+void GameAlienShipState::rocketAttack(GameRocketState *pRocket) {
     std::cout << "GameAlienShipState::rocketAttack, negative hit points" << std::endl;
+    m_nHealthPoints--;
+    MoveObjectDirection rocketMoveDirection = pRocket->getDirection();
+
+    // move ship after rocket 
+    int nStep = 15;
+    CoordXY p0;
+    switch(rocketMoveDirection) {
+        case MoveObjectDirection::UP:
+            p0 = m_p0 + CoordXY(0, -1*nStep);
+            break;
+        case MoveObjectDirection::UP_LEFT:
+            p0 = m_p0 + CoordXY(-1*nStep, -1*nStep);
+            break;
+        case MoveObjectDirection::UP_RIGHT:
+            p0 = m_p0 + CoordXY(nStep, -1*nStep);
+            break;
+        case MoveObjectDirection::DOWN:
+            p0 = m_p0 + CoordXY(0, nStep);
+            break;
+        case MoveObjectDirection::DOWN_LEFT:
+            p0 = m_p0 + CoordXY(-1*nStep, nStep);
+            break;
+        case MoveObjectDirection::DOWN_RIGHT:
+            p0 = m_p0 + CoordXY(nStep, nStep);
+            break;
+        case MoveObjectDirection::LEFT:
+            p0 = m_p0 + CoordXY(-1*nStep, 0);
+            break;
+        case MoveObjectDirection::RIGHT:
+            p0 = m_p0 + CoordXY(nStep, 0);
+            break;
+        default:
+            p0 = m_p0;
+    }
+    m_p0.update(p0);
+
 }
