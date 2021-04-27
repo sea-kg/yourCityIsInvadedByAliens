@@ -3,7 +3,6 @@
 #include "coordxy.h"
 #include "move_object_direction.h"
 #include "game_rocket_state.h"
-#include "json.hpp"
 
 class GameCloud0State {
     public:

@@ -1,4 +1,5 @@
 #include "game_cloud0_state.h"
+#include <cstdlib>
 
 // ---------------------------------------------------------------------
 // GameCloud0State

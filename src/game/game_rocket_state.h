@@ -2,7 +2,6 @@
 #include <vector>
 #include "coordxy.h"
 #include "move_object_direction.h"
-#include "json.hpp"
 
 class GameRocketState {
     public:

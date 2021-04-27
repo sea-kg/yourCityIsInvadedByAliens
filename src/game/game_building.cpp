@@ -5,12 +5,12 @@
 // ---------------------------------------------------------------------
 // GameBuilding
 
-GameBuilding::GameBuilding(nlohmann::json &jsonData) {
-    m_sName = jsonData["name"];
-    int nPoints = jsonData["points"];
+GameBuilding::GameBuilding(const YJsonObject &jsonData) {
+    m_sName = jsonData["name"].getString();
+    int nPoints = jsonData["points"].getNumber();
     for (int i = 0; i < nPoints; i++) {
-        int nX = jsonData["x" + std::to_string(i)];
-        int nY = jsonData["y" + std::to_string(i)];
+        int nX = jsonData["x" + std::to_string(i)].getNumber();
+        int nY = jsonData["y" + std::to_string(i)].getNumber();
         m_vPoints.push_back(CoordXY(nX,nY));
     }
 }

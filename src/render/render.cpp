@@ -128,6 +128,14 @@ void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWind
 };
 
 void RenderBackground::draw(SDL_Renderer* renderer) {
+    if (m_coordRender.x() < -500 || m_coordRender.x() > 2000) {
+        return;
+    }
+
+    if (m_coordRender.y() < -500 || m_coordRender.x() > 2000) {
+        return;
+    }
+
     SDL_Rect dst;
     dst.x = m_coordRender.x();
     dst.y = m_coordRender.y();
@@ -182,13 +190,13 @@ void RenderAbsoluteTextBlock::draw(SDL_Renderer* renderer) {
     Message_rect.w = surfaceMessage->w; // controls the width of the rect
     Message_rect.h = surfaceMessage->h; // controls the height of the rect
 
-    //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understand
+    // Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understand
 
-    //Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
+    // Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
 
     SDL_RenderCopy(renderer, Message, NULL, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
 
-    //Don't forget to free your surface and texture
+    // Don't forget to free your surface and texture
     SDL_FreeSurface(surfaceMessage);
     SDL_DestroyTexture(Message);
 };
@@ -393,6 +401,13 @@ void RenderBuilding2::modify(const GameState& state, IRenderWindow* pRenderWindo
 }
 
 void RenderBuilding2::draw(SDL_Renderer* renderer) {
+    if (m_nMinX < -500 || m_nMaxX > 2000) {
+        return;
+    }
+    if (m_nMinY < -500 || m_nMaxY > 2000) {
+        return;
+    }
+
     for (int i = 0; i < m_vBorderLines.size(); i++) {
         m_vBorderLines[i]->draw(renderer);
     }

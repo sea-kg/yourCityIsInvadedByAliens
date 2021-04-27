@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include <algorithm>
 
 #include "render_window.h"
 #include "render_rocket.h"

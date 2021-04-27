@@ -33,28 +33,18 @@ $ sudo apt install libsdl2-mixer-dev
 % brew install sdl2_ttf
 ```
 
-### Windows-mingw:
+### Windows  (msvc2015 x86):
 
-* [mingw-w64](http://mingw-w64.org/doku.php/download/windows) 
-  - Click to Sourceforge inatllation
-  - And add to PATH something like this `C:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\mingw64\bin;`
+Requirements:
+- Visual Studio 2015 (x86)
+- CMake
+- powershell
 
-* [cmake](https://cmake.org/download/)
-* [SDL2](https://www.libsdl.org/download-2.0.php)
-  - Dowload version for mingw devel 
-  - Unpack and copy files to mingw64
+Just run a script for download SDL2 libraries and build project:
 
-* [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
-  - Dowload version for mingw devel
-  - Unpack and copy files to mingw64
-
-* [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
-  - Dowload version for mingw devel
-  - Unpack and copy files to mingw64
-
-* [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
-  - Dowload version for mingw devel
-  - Unpack and copy files to mingw64
+```
+> msvc2015x86_build_simple.bat
+```
 
 ## useful links
 

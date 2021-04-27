@@ -105,6 +105,14 @@ void RenderRocket::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
 
+    if (m_coordRender.x() < -100 || m_coordRender.x() > 2000) {
+        return;
+    }
+
+    if (m_coordRender.y() < -100 || m_coordRender.x() > 2000) {
+        return;
+    }
+
     SDL_Rect dst;
     dst.x = m_coordRender.x() - 25;
     dst.y = m_coordRender.y() - 25;

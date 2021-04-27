@@ -27,7 +27,7 @@ class MainAiThread {
 
         std::string TAG;
         bool m_bStop;
-        pthread_t m_threadWorker;
+        std::thread *m_pThread;
         std::vector<AiObject *> m_vObjects;
         std::mutex m_vMutexObjects;
 };

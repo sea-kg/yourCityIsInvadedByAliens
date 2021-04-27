@@ -2,11 +2,11 @@
 #include <vector>
 #include "coordxy.h"
 #include "move_object_direction.h"
-#include "json.hpp"
+#include "yjson.h"
 
 class GameBuilding {
     public:
-        GameBuilding(nlohmann::json &jsonData);
+        GameBuilding(const YJsonObject &jsonData);
         const std::string &getName();
         const std::vector<CoordXY> &getPoints();
 

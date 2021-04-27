@@ -7,12 +7,13 @@
 #include "ai_tank0.h"
 #include "utils_loader_screen.h"
 #include "utils_start_dialog.h"
-#include "json.hpp"
 #include <fstream>
+#include <algorithm>
 #include "render_player_alient_ship.h"
 #include "render_cloud0.h"
 #include "render_road0.h"
 #include "wsjcpp_core.h"
+#include "ycore.h"
 #include "game_cloud0_state.h"
 
 // MainController
@@ -36,7 +37,7 @@ bool MainController::findResourceDir() {
     vPaths.push_back("./res");
     m_sResourceDir = "";
     for (int i = 0; i < vPaths.size(); i++) {
-        if (WsjcppCore::dirExists(vPaths[i])) {
+        if (YCore::dirExists(vPaths[i])) {
             m_sResourceDir = vPaths[i];
             break;
         }
@@ -135,12 +136,12 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
     loader.updateText("Loading... buildings textures");
 
-    std::vector<std::string> vBuildings = WsjcppCore::getListOfDirs(m_sResourceDir + "/buildings");
+    std::vector<std::string> vBuildings = YCore::getListOfDirs(m_sResourceDir + "/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
         std::string sName = vBuildings[i];
         std::string sPathTexture = m_sResourceDir + "/buildings/" + sName + "/texture.png";
-        if (!WsjcppCore::fileExists(sPathTexture)) {
-            WsjcppLog::err(TAG, "Not found " + sPathTexture);
+        if (!YCore::fileExists(sPathTexture)) {
+            YLog::err(TAG, "Not found " + sPathTexture);
             loader.updateText("Not found " + sPathTexture);
             return false;
         }
@@ -152,13 +153,15 @@ bool MainController::loadGameDataWithProgressBar() {
     SDL_Texture* pTextureTower0 = m_mapBuildingsTextures["tower0"];
 
     // load map from json
-    std::ifstream ifs(m_sResourceDir + "/data.json");
-    nlohmann::json jf = nlohmann::json::parse(ifs);
+    std::cout << "Data" << std::endl;
+    YJson jsonData(m_sResourceDir + "/data.json");
     
-    nlohmann::json jsonBuildings = jf["buildings"];
-    for (auto it = jsonBuildings.begin(); it != jsonBuildings.end(); ++it) {
-        // std::cout << it.key() << " | " << it.value() << "\n";
-        GameBuilding *pBuilding = new GameBuilding(it.value());
+    YJsonObject jsonBuildings = jsonData["buildings"];
+    std::vector<std::string> vKeys = jsonBuildings.getKeys();
+    for (int i = 0; i < vKeys.size(); i++) {
+        std::string sKey = vKeys[i];
+        // std::cout << sKey << std::endl;
+        GameBuilding *pBuilding = new GameBuilding(jsonBuildings[sKey]);
         m_pGameState->addBuilding(pBuilding);
         RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureTower0);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
@@ -465,7 +468,7 @@ void MainController::generateTanks() {
 }
 
 void MainController::generateClouds() {
-    for (int i = 0; i < 5000; i++) {
+    for (int i = 0; i < 10000; i++) {
         int nXpos = std::rand() % m_nMapWidth;
         nXpos += m_minPointMap.x();
         int nYpos = std::rand() % m_nMapHeight;

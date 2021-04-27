@@ -4,7 +4,6 @@
 #include "move_object_direction.h"
 #include "game_bioplast_state.h"
 #include "game_rocket_state.h"
-#include "json.hpp"
 
 class GameAlienShipState {
     public:

@@ -1,13 +1,16 @@
 
-tmp/
-tmp-win/
+/tmp
+/win-tmp
+/lin-tmp
 bin/
-yourCityIsInvadedByAliens_Tomsk
-yourCityIsInvadedByAliens_Tomsk.exe
+/yourCityIsInvadedByAliens
+/yourCityIsInvadedByAliens.exe
 .wsjcpp
 .vscode
 .DS_Store
-win-bin
+/win-bin
+/win-bin-release
+/Release/
 
 # Prerequisites
 *.d

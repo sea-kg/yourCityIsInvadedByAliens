@@ -2,7 +2,7 @@
     "id": "tower0",
     "type": "simple",
     "width": 50,
-    "hright": 50,
+    "height": 50,
     "states": {
         "normal": {
             "x": 0,

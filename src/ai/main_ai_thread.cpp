@@ -1,9 +1,8 @@
 #include "main_ai_thread.h"
-#include <wsjcpp_core.h>
+#include "ycore.h"
 
 void* processJobsThreadWorker(void *arg) {
     MainAiThread *pThread = (MainAiThread *)arg;
-    pthread_detach(pthread_self());
     pThread->run();
     return 0;
 }
@@ -11,11 +10,12 @@ void* processJobsThreadWorker(void *arg) {
 MainAiThread::MainAiThread() {
     TAG = "MainAiThread";
     m_bStop = false;
+    m_pThread = nullptr;
 }
 
 void MainAiThread::start() {
     m_bStop = false;
-    pthread_create(&m_threadWorker, NULL, &processJobsThreadWorker, (void *)this);
+    m_pThread = new std::thread(&processJobsThreadWorker, (void *)this);
 }
 
 void MainAiThread::stop() {
@@ -23,7 +23,7 @@ void MainAiThread::stop() {
 }
 
 void MainAiThread::run() {
-    WsjcppLog::info(TAG, "Starting...");
+    YLog::info(TAG, "Starting...");
     while (!m_bStop) {
         std::lock_guard<std::mutex> guard(m_vMutexObjects);
         int nSize = m_vObjects.size();
@@ -32,7 +32,7 @@ void MainAiThread::run() {
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    WsjcppLog::info(TAG, "Stopped...");
+    YLog::info(TAG, "Stopped...");
 }
 
 void MainAiThread::addAiObject(AiObject *pAiObject) {

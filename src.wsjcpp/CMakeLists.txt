@@ -14,17 +14,13 @@ set (WSJCPP_LIBRARIES "")
 set (WSJCPP_INCLUDE_DIRS "")
 set (WSJCPP_SOURCES "")
 
-find_package(Threads REQUIRED)
-list (APPEND WSJCPP_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+# find_package(Threads REQUIRED)
+# list (APPEND WSJCPP_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 
 # wsjcpp-core:v0.2.1
 list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_core/")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.h")
-
-# nlohmann/json:v3.9.1
-list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/nlohmann_json/")
-list (APPEND WSJCPP_SOURCES "./src.wsjcpp/nlohmann_json/json.hpp")
 
 # sea5kg-triangulation:v0.0.2
 list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/sea5kg_triangulation/")

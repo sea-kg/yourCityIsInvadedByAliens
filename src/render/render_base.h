@@ -1,9 +1,10 @@
 #pragma once
 
-#include <SDL.h>
+#include "SDL.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <algorithm>
 #include "game_state.h"
 #include "game_rocket_state.h"
 #include "game_bioplast_state.h"

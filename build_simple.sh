@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ ! -d tmp ]; then
-    mkdir tmp
+if [ ! -d tmp/linux ]; then
+    mkdir -p tmp/linux
 fi
 
-cd tmp 
-cmake ..
+cd tmp/linux
+cmake ../..
 make
