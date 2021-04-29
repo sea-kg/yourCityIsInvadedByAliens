@@ -69,7 +69,7 @@ void UtilsLoaderScreen::updateText(const std::string &sNewText) {
 }
 
 void UtilsLoaderScreen::addObject(RenderObject *pObject) {
-    m_pRenderWindow->addObject(pObject);
+    m_pRenderWindow->addPanelsObject(pObject);
     m_vObjects.push_back(pObject);
 }
 

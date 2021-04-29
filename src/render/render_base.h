@@ -24,7 +24,15 @@ class RenderObject;
 
 class IRenderWindow {
     public:
-        virtual void addObject(RenderObject *pObject) = 0;
+        virtual void addGroundObject(RenderObject *pObject) = 0;
+        virtual void addRoadsObject(RenderObject *pObject) = 0;
+        virtual void addVegetationObject(RenderObject *pObject) = 0;
+        virtual void addBuildingsObject(RenderObject *pObject) = 0;
+        virtual void addTransportsObject(RenderObject *pObject) = 0;
+        virtual void addRocketsObject(RenderObject *pObject) = 0;
+        virtual void addFlyingObject(RenderObject *pObject) = 0;
+        virtual void addCloudsObject(RenderObject *pObject) = 0;
+        virtual void addPanelsObject(RenderObject *pObject) = 0;
         virtual void addRocket(GameRocketState *pRocketState) = 0;
         virtual void addBioplast(GameBioplastState *pState) = 0;
 };

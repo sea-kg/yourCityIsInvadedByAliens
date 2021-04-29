@@ -167,7 +167,7 @@ bool MainController::loadGameDataWithProgressBar() {
             std::max(max0.x(), m_maxPointMap.x()),
             std::max(max0.y(), m_maxPointMap.y())
         );
-        m_pRenderWindow->addObject(pRenderBuilding2);
+        m_pRenderWindow->addBuildingsObject(pRenderBuilding2);
     }
 
     // background
@@ -182,7 +182,7 @@ bool MainController::loadGameDataWithProgressBar() {
     );
     for (int x = m_minPointMap.x(); x <= m_maxPointMap.x(); x += 500) {
         for (int y = m_minPointMap.y(); y <= m_maxPointMap.y(); y += 500) {
-            m_pRenderWindow->addObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
+            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
         }
     }
 
@@ -192,20 +192,20 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.updateText("Generating enimies...");
     this->generateTanks();
 
-    m_pRenderWindow->addObject(
+    m_pRenderWindow->addPanelsObject(
         new RenderLeftPanelInfo(m_pTextureLeftPanel, 5000)
     );
 
     // text
     m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 20), "FPS: ...", 5001);
-    m_pRenderWindow->addObject(m_pFpsText);
+    m_pRenderWindow->addPanelsObject(m_pFpsText);
 
     // coordinates of player
     m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
-    m_pRenderWindow->addObject(m_pCoordText);
+    m_pRenderWindow->addPanelsObject(m_pCoordText);
 
     m_pAlientShipState = new GameAlienShipState(getCoordCenter());
-    m_pRenderWindow->addObject(
+    m_pRenderWindow->addFlyingObject(
         new RenderPlayerAlienShip(
             m_pAlientShipState,
             m_pTextureAlienShip1,
@@ -436,7 +436,7 @@ void MainController::generateTanks() {
         GameTank0State *pTankState = new GameTank0State(CoordXY(nXpos,nYpos));
         AiTank0 *pAiTank0 = new AiTank0(pTankState);
 
-        m_pRenderWindow->addObject(new RenderTank0(
+        m_pRenderWindow->addTransportsObject(new RenderTank0(
             pTankState,
             m_pTextureTank0,
             1000

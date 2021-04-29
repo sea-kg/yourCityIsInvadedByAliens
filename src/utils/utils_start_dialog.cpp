@@ -79,7 +79,7 @@ void UtilsStartDialog::init() {
 }
 
 void UtilsStartDialog::addObject(RenderObject *pObject) {
-    m_pRenderWindow->addObject(pObject);
+    m_pRenderWindow->addPanelsObject(pObject);
     m_vObjects.push_back(pObject);
 }
 
