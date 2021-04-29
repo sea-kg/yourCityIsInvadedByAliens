@@ -48,6 +48,7 @@ class MainController {
 
         void generateTanks();
         void generateClouds();
+        void generateRoads();
 
         std::string m_sWindowName;
         std::string m_sResourceDir;
@@ -67,6 +68,7 @@ class MainController {
         SDL_Texture* m_pTextureBackground;
         SDL_Texture* m_pTextureAlienShip1;
         SDL_Texture* m_pTextureCloud0;
+        SDL_Texture* m_pTextureRoad0;
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;

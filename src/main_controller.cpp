@@ -11,6 +11,7 @@
 #include <fstream>
 #include "render_player_alient_ship.h"
 #include "render_cloud0.h"
+#include "render_road0.h"
 #include "wsjcpp_core.h"
 #include "game_cloud0_state.h"
 
@@ -131,7 +132,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
     m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
-
+    m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
     loader.updateText("Loading... buildings textures");
 
     std::vector<std::string> vBuildings = WsjcppCore::getListOfDirs(m_sResourceDir + "/buildings");
@@ -202,6 +203,9 @@ bool MainController::loadGameDataWithProgressBar() {
 
     loader.updateText("Generating enimies...");
     this->generateTanks();
+
+    loader.updateText("Generating roads...");
+    this->generateRoads();
 
     loader.updateText("Generating clouds...");
     this->generateClouds();
@@ -478,3 +482,196 @@ void MainController::generateClouds() {
 }
 
 
+void MainController::generateRoads() {
+    int nX = 1500;
+    int nY = 300;
+    int nStep = 120;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::CROSS
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::RIGHT_UP
+    ));
+    nX += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_UP
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_DOWN
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX -= nStep;
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_UP_DOWN
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_DOWN
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_RIGHT_DOWN
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::RIGHT_DOWN
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::RIGHT_UP_DOWN
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::RIGHT_UP
+    ));
+    nX += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_RIGHT_UP
+    ));
+    nX += nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX -= nStep;
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::LEFT_DOWN
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX += nStep*2;
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::HORIZONTAL
+    ));
+    nX -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::RIGHT_UP
+    ));
+    nY -= nStep;
+    m_pRenderWindow->addRoadsObject(new RenderRoad0(
+        CoordXY(nX, nY),
+        m_pTextureRoad0,
+        RoadPart::VERTICAL
+    ));
+}
