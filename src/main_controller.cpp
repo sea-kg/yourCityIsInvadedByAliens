@@ -10,7 +10,9 @@
 #include "json.hpp"
 #include <fstream>
 #include "render_player_alient_ship.h"
+#include "render_cloud0.h"
 #include "wsjcpp_core.h"
+#include "game_cloud0_state.h"
 
 // MainController
 
@@ -128,6 +130,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/sprites/tank0-rocket.png");
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
+    m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
 
     loader.updateText("Loading... buildings textures");
 
@@ -189,8 +192,19 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
     
+    m_nMapWidth = m_maxPointMap.x() - m_minPointMap.x();
+    m_nMapHeight = m_maxPointMap.y() - m_minPointMap.y();
+
+    std::cout << "m_nMapWidth: " << m_nMapWidth << std::endl;
+    std::cout << "m_nMapHeight: " << m_nMapHeight << std::endl;
+    std::cout << "m_minPointMap.x(): " << m_minPointMap.x() << std::endl;
+    std::cout << "m_minPointMap.y(): " << m_minPointMap.y() << std::endl;
+
     loader.updateText("Generating enimies...");
     this->generateTanks();
+
+    loader.updateText("Generating clouds...");
+    this->generateClouds();
 
     m_pRenderWindow->addPanelsObject(
         new RenderLeftPanelInfo(m_pTextureLeftPanel, 5000)
@@ -443,6 +457,23 @@ void MainController::generateTanks() {
         ));
 
         m_pMainAiThread->addAiObject(pAiTank0);
+    }
+}
+
+void MainController::generateClouds() {
+    for (int i = 0; i < 5000; i++) {
+        int nXpos = std::rand() % m_nMapWidth;
+        nXpos += m_minPointMap.x();
+        int nYpos = std::rand() % m_nMapHeight;
+        nYpos += m_minPointMap.y();
+        
+        auto *pCloud0State = new GameCloud0State(CoordXY(nXpos,nYpos));
+
+        m_pRenderWindow->addCloudsObject(new RenderCloud0(
+            pCloud0State,
+            m_pTextureCloud0,
+            1000
+        ));
     }
 }
 

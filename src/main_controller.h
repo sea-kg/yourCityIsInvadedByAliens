@@ -47,6 +47,7 @@ class MainController {
         std::string TAG;
 
         void generateTanks();
+        void generateClouds();
 
         std::string m_sWindowName;
         std::string m_sResourceDir;
@@ -54,6 +55,9 @@ class MainController {
         CoordXY m_maxPointMap;
         int m_nWindowWidth;
         int m_nWindowHeight;
+        int m_nMapWidth;
+        int m_nMapHeight;
+
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
         RenderWindow *m_pRenderWindow;
@@ -62,6 +66,7 @@ class MainController {
 
         SDL_Texture* m_pTextureBackground;
         SDL_Texture* m_pTextureAlienShip1;
+        SDL_Texture* m_pTextureCloud0;
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;
