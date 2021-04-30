@@ -17,7 +17,7 @@ const CoordXY &GameCloud0State::getPosition() {
 
 void GameCloud0State::move() {
     m_nMoves++;
-    if (m_nMoves > 20) {
+    if (m_nMoves > m_nMaxMoves) {
         randomDiff();
         m_nMoves = 0;
     }
@@ -31,4 +31,5 @@ void GameCloud0State::randomDiff() {
     int nYpos = std::rand() % (nStep*2 + 1);
     nYpos -= nStep;
     m_pDiff = CoordXY(nXpos, nYpos);
+    m_nMaxMoves = 20 + std::rand() % 100;
 }

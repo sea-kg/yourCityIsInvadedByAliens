@@ -17,5 +17,6 @@ class GameCloud0State {
         CoordXY m_p0;
         CoordXY m_pDiff;
         int m_nMoves;
+        int m_nMaxMoves;
         
 };
