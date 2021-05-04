@@ -1,12 +1,14 @@
 
 #pragma once
 #include "render.h"
+#include "render_player_power.h"
 
 class RenderLeftPanelInfo : public RenderObject {
 
     public:
         RenderLeftPanelInfo(
             SDL_Texture* tex,
+            RenderPlayerPower *pRenderPlayerPower,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
@@ -23,4 +25,6 @@ class RenderLeftPanelInfo : public RenderObject {
         SDL_Rect m_currentFrameMiddle;
         SDL_Rect m_currentFrameBottom;
         SDL_Texture* m_pTexture;
+
+        RenderPlayerPower *m_pRenderPlayerPower;
 };

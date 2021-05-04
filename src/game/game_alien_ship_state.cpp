@@ -9,7 +9,8 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_bShooting = false;
     m_nMovePrevTime = 0;
     m_nSpeedMoving = 25;
-    m_nHealthPoints = 100;
+    m_nMaxHealthPoints = 64;
+    m_nHealthPoints = m_nMaxHealthPoints;
     m_moveDirection = MoveObjectDirection::NONE;
 }
 
@@ -145,4 +146,12 @@ void GameAlienShipState::rocketAttack(GameRocketState *pRocket) {
     }
     m_p0.update(p0);
 
+}
+
+int GameAlienShipState::getHelthPoints() {
+    return m_nHealthPoints;
+}
+
+int GameAlienShipState::getMaxHelthPoints() {
+    return m_nMaxHealthPoints;
 }

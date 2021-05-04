@@ -5,9 +5,14 @@
 // ---------------------------------------------------------------------
 // RenderLeftPanelInfo
 
-RenderLeftPanelInfo::RenderLeftPanelInfo(SDL_Texture* tex,  int nPositionZ) 
+RenderLeftPanelInfo::RenderLeftPanelInfo(
+    SDL_Texture* tex,
+    RenderPlayerPower *pRenderPlayerPower,
+    int nPositionZ
+) 
 : RenderObject(nPositionZ) {
     m_pTexture = tex;
+    m_pRenderPlayerPower = pRenderPlayerPower;
     // m_coordCenter = pTank0State->getPosition();
     int nTopHeight = 105;
     int nBottomHeight = 105;
@@ -33,6 +38,7 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(SDL_Texture* tex,  int nPositionZ)
 void RenderLeftPanelInfo::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_nWindowWidth = state.getWindowWidth();
     m_nWindowHeight = state.getWindowHeight();
+    m_pRenderPlayerPower->modify(state, pRenderWindow);
 };
 
 void RenderLeftPanelInfo::draw(SDL_Renderer* renderer) {
@@ -65,4 +71,6 @@ void RenderLeftPanelInfo::draw(SDL_Renderer* renderer) {
     dstBottom.w = m_currentFrameBottom.w;
     dstBottom.h = m_currentFrameBottom.h;
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameBottom, &dstBottom);
+
+    m_pRenderPlayerPower->draw(renderer);
 };

@@ -24,7 +24,9 @@ class GameAlienShipState {
         void shot();
         GameBioplastState *popRocket();
         void rocketAttack(GameRocketState *pRocket);
-        
+        int getHelthPoints();
+        int getMaxHelthPoints();
+
     private:
         CoordXY m_p0;
         MoveObjectDirection m_moveDirection;
@@ -33,4 +35,5 @@ class GameAlienShipState {
         bool m_bShooting;
         std::vector<GameBioplastState *> m_vBioplasts;
         int m_nHealthPoints;
+        int m_nMaxHealthPoints;
 };

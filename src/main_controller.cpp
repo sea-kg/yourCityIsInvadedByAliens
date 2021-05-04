@@ -135,6 +135,10 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
     m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
     m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
+    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
+
+    m_pAlientShipState = new GameAlienShipState(getCoordCenter());
+
     loader.updateText("Loading... buildings textures");
 
     std::vector<std::string> vBuildings = YCore::getListOfDirs(m_sResourceDir + "/buildings");
@@ -215,7 +219,11 @@ bool MainController::loadGameDataWithProgressBar() {
     this->generateClouds();
 
     m_pRenderWindow->addPanelsObject(
-        new RenderLeftPanelInfo(m_pTextureLeftPanel, 5000)
+        new RenderLeftPanelInfo(
+            m_pTextureLeftPanel,
+            new RenderPlayerPower(m_pTexturePlayerPower0, m_pAlientShipState),
+            5000
+        )
     );
 
     // text
@@ -226,7 +234,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
     m_pRenderWindow->addPanelsObject(m_pCoordText);
 
-    m_pAlientShipState = new GameAlienShipState(getCoordCenter());
+    
     m_pRenderWindow->addFlyingObject(
         new RenderPlayerAlienShip(
             m_pAlientShipState,

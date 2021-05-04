@@ -58,6 +58,7 @@ class MainController {
         SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
+        SDL_Texture* m_pTexturePlayerPower0;
         std::map<std::string, SDL_Texture*> m_mapBuildingsTextures;
 
         RenderAbsoluteTextBlock *m_pCoordText;
