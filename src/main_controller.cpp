@@ -14,6 +14,7 @@
 #include "render_road0.h"
 #include "wsjcpp_core.h"
 #include "ycore.h"
+#include "ykeyboard.h"
 #include "game_cloud0_state.h"
 
 // MainController
@@ -305,131 +306,6 @@ void MainController::modifyObjects() {
             }
         }
     }
-
-}
-
-bool MainController::isKeyboardUp(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        keyboard_state_array[SDL_SCANCODE_UP]
-        && !keyboard_state_array[SDL_SCANCODE_LEFT]
-        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && !keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        keyboard_state_array[SDL_SCANCODE_W]
-        && !keyboard_state_array[SDL_SCANCODE_A]
-        && !keyboard_state_array[SDL_SCANCODE_D]
-        && !keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardUpLeft(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        keyboard_state_array[SDL_SCANCODE_UP]
-        && keyboard_state_array[SDL_SCANCODE_LEFT]
-        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && !keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        keyboard_state_array[SDL_SCANCODE_W]
-        && keyboard_state_array[SDL_SCANCODE_A]
-        && !keyboard_state_array[SDL_SCANCODE_D]
-        && !keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardUpRight(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        keyboard_state_array[SDL_SCANCODE_UP]
-        && !keyboard_state_array[SDL_SCANCODE_LEFT]
-        && keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && !keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        keyboard_state_array[SDL_SCANCODE_W]
-        && !keyboard_state_array[SDL_SCANCODE_A]
-        && keyboard_state_array[SDL_SCANCODE_D]
-        && !keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardDown(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        !keyboard_state_array[SDL_SCANCODE_UP]
-        && !keyboard_state_array[SDL_SCANCODE_LEFT]
-        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        !keyboard_state_array[SDL_SCANCODE_W]
-        && !keyboard_state_array[SDL_SCANCODE_A]
-        && !keyboard_state_array[SDL_SCANCODE_D]
-        && keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardDownLeft(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        !keyboard_state_array[SDL_SCANCODE_UP]
-        && keyboard_state_array[SDL_SCANCODE_LEFT]
-        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        !keyboard_state_array[SDL_SCANCODE_W]
-        && keyboard_state_array[SDL_SCANCODE_A]
-        && !keyboard_state_array[SDL_SCANCODE_D]
-        && keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardDownRight(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        !keyboard_state_array[SDL_SCANCODE_UP]
-        && !keyboard_state_array[SDL_SCANCODE_LEFT]
-        && keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        !keyboard_state_array[SDL_SCANCODE_W]
-        && !keyboard_state_array[SDL_SCANCODE_A]
-        && keyboard_state_array[SDL_SCANCODE_D]
-        && keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardLeft(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        !keyboard_state_array[SDL_SCANCODE_UP]
-        && keyboard_state_array[SDL_SCANCODE_LEFT]
-        && !keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && !keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        !keyboard_state_array[SDL_SCANCODE_W]
-        && keyboard_state_array[SDL_SCANCODE_A]
-        && !keyboard_state_array[SDL_SCANCODE_D]
-        && !keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardRight(const Uint8 *keyboard_state_array) {
-    bool bArrowUp =
-        !keyboard_state_array[SDL_SCANCODE_UP]
-        && !keyboard_state_array[SDL_SCANCODE_LEFT]
-        && keyboard_state_array[SDL_SCANCODE_RIGHT]
-        && !keyboard_state_array[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
-        !keyboard_state_array[SDL_SCANCODE_W]
-        && !keyboard_state_array[SDL_SCANCODE_A]
-        && keyboard_state_array[SDL_SCANCODE_D]
-        && !keyboard_state_array[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
-}
-
-bool MainController::isKeyboardF1(const Uint8 *keyboard_state_array) {
-    return keyboard_state_array[SDL_SCANCODE_F12];
-}
-
-bool MainController::isKeyboardF12(const Uint8 *keyboard_state_array) {
-    return keyboard_state_array[SDL_SCANCODE_F12];
-}
-
-bool MainController::isKeyboardSpace(const Uint8 *keyboard_state_array) {
-    return keyboard_state_array[SDL_SCANCODE_SPACE];
 }
 
 void MainController::updatePlayerCoord() {

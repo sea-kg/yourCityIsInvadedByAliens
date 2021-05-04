@@ -24,21 +24,6 @@ class MainController {
         void toggleFullscreen();
         void modifyObjects();
 
-        // keyboard - TODO redesign keyboard class
-        bool isKeyboardUp(const Uint8 *keyboard_state_array);
-        bool isKeyboardUpLeft(const Uint8 *keyboard_state_array);
-        bool isKeyboardUpRight(const Uint8 *keyboard_state_array);
-        bool isKeyboardDown(const Uint8 *keyboard_state_array);
-        bool isKeyboardDownLeft(const Uint8 *keyboard_state_array);
-        bool isKeyboardDownRight(const Uint8 *keyboard_state_array);
-        bool isKeyboardLeft(const Uint8 *keyboard_state_array);
-        bool isKeyboardRight(const Uint8 *keyboard_state_array);
-        
-        bool isKeyboardF1(const Uint8 *keyboard_state_array);
-        bool isKeyboardF12(const Uint8 *keyboard_state_array);
-        bool isKeyboardSpace(const Uint8 *keyboard_state_array);
-            
-
         void updatePlayerCoord();
         void updateFpsValue(int nFps);
         GameAlienShipState *getGameAlienShipState();

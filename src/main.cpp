@@ -9,6 +9,7 @@
 #include "render_player_alient_ship.h"
 #include "main_controller.h"
 #include "utils_music_player.h"
+#include "ykeyboard.h"
 
 int main(int argc, char* args[]) {
 
@@ -51,6 +52,7 @@ int main(int argc, char* args[]) {
         pMainController->getGameState()
     );
     pMusicPlayer->init();
+    YKeyboard keyboard;
 
     while (gameRunning) {
         pMainController->getGameState()->updateElapsedTime();
@@ -59,6 +61,7 @@ int main(int argc, char* args[]) {
         pMainController->getWindow()->drawObjects();
 
         SDL_Event event;
+        keyboard.pollState();
         const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 
         // Get our controls and events
@@ -85,36 +88,36 @@ int main(int argc, char* args[]) {
                     }
                 }
 
-                if (pMainController->isKeyboardF12(keyboard_state_array)) {
+                if (keyboard.isF12()) {
                     pMainController->toggleFullscreen();
                 }
 
-                if (pMainController->isKeyboardF1(keyboard_state_array)) {
+                if (keyboard.isF1()) {
                     // pMainController->getWindow()->toggleFullscreen();
                     // TODO show help and pause of the game
                 }
 
-                if (pMainController->isKeyboardSpace(keyboard_state_array)) {
+                if (keyboard.isSpace()) {
                     pAlientShipState->setShooting(true);
                 } else {
                     pAlientShipState->setShooting(false);
                 }
 
-                if (pMainController->isKeyboardUp(keyboard_state_array)) {
+                if (keyboard.isUp()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::UP);
-                } else if (pMainController->isKeyboardUpLeft(keyboard_state_array)) {
+                } else if (keyboard.isUpLeft()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::UP_LEFT);
-                } else if (pMainController->isKeyboardUpRight(keyboard_state_array)) {
+                } else if (keyboard.isUpRight()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::UP_RIGHT);
-                } else if (pMainController->isKeyboardDown(keyboard_state_array)) {
+                } else if (keyboard.isDown()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN);
-                } else if (pMainController->isKeyboardDownLeft(keyboard_state_array)) {
+                } else if (keyboard.isDownLeft()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_LEFT);
-                } else if (pMainController->isKeyboardDownRight(keyboard_state_array)) {
+                } else if (keyboard.isDownRight()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_RIGHT);
-                } else if (pMainController->isKeyboardLeft(keyboard_state_array)) {
+                } else if (keyboard.isLeft()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::LEFT);
-                } else if (pMainController->isKeyboardRight(keyboard_state_array)) {
+                } else if (keyboard.isRight()) {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::RIGHT);
                 } else {
                     pAlientShipState->setMoveDirection(MoveObjectDirection::NONE);
