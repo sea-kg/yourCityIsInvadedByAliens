@@ -46,6 +46,12 @@ Just run a script for download SDL2 libraries and build project:
 > msvc2015x86_build_simple.bat
 ```
 
+## Other Intruments
+
+- cmake - for compiling project
+- Visual Studio Code - for editing code 
+- Gimp - for design sprites/textures and etc.
+
 ## useful links
 
 * [SDL_Keycode] (https://wiki.libsdl.org/SDL_Keycode)
