@@ -13,7 +13,7 @@
 
 int main(int argc, char* args[]) {
 
-    MainController *pMainController = new MainController("yourCityIsInvadedByAliens_Tomsk (v0.0.1)");
+    MainController *pMainController = new MainController("Your City Is Invaded Aliens (v0.0.1)");
 
     if (!pMainController->findResourceDir()) {
         return -1;
