@@ -77,7 +77,7 @@ bool MainController::initSDL2() {
         exit(1);
     }
     int result = 0;
-    int flags = MIX_INIT_MP3;
+    int flags = MIX_INIT_FLAC|MIX_INIT_OGG;
     if (flags != (result = Mix_Init(flags))) {
         printf("Could not initialize mixer (result: %d).\n", result);
         printf("Mix_Init: %s\n", Mix_GetError());

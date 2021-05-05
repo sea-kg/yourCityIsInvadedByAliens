@@ -31,6 +31,17 @@ $ sudo apt install libsdl2-mixer-dev
 % brew install sdl2
 % brew install sdl2_image
 % brew install sdl2_ttf
+% brew install sdl2_mixer
+```
+
+Build:
+```
+% ./build_simple.sh
+```
+
+Run:
+```
+% ./yourCityIsInvadedByAliens
 ```
 
 ### Windows  (msvc2015 x86):
