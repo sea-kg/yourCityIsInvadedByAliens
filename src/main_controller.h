@@ -31,6 +31,7 @@ class MainController {
     private:
         std::string TAG;
 
+        void generateBackground();
         void generateTanks();
         void generateClouds();
         void generateRoads();
@@ -39,10 +40,13 @@ class MainController {
         std::string m_sResourceDir;
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
+        CoordXY m_playerStartPosition;
         int m_nWindowWidth;
         int m_nWindowHeight;
         int m_nMapWidth;
         int m_nMapHeight;
+        int m_nMaxClouds;
+        std::string m_sMapName;
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;

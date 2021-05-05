@@ -6,6 +6,7 @@
 class YJsonObject {
     public:
         YJsonObject();
+        ~YJsonObject();
         bool isUndefined();
         
 

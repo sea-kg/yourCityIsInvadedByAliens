@@ -26,6 +26,7 @@ MainController::MainController(const std::string &sWindowName) {
     m_pRenderWindow = nullptr;
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
+    m_nMaxClouds = 10000;
     m_sResourceDir = "./res";
     m_pAlientShipState = nullptr;
     TAG = "MainController";
@@ -137,7 +138,26 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
     m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
-    m_pAlientShipState = new GameAlienShipState(getCoordCenter());
+    loader.updateText("Loading... default map");
+    std::cout << "default/map.json" << std::endl;
+    YJson jsonDefaultMap(m_sResourceDir + "/default/map.json");
+    if (jsonDefaultMap.isParserFailed()) {
+        return false;
+    }
+    m_minPointMap = CoordXY(0,0);
+    m_sMapName = jsonDefaultMap["title"].getString();
+    m_nMaxClouds = jsonDefaultMap["max-clouds"].getNumber();
+    m_nMapWidth = jsonDefaultMap["width"].getNumber();
+    m_nMapHeight = jsonDefaultMap["height"].getNumber();
+    m_maxPointMap = CoordXY(
+        m_nMapWidth,
+        m_nMapHeight
+    );
+    m_playerStartPosition = CoordXY(
+        jsonDefaultMap["player-start-x"].getNumber(),
+        jsonDefaultMap["player-start-y"].getNumber()
+    );
+    m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
 
     loader.updateText("Loading... buildings textures");
 
@@ -170,44 +190,15 @@ bool MainController::loadGameDataWithProgressBar() {
         m_pGameState->addBuilding(pBuilding);
         RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureTower0);
         CoordXY min0 = pRenderBuilding2->getMinPoint();
-        m_minPointMap.update(
-            std::min(min0.x(), m_minPointMap.x()),
-            std::min(min0.y(), m_minPointMap.y())
-        );
         CoordXY max0 = pRenderBuilding2->getMaxPoint();
-        m_maxPointMap.update(
-            std::max(max0.x(), m_maxPointMap.x()),
-            std::max(max0.y(), m_maxPointMap.y())
-        );
         m_pRenderWindow->addBuildingsObject(pRenderBuilding2);
     }
 
-    // background
-    // around to 500px
-    m_minPointMap.update(
-        m_minPointMap.x() - ((m_minPointMap.x() - 500) % 500) - 500,
-        m_minPointMap.y() - ((m_minPointMap.y() - 500) % 500) - 500
-    );
-    m_maxPointMap.update(
-        m_maxPointMap.x() - ((m_maxPointMap.x() + 500) % 500) + 500,
-        m_maxPointMap.y() - ((m_maxPointMap.y() + 500) % 500) + 500
-    );
-    for (int x = m_minPointMap.x(); x <= m_maxPointMap.x(); x += 500) {
-        for (int y = m_minPointMap.y(); y <= m_maxPointMap.y(); y += 500) {
-            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
-        }
-    }
+    loader.updateText("Generating background...");
+    generateBackground();
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
-    
-    m_nMapWidth = m_maxPointMap.x() - m_minPointMap.x();
-    m_nMapHeight = m_maxPointMap.y() - m_minPointMap.y();
-
-    std::cout << "m_nMapWidth: " << m_nMapWidth << std::endl;
-    std::cout << "m_nMapHeight: " << m_nMapHeight << std::endl;
-    std::cout << "m_minPointMap.x(): " << m_minPointMap.x() << std::endl;
-    std::cout << "m_minPointMap.y(): " << m_minPointMap.y() << std::endl;
 
     loader.updateText("Generating enimies...");
     this->generateTanks();
@@ -332,6 +323,24 @@ GameAlienShipState *MainController::getGameAlienShipState() {
     return m_pAlientShipState;
 }
 
+void MainController::generateBackground() {
+    // background
+    // around to 500px
+    m_minPointMap.update(
+        m_minPointMap.x() - ((m_minPointMap.x() - 500) % 500) - 500,
+        m_minPointMap.y() - ((m_minPointMap.y() - 500) % 500) - 500
+    );
+    m_maxPointMap.update(
+        m_maxPointMap.x() - ((m_maxPointMap.x() + 500) % 500) + 500,
+        m_maxPointMap.y() - ((m_maxPointMap.y() + 500) % 500) + 500
+    );
+    for (int x = m_minPointMap.x(); x <= m_maxPointMap.x(); x += 500) {
+        for (int y = m_minPointMap.y(); y <= m_maxPointMap.y(); y += 500) {
+            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
+        }
+    }
+}
+
 void MainController::generateTanks() {
 
     for (int i = 0; i < 25; i++) {
@@ -352,7 +361,7 @@ void MainController::generateTanks() {
 }
 
 void MainController::generateClouds() {
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < m_nMaxClouds; i++) {
         int nXpos = std::rand() % m_nMapWidth;
         nXpos += m_minPointMap.x();
         int nYpos = std::rand() % m_nMapHeight;
@@ -562,3 +571,5 @@ void MainController::generateRoads() {
         RoadPart::VERTICAL
     ));
 }
+
+

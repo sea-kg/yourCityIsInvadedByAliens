@@ -12,6 +12,15 @@ YJsonObject::YJsonObject() {
     m_bObject = false;
 }
 
+YJsonObject::~YJsonObject() {
+    std::map<std::string, YJsonObject *>::iterator it = m_mapObjects.begin();
+    for (it; it != m_mapObjects.begin(); it--) {
+        YJsonObject *pObject = it->second;
+        delete pObject;
+    }
+    m_mapObjects.clear();
+}
+
 bool YJsonObject::isUndefined() {
     return m_bUndefined;
 }
@@ -258,6 +267,10 @@ bool YJson::toParse(const std::string &sLine) {
                 continue;
             } else if (c == '}') {
                 popObjectFromStack();
+                if (m_vParserStack.size() == 0) {
+                    m_nParserState = YJsonParserState::END;
+                    continue;
+                }
                 m_nParserState = YJsonParserState::END_VALUE;
                 // std::cout << " -> END_VALUE " << std::endl;
                 continue;
@@ -268,6 +281,16 @@ bool YJson::toParse(const std::string &sLine) {
                 printParserError(sError);
                 return false;
             }
+        }
+        if (m_nParserState == YJsonParserState::END) {
+            if (isSkipChar(c)) {
+                continue;
+            }
+            std::string sError = "end value, unexpected '";
+            sError += c;
+            sError += "'";
+            printParserError(sError);
+            return false;
         }
     }
     return true;
