@@ -24,7 +24,3 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/sea5kg_triangulation"
     installation-datetime: "Wed, 24 Feb 2021 09:40:50 GMT"
-unit-tests:
-  cases:
-    - name: "CoordXY"
-      description: ""
