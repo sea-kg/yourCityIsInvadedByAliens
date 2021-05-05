@@ -62,7 +62,7 @@ int main(int argc, char* args[]) {
 
         SDL_Event event;
         keyboard.pollState();
-        const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
+        pMusicPlayer->update();
 
         // Get our controls and events
         while (SDL_PollEvent(&event)) {

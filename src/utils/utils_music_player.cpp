@@ -1,9 +1,4 @@
 #include "utils_music_player.h"
-#include <chrono>
-#include <thread>
-
-// TODO redesign to load filelist from res
-static const char *MY_COOL_MP3 = "res/app/music/sea5kg - 01 InvitedByAliens.ogg";
 
 UtilsMusicPlayer::UtilsMusicPlayer(
     const std::string &sResourceDir,
@@ -11,6 +6,17 @@ UtilsMusicPlayer::UtilsMusicPlayer(
 ) {
     m_sResourceDir = sResourceDir;
     m_pGameState = pGameState;
+
+    // TODO redesign load from playlists.json
+    m_vPlaylistEmbient.push_back(sResourceDir + "/app/music/sea5kg - 00 AaaalientsBackOff.ogg");
+
+    // fight list
+    
+    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 01 InvitedByAliens.ogg");
+    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 02 Diphdo.ogg");
+    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 03 SuchMyEnimies.ogg");
+
+    
 }
 
 UtilsMusicPlayer::~UtilsMusicPlayer() {
@@ -19,8 +25,64 @@ UtilsMusicPlayer::~UtilsMusicPlayer() {
 
 void UtilsMusicPlayer::init() {
     if (m_pGameState->isPlayMusic()) {
-        Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
-        Mix_Music *music = Mix_LoadMUS(MY_COOL_MP3);
-        Mix_PlayMusic(music, 1);
+        int nOpenAudioResult = Mix_OpenAudio(
+            22050, // frequency
+            AUDIO_S16SYS, // format
+            2, // channels. Set to 2 for stereo, 1 for mono. This has nothing to do with mixing channels. 
+            640 // chunksize
+        );
+        if (nOpenAudioResult == -1) {
+            printf("Mix_OpenAudio: %s\n", Mix_GetError());
+            exit(2);
+        }
+
+        for (int i = 0; i < m_vPlaylistFight.size(); i++) {
+        std::string sPathToFile = m_vPlaylistFight[i];
+        std::cout << "Trying load music from '" << sPathToFile << "'" << std::endl;
+        Mix_Music *pMusic = Mix_LoadMUS(sPathToFile.c_str());
+            if (!pMusic) {
+                std::cout << "ERROR: " << Mix_GetError() << std::endl;
+                // this might be a critical error...
+            } else {
+                m_vPlaylistFightMusic.push_back(pMusic);
+            }
+        }
+        m_nCurrentMusicFightTrack = m_vPlaylistFightMusic.size() > 0 ? 0 : -1;
     }
+}
+
+void UtilsMusicPlayer::update() {
+    if (m_pGameState->isPlayMusic()) {
+        if (m_vPlaylistFightMusic.size() == 0) { // not load music
+            return;
+        }
+        // printf("Mix_PlayingMusic: %d\n", Mix_PlayingMusic());
+        // printf("Mix_PausedMusic: %d\n", Mix_PausedMusic());
+        if (Mix_PlayingMusic() == 0) { // no playing
+            Mix_PlayMusic(
+                m_vPlaylistFightMusic[m_nCurrentMusicFightTrack],
+                1 // plays the music zero times... (-1 forever loop)
+            );
+            m_nCurrentMusicFightTrack++;
+            m_nCurrentMusicFightTrack = m_nCurrentMusicFightTrack % m_vPlaylistFightMusic.size();
+        } else {
+            // nothing
+        }
+    }
+
+    // TODO implement pause
+    // if( Mix_PausedMusic() == 1 )
+    // {
+    //     //Продолжить играть
+    //     Mix_ResumeMusic();
+    // }
+    // //Если музыка играет
+    // else
+    // {
+    //     //Приостановить проигрывание
+    //     Mix_PauseMusic();
+    // }
+    // Mix_HaltMusic();
+
+    // TODO Mix_FadeOutMusic
 }
