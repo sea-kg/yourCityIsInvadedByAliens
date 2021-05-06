@@ -14,7 +14,7 @@ RenderPlayerPower::RenderPlayerPower(
 
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
-    m_currentFrame.w = 300;
+    m_currentFrame.w = 280;
     m_currentFrame.h = 50;
 }
 

@@ -36,8 +36,14 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(
 }
 
 void RenderLeftPanelInfo::modify(const GameState& state, IRenderWindow* pRenderWindow) {
+    
     m_nWindowWidth = state.getWindowWidth();
     m_nWindowHeight = state.getWindowHeight();
+
+    m_pRenderPlayerPower->updatePosition(CoordXY(
+        m_nWindowWidth - 290,
+        100
+    ));
     m_pRenderPlayerPower->modify(state, pRenderWindow);
 };
 
