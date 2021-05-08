@@ -19,6 +19,8 @@ UtilsLoaderScreen::~UtilsLoaderScreen() {
 
 void UtilsLoaderScreen::init() {
     m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/loader-screen-background.png");
+    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
+
     int nBackW = 840;
     int nBackH = 840;
     // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo.png");
@@ -40,22 +42,30 @@ void UtilsLoaderScreen::init() {
         }
     }
 
+    
+    this->addObject(new RenderRectTexture(
+        CoordXY((nWindowWidth - 500)/2, 10),
+        m_pTextureLogoBig,
+        500, 500,
+        1 // z-position
+    ));
+
     RenderColor progressBarColor(255,255,255,255);
 
     this->addObject(new RenderLine(
-        CoordXY(300, nWindowHeight/2 - 50),
-        CoordXY(nWindowWidth - 300, nWindowHeight/2 - 50),
+        CoordXY(300, 520),
+        CoordXY(nWindowWidth - 300, 520),
         progressBarColor
     ));
 
     this->addObject(new RenderLine(
-        CoordXY(300, nWindowHeight/2 + 50),
-        CoordXY(nWindowWidth - 300, nWindowHeight/2 + 50),
+        CoordXY(300, 550),
+        CoordXY(nWindowWidth - 300, 550),
         progressBarColor
     ));
 
     m_pText = new RenderAbsoluteTextBlock(
-        CoordXY(300, nWindowHeight/2 + 50),
+        CoordXY(300, 550),
         "Loading..."
     );
     this->addObject(m_pText);

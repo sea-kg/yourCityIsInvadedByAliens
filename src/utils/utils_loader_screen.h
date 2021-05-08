@@ -21,6 +21,7 @@ class UtilsLoaderScreen {
 
         RenderWindow *m_pRenderWindow;
         SDL_Texture *m_pTextureLoaderBackground;
+        SDL_Texture *m_pTextureLogoBig;
         std::vector<RenderObject *> m_vObjects;
 
         RenderAbsoluteTextBlock *m_pText;
