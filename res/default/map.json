@@ -4,5 +4,18 @@
     "width": 10000,
     "height": 10000,
     "player-start-x": 940,
-    "player-start-y": 1350
+    "player-start-y": 1350,
+    "background": [
+        {
+            "texture": "textures/background.png",
+            "width": 500,
+            "height": 500,
+            "fill-regions": {
+                "map-start-x": 0,
+                "map-start-y": 0,
+                "map-end-x": 10000,
+                "map-end-y": 10000
+            }
+        }
+    ]
 }

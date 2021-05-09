@@ -3,35 +3,49 @@
 #include <map>
 #include <vector>
 
+enum class YJsonObjectType {
+    UNDEFINED,
+    STRING,
+    NUMBER,
+    OBJECT,
+    ARRAY
+};
+
 class YJsonObject {
     public:
         YJsonObject();
         ~YJsonObject();
         bool isUndefined();
-        
 
         bool isString();
+        void doString();
         std::string getString() const;
         void setString(std::string sValue);
 
         bool isNumber();
+        void doNumber();
         int getNumber() const;
         void setNumber(int nValue);
 
         bool isObject();
+        void doObject();
         std::vector<std::string> getKeys() const;
         const YJsonObject &operator[](const std::string &sName) const;
         void addKeyValue(const std::string &sKey, YJsonObject *pValue);
 
+        bool isArray();
+        void doArray();
+        void push(YJsonObject *pValue);
+        int length();
+
     private:
-        bool m_bUndefined;
+        void reset();
+        std::string TAG;
+        YJsonObjectType m_nType;
         std::string m_sValue;
         int m_nValue;
-        bool m_bString;
-        bool m_bNumber;
-        bool m_bObject;
-
         std::map<std::string, YJsonObject *> m_mapObjects;
+        std::vector<YJsonObject *> m_arrObjects;
 };
 
 enum class YJsonParserState {
@@ -44,6 +58,7 @@ enum class YJsonParserState {
     START_VALUE_OBJECT,
     START_VALUE_STRING,
     START_VALUE_NUMBER,
+    START_VALUES_ARRAY,
     END_VALUE_NUMBER,
     END
 };
@@ -53,8 +68,6 @@ class YJson {
         YJson();
         YJson(const std::string &sFilename);
         bool isParserFailed();
-        std::string getString() const;
-        int getNumber() const;
         std::vector<std::string> getKeys() const;
         const YJsonObject &operator[](const std::string &sName) const;
 

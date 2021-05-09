@@ -128,14 +128,17 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.init();
     loader.updateText("Loading... textures");
 
+    // default
     m_pTextureBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/background.png");
-    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/alien-ship.png");
-    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/sprites/tank0.png");
-    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/sprites/tank0-rocket.png");
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
-    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/sprites/alient-bioplast.png");
+    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/alien-ship.png");
+    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
+    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
+    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
     m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
     m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
+
+    // app
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
     m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
     loader.updateText("Loading... default map");
