@@ -57,6 +57,13 @@ Just run a script for download SDL2 libraries and build project:
 > msvc2015x86_build_simple.bat
 ```
 
+## Struct of res
+
+`./res/app` - contains basic configuration / textures for panels, buttons and etc...
+`./res/default` - contains default map / textures / sprites and etc
+`./res/buildings` - contains all type of buildings
+
+
 ## Other Intruments
 
 - cmake - for compiling project
