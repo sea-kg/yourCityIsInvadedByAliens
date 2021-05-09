@@ -32,11 +32,13 @@ class YJsonObject {
         std::vector<std::string> getKeys() const;
         const YJsonObject &operator[](const std::string &sName) const;
         void addKeyValue(const std::string &sKey, YJsonObject *pValue);
+        bool containsKey(const std::string &sKey) const;
 
-        bool isArray();
+        bool isArray() const;
         void doArray();
         void push(YJsonObject *pValue);
-        int length();
+        int length() const;
+        const YJsonObject &operator[](int nIndex) const;
 
     private:
         void reset();

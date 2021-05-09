@@ -31,7 +31,17 @@ class MainController {
     private:
         std::string TAG;
 
-        void generateBackground();
+        void loadBackgrounds(
+            const std::string &sDefaultPath,
+            const YJsonObject &jsonBackground
+        );
+        void generateBackground(
+            SDL_Texture* pTextureBackground,
+            int nTextureWidth,
+            int nTextureHeight,
+            const CoordXY &startXY,
+            const CoordXY &endXY
+        );
         void generateTanks();
         void generateClouds();
         void generateRoads();
@@ -53,8 +63,6 @@ class MainController {
         RenderWindow *m_pRenderWindow;
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
-
-        SDL_Texture* m_pTextureBackground;
         SDL_Texture* m_pTextureAlienShip1;
         SDL_Texture* m_pTextureCloud0;
         SDL_Texture* m_pTextureRoad0;

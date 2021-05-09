@@ -32,6 +32,9 @@ void YJsonObject::doString() {
 }
 
 std::string YJsonObject::getString() const {
+    if (m_nType != YJsonObjectType::STRING) {
+        YLog::throw_err(TAG, "::getString, expected STRING");
+    }
     return m_sValue;
 }
 
@@ -55,6 +58,9 @@ void YJsonObject::doNumber() {
 }
 
 int YJsonObject::getNumber() const {
+    if (m_nType != YJsonObjectType::NUMBER) {
+        YLog::throw_err(TAG, "::getNumber, expected NUMBER");
+    }
     return m_nValue;
 }
 
@@ -88,11 +94,17 @@ std::vector<std::string> YJsonObject::getKeys() const {
 }
 
 const YJsonObject &YJsonObject::operator[](const std::string &sName) const {
-    std::map<std::string, YJsonObject *>::const_iterator it = m_mapObjects.find(sName);
-    if (it != m_mapObjects.end()) {
-        return *(it->second);
+    if (m_nType != YJsonObjectType::OBJECT) {
+        YLog::throw_err(TAG, "::operator[], must be OBJECT");
     }
-    return YJsonObject(); // #warning: returning reference to temporary
+    std::map<std::string, YJsonObject *>::const_iterator it = m_mapObjects.find(sName);
+    YJsonObject *pObject = nullptr;
+    if (it != m_mapObjects.end()) {
+        pObject = it->second;
+    } else {
+        YLog::throw_err(TAG, "[" + sName + "] - not found");
+    }
+    return *pObject;
 }
 
 void YJsonObject::addKeyValue(const std::string &sKey, YJsonObject *pValue) {
@@ -102,7 +114,15 @@ void YJsonObject::addKeyValue(const std::string &sKey, YJsonObject *pValue) {
     m_mapObjects.insert(std::pair<std::string, YJsonObject*>(sKey,pValue));
 }
 
-bool YJsonObject::isArray() {
+bool YJsonObject::containsKey(const std::string &sKey) const {
+    if (m_nType != YJsonObjectType::OBJECT) {
+        YLog::throw_err(TAG, "::containsKey(), must be OBJECT");
+    }
+    std::map<std::string, YJsonObject *>::const_iterator it = m_mapObjects.find(sKey);
+    return it != m_mapObjects.end();
+}
+
+bool YJsonObject::isArray() const {
     return m_nType == YJsonObjectType::ARRAY;
 }
 
@@ -121,12 +141,23 @@ void YJsonObject::push(YJsonObject *pValue) {
     m_arrObjects.push_back(pValue);
 }
 
-int YJsonObject::length() {
+int YJsonObject::length() const {
     if (m_nType != YJsonObjectType::ARRAY) {
-        YLog::throw_err(TAG, "::getArrayLength, expected array");
+        YLog::throw_err(TAG, "::length, expected array");
     }
     return m_arrObjects.size();
 }
+
+const YJsonObject &YJsonObject::operator[](int nIndex) const {
+    YJsonObject *pObject = nullptr;
+    if (nIndex < m_arrObjects.size()) {
+        pObject = m_arrObjects[nIndex];
+    } else {
+        YLog::throw_err(TAG, "[" + std::to_string(nIndex) + "] - not found");
+    }
+    return *pObject;
+}
+
 
 void YJsonObject::reset() {
     m_nType = YJsonObjectType::UNDEFINED;

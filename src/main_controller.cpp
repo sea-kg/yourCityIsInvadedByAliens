@@ -126,24 +126,11 @@ bool MainController::loadGameDataWithProgressBar() {
         m_pGameState
     );
     loader.init();
-    loader.updateText("Loading... textures");
-
-    // default
-    m_pTextureBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/background.png");
-    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/alien-ship.png");
-    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
-    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
-    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
-    m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
-    m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
-
-    // app
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
-    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
     loader.updateText("Loading... default map");
     std::cout << "default/map.json" << std::endl;
-    YJson jsonDefaultMap(m_sResourceDir + "/default/map.json");
+    std::string sDefaultPath = m_sResourceDir + "/default";
+    YJson jsonDefaultMap(sDefaultPath + "/map.json");
     if (jsonDefaultMap.isParserFailed()) {
         return false;
     }
@@ -160,6 +147,24 @@ bool MainController::loadGameDataWithProgressBar() {
         jsonDefaultMap["player-start-x"].getNumber(),
         jsonDefaultMap["player-start-y"].getNumber()
     );
+
+    loader.updateText("Generating background...");
+    loadBackgrounds(sDefaultPath, jsonDefaultMap["background"]);
+
+    // sDefaultPath
+    // default
+    loader.updateText("Loading... textures");
+    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/alien-ship.png");
+    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
+    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
+    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
+    m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
+    m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
+
+    // app
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
+    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
+
     m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
 
     loader.updateText("Loading... buildings textures");
@@ -196,9 +201,6 @@ bool MainController::loadGameDataWithProgressBar() {
         CoordXY max0 = pRenderBuilding2->getMaxPoint();
         m_pRenderWindow->addBuildingsObject(pRenderBuilding2);
     }
-
-    loader.updateText("Generating background...");
-    generateBackground();
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
@@ -326,20 +328,48 @@ GameAlienShipState *MainController::getGameAlienShipState() {
     return m_pAlientShipState;
 }
 
-void MainController::generateBackground() {
-    // background
-    // around to 500px
-    m_minPointMap.update(
-        m_minPointMap.x() - ((m_minPointMap.x() - 500) % 500) - 500,
-        m_minPointMap.y() - ((m_minPointMap.y() - 500) % 500) - 500
-    );
-    m_maxPointMap.update(
-        m_maxPointMap.x() - ((m_maxPointMap.x() + 500) % 500) + 500,
-        m_maxPointMap.y() - ((m_maxPointMap.y() + 500) % 500) + 500
-    );
-    for (int x = m_minPointMap.x(); x <= m_maxPointMap.x(); x += 500) {
-        for (int y = m_minPointMap.y(); y <= m_maxPointMap.y(); y += 500) {
-            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), m_pTextureBackground, -10));        
+void MainController::loadBackgrounds(
+    const std::string &sDefaultPath,
+    const YJsonObject &jsonBackground
+) {
+    for (int i = 0; i < jsonBackground.length(); i++) {
+        const YJsonObject &item = jsonBackground[i];
+        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        if (!YCore::fileExists(sTexturePath)) {
+            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+        }
+        SDL_Texture* pTextureBackground = m_pRenderWindow->loadTexture(sTexturePath);
+        int nTextureWidth = item["width"].getNumber();
+        int nTextureHeight = item["height"].getNumber();
+        const YJsonObject &fillRegion = item["fill-region"];
+        CoordXY startXY(
+            fillRegion["start-x"].getNumber(),
+            fillRegion["start-y"].getNumber()
+        );
+        CoordXY endXY(
+            fillRegion["end-x"].getNumber(),
+            fillRegion["end-y"].getNumber()
+        );
+        generateBackground(
+            pTextureBackground,
+            nTextureWidth,
+            nTextureHeight,
+            startXY,
+            endXY
+        );
+    }
+}
+
+void MainController::generateBackground(
+    SDL_Texture* pTextureBackground,
+    int nTextureWidth,
+    int nTextureHeight,
+    const CoordXY &startXY,
+    const CoordXY &endXY
+) {
+    for (int x = startXY.x(); x <= endXY.x(); x += nTextureWidth) {
+        for (int y = startXY.y(); y <= endXY.y(); y += nTextureHeight) {
+            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));        
         }
     }
 }

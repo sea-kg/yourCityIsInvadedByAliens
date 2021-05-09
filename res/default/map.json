@@ -10,11 +10,11 @@
             "texture": "textures/background.png",
             "width": 500,
             "height": 500,
-            "fill-regions": {
-                "map-start-x": 0,
-                "map-start-y": 0,
-                "map-end-x": 10000,
-                "map-end-y": 10000
+            "fill-region": {
+                "start-x": 0,
+                "start-y": 0,
+                "end-x": 10000,
+                "end-y": 10000
             }
         }
     ]
