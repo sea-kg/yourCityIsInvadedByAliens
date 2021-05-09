@@ -3,8 +3,8 @@
     "max-clouds": 5000,
     "width": 10000,
     "height": 10000,
-    "player-start-x": 940,
-    "player-start-y": 1350,
+    "player-start-x": 1000,
+    "player-start-y": 1000,
     "background": [
         {
             "texture": "textures/background.png",
@@ -13,6 +13,17 @@
             "fill-region": {
                 "start-x": 0,
                 "start-y": 0,
+                "end-x": 10000,
+                "end-y": 10000
+            }
+        },
+        {
+            "texture": "textures/background-alien.png",
+            "width": 500,
+            "height": 500,
+            "fill-region": {
+                "start-x": 7500,
+                "start-y": 7500,
                 "end-x": 10000,
                 "end-y": 10000
             }

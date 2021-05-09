@@ -236,13 +236,21 @@ bool YJson::toParse(const std::string &sLine) {
                 printParserError(sError);
                 return false;
             }
+            YJsonObject *pPrevObject = getLastObjectFromStack();
+            bool bArray = getLastObjectFromStack()->isArray();
             if (m_bStartRoot) {
                 m_bStartRoot = false;
             } else {
                 YJsonObject *pValue = new YJsonObject();
                 pushObjectToStack(pValue);
             }
-            m_nParserState = YJsonParserState::START_KEY;
+            if (pPrevObject->isObject()) {
+                m_nParserState = YJsonParserState::START_KEY;
+            } else if (pPrevObject->isArray()) {
+                m_nParserState = YJsonParserState::START_VALUES_ARRAY;
+            } else {
+                printParserError("START_OBJECT, unknown what a do");
+            }
             continue;
         }
         if (m_nParserState == YJsonParserState::START_KEY) {
@@ -263,6 +271,7 @@ bool YJson::toParse(const std::string &sLine) {
         if (m_nParserState == YJsonParserState::START_KEY_NAME) {
             if (c == '"') {
                 m_nParserState = YJsonParserState::END_KEY;
+                // std::cout << " START_KEY_NAME -> END_KEY " << std::endl;
                 // std::cout << "sParseKeyName: " << sParseKeyName << std::endl;
                 continue;
             }
@@ -280,6 +289,7 @@ bool YJson::toParse(const std::string &sLine) {
                 return false;
             }
             m_nParserState = YJsonParserState::START_VALUE;
+            // std::cout << " END_KEY -> START_VALUE " << std::endl;
             YJsonObject *pValue = new YJsonObject();
             getLastObjectFromStack()->addKeyValue(sParseKeyName, pValue);
             pushObjectToStack(pValue);
@@ -290,30 +300,46 @@ bool YJson::toParse(const std::string &sLine) {
                 continue;
             }
             if (c == '"') {
+                // std::cout << "START_VALUE -> START_VALUE_STRING " << std::endl;
                 m_nParserState = YJsonParserState::START_VALUE_STRING;
+                if (getLastObjectFromStack()->isUndefined()) {
+                    getLastObjectFromStack()->doString();
+                }
+                if (!getLastObjectFromStack()->isString()) {
+                    printParserError("START_VALUE/START_VALUE_STRING Expected string");
+                    return false;
+                }
                 sParseKeyValue = "";
-                // std::cout << "START_VALUE_STRING" << std::endl;
                 continue;    
             } else if (c == '{') {
+                // std::cout << "START_VALUE -> START_VALUE_OBJECT " << std::endl;
                 m_nParserState = YJsonParserState::START_VALUE_OBJECT;
                 if (getLastObjectFromStack()->isUndefined()) {
                     getLastObjectFromStack()->doObject();
                 }
                 if (!getLastObjectFromStack()->isObject()) {
-                    printParserError("Expected object");
+                    printParserError("START_VALUE/START_VALUE_OBJECT Expected object");
                     return false;
                 }
                 continue;
             } else if (c == '[') {
+                // std::cout << "START_VALUE -> START_VALUES_ARRAY " << std::endl;
                 m_nParserState = YJsonParserState::START_VALUES_ARRAY;
                 if (getLastObjectFromStack()->isUndefined()) {
                     getLastObjectFromStack()->doArray();
                 }
                 continue;
             } else if ((c >= '0' && c <= '9') || c == '-') {
+                m_nParserState = YJsonParserState::START_VALUE_NUMBER;
+                if (getLastObjectFromStack()->isUndefined()) {
+                    getLastObjectFromStack()->doNumber();
+                }
+                if (!getLastObjectFromStack()->isNumber()) {
+                    printParserError("START_VALUE/START_VALUE_NUMBER Expected number");
+                    return false;
+                }
                 sParseKeyValue = "";
                 sParseKeyValue += c;
-                m_nParserState = YJsonParserState::START_VALUE_NUMBER;
                 continue;
             } else {
                 std::string sError = "start value, unexpected '";
@@ -336,6 +362,7 @@ bool YJson::toParse(const std::string &sLine) {
             }
             sParseKeyName = "";
             m_nParserState = YJsonParserState::START_KEY_NAME;
+            // std::cout << " START_VALUE_OBJECT -> START_KEY_NAME " << std::endl;
             continue;
         }
         if (m_nParserState == YJsonParserState::START_VALUE_STRING) {
@@ -384,16 +411,16 @@ bool YJson::toParse(const std::string &sLine) {
                 getLastObjectFromStack()->push(pValue);
                 pushObjectToStack(pValue);
                 m_nParserState = YJsonParserState::START_VALUE_OBJECT;
-                // std::cout << " -> START_KEY " << std::endl;
+                // std::cout << " START_VALUES_ARRAY -> START_VALUE_OBJECT " << std::endl;
                 continue;
-            } else if (c == ',') {
+            } /*else if (c == ',') {
                 YJsonObject *pValue = new YJsonObject();
                 getLastObjectFromStack()->push(pValue);
                 pushObjectToStack(pValue);
                 m_nParserState = YJsonParserState::START_VALUE;
-                // std::cout << " -> START_KEY " << std::endl;
+                std::cout << "START_VALUES_ARRAY -> START_VALUE " << std::endl;
                 continue;
-            } else {
+            } else*/ {
                 std::string sError = "end value, unexpected '";
                 sError += c;
                 sError += "'";
@@ -407,8 +434,13 @@ bool YJson::toParse(const std::string &sLine) {
                 continue;
             }
             if (c == ',') {
-                m_nParserState = YJsonParserState::START_KEY;
-                // std::cout << " -> START_KEY " << std::endl;
+                if (getLastObjectFromStack()->isObject()) {
+                    m_nParserState = YJsonParserState::START_KEY;
+                } else if (getLastObjectFromStack()->isArray()) {
+                    m_nParserState = YJsonParserState::START_VALUES_ARRAY;
+                } else {
+                    printParserError("END_VALUE, unknown what are do");
+                }
                 continue;
             } else if (c == '}') {
                 popObjectFromStack();
@@ -417,7 +449,7 @@ bool YJson::toParse(const std::string &sLine) {
                     continue;
                 }
                 m_nParserState = YJsonParserState::END_VALUE;
-                // std::cout << " -> END_VALUE " << std::endl;
+                // std::cout << "END_VALUE - } -> END_VALUE " << std::endl;
                 continue;
             } else if (c == ']') {
                 popObjectFromStack();
