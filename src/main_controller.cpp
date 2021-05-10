@@ -126,6 +126,8 @@ bool MainController::loadGameDataWithProgressBar() {
         m_pGameState
     );
     loader.init();
+    loader.setProgressMax(10);
+    loader.setProgressCurrent(0);
 
     loader.updateText("Loading... default map");
     std::cout << "default/map.json" << std::endl;
@@ -147,9 +149,11 @@ bool MainController::loadGameDataWithProgressBar() {
         jsonDefaultMap["player-start-x"].getNumber(),
         jsonDefaultMap["player-start-y"].getNumber()
     );
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Generating background...");
     loadBackgrounds(sDefaultPath, jsonDefaultMap["background"]);
+    loader.addToProgressCurrent(1);
 
     // sDefaultPath
     // default
@@ -166,6 +170,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
     m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Loading... buildings textures");
 
@@ -180,6 +185,7 @@ bool MainController::loadGameDataWithProgressBar() {
         }
         m_mapBuildingsTextures[sName] = m_pRenderWindow->loadTexture(sPathTexture.c_str());
     }
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Loading... buildings");
     
@@ -191,6 +197,7 @@ bool MainController::loadGameDataWithProgressBar() {
     
     YJsonObject jsonBuildings = jsonData["buildings"];
     std::vector<std::string> vKeys = jsonBuildings.getKeys();
+    loader.addToProgressMax(vKeys.size());
     for (int i = 0; i < vKeys.size(); i++) {
         std::string sKey = vKeys[i];
         // std::cout << sKey << std::endl;
@@ -200,20 +207,26 @@ bool MainController::loadGameDataWithProgressBar() {
         CoordXY min0 = pRenderBuilding2->getMinPoint();
         CoordXY max0 = pRenderBuilding2->getMaxPoint();
         m_pRenderWindow->addBuildingsObject(pRenderBuilding2);
+        loader.addToProgressCurrent(1);
     }
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Generating enimies...");
     this->generateTanks();
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Generating roads...");
     this->generateRoads();
+    loader.addToProgressCurrent(1);
 
     loader.updateText("Generating clouds...");
     this->generateClouds();
+    loader.addToProgressCurrent(1);
 
+    loader.updateText("Prepare panels...");
     m_pRenderWindow->addPanelsObject(
         new RenderLeftPanelInfo(
             m_pTextureLeftPanel,
@@ -238,6 +251,8 @@ bool MainController::loadGameDataWithProgressBar() {
             1000
         )
     );
+    loader.addToProgressCurrent(1);
+
     return true;
 }
 

@@ -8,6 +8,8 @@ UtilsLoaderScreen::UtilsLoaderScreen(
     m_sResourceDir = sResourceDir;
     m_pRenderWindow = pRenderWindow;
     m_pGameState = pGameState;
+    m_nProgressCurrent = 0;
+    m_nProgressMax = 100;
 }
 
 UtilsLoaderScreen::~UtilsLoaderScreen() {
@@ -20,6 +22,7 @@ UtilsLoaderScreen::~UtilsLoaderScreen() {
 void UtilsLoaderScreen::init() {
     m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/loader-screen-background.png");
     m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
+    m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-progressbar.png");
 
     int nBackW = 840;
     int nBackH = 840;
@@ -50,22 +53,15 @@ void UtilsLoaderScreen::init() {
         1 // z-position
     ));
 
-    RenderColor progressBarColor(255,255,255,255);
-
-    this->addObject(new RenderLine(
-        CoordXY(300, 520),
-        CoordXY(nWindowWidth - 300, 520),
-        progressBarColor
-    ));
-
-    this->addObject(new RenderLine(
-        CoordXY(300, 550),
-        CoordXY(nWindowWidth - 300, 550),
-        progressBarColor
-    ));
+    m_pProgressBar = new RenderBootScreenProgressBar(
+        m_pTextureProgressBar,
+        CoordXY((nWindowWidth - 500)/2, 520)
+    );
+    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    this->addObject(m_pProgressBar);
 
     m_pText = new RenderAbsoluteTextBlock(
-        CoordXY(300, 550),
+        CoordXY((nWindowWidth - 500)/2, 580),
         "Loading..."
     );
     this->addObject(m_pText);
@@ -77,6 +73,30 @@ void UtilsLoaderScreen::updateText(const std::string &sNewText) {
     m_pText->updateText(sNewText);
     this->draw();
 }
+
+void UtilsLoaderScreen::setProgressMax(int nVal) {
+    m_nProgressMax = nVal;
+    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    this->draw();
+};
+
+void UtilsLoaderScreen::setProgressCurrent(int nVal) {
+    m_nProgressCurrent = nVal;
+    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    this->draw();
+};
+
+void UtilsLoaderScreen::addToProgressMax(int nVal) {
+    m_nProgressMax += nVal;
+    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    this->draw();
+};
+
+void UtilsLoaderScreen::addToProgressCurrent(int nVal) {
+    m_nProgressCurrent += nVal;
+    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    this->draw();
+};
 
 void UtilsLoaderScreen::addObject(RenderObject *pObject) {
     m_pRenderWindow->addPanelsObject(pObject);
