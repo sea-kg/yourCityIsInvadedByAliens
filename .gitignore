@@ -11,6 +11,7 @@ bin/
 /win-bin
 /win-bin-release
 /Release/
+/other/
 
 # Prerequisites
 *.d

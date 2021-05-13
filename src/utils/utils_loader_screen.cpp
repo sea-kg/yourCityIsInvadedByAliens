@@ -20,12 +20,12 @@ UtilsLoaderScreen::~UtilsLoaderScreen() {
 }
 
 void UtilsLoaderScreen::init() {
-    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/loader-screen-background.png");
+    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-background.png");
     m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
     m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-progressbar.png");
-
-    int nBackW = 840;
-    int nBackH = 840;
+    
+    int nBackW = 1280;
+    int nBackH = 720;
     // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo.png");
     int nWindowWidth, nWindowHeight;
 
@@ -45,23 +45,32 @@ void UtilsLoaderScreen::init() {
         }
     }
 
-    
+    int nLogoW = 500;
+    int nLogoH = 500;
+    int nProgressBarH = 50;
+    int nPaddingTop = 10;
+    int nTop = (nWindowHeight - nLogoH - nProgressBarH - 2*nPaddingTop)/2;
+
     this->addObject(new RenderRectTexture(
-        CoordXY((nWindowWidth - 500)/2, 10),
+        CoordXY((nWindowWidth - nLogoW)/2, nTop),
         m_pTextureLogoBig,
         500, 500,
         1 // z-position
     ));
 
+    nTop += nLogoH + nPaddingTop;
+
     m_pProgressBar = new RenderBootScreenProgressBar(
         m_pTextureProgressBar,
-        CoordXY((nWindowWidth - 500)/2, 520)
+        CoordXY((nWindowWidth - nLogoW)/2, nTop)
     );
     m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
     this->addObject(m_pProgressBar);
 
+    nTop += nProgressBarH + nPaddingTop;
+
     m_pText = new RenderAbsoluteTextBlock(
-        CoordXY((nWindowWidth - 500)/2, 580),
+        CoordXY((nWindowWidth - nLogoW)/2, nTop),
         "Loading..."
     );
     this->addObject(m_pText);
