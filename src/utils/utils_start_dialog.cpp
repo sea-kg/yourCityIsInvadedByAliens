@@ -1,7 +1,7 @@
 #include "utils_start_dialog.h"
 #include <chrono>
 #include <thread>
-#include "render_dialog.h"
+#include "render_ui.h"
 
 UtilsStartDialog::UtilsStartDialog(
     const std::string &sResourceDir,
@@ -86,7 +86,7 @@ void UtilsStartDialog::addObject(RenderObject *pObject) {
 void UtilsStartDialog::draw() {
     m_pRenderWindow->clear();
     m_pRenderWindow->modifyObjects(*m_pGameState);
-    m_pRenderWindow->drawObjects();
+    m_pRenderWindow->drawObjects(*m_pGameState);
 }
 
 bool UtilsStartDialog::start() {

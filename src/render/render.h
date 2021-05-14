@@ -17,6 +17,7 @@ class RenderLine : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
         const CoordXY &getAbsoluteCoord1();
@@ -43,6 +44,7 @@ class RenderTriangle : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
@@ -63,33 +65,16 @@ class RenderRectTexture : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
+        CoordXY m_coordPos;
+        CoordXY m_coordPosEnd;
+        CoordXY m_coordRender;
+        CoordXY m_coordRenderEnd;
 
         SDL_Rect currentFrame;
-        SDL_Texture* m_pTexture;
-};
-
-
-class RenderBackground : public RenderObject {
-
-    public:
-        RenderBackground(
-            const CoordXY &p0,
-            SDL_Texture* tex,
-            int nPositionZ = 0
-        );
-        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        CoordXY m_coordRender;
-        CoordXY m_coordReal;
-
-        SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
 };
 
@@ -102,6 +87,7 @@ class RenderAbsoluteTextBlock : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         void updateText(const std::string &sNewText);
 
@@ -115,35 +101,18 @@ class RenderAbsoluteTextBlock : public RenderObject {
         SDL_Rect currentFrame;
 };
 
-class RenderBuilding : public RenderObject {
-
-    public:
-        RenderBuilding(GameBuilding *pBuilding);
-        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        GameBuilding *m_pBuilding;
-        std::vector<RenderLine *> m_vBorderLines;
-        std::vector<RenderLine *> m_vFillLines;
-
-        void findMinMaxYCross(int nX, int &nMinY, int &nMaxY);
-};
-
-
 class RenderBuilding2 : public RenderObject {
 
     public:
         RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture);
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         CoordXY getMinPoint();
         CoordXY getMaxPoint();
     private:
-        int m_nMaxX;
-        int m_nMinX;
-        int m_nMaxY;
-        int m_nMinY;
+        CoordXY m_minPos;
+        CoordXY m_maxPos;
 
         GameBuilding *m_pBuilding;
         std::vector<RenderLine *> m_vBorderLines;
@@ -165,6 +134,7 @@ class RenderMouse : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         void updateCoord(const CoordXY &p0);
 

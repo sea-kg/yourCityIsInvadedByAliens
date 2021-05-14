@@ -10,3 +10,4 @@ class YCore {
         static std::vector<std::string> getListOfDirs(const std::string &sDirname);
         static std::vector<std::string> getListOfFiles(const std::string &sDirname);
 };
+

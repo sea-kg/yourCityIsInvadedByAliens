@@ -22,7 +22,9 @@ class MainController {
         // window
         bool isFullscreen();
         void toggleFullscreen();
+        void clearWindow();
         void modifyObjects();
+        void drawObjects();
 
         void updatePlayerCoord();
         void updateFpsValue(int nFps);

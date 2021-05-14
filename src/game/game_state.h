@@ -21,6 +21,7 @@ class GameState {
         bool isChangedWindowSize() const;
         const int getWindowWidth() const;
         const int getWindowHeight() const;
+        const YRect &getWindowRect() const;
         void updateWindowSize(int w, int h);
 
         void setMouseCaptured(bool bMouseCaptured);
@@ -43,8 +44,10 @@ class GameState {
         CoordXY m_coordLeftTop;
         CoordXY m_maxPoint;
         CoordXY m_minPoint;
+        
         bool m_bIsChangedWindowSize;
         int m_nWindowWidth;
         int m_nWindowHeight;
+        YRect m_windowRect;
         std::vector<GameBuilding *> m_vBuildings;
 };

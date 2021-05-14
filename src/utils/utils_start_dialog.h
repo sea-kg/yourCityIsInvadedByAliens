@@ -1,9 +1,6 @@
 #pragma once
 #include <string>
-#include "render.h"
-#include "render_button_music_on_off.h"
-#include "render_button_simple.h"
-
+#include "render_ui.h"
 
 class UtilsStartDialog {
     public:

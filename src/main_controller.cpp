@@ -3,7 +3,7 @@
 #include <iostream>
 #include "render.h"
 #include "render_tank0.h"
-#include "render_left_panel_info.h"
+#include "render_ui.h"
 #include "ai_tank0.h"
 #include "utils_loader_screen.h"
 #include "utils_start_dialog.h"
@@ -16,6 +16,7 @@
 #include "ycore.h"
 #include "ykeyboard.h"
 #include "game_cloud0_state.h"
+#include "render_background.h"
 
 // MainController
 
@@ -284,6 +285,10 @@ void MainController::toggleFullscreen() {
     m_nWindowHeight = h;
 }
 
+void MainController::clearWindow() {
+    m_pRenderWindow->clear();
+}
+
 void MainController::modifyObjects() {
     m_pRenderWindow->modifyObjects(*m_pGameState);
 
@@ -294,11 +299,9 @@ void MainController::modifyObjects() {
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
-        CoordXY p1 = pRocket->getPosition();
-         // distance
-        double dx = p0.x() - p1.x();
-        double dy = p0.y() - p1.y();
-        double nDistance = sqrt(dx * dx + dy * dy);
+        YPos p1 = pRocket->getPosition();
+        // distance
+        double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
         if (nDistance < 30.0) {
             pRocket->explode();
             m_pAlientShipState->rocketAttack(pRocket);
@@ -310,21 +313,23 @@ void MainController::modifyObjects() {
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
-        CoordXY p1 = pRocket->getPosition();
+        YPos p1 = pRocket->getPosition();
 
         for (int b = 0; b < m_pRenderWindow->m_vBioplasts.size(); b++) {
             GameBioplastState *pBioplast = m_pRenderWindow->m_vBioplasts[b];
             CoordXY p2 = pBioplast->getPosition();
             // distance
-            double dx = p1.x() - p2.x();
-            double dy = p1.y() - p2.y();
-            double nDistance = sqrt(dx * dx + dy * dy);
+            float nDistance = p1.getDistance(YPos(p2.x(), p2.y()));
             if (nDistance < 15.0) {
                 pRocket->explode();
                 // m_pAlientShipState->rocketAttack();
             }
         }
     }
+}
+
+void MainController::drawObjects() {
+    m_pRenderWindow->drawObjects(*m_pGameState);
 }
 
 void MainController::updatePlayerCoord() {

@@ -44,6 +44,10 @@ void RenderPlayerAlienShip::modify(const GameState& state, IRenderWindow* pRende
     }
 };
 
+bool RenderPlayerAlienShip::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderPlayerAlienShip::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

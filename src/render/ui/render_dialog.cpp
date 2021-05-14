@@ -75,6 +75,10 @@ void RenderDialog::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_nWindowHeight = state.getWindowHeight();
 };
 
+bool RenderDialog::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderDialog::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

@@ -14,10 +14,13 @@ class RenderRocket : public RenderObject {
         virtual ~RenderRocket();
 
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordRender;
+        YPos m_coordRender;
+        YPos m_coordRenderEnd;
+        YPos m_size;
         long m_nPrevPosition;
         int m_nLifeTime;
         int m_nMaxLifeTime;

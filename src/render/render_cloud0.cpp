@@ -23,6 +23,7 @@ void RenderCloud0::modify(const GameState& state, IRenderWindow* pRenderWindow) 
 
     if (m_nPrevPosition == position) {
         m_coordRender = m_pCloud0State->getPosition() - state.getCoordLeftTop();
+        // m_rectRegionPos = YRect(p0.x(), p0.x() + 300, p0.y(), p0.y() + 300);
         return; // skip - already desition done
     }
 
@@ -30,20 +31,17 @@ void RenderCloud0::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_pCloud0State->move();
 
     m_coordRender = m_pCloud0State->getPosition() - state.getCoordLeftTop();
+    m_coordRenderEnd = CoordXY(m_coordRender.x() + 300, m_coordRender.y() + 300);
 };
 
+bool RenderCloud0::canDraw(const GameState& state) {
+    return
+        m_coordRender.isInsideRect(state.getWindowRect())
+        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+    ;
+}
+
 void RenderCloud0::draw(SDL_Renderer* renderer) {
-    RenderColor emptyColor(0, 0, 0, 0);
-    emptyColor.changeRenderColor(renderer);
-
-    if (m_coordRender.x() < -300 || m_coordRender.x() > 2000) {
-        return;
-    }
-
-    if (m_coordRender.y() < -300 || m_coordRender.x() > 2000) {
-        return;
-    }
-
     SDL_Rect dst;
     dst.x = m_coordRender.x();
     dst.y = m_coordRender.y();

@@ -102,7 +102,7 @@ bool GameTank0State::hasRocket() {
 
 void GameTank0State::shotRocket() {
     m_bHasRocket = false;
-    m_vRockets.push_back(new GameRocketState(m_p0, m_nDirection));
+    m_vRockets.push_back(new GameRocketState(YPos(m_p0.x(), m_p0.y()), m_nDirection));
 }
 
 void GameTank0State::rechargeRocket() {

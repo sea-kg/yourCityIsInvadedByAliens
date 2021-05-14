@@ -23,12 +23,14 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 
     if (m_nPrevPosition == position) {
         m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
+        m_coordRenderEnd = CoordXY(m_pTank0State->getPosition().x() + 50, m_pTank0State->getPosition().y() + 50);
         return; // skip - already desition done
     }
 
     m_nPrevPosition = position;
 
     m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
+    m_coordRenderEnd = CoordXY(m_pTank0State->getPosition().x() + 50, m_pTank0State->getPosition().y() + 50);
 
     MoveObjectDirection dr = m_pTank0State->getDirection();
 
@@ -112,6 +114,13 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 
     
 };
+
+bool RenderTank0::canDraw(const GameState& state) {
+    return
+        m_coordRender.isInsideRect(state.getWindowRect())
+        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+    ;
+}
 
 void RenderTank0::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);

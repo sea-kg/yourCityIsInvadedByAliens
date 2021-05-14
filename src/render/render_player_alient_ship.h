@@ -17,6 +17,7 @@ class RenderPlayerAlienShip : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:

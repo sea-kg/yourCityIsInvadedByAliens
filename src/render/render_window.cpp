@@ -25,9 +25,11 @@ void RanderWindowLayer::removeObject(RenderObject *pObject) {
     }
 }
 
-void RanderWindowLayer::drawObjects(SDL_Renderer *pRenderer) {
+void RanderWindowLayer::drawObjects(const GameState& state, SDL_Renderer *pRenderer) {
     for (auto pObj: m_vObjects) {
-        pObj->draw(pRenderer);
+        if (pObj->canDraw(state)) {
+            pObj->draw(pRenderer);
+        }
     }
 }
 
@@ -225,9 +227,9 @@ void RenderWindow::modifyObjects(const GameState& state) {
     }
 }
 
-void RenderWindow::drawObjects() {
+void RenderWindow::drawObjects(const GameState& state) {
     for (int i = 0; i < m_vLayers.size(); i++) {
-        m_vLayers[i]->drawObjects(m_pRenderer);
+        m_vLayers[i]->drawObjects(state, m_pRenderer);
     }
 
     // finish

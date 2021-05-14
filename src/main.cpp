@@ -56,9 +56,9 @@ int main(int argc, char* args[]) {
 
     while (gameRunning) {
         pMainController->getGameState()->updateElapsedTime();
-        pMainController->getWindow()->clear();
+        pMainController->clearWindow();
         pMainController->modifyObjects();
-        pMainController->getWindow()->drawObjects();
+        pMainController->drawObjects();
 
         SDL_Event event;
         keyboard.pollState();

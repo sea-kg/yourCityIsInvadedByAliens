@@ -1,25 +1,24 @@
 
 #pragma once
 #include "render.h"
+#include "game_alien_ship_state.h"
 
-class RenderButtonSimple : public RenderObject {
+class RenderPlayerPower : public RenderObject {
 
     public:
-        RenderButtonSimple(
+        RenderPlayerPower(
             SDL_Texture* tex,
-            CoordXY pos,
+            GameAlienShipState *pAlienShipState,
             int nPositionZ = 0
         );
+        void updatePosition(CoordXY pos);
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
-        void setAnimate(bool bAnimate);
 
     private:
         SDL_Texture* m_pTexture;
         CoordXY m_position;
-        int m_nTextureWidth;
-        int m_nTextureHeight;
-        bool m_bAnimate;
-
         SDL_Rect m_currentFrame;
+        GameAlienShipState *m_pAlienShipState;
 };

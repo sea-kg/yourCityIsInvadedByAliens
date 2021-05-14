@@ -12,10 +12,12 @@ class RenderTank0 : public RenderObject {
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
         CoordXY m_coordRender;
+        CoordXY m_coordRenderEnd;
         long m_nPrevPosition;
         GameTank0State *m_pTank0State;
 

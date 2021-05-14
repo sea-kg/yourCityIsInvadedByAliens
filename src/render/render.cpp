@@ -19,6 +19,13 @@ void RenderLine::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coord2 = m_startCoord2 - state.getCoordLeftTop() ;
 }
 
+bool RenderLine::canDraw(const GameState& state) {
+    return
+        m_coord1.isInsideRect(state.getWindowRect())
+        || m_coord2.isInsideRect(state.getWindowRect())
+    ;
+}
+
 void RenderLine::draw(SDL_Renderer* renderer) {
     m_color.changeRenderColor(renderer);
     SDL_RenderDrawLine(renderer, m_coord1.x(), m_coord1.y(), m_coord2.x(), m_coord2.y());
@@ -68,6 +75,14 @@ void RenderTriangle::modify(const GameState& state, IRenderWindow* pRenderWindow
     m_line3.modify(state, pRenderWindow);
 }
 
+bool RenderTriangle::canDraw(const GameState& state) {
+    return
+        m_line1.canDraw(state)
+        && m_line2.canDraw(state)
+        && m_line3.canDraw(state)
+    ;
+}
+
 void RenderTriangle::draw(SDL_Renderer* renderer) {
     m_line1.draw(renderer);
     m_line2.draw(renderer);
@@ -85,7 +100,8 @@ RenderRectTexture::RenderRectTexture(
     int nPositionZ
 ) : RenderObject(nPositionZ) {
     m_pTexture = tex;
-    m_coordCenter = p0;
+    m_coordPos = p0;
+    m_coordPosEnd = CoordXY(p0.x() + nTextureWidth, p0.y() + nTextureHeight);
     currentFrame.x = 0;
     currentFrame.y = 0;
     currentFrame.w = nTextureWidth;
@@ -93,56 +109,26 @@ RenderRectTexture::RenderRectTexture(
 }
 
 void RenderRectTexture::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordReal = m_coordCenter - state.getCoordLeftTop();
-
+    m_coordRender = m_coordPos - state.getCoordLeftTop();
+    m_coordRenderEnd =  m_coordPosEnd - state.getCoordLeftTop();
 };
+
+bool RenderRectTexture::canDraw(const GameState& state) {
+    return
+        m_coordRender.isInsideRect(state.getWindowRect())
+        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+    ;
+}
 
 void RenderRectTexture::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
     // 4 is scale
-    dst.x = m_coordReal.x();
-    dst.y = m_coordReal.y();
+    dst.x = m_coordRender.x();
+    dst.y = m_coordRender.y();
     dst.w = currentFrame.w;
     dst.h = currentFrame.h;
 
     SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
-};
-
-
-// ---------------------------------------------------------------------
-// RenderBackground
-
-RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPositionZ) 
-: RenderObject(nPositionZ) {
-    m_pTexture = tex;
-    m_coordReal = p0;
-    m_currentFrame.x = 0;
-    m_currentFrame.y = 0;
-    m_currentFrame.w = 500;
-    m_currentFrame.h = 500; // HARD code aiyayai
-}
-
-void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordRender = m_coordReal - state.getCoordLeftTop();
-
-};
-
-void RenderBackground::draw(SDL_Renderer* renderer) {
-    if (m_coordRender.x() < -500 || m_coordRender.x() > 2000) {
-        return;
-    }
-
-    if (m_coordRender.y() < -500 || m_coordRender.x() > 2000) {
-        return;
-    }
-
-    SDL_Rect dst;
-    dst.x = m_coordRender.x();
-    dst.y = m_coordRender.y();
-    dst.w = m_currentFrame.w;
-    dst.h = m_currentFrame.h;
-
-    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
 };
 
 // ---------------------------------------------------------------------
@@ -170,6 +156,10 @@ void RenderAbsoluteTextBlock::modify(const GameState& state, IRenderWindow* pRen
         m_sText = m_sUpdateText;
     }
 };
+
+bool RenderAbsoluteTextBlock::canDraw(const GameState& state) {
+    return true;
+}
 
 void RenderAbsoluteTextBlock::draw(SDL_Renderer* renderer) {
     // int w,h;
@@ -206,96 +196,6 @@ void RenderAbsoluteTextBlock::updateText(const std::string &sNewText) {
 }
 
 // ---------------------------------------------------------------------
-// RenderBuilding
-
-RenderBuilding::RenderBuilding(GameBuilding *pBuilding) 
-: RenderObject(600) {
-    m_pBuilding = pBuilding;
-    const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
-    int nMaxX = vPoints[0].x();
-    int nMinX = vPoints[0].x();
-    int nMaxY = vPoints[0].y();
-    int nMinY = vPoints[0].y();
-
-    for (int i = 0; i < vPoints.size(); i++) {
-        CoordXY p0 = vPoints[i];
-        CoordXY p1 = vPoints[(i+1) % vPoints.size()];
-        RenderColor color(122, 17, 17, 255);
-        RenderLine *pLine = new RenderLine(p0, p1, color);
-        m_vBorderLines.push_back(pLine);
-        nMaxX = std::max(p0.x(), nMaxX);
-        nMinX = std::min(p0.x(), nMinX);
-        nMaxY = std::max(p0.y(), nMaxY);
-        nMinY = std::min(p0.y(), nMinY);
-    }
-    int nStepWidth = 10;
-    for (int x = nMinX + nStepWidth; x <= nMaxX; x = x + nStepWidth) {
-        int nMinCrossY = nMaxY;
-        int nMaxCrossY = nMinY;
-        findMinMaxYCross(x, nMinCrossY, nMaxCrossY);
-        CoordXY p0(x, nMinCrossY);
-        CoordXY p1(x, nMaxCrossY);
-
-        // find min cross with Y
-        RenderColor color(255, 60, 70, 255);
-        RenderLine *pLine = new RenderLine(p0, p1, color);
-        m_vFillLines.push_back(pLine);
-    }
-}
-
-void RenderBuilding::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    for (int i = 0; i < m_vBorderLines.size(); i++) {
-        m_vBorderLines[i]->modify(state, pRenderWindow);
-    }
-    for (int i = 0; i < m_vFillLines.size(); i++) {
-        m_vFillLines[i]->modify(state, pRenderWindow);
-    }
-}
-
-void RenderBuilding::draw(SDL_Renderer* renderer) {
-    for (int i = 0; i < m_vBorderLines.size(); i++) {
-        m_vBorderLines[i]->draw(renderer);
-    }
-    for (int i = 0; i < m_vFillLines.size(); i++) {
-        m_vFillLines[i]->draw(renderer);
-    }
-}
-
-void RenderBuilding::findMinMaxYCross(int nX, int &nMinY, int &nMaxY) {
-    for (int i = 0; i < m_vBorderLines.size(); i++) {
-        CoordXY p0 = m_vBorderLines[i]->getAbsoluteCoord1();
-        CoordXY p1 = m_vBorderLines[i]->getAbsoluteCoord2();
-        int nMinX = std::min(p0.x(), p1.x());
-        int nMaxX = std::max(p0.x(), p1.x());
-        if (nMinX == nMaxX && nMaxX == nX) {
-            nMinY = std::min(p0.y(), p1.y());
-            nMaxY = std::max(p0.y(), p1.y());
-            return;
-        }
-
-        if (nMinX <= nX && nX <= nMaxX) {
-            if (p0.y() == p1.y()) {
-                nMinY = std::min(nMinY, p0.y());
-                nMaxY = std::max(nMaxY, p0.y());
-            } else {
-                double a1 = p0.y() - p1.y();
-                double b1 = p1.x() - p0.x();
-                double c1 = p0.x() * p1.y() - p1.x() * p0.y();
-                double a2 = p0.y() - p1.y();
-                double c2 = nX * p1.y() - nX * p0.y();
-
-                double det = - a2 * b1;
-                int nFoundY = double(a2 * c1 - a1 * c2) / det;
-                
-                nMinY = std::min(nMinY, nFoundY);
-                nMaxY = std::max(nMaxY, nFoundY);
-            }
-        }
-    }
-}
-
-
-// ---------------------------------------------------------------------
 // RenderBuilding2
 
 RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture) 
@@ -308,10 +208,10 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
     m_currentFrame.h = 50;
 
     const std::vector<CoordXY> &vPoints = m_pBuilding->getPoints();
-    m_nMaxX = vPoints[0].x();
-    m_nMinX = vPoints[0].x();
-    m_nMaxY = vPoints[0].y();
-    m_nMinY = vPoints[0].y();
+    int nMaxX = vPoints[0].x();
+    int nMinX = vPoints[0].x();
+    int nMaxY = vPoints[0].y();
+    int nMinY = vPoints[0].y();
 
     RenderColor buildingColor(255, 57, 57, 255);
 
@@ -321,10 +221,10 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
         
         RenderLine *pLine = new RenderLine(p0, p1, buildingColor, getPositionZ());
         m_vBorderLines.push_back(pLine);
-        m_nMaxX = std::max(p0.x(), m_nMaxX);
-        m_nMinX = std::min(p0.x(), m_nMinX);
-        m_nMaxY = std::max(p0.y(), m_nMaxY);
-        m_nMinY = std::min(p0.y(), m_nMinY);
+        nMaxX = std::max(p0.x(), nMaxX);
+        nMinX = std::min(p0.x(), nMinX);
+        nMaxY = std::max(p0.y(), nMaxY);
+        nMinY = std::min(p0.y(), nMinY);
     }
 
     Sea5kgTriangulationTriangulator *pTriangulator = new Sea5kgTriangulationTriangulator();
@@ -384,6 +284,8 @@ RenderBuilding2::RenderBuilding2(GameBuilding *pBuilding, SDL_Texture* pTexture)
             }
         }
     }*/
+    m_minPos = CoordXY(nMinX, nMinY);
+    m_maxPos = CoordXY(nMaxX, nMaxY);
 }
 
 void RenderBuilding2::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -400,13 +302,14 @@ void RenderBuilding2::modify(const GameState& state, IRenderWindow* pRenderWindo
     }
 }
 
+bool RenderBuilding2::canDraw(const GameState& state) {
+    return
+        m_minPos.isInsideRect(state.getWindowRect())
+        || m_maxPos.isInsideRect(state.getWindowRect())
+    ;
+}
+
 void RenderBuilding2::draw(SDL_Renderer* renderer) {
-    if (m_nMinX < -500 || m_nMaxX > 2000) {
-        return;
-    }
-    if (m_nMinY < -500 || m_nMaxY > 2000) {
-        return;
-    }
 
     for (int i = 0; i < m_vBorderLines.size(); i++) {
         m_vBorderLines[i]->draw(renderer);
@@ -428,11 +331,11 @@ void RenderBuilding2::draw(SDL_Renderer* renderer) {
 }
 
 CoordXY RenderBuilding2::getMinPoint() {
-    return CoordXY(m_nMinX, m_nMinY);
+    return m_minPos;
 }
 
 CoordXY RenderBuilding2::getMaxPoint() {
-    return CoordXY(m_nMaxX, m_nMaxY);
+    return m_maxPos;
 }
 
 bool RenderBuilding2::containsPoint(const std::vector<CoordXY> &vPoints, const CoordXY &point) {
@@ -475,6 +378,10 @@ RenderMouse::RenderMouse(
 void RenderMouse::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // m_pLineMoveble1->modify(state);
     // m_pLineMoveble2->modify(state);
+}
+
+bool RenderMouse::canDraw(const GameState& state) {
+    return true;
 }
 
 void RenderMouse::draw(SDL_Renderer* renderer) {

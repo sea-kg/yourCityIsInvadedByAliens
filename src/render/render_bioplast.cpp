@@ -10,7 +10,8 @@ RenderBioplast::RenderBioplast(GameBioplastState *pState, SDL_Texture* tex,  int
 : RenderObject(nPositionZ) {
     m_pBioplastState = pState;
     m_pTexture = tex;
-    m_coordReal = m_pBioplastState->getPosition();
+    m_coordPos = m_pBioplastState->getPosition();
+    m_coordPosEnd = m_pBioplastState->getPosition() + CoordXY(50,50);
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
     m_currentFrame.w = 50;
@@ -30,6 +31,7 @@ void RenderBioplast::modify(const GameState& state, IRenderWindow* pRenderWindow
 
     if (m_nPrevPosition == position) {
         m_coordRender = m_pBioplastState->getPosition() - state.getCoordLeftTop();
+        m_coordRenderEnd = m_pBioplastState->getPosition() - state.getCoordLeftTop() + CoordXY(50,50);
         return; // skip - already desition done
     }
 
@@ -55,6 +57,7 @@ void RenderBioplast::modify(const GameState& state, IRenderWindow* pRenderWindow
     m_pBioplastState->move();
     m_nLifeTime++;
     m_coordRender = m_pBioplastState->getPosition() - state.getCoordLeftTop();
+    m_coordRenderEnd = m_pBioplastState->getPosition() - state.getCoordLeftTop() + CoordXY(50,50);
 
     // MoveObjectDirection dr = m_pBioplastState->getDirection();
 
@@ -62,10 +65,14 @@ void RenderBioplast::modify(const GameState& state, IRenderWindow* pRenderWindow
     m_currentFrame.y = 50*m_nLifeTime;
 };
 
-void RenderBioplast::draw(SDL_Renderer* renderer) {
-    RenderColor emptyColor(0, 0, 0, 0);
-    emptyColor.changeRenderColor(renderer);
+bool RenderBioplast::canDraw(const GameState& state) {
+    return
+        m_coordRender.isInsideRect(state.getWindowRect())
+        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+    ;
+}
 
+void RenderBioplast::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
     dst.x = m_coordRender.x() - 25;
     dst.y = m_coordRender.y() - 25;

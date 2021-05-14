@@ -20,16 +20,19 @@ class RenderRoad0 : public RenderObject {
 
     public:
         RenderRoad0(
-            CoordXY pos,
+            const CoordXY &pos,
             SDL_Texture* tex,
             RoadPart nTile
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_cAbsolutePos;
+        CoordXY m_coordPos;
+        CoordXY m_coordPosEnd;
         CoordXY m_coordRender;
+        CoordXY m_coordRenderEnd;
         int m_nNumberOfTile;
 
         SDL_Rect m_currentFrame;

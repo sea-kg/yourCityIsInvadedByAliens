@@ -47,6 +47,10 @@ void RenderLeftPanelInfo::modify(const GameState& state, IRenderWindow* pRenderW
     m_pRenderPlayerPower->modify(state, pRenderWindow);
 };
 
+bool RenderLeftPanelInfo::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderLeftPanelInfo::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

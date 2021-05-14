@@ -39,6 +39,10 @@ void CoordXY::setY(int y) {
     m_nY = y;
 }
 
+YPos CoordXY::toYPos() const {
+    return YPos(m_nX, m_nY);
+}
+
 CoordXY& CoordXY::operator+=(const CoordXY& other) {
     m_nX = m_nX + other.x();
     m_nY = m_nY + other.y();
@@ -63,11 +67,28 @@ CoordXY CoordXY::operator-(const CoordXY& other) const {
     return c;
 }
 
+bool CoordXY::operator>(const CoordXY& other) const {
+    return m_nX > other.x() || m_nY > other.y();
+}
+
+bool CoordXY::operator<(const CoordXY& other) const {
+    return m_nX < other.x() || m_nY < other.y();
+}
+
 bool CoordXY::isInsideRect(const CoordXY& topLeft, const CoordXY& bottomRight) const {
     return
         m_nX >= topLeft.x()
         && m_nX <= bottomRight.x()
         && m_nY >= topLeft.y()
         && m_nY <= bottomRight.y()
+    ;
+}
+
+bool CoordXY::isInsideRect(const YRect &rect) {
+    return
+           m_nX >= rect.getMinX()
+        && m_nX <= rect.getMaxX()
+        && m_nY >= rect.getMinY()
+        && m_nY <= rect.getMaxY()
     ;
 }

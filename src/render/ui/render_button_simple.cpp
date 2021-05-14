@@ -26,6 +26,10 @@ void RenderButtonSimple::modify(const GameState& state, IRenderWindow* pRenderWi
     // nothing
 };
 
+bool RenderButtonSimple::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderButtonSimple::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

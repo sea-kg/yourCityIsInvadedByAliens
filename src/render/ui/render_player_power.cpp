@@ -36,6 +36,10 @@ void RenderPlayerPower::modify(const GameState& state, IRenderWindow* pRenderWin
     // m_pAlienShipState
 };
 
+bool RenderPlayerPower::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderPlayerPower::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

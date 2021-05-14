@@ -1,26 +1,28 @@
 
 #pragma once
 #include "render.h"
-#include "game_cloud0_state.h"
 
-class RenderCloud0 : public RenderObject {
+class RenderButtonMusicOnOff : public RenderObject {
 
     public:
-        RenderCloud0(
-            GameCloud0State *pCloud0State,
+        RenderButtonMusicOnOff(
             SDL_Texture* tex,
+            CoordXY pos,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
+        void setAnimate(bool bAnimate);
 
     private:
-        CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
-        long m_nPrevPosition;
-        GameCloud0State *m_pCloud0State;
-
-        SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
+        CoordXY m_position;
+        int m_nTextureWidth;
+        int m_nTextureHeight;
+        bool m_bPlayMusic;
+        bool m_bAnimate;
+
+        SDL_Rect m_currentFrameMusicOn;
+        SDL_Rect m_currentFrameMusicOff;
 };

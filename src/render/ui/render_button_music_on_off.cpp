@@ -32,6 +32,10 @@ void RenderButtonMusicOnOff::modify(const GameState& state, IRenderWindow* pRend
     m_bPlayMusic = state.isPlayMusic();
 };
 
+bool RenderButtonMusicOnOff::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderButtonMusicOnOff::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);

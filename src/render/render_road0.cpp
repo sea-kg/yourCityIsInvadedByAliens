@@ -5,10 +5,11 @@
 // ---------------------------------------------------------------------
 // RenderRoad0
 
-RenderRoad0::RenderRoad0(CoordXY pos, SDL_Texture* tex, RoadPart nTile)
+RenderRoad0::RenderRoad0(const CoordXY &pos, SDL_Texture* tex, RoadPart nTile)
 : RenderObject(1000) {
     m_pTexture = tex;
-    m_cAbsolutePos = pos;
+    m_coordPos = pos;
+    m_coordPosEnd = CoordXY(pos.x() + 120, pos.y() + 120);
     m_nNumberOfTile = (int)nTile;
     m_currentFrame.x = 0;
     m_currentFrame.y = m_nNumberOfTile * 120;
@@ -18,8 +19,16 @@ RenderRoad0::RenderRoad0(CoordXY pos, SDL_Texture* tex, RoadPart nTile)
 }
 
 void RenderRoad0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordRender = m_cAbsolutePos - state.getCoordLeftTop();
+    m_coordRender = m_coordPos - state.getCoordLeftTop();
+    m_coordRenderEnd = m_coordPosEnd - state.getCoordLeftTop();
 };
+
+bool RenderRoad0::canDraw(const GameState& state) {
+    return
+        m_coordRender.isInsideRect(state.getWindowRect())
+        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+    ;
+}
 
 void RenderRoad0::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);

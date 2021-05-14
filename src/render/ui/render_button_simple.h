@@ -2,15 +2,16 @@
 #pragma once
 #include "render.h"
 
-class RenderButtonMusicOnOff : public RenderObject {
+class RenderButtonSimple : public RenderObject {
 
     public:
-        RenderButtonMusicOnOff(
+        RenderButtonSimple(
             SDL_Texture* tex,
             CoordXY pos,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
         void setAnimate(bool bAnimate);
 
@@ -19,9 +20,7 @@ class RenderButtonMusicOnOff : public RenderObject {
         CoordXY m_position;
         int m_nTextureWidth;
         int m_nTextureHeight;
-        bool m_bPlayMusic;
         bool m_bAnimate;
 
-        SDL_Rect m_currentFrameMusicOn;
-        SDL_Rect m_currentFrameMusicOff;
+        SDL_Rect m_currentFrame;
 };

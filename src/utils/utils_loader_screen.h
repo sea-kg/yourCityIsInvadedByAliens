@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "render.h"
-#include "render_bootscreen_progressbar.h"
+#include "render_ui.h"
 
 class UtilsLoaderScreen {
     public:

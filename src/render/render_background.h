@@ -1,13 +1,15 @@
-
 #pragma once
-#include "render.h"
-#include "game_cloud0_state.h"
+#include "render_window.h"
 
-class RenderCloud0 : public RenderObject {
+#include <vector>
+#include <string>
+#include <iostream>
+
+class RenderBackground : public RenderObject {
 
     public:
-        RenderCloud0(
-            GameCloud0State *pCloud0State,
+        RenderBackground(
+            const CoordXY &p0,
             SDL_Texture* tex,
             int nPositionZ = 0
         );
@@ -16,10 +18,10 @@ class RenderCloud0 : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
+        CoordXY m_coordPos;
+        YRect m_rectRegionPos;
         CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
-        long m_nPrevPosition;
-        GameCloud0State *m_pCloud0State;
+        YRect m_rectRegionRender;
 
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;

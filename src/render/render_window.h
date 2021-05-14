@@ -7,7 +7,7 @@ class RanderWindowLayer {
         RanderWindowLayer(const std::string &sName);
         void addObject(RenderObject *pObject);
         void removeObject(RenderObject *pObject);
-        void drawObjects(SDL_Renderer *pRenderer);
+        void drawObjects(const GameState& state, SDL_Renderer *pRenderer);
         void modifyObjects(const GameState& state, IRenderWindow *pWindow);
         void sortObjectsByPositionZ();
 
@@ -43,7 +43,7 @@ class RenderWindow : public IRenderWindow {
         void cleanUp();
         void clear();
         void modifyObjects(const GameState& state);
-        void drawObjects();
+        void drawObjects(const GameState& state);
         SDL_Renderer* getRenderer();
 
         void getWindowSize(int* w, int* h);

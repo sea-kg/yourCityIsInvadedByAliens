@@ -37,6 +37,10 @@ void RenderBootScreenProgressBar::modify(const GameState& state, IRenderWindow* 
     }
 };
 
+bool RenderBootScreenProgressBar::canDraw(const GameState& state) {
+    return true;
+}
+
 void RenderBootScreenProgressBar::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
     dst.x = m_position.x();

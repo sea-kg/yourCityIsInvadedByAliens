@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
-#include "coordxy.h"
+#include "yrect.h"
 #include "move_object_direction.h"
 
 class GameRocketState {
     public:
-        GameRocketState(const CoordXY &p0, MoveObjectDirection direction);
+        GameRocketState(const YPos &p0, MoveObjectDirection direction);
         MoveObjectDirection getDirection();
-        const CoordXY &getPosition();
+        const YPos &getPosition();
         void move();
         bool hasDestroyed();
         void destroy();
@@ -15,7 +15,7 @@ class GameRocketState {
         bool isExploded();
 
     private:
-        CoordXY m_p0;
+        YPos m_p0;
         bool m_bDestroyed;
         bool m_bExploded;
         MoveObjectDirection m_nDirection;

@@ -14,11 +14,14 @@ class RenderBioplast : public RenderObject {
         virtual ~RenderBioplast();
 
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
+        virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
+        CoordXY m_coordPos;
+        CoordXY m_coordPosEnd;
         CoordXY m_coordRender;
-        CoordXY m_coordReal;
+        CoordXY m_coordRenderEnd;
         long m_nPrevPosition;
         int m_nLifeTime;
         int m_nMaxLifeTime;

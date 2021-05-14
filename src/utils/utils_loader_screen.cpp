@@ -115,5 +115,5 @@ void UtilsLoaderScreen::addObject(RenderObject *pObject) {
 void UtilsLoaderScreen::draw() {
     m_pRenderWindow->clear();
     m_pRenderWindow->modifyObjects(*m_pGameState);
-    m_pRenderWindow->drawObjects();
+    m_pRenderWindow->drawObjects(*m_pGameState);
 }

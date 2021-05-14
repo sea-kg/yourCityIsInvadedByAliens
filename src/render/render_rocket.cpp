@@ -10,10 +10,11 @@ RenderRocket::RenderRocket(GameRocketState *pRocketState, SDL_Texture* tex,  int
 : RenderObject(nPositionZ) {
     m_pRocketState = pRocketState;
     m_pTexture = tex;
+    m_size = YPos(50,50);
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
-    m_currentFrame.w = 50;
-    m_currentFrame.h = 50;
+    m_currentFrame.w = m_size.getX();
+    m_currentFrame.h = m_size.getY();
     m_nPrevPosition = 0;
     m_nLifeTime = 0;
     m_nMaxLifeTime = 50;
@@ -28,7 +29,8 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
+        m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos();
+        m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos() + m_size;
         return; // skip - already desition done
     }
 
@@ -58,8 +60,8 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_pRocketState->move();
     m_nLifeTime++;
 
-    m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
-
+    m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos();
+    m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos() + m_size;
     MoveObjectDirection dr = m_pRocketState->getDirection();
 
     int nWidth = 50;
@@ -101,21 +103,20 @@ void RenderRocket::modify(const GameState& state, IRenderWindow* pRenderWindow) 
 
 };
 
+bool RenderRocket::canDraw(const GameState& state) {
+    return
+        state.getWindowRect().hasPos(m_coordRender)
+        || state.getWindowRect().hasPos(m_coordRenderEnd)
+    ;
+}
+
 void RenderRocket::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
 
-    if (m_coordRender.x() < -100 || m_coordRender.x() > 2000) {
-        return;
-    }
-
-    if (m_coordRender.y() < -100 || m_coordRender.x() > 2000) {
-        return;
-    }
-
     SDL_Rect dst;
-    dst.x = m_coordRender.x() - 25;
-    dst.y = m_coordRender.y() - 25;
+    dst.x = m_coordRender.getX() - 25;
+    dst.y = m_coordRender.getY() - 25;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
