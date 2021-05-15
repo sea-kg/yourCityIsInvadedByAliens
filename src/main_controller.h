@@ -46,7 +46,11 @@ class MainController {
         );
         void generateTanks();
         void generateClouds();
-        void generateRoads();
+        
+        void loadRoads(
+            const std::string &sDefaultPath,
+            const YJsonObject &jsonRoads
+        );
 
         std::string m_sWindowName;
         std::string m_sResourceDir;

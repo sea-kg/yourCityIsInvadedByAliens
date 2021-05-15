@@ -1,8 +1,10 @@
 
 #pragma once
 #include "render.h"
+#include "ylog.h"
 
 enum class RoadPart {
+    NONE = -1,
     VERTICAL = 0,
     HORIZONTAL = 1,
     RIGHT_DOWN = 2,
@@ -13,7 +15,35 @@ enum class RoadPart {
     LEFT_UP_DOWN = 7,
     LEFT_RIGHT_UP = 8,
     RIGHT_UP_DOWN = 9,
-    LEFT_RIGHT_DOWN = 10
+    LEFT_RIGHT_DOWN = 10,
+};
+
+static RoadPart convertStringToRoadPart(const std::string &sRoadPart) {
+    if (sRoadPart == "vertical") {
+        return RoadPart::VERTICAL;
+    } else if (sRoadPart == "horizontal") {
+        return RoadPart::HORIZONTAL;
+    } else if (sRoadPart == "right-down") {
+        return RoadPart::RIGHT_DOWN;
+    } else if (sRoadPart == "left-down") {
+        return RoadPart::LEFT_DOWN;
+    } else if (sRoadPart == "left-up") {
+        return RoadPart::LEFT_UP;
+    } else if (sRoadPart == "right-up") {
+        return RoadPart::RIGHT_UP;
+    } else if (sRoadPart == "cross") {
+        return RoadPart::CROSS;
+    } else if (sRoadPart == "left-up-down") {
+        return RoadPart::LEFT_UP_DOWN;
+    } else if (sRoadPart == "left-right-up") {
+        return RoadPart::LEFT_RIGHT_UP;
+    } else if (sRoadPart == "right-up-down") {
+        return RoadPart::RIGHT_UP_DOWN;
+    } else if (sRoadPart == "left-right-down") {
+        return RoadPart::LEFT_RIGHT_DOWN;
+    }
+    YLog::throw_err("convertStringToRoadPart", "'" + sRoadPart + "' not expected");
+    return RoadPart::NONE;
 };
 
 class RenderRoad0 : public RenderObject {
