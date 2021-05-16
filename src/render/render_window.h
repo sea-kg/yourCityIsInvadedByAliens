@@ -26,6 +26,7 @@ class RenderWindow : public IRenderWindow {
         virtual void addVegetationObject(RenderObject *pObject) override;
         virtual void addBuildingsObject(RenderObject *pObject) override;
         virtual void addTransportsObject(RenderObject *pObject) override;
+        virtual void addFlyingShadowObject(RenderObject *pObject) override;
         virtual void addRocketsObject(RenderObject *pObject) override;
         virtual void addFlyingObject(RenderObject *pObject) override;
         virtual void addCloudsObject(RenderObject *pObject) override;
@@ -68,6 +69,7 @@ class RenderWindow : public IRenderWindow {
         int m_nLayerVegetation;
         int m_nLayerBuildings;
         int m_nLayerTransport;
+        int m_nLayerFlyingShadow;
         int m_nLayerRockets;
         int m_nLayerFlying;
         int m_nLayerClouds;

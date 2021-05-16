@@ -5,7 +5,7 @@
 
 #include "render_window.h"
 #include "render_rocket.h"
-#include "render_bioplast.h"
+#include "render_alienship.h"
 
 // ---------------------------------------------------------------------
 // RanderWindowLayer
@@ -104,6 +104,7 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
     m_nLayerVegetation = createRenderWindowLayer("vegetation");
     m_nLayerBuildings = createRenderWindowLayer("buildings");
     m_nLayerTransport = createRenderWindowLayer("transport");
+    m_nLayerFlyingShadow = createRenderWindowLayer("flying-shadow");
     m_nLayerRockets = createRenderWindowLayer("rockets");
     m_nLayerFlying = createRenderWindowLayer("flying");
     m_nLayerClouds = createRenderWindowLayer("clouds");
@@ -138,6 +139,10 @@ void RenderWindow::addBuildingsObject(RenderObject *pObject) {
 
 void RenderWindow::addTransportsObject(RenderObject *pObject) {
     m_vLayers[m_nLayerTransport]->addObject(pObject);
+}
+
+void RenderWindow::addFlyingShadowObject(RenderObject *pObject) {
+    m_vLayers[m_nLayerFlyingShadow]->addObject(pObject);
 }
 
 void RenderWindow::addRocketsObject(RenderObject *pObject) {

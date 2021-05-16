@@ -30,6 +30,7 @@ class IRenderWindow {
         virtual void addVegetationObject(RenderObject *pObject) = 0;
         virtual void addBuildingsObject(RenderObject *pObject) = 0;
         virtual void addTransportsObject(RenderObject *pObject) = 0;
+        virtual void addFlyingShadowObject(RenderObject *pObject) = 0;
         virtual void addRocketsObject(RenderObject *pObject) = 0;
         virtual void addFlyingObject(RenderObject *pObject) = 0;
         virtual void addCloudsObject(RenderObject *pObject) = 0;

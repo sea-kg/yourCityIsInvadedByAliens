@@ -9,7 +9,7 @@
 #include "utils_start_dialog.h"
 #include <fstream>
 #include <algorithm>
-#include "render_player_alient_ship.h"
+#include "render_alienship.h"
 #include "render_cloud0.h"
 #include "render_road0.h"
 #include "wsjcpp_core.h"
@@ -163,7 +163,7 @@ bool MainController::loadGameDataWithProgressBar() {
     // sDefaultPath
     // default
     loader.updateText("Loading... textures");
-    m_pTextureAlienShip1 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/alien-ship.png");
+    
     m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
@@ -174,7 +174,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
     m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
-    m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
+    this->loadAlienShip(sDefaultPath);
     loader.addToProgressCurrent(1);
 
     loader.updateText("Loading... buildings textures");
@@ -245,13 +245,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pRenderWindow->addPanelsObject(m_pCoordText);
 
     
-    m_pRenderWindow->addFlyingObject(
-        new RenderPlayerAlienShip(
-            m_pAlientShipState,
-            m_pTextureAlienShip1,
-            1000
-        )
-    );
+    
     loader.addToProgressCurrent(1);
 
     return true;
@@ -461,3 +455,49 @@ void MainController::loadRoads(
 }
 
 
+void MainController::loadAlienShip(
+    const std::string &sDefaultPath
+) {
+    
+    std::string sFilenamePng = sDefaultPath + "/sprites/alien-ship0.png";
+    if (!YCore::fileExists(sFilenamePng)) {
+        YLog::throw_err(TAG, "File not exists " + sFilenamePng);
+    }
+
+    SDL_Texture* pTextureAlienShip1 = m_pRenderWindow->loadTexture(sFilenamePng);
+
+    std::string sFilenameJson = sDefaultPath + "/sprites/alien-ship0.json";
+    if (!YCore::fileExists(sFilenameJson)) {
+        YLog::throw_err(TAG, "File not exists " + sFilenameJson);
+    }
+    
+    YJson jsonAlienShip(sFilenameJson);
+    if (jsonAlienShip.isParserFailed()) {
+        YLog::throw_err(TAG, "Could not parse file " + sFilenameJson);
+    }
+    m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
+
+    // shadow
+    if (jsonAlienShip["shadow"].getString() == "yes") {
+        m_pRenderWindow->addFlyingShadowObject(
+        new RenderAlienShip0(
+                m_pAlientShipState,
+                jsonAlienShip,
+                true,
+                pTextureAlienShip1,
+                1000
+            )
+        );
+    }
+
+    // ship
+    m_pRenderWindow->addFlyingObject(
+        new RenderAlienShip0(
+            m_pAlientShipState,
+            jsonAlienShip,
+            false,
+            pTextureAlienShip1,
+            1000
+        )
+    );
+}

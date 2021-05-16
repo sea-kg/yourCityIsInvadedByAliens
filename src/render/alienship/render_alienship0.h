@@ -6,13 +6,15 @@
 
 #include <vector>
 #include <string>
+#include "yjson.h"
 
-
-class RenderPlayerAlienShip : public RenderObject {
+class RenderAlienShip0 : public RenderObject {
 
     public:
-        RenderPlayerAlienShip(
+        RenderAlienShip0(
             GameAlienShipState *pState,
+            const YJson &jsonAlienShip,
+            bool bShadow,
             SDL_Texture* tex,
             int nPositionZ = 0
         );
@@ -21,10 +23,16 @@ class RenderPlayerAlienShip : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
+        std::string TAG;
         GameAlienShipState *m_pState;
         CoordXY m_coordPositionRendering;
+        int m_nFrameWidth;
+        int m_nFrameHeight;
+        int m_nFramesCount;
+        bool m_bFrameMoveDirectionVertical;
+        bool m_bShadow;
         long m_nPrevPosition;
         long m_nSpeedAnimation;
-        SDL_Rect currentFrame;
+        SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
 };

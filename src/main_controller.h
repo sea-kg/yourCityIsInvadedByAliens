@@ -52,6 +52,10 @@ class MainController {
             const YJsonObject &jsonRoads
         );
 
+        void loadAlienShip(
+            const std::string &sDefaultPath
+        );
+
         std::string m_sWindowName;
         std::string m_sResourceDir;
         CoordXY m_minPointMap;
@@ -69,7 +73,6 @@ class MainController {
         RenderWindow *m_pRenderWindow;
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
-        SDL_Texture* m_pTextureAlienShip1;
         SDL_Texture* m_pTextureCloud0;
         SDL_Texture* m_pTextureRoad0;
         SDL_Texture* m_pTextureTank0;

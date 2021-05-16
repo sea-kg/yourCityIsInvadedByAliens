@@ -1,0 +1,12 @@
+{
+    "animation": {
+        "speed-ms": 80
+    },
+    "frame": {
+        "width-px": 128,
+        "height-px": 128,
+        "move-direction": "vertical",
+        "count": 25
+    },
+    "shadow": "yes"
+}
