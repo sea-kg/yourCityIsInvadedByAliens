@@ -19,8 +19,8 @@ class GameState {
         void setCoordLeftTop(const CoordXY &);
 
         bool isChangedWindowSize() const;
-        const int getWindowWidth() const;
-        const int getWindowHeight() const;
+        int getWindowWidth() const;
+        int getWindowHeight() const;
         const YRect &getWindowRect() const;
         void updateWindowSize(int w, int h);
 

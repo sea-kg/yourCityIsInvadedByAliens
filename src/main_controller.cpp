@@ -34,6 +34,10 @@ MainController::MainController(const std::string &sWindowName) {
     m_pMainAiThread = new MainAiThread();
 }
 
+MainController::~MainController() {
+    delete m_pMainAiThread;
+}
+
 bool MainController::findResourceDir() {
     std::vector<std::string> vPaths;
     vPaths.push_back("/usr/share/yourCityIsInvadedByAliens_Tomsk");

@@ -8,6 +8,7 @@
 class MainController {
     public:
         MainController(const std::string &sWindowName);
+        ~MainController();
         bool findResourceDir();
         std::string getResourceDir();
         bool initSDL2();

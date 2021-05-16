@@ -48,11 +48,11 @@ bool GameState::isChangedWindowSize() const {
     return m_bIsChangedWindowSize;
 }
 
-const int GameState::getWindowWidth() const {
+int GameState::getWindowWidth() const {
     return m_nWindowWidth;
 }
 
-const int GameState::getWindowHeight() const {
+int GameState::getWindowHeight() const {
     return m_nWindowHeight;
 }
 
