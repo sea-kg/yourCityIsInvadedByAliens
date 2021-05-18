@@ -12,6 +12,7 @@ bin/
 /win-bin-release
 /Release/
 /other/
+.roads-generation
 
 # Prerequisites
 *.d
