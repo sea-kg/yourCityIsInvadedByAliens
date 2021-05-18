@@ -17,7 +17,7 @@ read0_texture = "textures/road0.png"
 read0_texture_width = 120
 read0_texture_height = 120
 
-max_main_points = 100
+max_main_points = 50
 max_pw = 0
 max_ph = 0
 # Opening JSON file
@@ -117,20 +117,28 @@ def is_border(x,y):
         return True
     return False
 
+def get_around_count(x, y):
+    if is_border(x, y):
+        return 4
+    ret = 0
+    for dx in range(3):
+        for dy in range(3):
+            x0 = x + dx - 1 
+            y0 = y + dy - 1
+            if x0 == x and y0 == y:
+                continue
+            if ypixelmap[x0][y0]:
+                ret += 1
+    return ret
+
 def is_single_point(x,y):
     if is_border(x, y):
         return False
     if not ypixelmap[x][y]:
         return False
-    if ypixelmap[x+1][y] or ypixelmap[x-1][y]:
-        return False
-    if ypixelmap[x][y+1] or ypixelmap[x][y-1]:
-        return False
-    if ypixelmap[x+1][y+1] or ypixelmap[x-1][y-1]:
-        return False
-    if ypixelmap[x+1][y-1] or ypixelmap[x-1][y+1]:
-        return False
-    return True
+    if get_around_count(x,y) == 0:
+        return True
+    return False
 
 def find_single_points():
     single_points = []
@@ -209,22 +217,41 @@ def move_diagonal_tails_loop():
     while mdt > 0:
         mdt = move_diagonal_tails()
 
+def drawline_by_y(x0,x1,y):
+    ret = 0
+    ix = min(x0,x1)
+    mx = max(x0,x1)
+    while ix < mx:
+        if not ypixelmap[ix][y]:
+            if try_change_to_true(ix,y):
+                ret += 1
+        ix += 1
+    return ret
+
+def drawline_by_x(y0,y1,x):
+    ret = 0
+    iy = min(y0,y1)
+    my = max(y0,y1)
+    while iy < my:
+        if not ypixelmap[x][iy]:
+            if try_change_to_true(x,iy):
+                ret += 1
+        iy += 1
+    return ret
+
 def connect_points(p0, p1):
     ret = 0
-    x0 = min(p0['x'],p1['x'])
-    x1 = max(p0['x'],p1['x'])
+    x0 = p0['x']
     y0 = p0['y']
+    x1 = p1['x']
     y1 = p1['y']
-    while x0 <= x1:
-        if not ypixelmap[x0][y0]:
-            if try_change_to_true(x0,y0):
-                ret += 1
-        x0 += 1
-    while y0 <= y1:
-        if not ypixelmap[x0][y0]:
-            if try_change_to_true(x0,y0):
-                ret += 1
-        y0 += 1
+    n = randrange(2)
+    if n == 0:
+        ret += drawline_by_y(x0, x1, y0)
+        ret += drawline_by_x(y0, y1, x1)
+    else:
+        ret += drawline_by_x(y0, y1, x0)
+        ret += drawline_by_y(x0, x1, y1)
     return ret
 
 def remove_single_points():
@@ -281,20 +308,6 @@ def can_connect_close_points(x,y):
     if ypixelmap[x+1][y] and ypixelmap[x-1][y]:
         return True
     return False
-
-def get_around_count(x, y):
-    if is_border(x, y):
-        return 4
-    ret = 0
-    for dx in range(3):
-        for dy in range(3):
-            x0 = x + dx - 1 
-            y0 = y + dy - 1
-            if x0 == x and y0 == y:
-                continue
-            if ypixelmap[x0][y0]:
-                ret += 1
-    return ret
 
 def connect_all_close_points():
     x = 0
@@ -448,7 +461,8 @@ with open('map.json',) as file_map:
     move_diagonal_tails_loop()
     remove_deadlocks_loop()
     remove_single_points()
-    
+    remove_rames()
+
     print_map()
     
     print("------- done -------")
@@ -463,5 +477,9 @@ if os.path.isfile('video.avi'):
     os.remove('video.avi')
 
 if write_pictures:
+    # last frame in last 5 seconds
+    for _ in range(frames_per_secons*5):
+        write_map_to_image()
+
     print("Frames per second: " + str(frames_per_secons))
     os.system('ffmpeg -f image2 -r ' + str(frames_per_secons) + ' -i .roads-generation/roadmap%06d.png -i "../app/music/sea5kg - 02 Diphdo.ogg" -acodec libmp3lame -b 192k video.avi')
