@@ -221,7 +221,7 @@ def drawline_by_y(x0,x1,y):
     ret = 0
     ix = min(x0,x1)
     mx = max(x0,x1)
-    while ix < mx:
+    while ix <= mx:
         if not ypixelmap[ix][y]:
             if try_change_to_true(ix,y):
                 ret += 1
@@ -232,7 +232,7 @@ def drawline_by_x(y0,y1,x):
     ret = 0
     iy = min(y0,y1)
     my = max(y0,y1)
-    while iy < my:
+    while iy <= my:
         if not ypixelmap[x][iy]:
             if try_change_to_true(x,iy):
                 ret += 1
