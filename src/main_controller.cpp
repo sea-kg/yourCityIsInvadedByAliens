@@ -161,7 +161,12 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.addToProgressCurrent(1);
 
     loader.updateText("Load roads...");
-    this->loadRoads(sDefaultPath, jsonDefaultMap["roads"]);
+    std::cout << "default/roads.json" << std::endl;
+    YJson jsonDefaultRoads(sDefaultPath + "/roads.json");
+    if (jsonDefaultMap.isParserFailed()) {
+        return false;
+    }
+    this->loadRoads(sDefaultPath, jsonDefaultRoads["roads"]);
     loader.addToProgressCurrent(1);
 
     // sDefaultPath

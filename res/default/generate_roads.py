@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import json
 from random import randrange
 import math
@@ -17,13 +18,13 @@ read0_texture = "textures/road0.png"
 read0_texture_width = 120
 read0_texture_height = 120
 
-max_main_points = 50
+max_main_points = 100
 max_pw = 0
 max_ph = 0
 # Opening JSON file
 ypixelmap = []
 
-write_pictures = True
+write_pictures = False
 
 def write_map_to_image():
     global roads_generation_n
@@ -483,3 +484,67 @@ if write_pictures:
 
     print("Frames per second: " + str(frames_per_secons))
     os.system('ffmpeg -f image2 -r ' + str(frames_per_secons) + ' -i .roads-generation/roadmap%06d.png -i "../app/music/sea5kg - 02 Diphdo.ogg" -acodec libmp3lame -b 192k video.avi')
+
+
+
+
+export_to_json = {
+    "roads": [{
+        "texture": "textures/road0.png",
+        "width": 120,
+        "height": 120,
+        "fill": [],
+    }]
+}
+
+def get_road_part(x,y):
+    if not ypixelmap[x][y]:
+        print("Error")
+        sys.exit(-1)
+
+    left = ypixelmap[x][y-1]
+    right = ypixelmap[x][y+1]
+    top = ypixelmap[x-1][y]
+    bottom = ypixelmap[x+1][y]
+
+    if left and right and top and bottom:
+        return "cross"
+    if left and right and not top and not bottom:
+        return "horizontal"
+    if not left and not right and top and bottom:
+        return "vertical"
+    if not left and right and not top and bottom:
+        return "right-down"
+    if left and not right and not top and bottom:
+        return "left-down"
+    if not left and right and top and not bottom:
+        return "right-up"
+    if left and not right and top and not bottom:
+        return "left-up"
+    if left and not right and top and bottom:
+        return "left-up-down"
+    if not left and right and top and bottom:
+        return "right-up-down"
+    if left and right and not top and bottom:
+        return "left-right-down"
+    if left and right and top and not bottom:
+        return "left-right-up"
+    
+    print("Error")
+    sys.exit(-1)
+
+x = 0
+for x_line in ypixelmap:
+    y = 0
+    for _ in x_line:
+        if ypixelmap[x][y]:
+            export_to_json['roads'][0]['fill'].append({
+                "y": x*120,
+                "x": y*120 + 160, # why x?
+                "road-part": get_road_part(x,y),
+            })
+        y += 1
+    x += 1
+
+with open('roads.json', 'w') as outfile:
+    json.dump(export_to_json, outfile, indent=4)

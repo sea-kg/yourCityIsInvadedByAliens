@@ -125,8 +125,8 @@ int main(int argc, char* args[]) {
             }
         }
 
-        int nLeftPad = pMainController->getCoordCenter().x() + 320/2;
-        int nRightPad = pMainController->getCoordCenter().x() - 320/2;
+        int nLeftPad = pMainController->getCoordCenter().x();
+        int nRightPad = pMainController->getCoordCenter().x() - 320;
         int nTopPad = pMainController->getCoordCenter().y();
         int nBottomPad = pMainController->getCoordCenter().y();
         pAlientShipState->move(
