@@ -74,7 +74,7 @@ class MainController {
         RenderWindow *m_pRenderWindow;
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
-        SDL_Texture* m_pTextureCloud0;
+        std::vector<SDL_Texture*> m_vTexturesClouds;
         SDL_Texture* m_pTextureRoad0;
         SDL_Texture* m_pTextureTank0;
         SDL_Texture* m_pTextureRocket;

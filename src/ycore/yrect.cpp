@@ -1,4 +1,5 @@
 #include "yrect.h"
+#include <algorithm>
 
 // ---------------------------------------------------------------------
 // YRect
@@ -10,11 +11,11 @@ YRect::YRect() {
     m_nMaxY = 0;
 }
 
-YRect::YRect(int nXMin, int nXMax, int nYMin, int nYMax) {
-    m_nMinX = nXMin;
-    m_nMaxX = nXMax;
-    m_nMinY = nYMin;
-    m_nMaxY = nYMax;
+YRect::YRect(const YPos& minpos, const YPos& maxpos) {
+    m_nMinX = std::min(minpos.getX(), maxpos.getX());
+    m_nMinY = std::min(minpos.getY(), maxpos.getY());
+    m_nMaxX = std::max(minpos.getX(), maxpos.getX());
+    m_nMaxY = std::max(minpos.getY(), maxpos.getY());
 }
 
 const int &YRect::getMinX() const {
@@ -54,9 +55,13 @@ bool YRect::hasIntersection(const YRect &rect) const {
 
 YRect YRect::operator-(const YPos& other) const {
     return YRect(
-        m_nMinX - other.getX(),
-        m_nMaxX - other.getX(),
-        m_nMinY - other.getY(),
-        m_nMaxY - other.getY()
+        YPos(
+            m_nMinX - other.getX(),
+            m_nMinY - other.getY()
+        ),
+        YPos(
+            m_nMaxX - other.getX(),
+            m_nMaxY - other.getY()
+        )
     );
 }

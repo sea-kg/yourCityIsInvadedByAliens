@@ -20,7 +20,8 @@ class RenderCloud0 : public RenderObject {
         CoordXY m_coordRenderEnd;
         long m_nPrevPosition;
         GameCloud0State *m_pCloud0State;
-
+        YRect m_rectRegionRender;
+        
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
 };

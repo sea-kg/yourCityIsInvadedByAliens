@@ -178,7 +178,23 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
     m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
-    m_pTextureCloud0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png");
+
+    m_vTexturesClouds.push_back(
+        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png")
+    );
+    m_vTexturesClouds.push_back(
+        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud1.png")
+    );
+    m_vTexturesClouds.push_back(
+        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud2.png")
+    );
+    m_vTexturesClouds.push_back(
+        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud3.png")
+    );
+    m_vTexturesClouds.push_back(
+        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud4.png")
+    );
+
     m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
 
     // app
@@ -418,19 +434,18 @@ void MainController::generateTanks() {
     }
 }
 
-
 void MainController::generateClouds() {
     for (int i = 0; i < m_nMaxClouds; i++) {
         int nXpos = std::rand() % m_nMapWidth;
         nXpos += m_minPointMap.x();
         int nYpos = std::rand() % m_nMapHeight;
         nYpos += m_minPointMap.y();
-        
-        auto *pCloud0State = new GameCloud0State(CoordXY(nXpos,nYpos));
 
+        int nCloudType = std::rand() % m_vTexturesClouds.size();
+        auto *pCloud0State = new GameCloud0State(CoordXY(nXpos,nYpos));
         m_pRenderWindow->addCloudsObject(new RenderCloud0(
             pCloud0State,
-            m_pTextureCloud0,
+            m_vTexturesClouds[nCloudType],
             1000
         ));
     }

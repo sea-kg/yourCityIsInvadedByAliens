@@ -12,7 +12,7 @@ RenderBackground::RenderBackground(const CoordXY &p0, SDL_Texture* tex, int nPos
     m_currentFrame.w = 500;
     m_currentFrame.h = 500; // HARD code aiyayai
 
-    m_rectRegionPos = YRect(p0.x(), p0.x() + 500, p0.y(), p0.y() + 500);
+    m_rectRegionPos = YRect(YPos(p0.x(), p0.y()), YPos(p0.x() + 500, p0.y() + 500));
 }
 
 void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -21,8 +21,8 @@ void RenderBackground::modify(const GameState& state, IRenderWindow* pRenderWind
 };
 
 bool RenderBackground::canDraw(const GameState& state) {
-    // return state.getWindowRect().hasIntersection(m_rectRegionRender);
-    return true;
+    return m_rectRegionRender.hasIntersection(state.getWindowRect());
+    // return true;
 }
 
 void RenderBackground::draw(SDL_Renderer* renderer) {

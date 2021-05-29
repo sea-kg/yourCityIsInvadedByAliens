@@ -15,7 +15,7 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_nElapsedTime = 0;
     m_nWindowWidth = windowWidth;
     m_nWindowHeight = windowHeight;
-    m_windowRect = YRect(0, windowWidth, 0, windowHeight);
+    m_windowRect = YRect(YPos(0, 0), YPos(windowWidth, windowHeight));
     m_bIsChangedWindowSize = true;
     m_bPlayMusic = false;
 }
@@ -64,7 +64,7 @@ void GameState::updateWindowSize(int w, int h) {
     m_bIsChangedWindowSize = true;
     m_nWindowWidth = w;
     m_nWindowHeight = h;
-    m_windowRect = YRect(0, w, 0, h);
+    m_windowRect = YRect(YPos(0, 0), YPos(w, h));
 }
 
 // TODO move to MainController

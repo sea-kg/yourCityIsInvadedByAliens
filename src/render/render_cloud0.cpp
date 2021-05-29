@@ -11,8 +11,8 @@ RenderCloud0::RenderCloud0(GameCloud0State *pCloud0State, SDL_Texture* tex,  int
     m_pTexture = tex;
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
-    m_currentFrame.w = 300;
-    m_currentFrame.h = 300;
+    m_currentFrame.w = 500;
+    m_currentFrame.h = 500;
     m_nPrevPosition = 0;
 }
 
@@ -31,14 +31,28 @@ void RenderCloud0::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_pCloud0State->move();
 
     m_coordRender = m_pCloud0State->getPosition() - state.getCoordLeftTop();
-    m_coordRenderEnd = CoordXY(m_coordRender.x() + 300, m_coordRender.y() + 300);
+    m_coordRenderEnd = CoordXY(m_coordRender.x() + 500, m_coordRender.y() + 500);
+
+    m_rectRegionRender = YRect(
+        YPos(
+            m_pCloud0State->getPosition().x() - state.getCoordLeftTop().x(),
+            m_pCloud0State->getPosition().y() - state.getCoordLeftTop().y()
+        ),
+        YPos(
+            m_pCloud0State->getPosition().x() + 500 - state.getCoordLeftTop().x(),
+            m_pCloud0State->getPosition().y() + 500 - state.getCoordLeftTop().y()
+        )
+    );
 };
 
 bool RenderCloud0::canDraw(const GameState& state) {
-    return
+
+    return m_rectRegionRender.hasIntersection(state.getWindowRect());
+
+    /*return
         m_coordRender.isInsideRect(state.getWindowRect())
         || m_coordRenderEnd.isInsideRect(state.getWindowRect())
-    ;
+    ;*/
 }
 
 void RenderCloud0::draw(SDL_Renderer* renderer) {

@@ -5,7 +5,7 @@
 class YRect {
     public:
         YRect();
-        YRect(int nXMin, int nXMax, int nYMin, int nYMax);
+        YRect(const YPos& minpos, const YPos& maxpos);
         const int &getMinX() const;
         const int &getMaxX() const;
         const int &getMinY() const;
