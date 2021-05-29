@@ -7,7 +7,7 @@
     "player-start-y": 1000,
     "background": [
         {
-            "texture": "textures/background.png",
+            "texture": "textures/background0.png",
             "width": 500,
             "height": 500,
             "fill-region": {
