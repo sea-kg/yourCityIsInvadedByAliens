@@ -17,6 +17,8 @@
 #include "ykeyboard.h"
 #include "game_cloud0_state.h"
 #include "render_background.h"
+#include "buildings/render_building2.h"
+
 
 // MainController
 

@@ -1,4 +1,5 @@
 #include "utils_loader_screen.h"
+#include "primitives/render_rect_texture.h"
 
 UtilsLoaderScreen::UtilsLoaderScreen(
     const std::string &sResourceDir,
