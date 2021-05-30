@@ -31,8 +31,6 @@ bool RenderRoad0::canDraw(const GameState& state) {
 }
 
 void RenderRoad0::draw(SDL_Renderer* renderer) {
-    RenderColor emptyColor(0, 0, 0, 0);
-    emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
     dst.x = m_coordRender.x();

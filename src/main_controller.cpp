@@ -11,14 +11,14 @@
 #include <algorithm>
 #include "render_alienship.h"
 #include "render_cloud0.h"
-#include "render_road0.h"
+#include "roads/render_road0.h"
 #include "wsjcpp_core.h"
 #include "ycore.h"
 #include "ykeyboard.h"
 #include "game_cloud0_state.h"
 #include "render_background.h"
 #include "buildings/render_building2.h"
-
+#include "buildings/render_building_simple.h"
 
 // MainController
 
@@ -171,6 +171,16 @@ bool MainController::loadGameDataWithProgressBar() {
     this->loadRoads(sDefaultPath, jsonDefaultRoads["roads"]);
     loader.addToProgressCurrent(1);
 
+
+    loader.updateText("Load buildings...");
+    std::cout << "default/buildings.json" << std::endl;
+    YJson jsonDefaultBuildings(sDefaultPath + "/buildings.json");
+    if (jsonDefaultMap.isParserFailed()) {
+        return false;
+    }
+    this->loadBuildings(sDefaultPath, jsonDefaultBuildings["buildings"]);
+    loader.addToProgressCurrent(1);
+
     // sDefaultPath
     // default
     loader.updateText("Loading... textures");
@@ -205,7 +215,7 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.addToProgressCurrent(1);
 
     loader.updateText("Loading... buildings textures");
-
+    // TODO remove
     std::vector<std::string> vBuildings = YCore::getListOfDirs(m_sResourceDir + "/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
         std::string sName = vBuildings[i];
@@ -480,7 +490,6 @@ void MainController::loadRoads(
     }
 }
 
-
 void MainController::loadAlienShip(
     const std::string &sDefaultPath
 ) {
@@ -526,4 +535,32 @@ void MainController::loadAlienShip(
             1000
         )
     );
+}
+
+
+void MainController::loadBuildings(
+    const std::string &sDefaultPath,
+    const YJsonObject &jsonRoads
+) {
+    for (int i = 0; i < jsonRoads.length(); i++) {
+        const YJsonObject &item = jsonRoads[i];
+        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        if (!YCore::fileExists(sTexturePath)) {
+            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+        }
+        SDL_Texture* pTextureBuilding = m_pRenderWindow->loadTexture(sTexturePath);
+        int nTextureWidth = item["width"].getNumber();
+        int nTextureHeight = item["height"].getNumber();
+        const YJsonObject &fillList = item["fill"];
+
+        for (int n = 0; n < fillList.length(); n++) {
+            const YJsonObject &roadItem = fillList[n];
+            int nX = roadItem["x"].getNumber();
+            int nY = roadItem["y"].getNumber();
+            m_pRenderWindow->addBuildingsObject(new RenderBuildingSimple(
+                YPos(nX, nY),
+                pTextureBuilding
+            ));
+        }
+    }
 }

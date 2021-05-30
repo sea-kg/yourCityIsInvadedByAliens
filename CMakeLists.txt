@@ -54,6 +54,7 @@ list (APPEND WSJCPP_SOURCES "src/render/alienship/render_bioplast.cpp")
 
 # buildings
 list (APPEND WSJCPP_SOURCES "src/render/buildings/render_building2.cpp")
+list (APPEND WSJCPP_SOURCES "src/render/buildings/render_building_simple.cpp")
 
 # primitives
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_line.cpp")
@@ -62,6 +63,10 @@ list (APPEND WSJCPP_SOURCES "src/render/primitives/render_triangle.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/render/render_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_base.cpp")
+
+# roads
+list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.cpp")
+list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.h")
 
 # ui
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_bootscreen_progressbar.cpp")
@@ -73,8 +78,6 @@ list (APPEND WSJCPP_SOURCES "src/render/ui/render_mouse.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_player_power.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.cpp")
-list (APPEND WSJCPP_SOURCES "src/render/render_road0.cpp")
-list (APPEND WSJCPP_SOURCES "src/render/render_road0.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_rocket.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_rocket.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_tank0.h")

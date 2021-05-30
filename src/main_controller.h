@@ -57,6 +57,11 @@ class MainController {
             const std::string &sDefaultPath
         );
 
+        void loadBuildings(
+            const std::string &sDefaultPath,
+            const YJsonObject &jsonRoads
+        );
+
         std::string m_sWindowName;
         std::string m_sResourceDir;
         CoordXY m_minPointMap;

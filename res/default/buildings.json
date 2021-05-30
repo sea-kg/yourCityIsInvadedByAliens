@@ -1,0 +1,15 @@
+{
+    "buildings": [
+        {
+            "texture": "textures/building0.png",
+            "width": 200,
+            "height": 300,
+            "fill": [
+                {
+                    "y": 515,
+                    "x": 1505
+                }
+            ]
+        }
+    ]
+}
