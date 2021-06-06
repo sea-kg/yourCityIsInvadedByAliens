@@ -21,10 +21,3 @@ set (WSJCPP_SOURCES "")
 list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_core/")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.h")
-
-# sea5kg-triangulation:v0.0.2
-list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/sea5kg_triangulation/")
-list (APPEND WSJCPP_SOURCES "./src.wsjcpp/sea5kg_triangulation/sea5kg_triangulation.cpp")
-list (APPEND WSJCPP_SOURCES "./src.wsjcpp/sea5kg_triangulation/sea5kg_triangulation.h")
-
-

@@ -15,7 +15,6 @@ RenderRoad0::RenderRoad0(const CoordXY &pos, SDL_Texture* tex, RoadPart nTile)
     m_currentFrame.y = m_nNumberOfTile * 120;
     m_currentFrame.w = 120;
     m_currentFrame.h = 120;
-    
 }
 
 void RenderRoad0::modify(const GameState& state, IRenderWindow* pRenderWindow) {

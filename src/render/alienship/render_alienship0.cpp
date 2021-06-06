@@ -1,5 +1,4 @@
 #include "render_alienship0.h"
-#include "sea5kg_triangulation.h"
 #include "ylog.h"
 
 // ---------------------------------------------------------------------

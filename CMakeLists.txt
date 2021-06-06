@@ -45,18 +45,21 @@ list (APPEND WSJCPP_SOURCES "src/game/game_tank0_state.h")
 list (APPEND WSJCPP_SOURCES "src/game/game_tank0_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/move_object_direction.h")
 list (APPEND WSJCPP_SOURCES "src/game/move_object_direction.cpp")
+
+# ai
 list (APPEND WSJCPP_SOURCES "src/ai/ai_object.cpp")
 list (APPEND WSJCPP_SOURCES "src/ai/ai_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/ai/main_ai_thread.cpp")
+
+# renders
 list (APPEND WSJCPP_SOURCES "src/render/render.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/alienship/render_alienship0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/alienship/render_bioplast.cpp")
 
-# buildings
-list (APPEND WSJCPP_SOURCES "src/render/buildings/render_building2.cpp")
+## renders / buildings
 list (APPEND WSJCPP_SOURCES "src/render/buildings/render_building_simple.cpp")
 
-# primitives
+## renders / primitives
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_line.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_rect_texture.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_triangle.cpp")
@@ -64,11 +67,11 @@ list (APPEND WSJCPP_SOURCES "src/render/primitives/render_triangle.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_base.cpp")
 
-# roads
+## renders / roads
 list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.h")
 
-# ui
+## renders / ui
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_bootscreen_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_music_on_off.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_simple.cpp")
@@ -84,6 +87,8 @@ list (APPEND WSJCPP_SOURCES "src/render/render_tank0.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
+
+# utils
 list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.h")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.cpp")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_music_player.h")

@@ -4,7 +4,12 @@
 class RenderBuildingSimple : public RenderObject {
 
     public:
-        RenderBuildingSimple(const YPos &pos, SDL_Texture* pTexture);
+        RenderBuildingSimple(
+            const YPos &pos,
+            int nWidth,
+            int nHeight,
+            SDL_Texture* pTexture
+        );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
@@ -16,4 +21,6 @@ class RenderBuildingSimple : public RenderObject {
         // GameBuilding *m_pBuilding;
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
+        int m_nWidth;
+        int m_nHeight;
 };

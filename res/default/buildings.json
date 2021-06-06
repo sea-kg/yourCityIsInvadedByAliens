@@ -10,6 +10,17 @@
                     "x": 1505
                 }
             ]
+        },
+        {
+            "texture": "textures/building1.png",
+            "width": 300,
+            "height": 200,
+            "fill": [
+                {
+                    "y": 955,
+                    "x": 1495
+                }
+            ]
         }
     ]
 }

@@ -4,14 +4,20 @@
 // ---------------------------------------------------------------------
 // RenderBuildingSimple
 
-RenderBuildingSimple::RenderBuildingSimple(const YPos &pos, SDL_Texture* pTexture)
+RenderBuildingSimple::RenderBuildingSimple(
+    const YPos &pos,
+    int nWidth,
+    int nHeight,
+    SDL_Texture* pTexture
+)
 : RenderObject(600) {
     m_pTexture = pTexture;
-
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
-    m_currentFrame.w = 200;
-    m_currentFrame.h = 300;
+    m_currentFrame.w = m_nWidth;
+    m_currentFrame.h = m_nHeight;
 
     m_coordAbsolute = CoordXY(pos.getX(), pos.getY());
     // m_maxPos = pos + YPos(200,300);
@@ -19,19 +25,6 @@ RenderBuildingSimple::RenderBuildingSimple(const YPos &pos, SDL_Texture* pTextur
 
 void RenderBuildingSimple::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coordRender = m_coordAbsolute - state.getCoordLeftTop();
-    // m_coordRenderEnd = m_coordPosEnd - state.getCoordLeftTop();
-
-    /*for (int i = 0; i < m_vBorderLines.size(); i++) {
-        m_vBorderLines[i]->modify(state, pRenderWindow);
-    }
-
-    for (int i = 0; i < m_vFillPointsAbsolute.size(); i++) {
-        m_vFillPoints[i] = m_vFillPointsAbsolute[i] - state.getCoordLeftTop();
-    }
-
-    for (int i = 0; i < m_vLines.size(); i++) {
-        m_vLines[i]->modify(state, pRenderWindow);
-    }*/
 }
 
 bool RenderBuildingSimple::canDraw(const GameState& state) {

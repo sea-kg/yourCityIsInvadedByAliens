@@ -17,7 +17,6 @@
 #include "ykeyboard.h"
 #include "game_cloud0_state.h"
 #include "render_background.h"
-#include "buildings/render_building2.h"
 #include "buildings/render_building_simple.h"
 
 // MainController
@@ -230,27 +229,6 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.addToProgressCurrent(1);
 
     loader.updateText("Loading... buildings");
-    
-    SDL_Texture* pTextureTower0 = m_mapBuildingsTextures["tower0"];
-
-    // load map from json
-    std::cout << "Data" << std::endl;
-    YJson jsonData(m_sResourceDir + "/data.json");
-    
-    YJsonObject jsonBuildings = jsonData["buildings"];
-    std::vector<std::string> vKeys = jsonBuildings.getKeys();
-    loader.addToProgressMax(vKeys.size());
-    for (int i = 0; i < vKeys.size(); i++) {
-        std::string sKey = vKeys[i];
-        // std::cout << sKey << std::endl;
-        GameBuilding *pBuilding = new GameBuilding(jsonBuildings[sKey]);
-        m_pGameState->addBuilding(pBuilding);
-        RenderBuilding2 *pRenderBuilding2 = new RenderBuilding2(pBuilding, pTextureTower0);
-        CoordXY min0 = pRenderBuilding2->getMinPoint();
-        CoordXY max0 = pRenderBuilding2->getMaxPoint();
-        m_pRenderWindow->addBuildingsObject(pRenderBuilding2);
-        loader.addToProgressCurrent(1);
-    }
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
@@ -559,6 +537,8 @@ void MainController::loadBuildings(
             int nY = roadItem["y"].getNumber();
             m_pRenderWindow->addBuildingsObject(new RenderBuildingSimple(
                 YPos(nX, nY),
+                nTextureWidth,
+                nTextureHeight,
                 pTextureBuilding
             ));
         }
