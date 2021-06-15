@@ -71,6 +71,11 @@ list (APPEND WSJCPP_SOURCES "src/render/render_base.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.h")
 
+# renders / vegetations
+list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.cpp")
+list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.h")
+
+
 ## renders / ui
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_bootscreen_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_music_on_off.cpp")

@@ -18,6 +18,7 @@
 #include "game_cloud0_state.h"
 #include "render_background.h"
 #include "buildings/render_building_simple.h"
+#include "vegetations/render_vegetation_simple.h"
 
 // MainController
 
@@ -174,10 +175,19 @@ bool MainController::loadGameDataWithProgressBar() {
     loader.updateText("Load buildings...");
     std::cout << "default/buildings.json" << std::endl;
     YJson jsonDefaultBuildings(sDefaultPath + "/buildings.json");
-    if (jsonDefaultMap.isParserFailed()) {
+    if (jsonDefaultBuildings.isParserFailed()) {
         return false;
     }
     this->loadBuildings(sDefaultPath, jsonDefaultBuildings["buildings"]);
+    loader.addToProgressCurrent(1);
+
+    loader.updateText("Load vegetations...");
+    std::cout << "default/vegetations.json" << std::endl;
+    YJson jsonDefaultVegetations(sDefaultPath + "/vegetations.json");
+    if (jsonDefaultVegetations.isParserFailed()) {
+        return false;
+    }
+    this->loadVegetations(sDefaultPath, jsonDefaultVegetations["vegetations"]);
     loader.addToProgressCurrent(1);
 
     // sDefaultPath
@@ -536,6 +546,36 @@ void MainController::loadBuildings(
             int nX = roadItem["x"].getNumber();
             int nY = roadItem["y"].getNumber();
             m_pRenderWindow->addBuildingsObject(new RenderBuildingSimple(
+                YPos(nX, nY),
+                nTextureWidth,
+                nTextureHeight,
+                pTextureBuilding
+            ));
+        }
+    }
+}
+
+
+void MainController::loadVegetations(
+    const std::string &sDefaultPath,
+    const YJsonObject &jsonVegetations
+) {
+    for (int i = 0; i < jsonVegetations.length(); i++) {
+        const YJsonObject &item = jsonVegetations[i];
+        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        if (!YCore::fileExists(sTexturePath)) {
+            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+        }
+        SDL_Texture* pTextureBuilding = m_pRenderWindow->loadTexture(sTexturePath);
+        int nTextureWidth = item["width"].getNumber();
+        int nTextureHeight = item["height"].getNumber();
+        const YJsonObject &fillList = item["fill"];
+
+        for (int n = 0; n < fillList.length(); n++) {
+            const YJsonObject &roadItem = fillList[n];
+            int nX = roadItem["x"].getNumber();
+            int nY = roadItem["y"].getNumber();
+            m_pRenderWindow->addVegetationObject(new RenderVegetationSimple(
                 YPos(nX, nY),
                 nTextureWidth,
                 nTextureHeight,

@@ -1,0 +1,15 @@
+{
+    "vegetations": [
+        {
+            "texture": "textures/tree0.png",
+            "width": 75,
+            "height": 75,
+            "fill": [
+                {
+                    "x": 715,
+                    "y": 1110
+                }
+            ]
+        }
+    ]
+}
