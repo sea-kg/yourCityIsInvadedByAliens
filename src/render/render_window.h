@@ -31,7 +31,7 @@ class RenderWindow : public IRenderWindow {
         virtual void addFlyingObject(RenderObject *pObject) override;
         virtual void addCloudsObject(RenderObject *pObject) override;
         virtual void addPanelsObject(RenderObject *pObject) override;
-        virtual void addRocket(GameRocketState *pState) override;
+        virtual void addRocket(GameRocketState *pState, RenderObject *pObject) override;
         virtual void addBioplast(GameBioplastState *pState) override;
         bool isFullscreen();
         void toggleFullscreen();
@@ -39,7 +39,6 @@ class RenderWindow : public IRenderWindow {
         void sortObjectsByPositionZ();
 
         SDL_Texture* loadTexture(const std::string &sFilePath);
-        void loadTextureRocket(const std::string &sFilePath);
         void loadTextureBioplast(const std::string &sFilePath);
         void cleanUp();
         void clear();
@@ -60,7 +59,6 @@ class RenderWindow : public IRenderWindow {
         SDL_Window* m_pWindow;
         SDL_Renderer* m_pRenderer;
         SDL_DisplayMode m_displayMode;
-        SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureBioplast;
         std::vector<RanderWindowLayer *> m_vLayers;
 

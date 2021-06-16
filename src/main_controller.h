@@ -67,6 +67,11 @@ class MainController {
             const YJsonObject &jsonRoads
         );
 
+        void loadTransports(
+            const std::string &sDefaultPath,
+            const YJsonObject &jsonRoads
+        );
+
         std::string m_sWindowName;
         std::string m_sResourceDir;
         CoordXY m_minPointMap;
@@ -85,9 +90,6 @@ class MainController {
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
         std::vector<SDL_Texture*> m_vTexturesClouds;
-        SDL_Texture* m_pTextureRoad0;
-        SDL_Texture* m_pTextureTank0;
-        SDL_Texture* m_pTextureRocket;
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
         SDL_Texture* m_pTexturePlayerPower0;

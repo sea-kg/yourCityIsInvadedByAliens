@@ -38,7 +38,7 @@ class IRenderWindow {
         virtual void addFlyingObject(RenderObject *pObject) = 0;
         virtual void addCloudsObject(RenderObject *pObject) = 0;
         virtual void addPanelsObject(RenderObject *pObject) = 0;
-        virtual void addRocket(GameRocketState *pRocketState) = 0;
+        virtual void addRocket(GameRocketState *pRocketState, RenderObject *pObject) = 0;
         virtual void addBioplast(GameBioplastState *pState) = 0;
 };
 

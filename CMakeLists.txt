@@ -75,6 +75,8 @@ list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.h")
 list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.h")
 
+# renders / transports
+list (APPEND WSJCPP_SOURCES "src/render/transports/render_tank0.cpp")
 
 ## renders / ui
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_bootscreen_progressbar.cpp")
@@ -86,10 +88,6 @@ list (APPEND WSJCPP_SOURCES "src/render/ui/render_mouse.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_player_power.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.cpp")
-list (APPEND WSJCPP_SOURCES "src/render/render_rocket.h")
-list (APPEND WSJCPP_SOURCES "src/render/render_rocket.cpp")
-list (APPEND WSJCPP_SOURCES "src/render/render_tank0.h")
-list (APPEND WSJCPP_SOURCES "src/render/render_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
 

@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include "render_window.h"
-#include "render_rocket.h"
+#include "transports/render_tank0.h"
 #include "render_alienship.h"
 
 // ---------------------------------------------------------------------
@@ -95,7 +95,6 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
     }
 
     m_pRenderer = NULL;
-    m_pTextureRocket = nullptr;
     m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
 
     // order is important
@@ -161,9 +160,9 @@ void RenderWindow::addPanelsObject(RenderObject *pObject) {
     m_vLayers[m_nLayerPanels]->addObject(pObject);
 }
 
-void RenderWindow::addRocket(GameRocketState *pState) {
+void RenderWindow::addRocket(GameRocketState *pState, RenderObject *pObject) {
     m_vRockets.push_back(pState);
-    addRocketsObject(new RenderRocket(pState, m_pTextureRocket, 3000));
+    addRocketsObject(pObject);
 }
 
 void RenderWindow::addBioplast(GameBioplastState *pState) {
@@ -205,10 +204,6 @@ SDL_Texture* RenderWindow::loadTexture(const std::string &sFilePath) {
     }
 
     return texture;
-}
-
-void RenderWindow::loadTextureRocket(const std::string &sFilePath) {
-    m_pTextureRocket = this->loadTexture(sFilePath.c_str());
 }
 
 void RenderWindow::loadTextureBioplast(const std::string &sFilePath) {

@@ -2,7 +2,7 @@
 #include "main_controller.h"
 #include <iostream>
 #include "render.h"
-#include "render_tank0.h"
+#include "transports/render_tank0.h"
 #include "render_ui.h"
 #include "ai_tank0.h"
 #include "utils_loader_screen.h"
@@ -190,12 +190,21 @@ bool MainController::loadGameDataWithProgressBar() {
     this->loadVegetations(sDefaultPath, jsonDefaultVegetations["vegetations"]);
     loader.addToProgressCurrent(1);
 
+
+    loader.updateText("Load transports...");
+    std::cout << "default/transports.json" << std::endl;
+    YJson jsonDefaultTransports(sDefaultPath + "/transports.json");
+    if (jsonDefaultTransports.isParserFailed()) {
+        return false;
+    }
+    this->loadTransports(sDefaultPath, jsonDefaultTransports["transports"]);
+    loader.addToProgressCurrent(1);
+
+
     // sDefaultPath
     // default
     loader.updateText("Loading... textures");
-    
-    m_pTextureTank0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/sprites/tank0.png");
-    m_pRenderWindow->loadTextureRocket(m_sResourceDir + "/default/sprites/tank0-rocket.png");
+
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
 
     m_vTexturesClouds.push_back(
@@ -213,8 +222,6 @@ bool MainController::loadGameDataWithProgressBar() {
     m_vTexturesClouds.push_back(
         m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud4.png")
     );
-
-    m_pTextureRoad0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/road0.png");
 
     // app
     m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
@@ -242,10 +249,6 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
-    loader.addToProgressCurrent(1);
-
-    loader.updateText("Generating enimies...");
-    this->generateTanks();
     loader.addToProgressCurrent(1);
 
     loader.updateText("Generating clouds...");
@@ -413,25 +416,6 @@ void MainController::generateBackground(
     }
 }
 
-void MainController::generateTanks() {
-
-    for (int i = 0; i < 25; i++) {
-        int nXpos = std::rand() % m_nWindowWidth;
-        int nYpos = std::rand() % m_nWindowHeight;
-        
-        GameTank0State *pTankState = new GameTank0State(CoordXY(nXpos,nYpos));
-        AiTank0 *pAiTank0 = new AiTank0(pTankState);
-
-        m_pRenderWindow->addTransportsObject(new RenderTank0(
-            pTankState,
-            m_pTextureTank0,
-            1000
-        ));
-
-        m_pMainAiThread->addAiObject(pAiTank0);
-    }
-}
-
 void MainController::generateClouds() {
     for (int i = 0; i < m_nMaxClouds; i++) {
         int nXpos = std::rand() % m_nMapWidth;
@@ -555,7 +539,6 @@ void MainController::loadBuildings(
     }
 }
 
-
 void MainController::loadVegetations(
     const std::string &sDefaultPath,
     const YJsonObject &jsonVegetations
@@ -581,6 +564,48 @@ void MainController::loadVegetations(
                 nTextureHeight,
                 pTextureBuilding
             ));
+        }
+    }
+}
+
+void MainController::loadTransports(
+    const std::string &sDefaultPath,
+    const YJsonObject &jsonTransports
+) {
+    for (int i = 0; i < jsonTransports.length(); i++) {
+        const YJsonObject &item = jsonTransports[i];
+        std::string sSpritePath = sDefaultPath + "/" + item["sprite"].getString();
+        std::string sSpriteRocketPath = sDefaultPath + "/" + item["sprite-rocket"].getString();
+        if (!YCore::fileExists(sSpritePath)) {
+            YLog::throw_err(TAG, "File '" + sSpritePath + "' not found");
+        }
+        SDL_Texture* pSprite = m_pRenderWindow->loadTexture(sSpritePath);
+
+        if (!YCore::fileExists(sSpriteRocketPath)) {
+            YLog::throw_err(TAG, "File '" + sSpriteRocketPath + "' not found");
+        }
+        SDL_Texture* pSpriteRocket = m_pRenderWindow->loadTexture(sSpriteRocketPath);
+
+        int nSpriteWidth = item["sprite-width"].getNumber();
+        int nSpriteHeight = item["sprite-height"].getNumber();
+        const YJsonObject &fillList = item["fill"];
+
+        for (int n = 0; n < fillList.length(); n++) {
+            const YJsonObject &roadItem = fillList[n];
+            int nX = roadItem["x"].getNumber();
+            int nY = roadItem["y"].getNumber();
+
+            GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
+            AiTank0 *pAiTank0 = new AiTank0(pTankState);
+
+            m_pRenderWindow->addTransportsObject(new RenderTank0(
+                pTankState,
+                pSprite,
+                pSpriteRocket,
+                nSpriteWidth,
+                nSpriteHeight
+            ));
+            m_pMainAiThread->addAiObject(pAiTank0);
         }
     }
 }
