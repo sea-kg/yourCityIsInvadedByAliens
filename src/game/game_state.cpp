@@ -18,6 +18,8 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_windowRect = YRect(YPos(0, 0), YPos(windowWidth, windowHeight));
     m_bIsChangedWindowSize = true;
     m_bPlayMusic = false;
+    m_pAlienShipState = new GameAlienShipState(m_playerStartPosition);
+    m_bShowLoader = true;
 }
 
 void GameState::init() {
@@ -89,6 +91,23 @@ bool GameState::isPlayMusic() const {
     return m_bPlayMusic;
 }
 
+void GameState::setShowLoader(bool bShowLoader) {
+    m_bShowLoader = bShowLoader;
+}
+
+bool GameState::isShowLoader() const {
+    return m_bShowLoader;
+}
+
+GameAlienShipState *GameState::getAlienShipState() {
+    return m_pAlienShipState;
+}
+
+void GameState::updatePlayerStartPosition(const CoordXY &playerStartPosition) {
+    m_playerStartPosition = playerStartPosition;
+    m_pAlienShipState->updatePosition(playerStartPosition);
+}
+
 void GameState::setMinPoint(const CoordXY &p) {
     m_minPoint = p;
 }
@@ -104,3 +123,5 @@ void GameState::setMaxPoint(const CoordXY &p) {
 const CoordXY &GameState::getMaxPoint() {
     return m_maxPoint;
 }
+
+

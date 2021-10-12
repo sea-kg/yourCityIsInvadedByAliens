@@ -26,6 +26,7 @@ class GameAlienShipState {
         void rocketAttack(GameRocketState *pRocket);
         int getHelthPoints();
         int getMaxHelthPoints();
+        void updatePosition(const CoordXY &m_p0);
 
     private:
         CoordXY m_p0;

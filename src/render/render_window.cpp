@@ -108,6 +108,7 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
     m_nLayerFlying = createRenderWindowLayer("flying");
     m_nLayerClouds = createRenderWindowLayer("clouds");
     m_nLayerPanels = createRenderWindowLayer("panels");
+    m_nLayerLoader = createRenderWindowLayer("loader");
 
     // if (SDL_GetDesktopDisplayMode(0, &m_displayMode)) {
     //     printf("Error getting desktop display mode\n");
@@ -158,6 +159,10 @@ void RenderWindow::addCloudsObject(RenderObject *pObject) {
 
 void RenderWindow::addPanelsObject(RenderObject *pObject) {
     m_vLayers[m_nLayerPanels]->addObject(pObject);
+}
+
+void RenderWindow::addLoaderObject(RenderObject *pObject) {
+    m_vLayers[m_nLayerLoader]->addObject(pObject);
 }
 
 void RenderWindow::addRocket(GameRocketState *pState, RenderObject *pObject) {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "game_building.h"
 #include "move_object_direction.h"
+#include "game_alien_ship_state.h"
 
 long getCurrentTimeInMilliseconds();
 
@@ -36,9 +37,16 @@ class GameState {
         void setMaxPoint(const CoordXY &p);
         const CoordXY &getMaxPoint();
 
+        void setShowLoader(bool bShowLoader);
+        bool isShowLoader() const;
+
+        GameAlienShipState *getAlienShipState();
+        void updatePlayerStartPosition(const CoordXY &playerStartPosition);
+
     private:
         bool m_bMouseCaptured;
         bool m_bPlayMusic;
+        bool m_bShowLoader;
         long m_nElapsedTime;
         long m_nStartTime;
         CoordXY m_coordLeftTop;
@@ -50,4 +58,7 @@ class GameState {
         int m_nWindowHeight;
         YRect m_windowRect;
         std::vector<GameBuilding *> m_vBuildings;
+
+        GameAlienShipState *m_pAlienShipState;
+        CoordXY m_playerStartPosition;
 };

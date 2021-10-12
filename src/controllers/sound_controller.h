@@ -2,13 +2,13 @@
 #include <string>
 #include "render.h"
 
-class UtilsMusicPlayer {
+class SoundController {
     public:
-        UtilsMusicPlayer(
+        SoundController(
             const std::string &sResourceDir,
             GameState *pGameState
         );
-        ~UtilsMusicPlayer();
+        ~SoundController();
         void init();
         void update();
 

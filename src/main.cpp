@@ -8,53 +8,37 @@
 #include "transports/render_tank0.h"
 #include "render_alienship.h"
 #include "main_controller.h"
-#include "utils_music_player.h"
 #include "ykeyboard.h"
 
 int main(int argc, char* args[]) {
 
     MainController *pMainController = new MainController("Your City Is Invaded Aliens (v0.0.1)");
 
-    if (!pMainController->findResourceDir()) {
+    if (!pMainController->init()) {
         return -1;
     }
 
-    if (!pMainController->initRenderWindow()) {
-        return -1;
-    }
+    YKeyboard keyboard;
+    CoordXY coordCenter = pMainController->getCoordCenter();
+    GameAlienShipState *pAlientShipState = pMainController->getGameState()->getAlienShipState();
 
     if (!pMainController->loadGameDataWithProgressBar()) {
         return -1;
     }
 
-    if (!pMainController->showStartDialog()) {
-        return -1;
-    }
+    // if (!pMainController->showStartDialog()) {
+    //     return -1;
+    // }
 
-    std::string sResourceDir = pMainController->getResourceDir();
-    
-    SDL_Texture* pTextureAlienShip1 = pMainController->getWindow()->loadTexture(sResourceDir + "/sprites/alien-ship.png");
-    CoordXY coordCenter = pMainController->getCoordCenter();
-    
     // player
-    GameAlienShipState *pAlientShipState = pMainController->getGameAlienShipState();
-    bool gameRunning = true;
-
-    long nNumberOfFrames = 0;
-    long nStartTime = getCurrentTimeInMilliseconds();
-    long nElapsed = 0;
-    pMainController->getGameState()->init();
     pMainController->getWindow()->sortObjectsByPositionZ();
     pMainController->startAllThreads();
 
-    UtilsMusicPlayer *pMusicPlayer = new UtilsMusicPlayer(
-        sResourceDir,
-        pMainController->getGameState()
-    );
-    pMusicPlayer->init();
-    YKeyboard keyboard;
-
+    bool gameRunning = true;
+    pMainController->startFpsCounting();
     while (gameRunning) {
+        // TODO pMainController->getGameState()->isShowLoader();
+
         pMainController->getGameState()->updateElapsedTime();
         pMainController->clearWindow();
         pMainController->modifyObjects();
@@ -62,7 +46,7 @@ int main(int argc, char* args[]) {
 
         SDL_Event event;
         keyboard.pollState();
-        pMusicPlayer->update();
+        pMainController->getSoundController()->update();
 
         // Get our controls and events
         while (SDL_PollEvent(&event)) {
@@ -141,36 +125,14 @@ int main(int argc, char* args[]) {
 
         // window must move to the player
         /*
-        0
             360 - w/2 - 320/2
         */
-        // std::cout << "------" << std::endl;
-        // std::cout << pMainController->getCoordCenter().x() << std::endl;
-        // std::cout << pMainController->getCoordCenter().y() << std::endl;
-        // std::cout << pAlientShipState->getPosition().x() << std::endl;
-        // std::cout << pAlientShipState->getPosition().y() << std::endl;
-
         CoordXY newLeftTop = pAlientShipState->getPosition() - pMainController->getCoordCenter() + CoordXY(320/2, 0);
-        // std::cout << newLeftTop.x() << std::endl;
-        // std::cout << newLeftTop.y() << std::endl;
-
         pMainController->getGameState()->setCoordLeftTop(newLeftTop);
 
         // FPS
-        nNumberOfFrames++;
-        nElapsed = getCurrentTimeInMilliseconds() - nStartTime;
-        if (nElapsed > 3000) {
-            double nFPS = nNumberOfFrames;
-            nFPS /= nElapsed;
-            nFPS *= 1000;
-            pMainController->updateFpsValue(nFPS);
-            nStartTime = getCurrentTimeInMilliseconds();
-            nNumberOfFrames = 0;
-        }
-
-        if (nElapsed > 500) {
-            pMainController->updatePlayerCoord();
-        }
+        pMainController->updateFps();
+        pMainController->updatePlayerCoord();
     }
 
     pMainController->getWindow()->cleanUp();

@@ -16,6 +16,7 @@ set(EXECUTABLE_OUTPUT_PATH ${yourCityIsInvadedByAliens_SOURCE_DIR})
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ai")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/controllers")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
@@ -32,7 +33,6 @@ list (APPEND WSJCPP_SOURCES "src/ycore/coordxy.cpp")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
-list (APPEND WSJCPP_SOURCES "src/main_controller.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_alien_ship_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_bioplast_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_rocket_state.cpp")
@@ -51,6 +51,9 @@ list (APPEND WSJCPP_SOURCES "src/ai/ai_object.cpp")
 list (APPEND WSJCPP_SOURCES "src/ai/ai_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/ai/main_ai_thread.cpp")
 
+# controllers
+list (APPEND WSJCPP_SOURCES "src/controllers/sound_controller.cpp")
+list (APPEND WSJCPP_SOURCES "src/controllers/main_controller.cpp")
 # renders
 list (APPEND WSJCPP_SOURCES "src/render/render.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/alienship/render_alienship0.cpp")
@@ -94,8 +97,6 @@ list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
 # utils
 list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.h")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.cpp")
-list (APPEND WSJCPP_SOURCES "src/utils/utils_music_player.h")
-list (APPEND WSJCPP_SOURCES "src/utils/utils_music_player.cpp")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.h")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.cpp")
 

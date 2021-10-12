@@ -155,3 +155,7 @@ int GameAlienShipState::getHelthPoints() {
 int GameAlienShipState::getMaxHelthPoints() {
     return m_nMaxHealthPoints;
 }
+
+void GameAlienShipState::updatePosition(const CoordXY &p0) {
+    m_p0 = p0;
+}

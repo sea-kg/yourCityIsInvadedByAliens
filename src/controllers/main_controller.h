@@ -4,15 +4,18 @@
 #include "render.h"
 #include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
+#include "sound_controller.h"
 
 class MainController {
     public:
         MainController(const std::string &sWindowName);
         ~MainController();
-        bool findResourceDir();
+        
         std::string getResourceDir();
+        bool init();
         bool initSDL2();
         bool initRenderWindow();
+        bool initSoundController();
         RenderWindow *getWindow();
         GameState *getGameState();
         CoordXY getCoordCenter();
@@ -28,8 +31,11 @@ class MainController {
         void drawObjects();
 
         void updatePlayerCoord();
+        void startFpsCounting();
+        void updateFps();
         void updateFpsValue(int nFps);
-        GameAlienShipState *getGameAlienShipState();
+
+        SoundController *getSoundController();
 
     private:
         std::string TAG;
@@ -71,12 +77,13 @@ class MainController {
             const std::string &sDefaultPath,
             const YJsonObject &jsonRoads
         );
+        
+        bool findResourceDir();
 
         std::string m_sWindowName;
         std::string m_sResourceDir;
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
-        CoordXY m_playerStartPosition;
         int m_nWindowWidth;
         int m_nWindowHeight;
         int m_nMapWidth;
@@ -97,5 +104,10 @@ class MainController {
 
         RenderAbsoluteTextBlock *m_pCoordText;
         RenderAbsoluteTextBlock *m_pFpsText;
-        GameAlienShipState *m_pAlientShipState;
+
+        long m_nFpsNumberOfFrames;
+        long m_nFpsStartTime;
+        long m_nFpsElapsed;
+
+        SoundController *m_pSoundController;
 };

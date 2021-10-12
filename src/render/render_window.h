@@ -31,6 +31,8 @@ class RenderWindow : public IRenderWindow {
         virtual void addFlyingObject(RenderObject *pObject) override;
         virtual void addCloudsObject(RenderObject *pObject) override;
         virtual void addPanelsObject(RenderObject *pObject) override;
+        virtual void addLoaderObject(RenderObject *pObject) override;
+        
         virtual void addRocket(GameRocketState *pState, RenderObject *pObject) override;
         virtual void addBioplast(GameBioplastState *pState) override;
         bool isFullscreen();
@@ -72,4 +74,5 @@ class RenderWindow : public IRenderWindow {
         int m_nLayerFlying;
         int m_nLayerClouds;
         int m_nLayerPanels;
+        int m_nLayerLoader;
 };

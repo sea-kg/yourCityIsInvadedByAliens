@@ -109,7 +109,7 @@ void UtilsLoaderScreen::addToProgressCurrent(int nVal) {
 };
 
 void UtilsLoaderScreen::addObject(RenderObject *pObject) {
-    m_pRenderWindow->addPanelsObject(pObject);
+    m_pRenderWindow->addLoaderObject(pObject);
     m_vObjects.push_back(pObject);
 }
 

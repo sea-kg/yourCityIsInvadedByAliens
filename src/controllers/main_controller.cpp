@@ -23,6 +23,7 @@
 // MainController
 
 MainController::MainController(const std::string &sWindowName) {
+    TAG = "MainController";
     m_sWindowName = sWindowName;
     m_nWindowWidth = 1280;
     m_nWindowHeight = 720;
@@ -31,8 +32,6 @@ MainController::MainController(const std::string &sWindowName) {
     m_nProgressBarMax = 100;
     m_nMaxClouds = 10000;
     m_sResourceDir = "./res";
-    m_pAlientShipState = nullptr;
-    TAG = "MainController";
     m_pMainAiThread = new MainAiThread();
 }
 
@@ -40,27 +39,26 @@ MainController::~MainController() {
     delete m_pMainAiThread;
 }
 
-bool MainController::findResourceDir() {
-    std::vector<std::string> vPaths;
-    vPaths.push_back("/usr/share/yourCityIsInvadedByAliens_Tomsk");
-    vPaths.push_back("./res");
-    m_sResourceDir = "";
-    for (int i = 0; i < vPaths.size(); i++) {
-        if (YCore::dirExists(vPaths[i])) {
-            m_sResourceDir = vPaths[i];
-            break;
-        }
-    }
-    if (m_sResourceDir == "") {
-        std::cerr << "Not found resource dir (./res by default)" << std::endl;
-        return false;
-    }
-    std::cout << "Resource dir: " << m_sResourceDir << std::endl;
-    return true;
-}
-
 std::string MainController::getResourceDir() {
     return m_sResourceDir;
+}
+
+bool MainController::init() {
+    if (!this->findResourceDir()) {
+        return false;
+    }
+
+    if (!this->initRenderWindow()) {
+        return false;
+    }
+
+    if (!this->initSoundController()) {
+        return false;
+    }
+    
+    this->getGameState()->init();
+
+    return true;
 }
 
 bool MainController::initSDL2() {
@@ -111,6 +109,15 @@ bool MainController::initRenderWindow() {
     return true;
 }
 
+bool MainController::initSoundController() {
+    m_pSoundController = new SoundController(
+        this->getResourceDir(),
+        this->getGameState()
+    );
+    m_pSoundController->init();
+    return true;
+}
+
 RenderWindow *MainController::getWindow() {
     return m_pRenderWindow;
 }
@@ -152,10 +159,10 @@ bool MainController::loadGameDataWithProgressBar() {
         m_nMapWidth,
         m_nMapHeight
     );
-    m_playerStartPosition = CoordXY(
+    m_pGameState->updatePlayerStartPosition(CoordXY(
         jsonDefaultMap["player-start-x"].getNumber(),
         jsonDefaultMap["player-start-y"].getNumber()
-    );
+    ));
     loader.addToProgressCurrent(1);
 
     loader.updateText("Generating background...");
@@ -259,7 +266,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pRenderWindow->addPanelsObject(
         new RenderLeftPanelInfo(
             m_pTextureLeftPanel,
-            new RenderPlayerPower(m_pTexturePlayerPower0, m_pAlientShipState),
+            new RenderPlayerPower(m_pTexturePlayerPower0, m_pGameState->getAlienShipState()),
             5000
         )
     );
@@ -272,10 +279,9 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
     m_pRenderWindow->addPanelsObject(m_pCoordText);
 
-    
-    
     loader.addToProgressCurrent(1);
-
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     return true;
 }
 
@@ -314,7 +320,7 @@ void MainController::clearWindow() {
 void MainController::modifyObjects() {
     m_pRenderWindow->modifyObjects(*m_pGameState);
 
-    CoordXY p0 = m_pAlientShipState->getPosition();
+    CoordXY p0 = m_pGameState->getAlienShipState()->getPosition();
     // calculate intersection rockets and player
     for (int i = 0; i < m_pRenderWindow->m_vRockets.size(); i++) {
         GameRocketState *pRocket = m_pRenderWindow->m_vRockets[i];
@@ -326,7 +332,7 @@ void MainController::modifyObjects() {
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
         if (nDistance < 30.0) {
             pRocket->explode();
-            m_pAlientShipState->rocketAttack(pRocket);
+            m_pGameState->getAlienShipState()->rocketAttack(pRocket);
         }
     }
 
@@ -355,10 +361,29 @@ void MainController::drawObjects() {
 }
 
 void MainController::updatePlayerCoord() {
-    const CoordXY &playerCoord = m_pAlientShipState->getPosition();
+    const CoordXY &playerCoord = m_pGameState->getAlienShipState()->getPosition();
     std::string sCoordPlayer = "X=" + std::to_string(playerCoord.x())
             + " Y=" + std::to_string(playerCoord.y());
     m_pCoordText->updateText(sCoordPlayer);
+}
+
+void MainController::startFpsCounting() {
+    m_nFpsNumberOfFrames = 0;
+    m_nFpsStartTime = getCurrentTimeInMilliseconds();
+    m_nFpsElapsed = 0;
+}
+
+void MainController::updateFps() {
+    m_nFpsNumberOfFrames++;
+    m_nFpsElapsed = getCurrentTimeInMilliseconds() - m_nFpsStartTime;
+    if (m_nFpsElapsed > 1000) {
+        double nFPS = m_nFpsNumberOfFrames;
+        nFPS /= m_nFpsElapsed;
+        nFPS *= 1000;
+        this->updateFpsValue(nFPS);
+        m_nFpsStartTime = getCurrentTimeInMilliseconds();
+        m_nFpsNumberOfFrames = 0;
+    }
 }
 
 void MainController::updateFpsValue(int nFps) {
@@ -366,8 +391,8 @@ void MainController::updateFpsValue(int nFps) {
     std::cout << "FPS: ~" << nFps << std::endl;
 }
 
-GameAlienShipState *MainController::getGameAlienShipState() {
-    return m_pAlientShipState;
+SoundController *MainController::getSoundController() {
+    return m_pSoundController;
 }
 
 void MainController::loadBackgrounds(
@@ -482,13 +507,12 @@ void MainController::loadAlienShip(
     if (jsonAlienShip.isParserFailed()) {
         YLog::throw_err(TAG, "Could not parse file " + sFilenameJson);
     }
-    m_pAlientShipState = new GameAlienShipState(m_playerStartPosition);
 
     // shadow
     if (jsonAlienShip["shadow"].getString() == "yes") {
         m_pRenderWindow->addFlyingShadowObject(
         new RenderAlienShip0(
-                m_pAlientShipState,
+                m_pGameState->getAlienShipState(),
                 jsonAlienShip,
                 true,
                 pTextureAlienShip1,
@@ -500,7 +524,7 @@ void MainController::loadAlienShip(
     // ship
     m_pRenderWindow->addFlyingObject(
         new RenderAlienShip0(
-            m_pAlientShipState,
+            m_pGameState->getAlienShipState(),
             jsonAlienShip,
             false,
             pTextureAlienShip1,
@@ -608,4 +632,23 @@ void MainController::loadTransports(
             m_pMainAiThread->addAiObject(pAiTank0);
         }
     }
+}
+
+bool MainController::findResourceDir() {
+    std::vector<std::string> vPaths;
+    vPaths.push_back("/usr/share/yourCityIsInvadedByAliens");
+    vPaths.push_back("./res");
+    m_sResourceDir = "";
+    for (int i = 0; i < vPaths.size(); i++) {
+        if (YCore::dirExists(vPaths[i])) {
+            m_sResourceDir = vPaths[i];
+            break;
+        }
+    }
+    if (m_sResourceDir == "") {
+        std::cerr << "Not found resource dir (./res by default)" << std::endl;
+        return false;
+    }
+    std::cout << "Resource dir: " << m_sResourceDir << std::endl;
+    return true;
 }

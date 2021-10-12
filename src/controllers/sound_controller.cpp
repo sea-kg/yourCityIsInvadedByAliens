@@ -1,6 +1,6 @@
-#include "utils_music_player.h"
+#include "sound_controller.h"
 
-UtilsMusicPlayer::UtilsMusicPlayer(
+SoundController::SoundController(
     const std::string &sResourceDir,
     GameState *pGameState
 ) {
@@ -19,11 +19,11 @@ UtilsMusicPlayer::UtilsMusicPlayer(
     
 }
 
-UtilsMusicPlayer::~UtilsMusicPlayer() {
+SoundController::~SoundController() {
 
 }
 
-void UtilsMusicPlayer::init() {
+void SoundController::init() {
     if (m_pGameState->isPlayMusic()) {
         int nOpenAudioResult = Mix_OpenAudio(
             22050, // frequency
@@ -51,7 +51,7 @@ void UtilsMusicPlayer::init() {
     }
 }
 
-void UtilsMusicPlayer::update() {
+void SoundController::update() {
     if (m_pGameState->isPlayMusic()) {
         if (m_vPlaylistFightMusic.size() == 0) { // not load music
             return;
