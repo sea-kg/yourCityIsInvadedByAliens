@@ -52,8 +52,10 @@ list (APPEND WSJCPP_SOURCES "src/ai/ai_tank0.cpp")
 list (APPEND WSJCPP_SOURCES "src/ai/main_ai_thread.cpp")
 
 # controllers
+list (APPEND WSJCPP_SOURCES "src/controllers/loader_controller.cpp")
 list (APPEND WSJCPP_SOURCES "src/controllers/sound_controller.cpp")
 list (APPEND WSJCPP_SOURCES "src/controllers/main_controller.cpp")
+
 # renders
 list (APPEND WSJCPP_SOURCES "src/render/render.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/alienship/render_alienship0.cpp")
@@ -95,8 +97,6 @@ list (APPEND WSJCPP_SOURCES "src/render/render_window.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
 
 # utils
-list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.h")
-list (APPEND WSJCPP_SOURCES "src/utils/utils_loader_screen.cpp")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.h")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.cpp")
 

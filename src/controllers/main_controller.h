@@ -5,6 +5,14 @@
 #include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
 #include "sound_controller.h"
+#include "loader_controller.h"
+
+enum class MainState {
+    LOADING,
+    WAITING_SPACE,
+    GAME_ACTION,
+    GAME_EXIT
+};
 
 class MainController {
     public:
@@ -20,6 +28,7 @@ class MainController {
         GameState *getGameState();
         CoordXY getCoordCenter();
         bool loadGameDataWithProgressBar();
+        void deinitLoaderController();
         bool showStartDialog();
         void startAllThreads();
 
@@ -36,6 +45,9 @@ class MainController {
         void updateFpsValue(int nFps);
 
         SoundController *getSoundController();
+
+        MainState getMainState();
+        void setMainState(const MainState &newMainState);
 
     private:
         std::string TAG;
@@ -110,4 +122,6 @@ class MainController {
         long m_nFpsElapsed;
 
         SoundController *m_pSoundController;
+        LoaderController *m_pLoaderController;
+        MainState m_nCurrentState;
 };

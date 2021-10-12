@@ -5,7 +5,7 @@
 #include "transports/render_tank0.h"
 #include "render_ui.h"
 #include "ai_tank0.h"
-#include "utils_loader_screen.h"
+#include "loader_controller.h"
 #include "utils_start_dialog.h"
 #include <fstream>
 #include <algorithm>
@@ -33,6 +33,7 @@ MainController::MainController(const std::string &sWindowName) {
     m_nMaxClouds = 10000;
     m_sResourceDir = "./res";
     m_pMainAiThread = new MainAiThread();
+    m_nCurrentState = MainState::LOADING;
 }
 
 MainController::~MainController() {
@@ -56,6 +57,18 @@ bool MainController::init() {
         return false;
     }
     
+    m_pSoundController = new SoundController(
+        this->getResourceDir(),
+        this->getGameState()
+    );
+    m_pSoundController->init();
+    
+    m_pLoaderController = new LoaderController(
+        m_sResourceDir,
+        m_pRenderWindow,
+        m_pGameState
+    );
+
     this->getGameState()->init();
 
     return true;
@@ -110,11 +123,7 @@ bool MainController::initRenderWindow() {
 }
 
 bool MainController::initSoundController() {
-    m_pSoundController = new SoundController(
-        this->getResourceDir(),
-        this->getGameState()
-    );
-    m_pSoundController->init();
+    
     return true;
 }
 
@@ -134,16 +143,11 @@ CoordXY MainController::getCoordCenter() {
 }
 
 bool MainController::loadGameDataWithProgressBar() {
-    UtilsLoaderScreen loader(
-        m_sResourceDir,
-        m_pRenderWindow,
-        m_pGameState
-    );
-    loader.init();
-    loader.setProgressMax(10);
-    loader.setProgressCurrent(0);
+    m_pLoaderController->init();
+    m_pLoaderController->setProgressMax(10);
+    m_pLoaderController->setProgressCurrent(0);
 
-    loader.updateText("Loading... default map");
+    m_pLoaderController->updateText("Loading... default map");
     std::cout << "default/map.json" << std::endl;
     std::string sDefaultPath = m_sResourceDir + "/default";
     YJson jsonDefaultMap(sDefaultPath + "/map.json");
@@ -163,54 +167,53 @@ bool MainController::loadGameDataWithProgressBar() {
         jsonDefaultMap["player-start-x"].getNumber(),
         jsonDefaultMap["player-start-y"].getNumber()
     ));
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Generating background...");
+    m_pLoaderController->updateText("Generating background...");
     loadBackgrounds(sDefaultPath, jsonDefaultMap["background"]);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Load roads...");
+    m_pLoaderController->updateText("Load roads...");
     std::cout << "default/roads.json" << std::endl;
     YJson jsonDefaultRoads(sDefaultPath + "/roads.json");
     if (jsonDefaultMap.isParserFailed()) {
         return false;
     }
     this->loadRoads(sDefaultPath, jsonDefaultRoads["roads"]);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
 
-    loader.updateText("Load buildings...");
+    m_pLoaderController->updateText("Load buildings...");
     std::cout << "default/buildings.json" << std::endl;
     YJson jsonDefaultBuildings(sDefaultPath + "/buildings.json");
     if (jsonDefaultBuildings.isParserFailed()) {
         return false;
     }
     this->loadBuildings(sDefaultPath, jsonDefaultBuildings["buildings"]);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Load vegetations...");
+    m_pLoaderController->updateText("Load vegetations...");
     std::cout << "default/vegetations.json" << std::endl;
     YJson jsonDefaultVegetations(sDefaultPath + "/vegetations.json");
     if (jsonDefaultVegetations.isParserFailed()) {
         return false;
     }
     this->loadVegetations(sDefaultPath, jsonDefaultVegetations["vegetations"]);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-
-    loader.updateText("Load transports...");
+    m_pLoaderController->updateText("Load transports...");
     std::cout << "default/transports.json" << std::endl;
     YJson jsonDefaultTransports(sDefaultPath + "/transports.json");
     if (jsonDefaultTransports.isParserFailed()) {
         return false;
     }
     this->loadTransports(sDefaultPath, jsonDefaultTransports["transports"]);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
 
     // sDefaultPath
     // default
-    loader.updateText("Loading... textures");
+    m_pLoaderController->updateText("Loading... textures");
 
     m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
 
@@ -235,9 +238,9 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
 
     this->loadAlienShip(sDefaultPath);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Loading... buildings textures");
+    m_pLoaderController->updateText("Loading... buildings textures");
     // TODO remove
     std::vector<std::string> vBuildings = YCore::getListOfDirs(m_sResourceDir + "/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
@@ -245,24 +248,24 @@ bool MainController::loadGameDataWithProgressBar() {
         std::string sPathTexture = m_sResourceDir + "/buildings/" + sName + "/texture.png";
         if (!YCore::fileExists(sPathTexture)) {
             YLog::err(TAG, "Not found " + sPathTexture);
-            loader.updateText("Not found " + sPathTexture);
+            m_pLoaderController->updateText("Not found " + sPathTexture);
             return false;
         }
         m_mapBuildingsTextures[sName] = m_pRenderWindow->loadTexture(sPathTexture.c_str());
     }
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Loading... buildings");
+    m_pLoaderController->updateText("Loading... buildings");
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Generating clouds...");
+    m_pLoaderController->updateText("Generating clouds...");
     this->generateClouds();
-    loader.addToProgressCurrent(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    loader.updateText("Prepare panels...");
+    m_pLoaderController->updateText("Prepare panels...");
     m_pRenderWindow->addPanelsObject(
         new RenderLeftPanelInfo(
             m_pTextureLeftPanel,
@@ -279,10 +282,14 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
     m_pRenderWindow->addPanelsObject(m_pCoordText);
 
-    loader.addToProgressCurrent(1);
-    
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    m_pLoaderController->addToProgressCurrent(1);
+    m_pLoaderController->updateText("Press 'space' for continue...");
+    this->setMainState(MainState::WAITING_SPACE);
     return true;
+}
+
+void MainController::deinitLoaderController() {
+    m_pLoaderController->deinit();
 }
 
 bool MainController::showStartDialog() {
@@ -393,6 +400,14 @@ void MainController::updateFpsValue(int nFps) {
 
 SoundController *MainController::getSoundController() {
     return m_pSoundController;
+}
+
+MainState MainController::getMainState() {
+    return m_nCurrentState;
+}
+
+void MainController::setMainState(const MainState &newMainState) {
+    m_nCurrentState = newMainState;
 }
 
 void MainController::loadBackgrounds(

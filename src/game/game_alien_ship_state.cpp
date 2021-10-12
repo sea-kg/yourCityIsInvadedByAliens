@@ -159,3 +159,31 @@ int GameAlienShipState::getMaxHelthPoints() {
 void GameAlienShipState::updatePosition(const CoordXY &p0) {
     m_p0 = p0;
 }
+
+void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
+    if (pKeyboard->isSpace()) {
+        this->setShooting(true);
+    } else {
+        this->setShooting(false);
+    }
+
+    if (pKeyboard->isUp()) {
+        this->setMoveDirection(MoveObjectDirection::UP);
+    } else if (pKeyboard->isUpLeft()) {
+        this->setMoveDirection(MoveObjectDirection::UP_LEFT);
+    } else if (pKeyboard->isUpRight()) {
+        this->setMoveDirection(MoveObjectDirection::UP_RIGHT);
+    } else if (pKeyboard->isDown()) {
+        this->setMoveDirection(MoveObjectDirection::DOWN);
+    } else if (pKeyboard->isDownLeft()) {
+        this->setMoveDirection(MoveObjectDirection::DOWN_LEFT);
+    } else if (pKeyboard->isDownRight()) {
+        this->setMoveDirection(MoveObjectDirection::DOWN_RIGHT);
+    } else if (pKeyboard->isLeft()) {
+        this->setMoveDirection(MoveObjectDirection::LEFT);
+    } else if (pKeyboard->isRight()) {
+        this->setMoveDirection(MoveObjectDirection::RIGHT);
+    } else {
+        this->setMoveDirection(MoveObjectDirection::NONE);
+    }
+}

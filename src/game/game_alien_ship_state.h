@@ -4,6 +4,7 @@
 #include "move_object_direction.h"
 #include "game_bioplast_state.h"
 #include "game_rocket_state.h"
+#include "ykeyboard.h"
 
 class GameAlienShipState {
     public:
@@ -27,6 +28,7 @@ class GameAlienShipState {
         int getHelthPoints();
         int getMaxHelthPoints();
         void updatePosition(const CoordXY &m_p0);
+        void updateStateByKeyboard(YKeyboard *pKeyboard);
 
     private:
         CoordXY m_p0;

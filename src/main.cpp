@@ -18,50 +18,30 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    YKeyboard keyboard;
+    YKeyboard *pKeyboard = new YKeyboard();
     CoordXY coordCenter = pMainController->getCoordCenter();
     GameAlienShipState *pAlientShipState = pMainController->getGameState()->getAlienShipState();
-
-    if (!pMainController->loadGameDataWithProgressBar()) {
-        return -1;
-    }
 
     // if (!pMainController->showStartDialog()) {
     //     return -1;
     // }
 
-    // player
-    pMainController->getWindow()->sortObjectsByPositionZ();
-    pMainController->startAllThreads();
-
-    bool gameRunning = true;
     pMainController->startFpsCounting();
-    while (gameRunning) {
-        // TODO pMainController->getGameState()->isShowLoader();
-
+    while (pMainController->getMainState() != MainState::GAME_EXIT) {
         pMainController->getGameState()->updateElapsedTime();
         pMainController->clearWindow();
         pMainController->modifyObjects();
         pMainController->drawObjects();
 
         SDL_Event event;
-        keyboard.pollState();
+        pKeyboard->pollState();
         pMainController->getSoundController()->update();
 
         // Get our controls and events
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_KEYDOWN) {
-                std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
-            }
-
-            if (event.type == SDL_KEYUP) {
-                std::cout << "SDL_KEYUP " << event.key.keysym.sym << std::endl;
-            }
-
             if (event.type == SDL_QUIT) {
-                gameRunning = false;
+                pMainController->setMainState(MainState::GAME_EXIT);
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     if (pMainController->isFullscreen()) {
                         pMainController->toggleFullscreen();
@@ -72,67 +52,61 @@ int main(int argc, char* args[]) {
                     }
                 }
 
-                if (keyboard.isF12()) {
+                if (pKeyboard->isF12()) {
                     pMainController->toggleFullscreen();
                 }
 
-                if (keyboard.isF1()) {
+                if (pKeyboard->isF1()) {
                     // pMainController->getWindow()->toggleFullscreen();
                     // TODO show help and pause of the game
                 }
 
-                if (keyboard.isSpace()) {
-                    pAlientShipState->setShooting(true);
-                } else {
-                    pAlientShipState->setShooting(false);
-                }
-
-                if (keyboard.isUp()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP);
-                } else if (keyboard.isUpLeft()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP_LEFT);
-                } else if (keyboard.isUpRight()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::UP_RIGHT);
-                } else if (keyboard.isDown()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN);
-                } else if (keyboard.isDownLeft()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_LEFT);
-                } else if (keyboard.isDownRight()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::DOWN_RIGHT);
-                } else if (keyboard.isLeft()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::LEFT);
-                } else if (keyboard.isRight()) {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::RIGHT);
-                } else {
-                    pAlientShipState->setMoveDirection(MoveObjectDirection::NONE);
+                if (pMainController->getMainState() == MainState::WAITING_SPACE) {
+                    if (pKeyboard->isSpace()) {
+                        pMainController->setMainState(MainState::GAME_ACTION);
+                        pMainController->deinitLoaderController();
+                        // player
+                        pMainController->getWindow()->sortObjectsByPositionZ();
+                        pMainController->startAllThreads();
+                    }
+                } else if (pMainController->getMainState() == MainState::GAME_ACTION) {
+                    pAlientShipState->updateStateByKeyboard(pKeyboard);
                 }
             }
         }
 
-        int nLeftPad = pMainController->getCoordCenter().x();
-        int nRightPad = pMainController->getCoordCenter().x() - 320;
-        int nTopPad = pMainController->getCoordCenter().y();
-        int nBottomPad = pMainController->getCoordCenter().y();
-        pAlientShipState->move(
-            pMainController->getGameState()->getElapsedTime(),
-            pMainController->getGameState()->getMinPoint(),
-            pMainController->getGameState()->getMaxPoint(),
-            nLeftPad,
-            nRightPad,
-            nTopPad,
-            nBottomPad
-        );
+        if (pMainController->getMainState() == MainState::LOADING) {
+            // TODO must be load in other thread
+            if (!pMainController->loadGameDataWithProgressBar()) {
+                // todo shoe error ?
+                pMainController->setMainState(MainState::GAME_EXIT);
+            } else {
+                pMainController->setMainState(MainState::WAITING_SPACE);
+            }
+        } else if (pMainController->getMainState() == MainState::GAME_ACTION) {
+            // window must move to the player
+            /*
+                360 - w/2 - 320/2
+            */
+            int nLeftPad = pMainController->getCoordCenter().x();
+            int nRightPad = pMainController->getCoordCenter().x() - 320;
+            int nTopPad = pMainController->getCoordCenter().y();
+            int nBottomPad = pMainController->getCoordCenter().y();
+            pAlientShipState->move(
+                pMainController->getGameState()->getElapsedTime(),
+                pMainController->getGameState()->getMinPoint(),
+                pMainController->getGameState()->getMaxPoint(),
+                nLeftPad,
+                nRightPad,
+                nTopPad,
+                nBottomPad
+            );
 
-        // window must move to the player
-        /*
-            360 - w/2 - 320/2
-        */
-        CoordXY newLeftTop = pAlientShipState->getPosition() - pMainController->getCoordCenter() + CoordXY(320/2, 0);
-        pMainController->getGameState()->setCoordLeftTop(newLeftTop);
-
-        // FPS
+            CoordXY newLeftTop = pAlientShipState->getPosition() - pMainController->getCoordCenter() + CoordXY(320/2, 0);
+            pMainController->getGameState()->setCoordLeftTop(newLeftTop);
+            pMainController->updatePlayerCoord();
+        }
         pMainController->updateFps();
-        pMainController->updatePlayerCoord();
     }
 
     pMainController->getWindow()->cleanUp();

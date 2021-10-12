@@ -3,15 +3,15 @@
 #include "render.h"
 #include "render_ui.h"
 
-class UtilsLoaderScreen {
+class LoaderController {
     public:
-        UtilsLoaderScreen(
+        LoaderController(
             const std::string &sResourceDir,
             RenderWindow *pRenderWindow,
             GameState *pGameState
         );
-        ~UtilsLoaderScreen();
         void init();
+        void deinit();
         void updateText(const std::string &sNewText);
         void setProgressMax(int nVal);
         void setProgressCurrent(int nVal);

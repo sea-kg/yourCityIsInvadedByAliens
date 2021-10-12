@@ -1,7 +1,9 @@
-#include "utils_loader_screen.h"
+#include "loader_controller.h"
 #include "primitives/render_rect_texture.h"
+#include <chrono>
+#include <thread>
 
-UtilsLoaderScreen::UtilsLoaderScreen(
+LoaderController::LoaderController(
     const std::string &sResourceDir,
     RenderWindow *pRenderWindow,
     GameState *pGameState
@@ -13,14 +15,7 @@ UtilsLoaderScreen::UtilsLoaderScreen(
     m_nProgressMax = 100;
 }
 
-UtilsLoaderScreen::~UtilsLoaderScreen() {
-    // TODO remove objects from render
-    for (int i = 0; i < m_vObjects.size(); i++) {
-        m_pRenderWindow->removeObject(m_vObjects[i]);
-    }
-}
-
-void UtilsLoaderScreen::init() {
+void LoaderController::init() {
     m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-background.png");
     m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
     m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-progressbar.png");
@@ -79,41 +74,49 @@ void UtilsLoaderScreen::init() {
     this->draw();
 }
 
-void UtilsLoaderScreen::updateText(const std::string &sNewText) {
-    m_pText->updateText(sNewText);
-    this->draw();
+void LoaderController::deinit() {
+    // TODO remove objects from render
+    for (int i = 0; i < m_vObjects.size(); i++) {
+        m_pRenderWindow->removeObject(m_vObjects[i]);
+    }
 }
 
-void UtilsLoaderScreen::setProgressMax(int nVal) {
+void LoaderController::updateText(const std::string &sNewText) {
+    m_pText->updateText(sNewText);
+    this->draw();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+void LoaderController::setProgressMax(int nVal) {
     m_nProgressMax = nVal;
     m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
     this->draw();
 };
 
-void UtilsLoaderScreen::setProgressCurrent(int nVal) {
+void LoaderController::setProgressCurrent(int nVal) {
     m_nProgressCurrent = nVal;
     m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
     this->draw();
 };
 
-void UtilsLoaderScreen::addToProgressMax(int nVal) {
+void LoaderController::addToProgressMax(int nVal) {
     m_nProgressMax += nVal;
     m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
     this->draw();
 };
 
-void UtilsLoaderScreen::addToProgressCurrent(int nVal) {
+void LoaderController::addToProgressCurrent(int nVal) {
     m_nProgressCurrent += nVal;
     m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
     this->draw();
 };
 
-void UtilsLoaderScreen::addObject(RenderObject *pObject) {
+void LoaderController::addObject(RenderObject *pObject) {
     m_pRenderWindow->addLoaderObject(pObject);
     m_vObjects.push_back(pObject);
 }
 
-void UtilsLoaderScreen::draw() {
+void LoaderController::draw() {
     m_pRenderWindow->clear();
     m_pRenderWindow->modifyObjects(*m_pGameState);
     m_pRenderWindow->drawObjects(*m_pGameState);
