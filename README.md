@@ -4,7 +4,7 @@
 
 Game 2D with open source code based on cross platform graphical library SDL2.
 
-[blog](https://vk.com/yourcityisinvadedbyaliens_tomsk)
+[blog in vk](https://vk.com/yourcityisinvadedbyaliens)
 
 ![Alt text](/contrib/main-screen.jpg?raw=true "Main Screen")
 
