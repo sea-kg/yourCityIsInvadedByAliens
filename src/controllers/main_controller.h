@@ -25,7 +25,8 @@ class MainController {
         bool initRenderWindow();
         bool initSoundController();
         int startUI();
-        int startMainGameThread();
+        void startGameLogicThread();
+        void runGameLogicThread();
 
         RenderWindow *getWindow();
         GameState *getGameState();
@@ -127,4 +128,8 @@ class MainController {
         SoundController *m_pSoundController;
         LoaderController *m_pLoaderController;
         MainState m_nCurrentState;
+
+        bool m_bGameLogicThreadStop;
+        std::thread *m_pGameLogicThread;
+        std::mutex m_mutexGameLogicThread;
 };

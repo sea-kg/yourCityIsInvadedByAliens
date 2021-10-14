@@ -130,7 +130,7 @@ int MainController::startUI() {
     YKeyboard *pKeyboard = new YKeyboard();
     CoordXY coordCenter = getCoordCenter();
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
-    startMainGameThread();
+    startGameLogicThread();
 
     // if (!pMainController->showStartDialog()) {
     //     return -1;
@@ -206,9 +206,27 @@ int MainController::startUI() {
     return 0;
 }
 
-int MainController::startMainGameThread() {
-    // TODO
+void* processGameLogicThreadWorker(void *arg) {
+    MainController *pThread = (MainController *)arg;
+    pThread->runGameLogicThread();
     return 0;
+}
+
+void MainController::startGameLogicThread() {
+    m_bGameLogicThreadStop = false;
+    m_pGameLogicThread = new std::thread(&processGameLogicThreadWorker, (void *)this);
+}
+
+void MainController::runGameLogicThread() {
+    YLog::info(TAG, "Starting...");
+    YLog::info(TAG, "TODO Loading resources...");
+
+    while (!m_bGameLogicThreadStop) {
+        std::lock_guard<std::mutex> guard(m_mutexGameLogicThread);
+        // YLog::info(TAG, "TODO step...");
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+    YLog::info(TAG, "Stopped...");
 }
 
 RenderWindow *MainController::getWindow() {
