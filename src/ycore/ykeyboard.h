@@ -19,6 +19,7 @@ class YKeyboard {
         bool isF4();
         bool isF12();
         bool isSpace();
+        bool isEscape();
     
     private:
         const Uint8 *m_pKeyboardStateArray;

@@ -130,6 +130,7 @@ int MainController::startUI() {
     YKeyboard *pKeyboard = new YKeyboard();
     CoordXY coordCenter = getCoordCenter();
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+    startMainGameThread();
 
     // if (!pMainController->showStartDialog()) {
     //     return -1;
@@ -137,6 +138,8 @@ int MainController::startUI() {
 
     startFpsCounting();
     while (getMainState() != MainState::GAME_EXIT) {
+        long nStartTime = getCurrentTimeInMilliseconds();
+
         getGameState()->updateElapsedTime();
         clearWindow();
         modifyObjects();
@@ -151,36 +154,7 @@ int MainController::startUI() {
             if (event.type == SDL_QUIT) {
                 setMainState(MainState::GAME_EXIT);
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    if (isFullscreen()) {
-                        toggleFullscreen();
-                    } else {
-                        // if (pMainController->getGameState()->isMouseCaptured()) {
-                        //     pMainController->getGameState()->setMouseCaptured(false);
-                        // }
-                    }
-                }
-
-                if (pKeyboard->isF12()) {
-                    toggleFullscreen();
-                }
-
-                if (pKeyboard->isF1()) {
-                    // pMainController->getWindow()->toggleFullscreen();
-                    // TODO show help and pause of the game
-                }
-
-                if (getMainState() == MainState::WAITING_SPACE) {
-                    if (pKeyboard->isSpace()) {
-                        setMainState(MainState::GAME_ACTION);
-                        deinitLoaderController();
-                        // player
-                        getWindow()->sortObjectsByPositionZ();
-                        startAllThreads();
-                    }
-                } else if (getMainState() == MainState::GAME_ACTION) {
-                    pAlientShipState->updateStateByKeyboard(pKeyboard);
-                }
+                this->handleKeyboardCommand(pKeyboard);
             }
         }
 
@@ -214,6 +188,14 @@ int MainController::startUI() {
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
+            
+        }
+        // normalize framerate to 60 fps
+        long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
+        if (nFrameTime > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(nFrameTime));
+        } else {
+            std::cout << "Warning " << nFrameTime << std::endl;
         }
         updateFps();
     }
@@ -221,6 +203,11 @@ int MainController::startUI() {
     getWindow()->cleanUp();
     // Mix_FreeMusic(music);
     SDL_Quit();
+    return 0;
+}
+
+int MainController::startMainGameThread() {
+    // TODO
     return 0;
 }
 
@@ -401,6 +388,37 @@ bool MainController::showStartDialog() {
 
 void MainController::startAllThreads() {
     m_pMainAiThread->start();
+}
+
+void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
+    if (pKeyboard->isEscape()) {
+        if (isFullscreen()) {
+            toggleFullscreen();
+        } else {
+            // TODO pause
+        }
+    }
+
+    if (pKeyboard->isF12()) {
+        toggleFullscreen();
+    }
+
+    if (pKeyboard->isF1()) {
+        // pMainController->getWindow()->toggleFullscreen();
+        // TODO show help and pause of the game
+    }
+
+    if (getMainState() == MainState::WAITING_SPACE) {
+        if (pKeyboard->isSpace()) {
+            setMainState(MainState::GAME_ACTION);
+            deinitLoaderController();
+            // player
+            getWindow()->sortObjectsByPositionZ();
+            startAllThreads();
+        }
+    } else if (getMainState() == MainState::GAME_ACTION) {
+        m_pGameState->getAlienShipState()->updateStateByKeyboard(pKeyboard);
+    }
 }
 
 bool MainController::isFullscreen() {

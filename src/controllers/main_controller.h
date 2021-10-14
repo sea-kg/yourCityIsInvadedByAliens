@@ -25,6 +25,7 @@ class MainController {
         bool initRenderWindow();
         bool initSoundController();
         int startUI();
+        int startMainGameThread();
 
         RenderWindow *getWindow();
         GameState *getGameState();
@@ -33,7 +34,7 @@ class MainController {
         void deinitLoaderController();
         bool showStartDialog();
         void startAllThreads();
-
+        void handleKeyboardCommand(YKeyboard *pKeyboard);
         // window
         bool isFullscreen();
         void toggleFullscreen();

@@ -140,3 +140,7 @@ bool YKeyboard::isF12() {
 bool YKeyboard::isSpace() {
     return m_pKeyboardStateArray[SDL_SCANCODE_SPACE];
 }
+
+bool YKeyboard::isEscape() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_ESCAPE];
+}
