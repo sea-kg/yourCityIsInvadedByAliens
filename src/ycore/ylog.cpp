@@ -10,6 +10,11 @@ void YLog::info(const std::string &sTag, const std::string &sMessage) {
     std::cout << sLogMessage << std::endl;
 }
 
+void YLog::ok(const std::string &sTag, const std::string &sMessage) {
+    std::string sLogMessage = "OK: <" + sTag + "> " + sMessage;
+    std::cout << sLogMessage << std::endl;
+}
+
 void YLog::err(const std::string &sTag, const std::string &sMessage) {
     std::string sLogMessage = "ERROR: <" + sTag + "> " + sMessage;
     std::cout << sLogMessage << std::endl;

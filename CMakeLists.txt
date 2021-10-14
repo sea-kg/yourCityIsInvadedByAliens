@@ -20,9 +20,11 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/controllers")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
 
 # ycore
-list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_SOURCES "src/ycore/ycore.cpp")
 list (APPEND WSJCPP_SOURCES "src/ycore/ylog.cpp")
 list (APPEND WSJCPP_SOURCES "src/ycore/yjson.cpp")
@@ -30,6 +32,13 @@ list (APPEND WSJCPP_SOURCES "src/ycore/ykeyboard.cpp")
 list (APPEND WSJCPP_SOURCES "src/ycore/ypos.cpp")
 list (APPEND WSJCPP_SOURCES "src/ycore/yrect.cpp")
 list (APPEND WSJCPP_SOURCES "src/ycore/coordxy.cpp")
+
+# yservices
+list (APPEND WSJCPP_SOURCES "src/yservices/yservices.cpp")
+
+# yassets
+list (APPEND WSJCPP_SOURCES "src/yassets/yassets_service.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/yassets_fabric_type_font.cpp")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")

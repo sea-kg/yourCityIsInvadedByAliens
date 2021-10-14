@@ -365,8 +365,16 @@ bool YJson::toParse(const std::string &sLine) {
             // std::cout << " START_VALUE_OBJECT -> START_KEY_NAME " << std::endl;
             continue;
         }
+        if (m_nParserState == YJsonParserState::START_VALUE_STRING_ESCAPING) {
+            sParseKeyValue += c;
+            m_nParserState = YJsonParserState::START_VALUE_STRING;
+            continue;
+        }
         if (m_nParserState == YJsonParserState::START_VALUE_STRING) {
-            if (c == '"') {
+            if (c == '\\') {
+                m_nParserState = YJsonParserState::START_VALUE_STRING_ESCAPING;
+                continue;
+            } else if (c == '"') {
                 if (getLastObjectFromStack()->isUndefined()) {
                     getLastObjectFromStack()->doString();
                 }

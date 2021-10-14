@@ -19,6 +19,7 @@
 #include "render_background.h"
 #include "buildings/render_building_simple.h"
 #include "vegetations/render_vegetation_simple.h"
+#include "yassets_service.h"
 
 // MainController
 
@@ -219,7 +220,14 @@ void MainController::startGameLogicThread() {
 
 void MainController::runGameLogicThread() {
     YLog::info(TAG, "Starting...");
-    YLog::info(TAG, "TODO Loading resources...");
+    YLog::info(TAG, "TODO Loading assets...");
+    auto *pPropCache = findYService<RuntimeGlobalCacheYService>();
+    auto *pAssets = findYService<YAssetsService>();
+
+    std::string sError;
+    if (!pAssets->loadAsset(m_sResourceDir + "/asset-factories/font1", sError)) {
+        YLog::throw_err(TAG, sError);
+    }
 
     while (!m_bGameLogicThreadStop) {
         std::lock_guard<std::mutex> guard(m_mutexGameLogicThread);

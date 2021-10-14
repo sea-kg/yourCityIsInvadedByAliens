@@ -1,11 +1,12 @@
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <chrono>
-#include <wsjcpp_core.h>
+#include <yservices.h>
 #include "main_controller.h"
 
 int main(int argc, char* args[]) {
+
+    if (!YServices::init({})) {
+        YLog::err("main", "Could not init services");
+        return -1;
+    }
 
     MainController *pMainController = new MainController("Your City Is Invaded Aliens (v0.0.1)");
 
