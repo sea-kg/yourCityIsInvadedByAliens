@@ -11,6 +11,11 @@ YAssetFactoryFont::YAssetFactoryFont(
     m_pFactoryTypeFont = pFactoryTypeFont;
 }
 
+YAsset *YAssetFactoryFont::createAsset() {
+    YLog::throw_err(TAG, "TODO");
+    return nullptr;
+}
+
 // ---------------------------------------------------------------------
 // YAssetFabricTypeFont
 

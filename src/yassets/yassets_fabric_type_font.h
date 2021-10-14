@@ -7,7 +7,8 @@ class YAssetFabricTypeFont;
 class YAssetFactoryFont : public YAssetFactory {
     public:
         YAssetFactoryFont(YAssetsService *pAssetsService, YAssetFabricTypeFont *pFactoryTypeFont);
-
+        virtual YAsset *createAsset() override;
+        
     private:
         YAssetFabricTypeFont *m_pFactoryTypeFont;
 };

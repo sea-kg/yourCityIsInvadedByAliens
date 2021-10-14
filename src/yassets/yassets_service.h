@@ -44,6 +44,8 @@ class YAssetFactory {
     // friend class YAssetsService;
     public:
         YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *pFactoryType);
+        virtual YAsset *createAsset() = 0;
+
     protected:
         std::string TAG;
     private:
