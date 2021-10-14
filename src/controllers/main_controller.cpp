@@ -123,8 +123,105 @@ bool MainController::initRenderWindow() {
 }
 
 bool MainController::initSoundController() {
-    
     return true;
+}
+
+int MainController::startUI() {
+    YKeyboard *pKeyboard = new YKeyboard();
+    CoordXY coordCenter = getCoordCenter();
+    GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+
+    // if (!pMainController->showStartDialog()) {
+    //     return -1;
+    // }
+
+    startFpsCounting();
+    while (getMainState() != MainState::GAME_EXIT) {
+        getGameState()->updateElapsedTime();
+        clearWindow();
+        modifyObjects();
+        drawObjects();
+
+        SDL_Event event;
+        pKeyboard->pollState();
+        getSoundController()->update();
+
+        // Get our controls and events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                setMainState(MainState::GAME_EXIT);
+            } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    if (isFullscreen()) {
+                        toggleFullscreen();
+                    } else {
+                        // if (pMainController->getGameState()->isMouseCaptured()) {
+                        //     pMainController->getGameState()->setMouseCaptured(false);
+                        // }
+                    }
+                }
+
+                if (pKeyboard->isF12()) {
+                    toggleFullscreen();
+                }
+
+                if (pKeyboard->isF1()) {
+                    // pMainController->getWindow()->toggleFullscreen();
+                    // TODO show help and pause of the game
+                }
+
+                if (getMainState() == MainState::WAITING_SPACE) {
+                    if (pKeyboard->isSpace()) {
+                        setMainState(MainState::GAME_ACTION);
+                        deinitLoaderController();
+                        // player
+                        getWindow()->sortObjectsByPositionZ();
+                        startAllThreads();
+                    }
+                } else if (getMainState() == MainState::GAME_ACTION) {
+                    pAlientShipState->updateStateByKeyboard(pKeyboard);
+                }
+            }
+        }
+
+        if (getMainState() == MainState::LOADING) {
+            // TODO must be load in other thread
+            if (!loadGameDataWithProgressBar()) {
+                // todo shoe error ?
+                setMainState(MainState::GAME_EXIT);
+            } else {
+                setMainState(MainState::WAITING_SPACE);
+            }
+        } else if (getMainState() == MainState::GAME_ACTION) {
+            // window must move to the player
+            /*
+                360 - w/2 - 320/2
+            */
+            int nLeftPad = getCoordCenter().x();
+            int nRightPad = getCoordCenter().x() - 320;
+            int nTopPad = getCoordCenter().y();
+            int nBottomPad = getCoordCenter().y();
+            pAlientShipState->move(
+                getGameState()->getElapsedTime(),
+                getGameState()->getMinPoint(),
+                getGameState()->getMaxPoint(),
+                nLeftPad,
+                nRightPad,
+                nTopPad,
+                nBottomPad
+            );
+
+            CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
+            getGameState()->setCoordLeftTop(newLeftTop);
+            updatePlayerCoord();
+        }
+        updateFps();
+    }
+
+    getWindow()->cleanUp();
+    // Mix_FreeMusic(music);
+    SDL_Quit();
+    return 0;
 }
 
 RenderWindow *MainController::getWindow() {

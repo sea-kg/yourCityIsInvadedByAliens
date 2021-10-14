@@ -24,6 +24,8 @@ class MainController {
         bool initSDL2();
         bool initRenderWindow();
         bool initSoundController();
+        int startUI();
+
         RenderWindow *getWindow();
         GameState *getGameState();
         CoordXY getCoordCenter();
