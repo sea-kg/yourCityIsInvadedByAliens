@@ -21,6 +21,7 @@
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
 
+
 // MainController
 
 MainController::MainController(const std::string &sWindowName) {
@@ -32,9 +33,10 @@ MainController::MainController(const std::string &sWindowName) {
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
     m_nMaxClouds = 10000;
-    m_sResourceDir = "./res";
     m_pMainAiThread = new MainAiThread();
     m_nCurrentState = MainState::LOADING;
+    m_pSettings = findYService<SettingsYService>();
+    // std::string sResourceDir = m_pSettings->getResourceDir();
 }
 
 MainController::~MainController() {
@@ -42,14 +44,10 @@ MainController::~MainController() {
 }
 
 std::string MainController::getResourceDir() {
-    return m_sResourceDir;
+    return m_pSettings->getResourceDir();
 }
 
 bool MainController::init() {
-    if (!this->findResourceDir()) {
-        return false;
-    }
-
     if (!this->initRenderWindow()) {
         return false;
     }
@@ -65,7 +63,7 @@ bool MainController::init() {
     m_pSoundController->init();
     
     m_pLoaderController = new LoaderController(
-        m_sResourceDir,
+        m_pSettings->getResourceDir(),
         m_pRenderWindow,
         m_pGameState
     );
@@ -221,11 +219,10 @@ void MainController::startGameLogicThread() {
 void MainController::runGameLogicThread() {
     YLog::info(TAG, "Starting...");
     YLog::info(TAG, "TODO Loading assets...");
-    auto *pPropCache = findYService<RuntimeGlobalCacheYService>();
     auto *pAssets = findYService<YAssetsService>();
 
     std::string sError;
-    if (!pAssets->loadAsset(m_sResourceDir + "/asset-factories/font1", sError)) {
+    if (!pAssets->loadAsset(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {
         YLog::throw_err(TAG, sError);
     }
 
@@ -259,7 +256,7 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pLoaderController->updateText("Loading... default map");
     std::cout << "default/map.json" << std::endl;
-    std::string sDefaultPath = m_sResourceDir + "/default";
+    std::string sDefaultPath = m_pSettings->getResourceDir() + "/default";
     YJson jsonDefaultMap(sDefaultPath + "/map.json");
     if (jsonDefaultMap.isParserFailed()) {
         return false;
@@ -325,37 +322,37 @@ bool MainController::loadGameDataWithProgressBar() {
     // default
     m_pLoaderController->updateText("Loading... textures");
 
-    m_pRenderWindow->loadTextureBioplast(m_sResourceDir + "/default/sprites/alien-bioplast.png");
+    m_pRenderWindow->loadTextureBioplast(m_pSettings->getResourceDir() + "/default/sprites/alien-bioplast.png");
 
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud0.png")
+        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud0.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud1.png")
+        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud1.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud2.png")
+        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud2.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud3.png")
+        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud3.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_sResourceDir + "/default/textures/cloud4.png")
+        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud4.png")
     );
 
     // app
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/left-panel-info.png");
-    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/player-power.png");
+    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/app/textures/left-panel-info.png");
+    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/app/textures/player-power.png");
 
     this->loadAlienShip(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText("Loading... buildings textures");
     // TODO remove
-    std::vector<std::string> vBuildings = YCore::getListOfDirs(m_sResourceDir + "/buildings");
+    std::vector<std::string> vBuildings = YCore::getListOfDirs(m_pSettings->getResourceDir() + "/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
         std::string sName = vBuildings[i];
-        std::string sPathTexture = m_sResourceDir + "/buildings/" + sName + "/texture.png";
+        std::string sPathTexture = m_pSettings->getResourceDir() + "/buildings/" + sName + "/texture.png";
         if (!YCore::fileExists(sPathTexture)) {
             YLog::err(TAG, "Not found " + sPathTexture);
             m_pLoaderController->updateText("Not found " + sPathTexture);
@@ -404,7 +401,7 @@ void MainController::deinitLoaderController() {
 
 bool MainController::showStartDialog() {
      UtilsStartDialog dialog(
-        m_sResourceDir,
+        m_pSettings->getResourceDir(),
         m_pRenderWindow,
         m_pGameState
     );
@@ -788,23 +785,4 @@ void MainController::loadTransports(
             m_pMainAiThread->addAiObject(pAiTank0);
         }
     }
-}
-
-bool MainController::findResourceDir() {
-    std::vector<std::string> vPaths;
-    vPaths.push_back("/usr/share/yourCityIsInvadedByAliens");
-    vPaths.push_back("./res");
-    m_sResourceDir = "";
-    for (int i = 0; i < vPaths.size(); i++) {
-        if (YCore::dirExists(vPaths[i])) {
-            m_sResourceDir = vPaths[i];
-            break;
-        }
-    }
-    if (m_sResourceDir == "") {
-        std::cerr << "Not found resource dir (./res by default)" << std::endl;
-        return false;
-    }
-    std::cout << "Resource dir: " << m_sResourceDir << std::endl;
-    return true;
 }

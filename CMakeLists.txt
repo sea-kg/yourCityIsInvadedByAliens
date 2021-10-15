@@ -35,6 +35,7 @@ list (APPEND WSJCPP_SOURCES "src/ycore/coordxy.cpp")
 
 # yservices
 list (APPEND WSJCPP_SOURCES "src/yservices/yservices.cpp")
+list (APPEND WSJCPP_SOURCES "src/yservices/settings_yservice.cpp")
 
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/yassets_service.cpp")

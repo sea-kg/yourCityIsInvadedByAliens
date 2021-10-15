@@ -6,6 +6,7 @@
 #include "game_alien_ship_state.h"
 #include "sound_controller.h"
 #include "loader_controller.h"
+#include "settings_yservice.h"
 
 enum class MainState {
     LOADING,
@@ -55,6 +56,7 @@ class MainController {
 
     private:
         std::string TAG;
+        SettingsYService *m_pSettings;
 
         void loadBackgrounds(
             const std::string &sDefaultPath,
@@ -93,11 +95,8 @@ class MainController {
             const std::string &sDefaultPath,
             const YJsonObject &jsonRoads
         );
-        
-        bool findResourceDir();
 
         std::string m_sWindowName;
-        std::string m_sResourceDir;
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
         int m_nWindowWidth;

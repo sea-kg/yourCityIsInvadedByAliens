@@ -5,6 +5,7 @@
 #include <ycore.h>
 #include <yjson.h>
 #include <yassets_fabric_type_font.h>
+#include <settings_yservice.h>
 
 // ---------------------------------------------------------------------
 // YAsset
@@ -38,7 +39,7 @@ YAssetFactory::YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *
 REGISTRY_YSERVICE(YAssetsService)
 
 YAssetsService::YAssetsService()
-    : YServiceBase(YAssetsService::name(), {}) {
+    : YServiceBase(YAssetsService::name(), { SettingsYService::name() }) {
     TAG = YAssetsService::name();
 }
 
@@ -68,6 +69,9 @@ bool YAssetsService::hasFabricType(const std::string &sFactoryTypeId) {
 }
 
 bool YAssetsService::loadAsset(const std::string &sPath, std::string &sError) {
+    auto *pSettings = findYService<SettingsYService>();
+    std::string sResourceDir = pSettings->getResourceDir();
+
     std::string sAssetsInfoPath = sPath + "/asset-factory.json";
     if (!YCore::fileExists(sAssetsInfoPath)) {
         sError = "Did not find file " + sAssetsInfoPath;

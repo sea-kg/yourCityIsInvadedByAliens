@@ -69,21 +69,4 @@ template <class T> T* findYService() {
     return pTEmploy;
 }
 
-// ---------------------------------------------------------------------
-// RuntimeGlobalCacheYService
-
-class RuntimeGlobalCacheYService : public YServiceBase {
-    public:
-        RuntimeGlobalCacheYService();
-        static std::string name() { return "RuntimeGlobalCacheYService"; }
-        virtual bool init() override;
-        virtual bool deinit() override;
-        void set(const std::string &sName, const std::string &sValue);
-        bool has(const std::string &sName);
-        std::string get(const std::string &sName);
-
-    private:
-        std::string TAG;
-        std::map<std::string, std::string> m_sStringMap;
-};
 
