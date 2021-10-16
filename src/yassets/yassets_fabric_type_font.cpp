@@ -5,10 +5,15 @@
 
 YAssetFactoryFont::YAssetFactoryFont(
     YAssetsService *pAssetsService,
-    YAssetFabricTypeFont *pFactoryTypeFont
+    YAssetFabricTypeFont *pFactoryTypeFont,
+    const std::string &sImagePath,
+    const std::string &sAlphabet
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
     TAG = "YAssetFactoryFont";
     m_pFactoryTypeFont = pFactoryTypeFont;
+    m_sImagePath = sImagePath;
+    m_sAlphabet = sAlphabet;
+    m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
 }
 
 YAsset *YAssetFactoryFont::createAsset() {
@@ -39,5 +44,10 @@ YAssetFactory *YAssetFabricTypeFont::createFactory(
     }
     std::string sAlphabet = jsonFactoryConfig["font-alphabet"].getString();
 
-    return new YAssetFactoryFont(m_pAssetsService, this);
+    return new YAssetFactoryFont(
+        m_pAssetsService, 
+        this,
+        sImagePath,
+        sAlphabet
+    );
 }

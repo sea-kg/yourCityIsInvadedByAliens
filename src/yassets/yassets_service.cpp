@@ -41,6 +41,7 @@ REGISTRY_YSERVICE(YAssetsService)
 YAssetsService::YAssetsService()
     : YServiceBase(YAssetsService::name(), { SettingsYService::name() }) {
     TAG = YAssetsService::name();
+    m_pRenderWindow = nullptr;
 }
 
 bool YAssetsService::init() {
@@ -53,6 +54,14 @@ bool YAssetsService::deinit() {
     // checking settings
     YLog::info(TAG, "deinit");
     return true;
+}
+
+void YAssetsService::setRenderWindow(RenderWindow *pRenderWindow) {
+    m_pRenderWindow = pRenderWindow;
+}
+
+RenderWindow *YAssetsService::getRenderWindow() {
+    return m_pRenderWindow;
 }
 
 void YAssetsService::registerFabricType(YAssetFactoryType *pFactoryType) {

@@ -220,6 +220,7 @@ void MainController::runGameLogicThread() {
     YLog::info(TAG, "Starting...");
     YLog::info(TAG, "TODO Loading assets...");
     auto *pAssets = findYService<YAssetsService>();
+    pAssets->setRenderWindow(m_pRenderWindow);
 
     std::string sError;
     if (!pAssets->loadAsset(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <yservices.h>
-
 #include <wsjcpp_core.h>
+#include "render_window.h"
 #include <string>
 #include <map>
 #include <fstream>
@@ -61,6 +61,8 @@ class YAssetsService : public YServiceBase {
         static std::string name() { return "YAssetsService"; }
         virtual bool init() override;
         virtual bool deinit() override;
+        void setRenderWindow(RenderWindow *pRenderWindow);
+        RenderWindow *getRenderWindow();
         void registerFabricType(YAssetFactoryType *);
         bool hasFabricType(const std::string &sFactoryTypeId);
         bool loadAsset(const std::string &sPath, std::string &sRetError);
@@ -69,6 +71,7 @@ class YAssetsService : public YServiceBase {
         std::string TAG;
         std::map<std::string, YAssetFactoryType*> m_mapYAssetsFactoryTypes;
         std::map<std::string, YAssetFactory*> m_mapYAssetsFactories;
+        RenderWindow *m_pRenderWindow;
 };
 
 /*

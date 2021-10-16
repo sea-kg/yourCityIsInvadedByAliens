@@ -6,11 +6,19 @@ class YAssetFabricTypeFont;
 
 class YAssetFactoryFont : public YAssetFactory {
     public:
-        YAssetFactoryFont(YAssetsService *pAssetsService, YAssetFabricTypeFont *pFactoryTypeFont);
+        YAssetFactoryFont(
+            YAssetsService *pAssetsService,
+            YAssetFabricTypeFont *pFactoryTypeFont,
+            const std::string &sImagePath,
+            const std::string &sAlphabet
+        );
         virtual YAsset *createAsset() override;
         
     private:
         YAssetFabricTypeFont *m_pFactoryTypeFont;
+        std::string m_sImagePath;
+        std::string m_sAlphabet;
+        SDL_Texture *m_pTexture;
 };
 
 class YAssetFabricTypeFont : public YAssetFactoryType {
