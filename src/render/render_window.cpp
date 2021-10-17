@@ -175,13 +175,14 @@ void RenderWindow::addBioplast(GameBioplastState *pState) {
     addRocketsObject(new RenderBioplast(pState, m_pTextureBioplast, 3000));
 }
 
-void RenderWindow::toggleFullscreen() {
+bool RenderWindow::toggleFullscreen() {
     m_bFullsreeen = !m_bFullsreeen;
     if (m_bFullsreeen) {
         SDL_SetWindowFullscreen(m_pWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
     } else {
         SDL_SetWindowFullscreen(m_pWindow, 0);
     }
+    return m_bFullsreeen;
 }
 
 bool RenderWindow::isFullscreen() {

@@ -23,6 +23,8 @@ class WindowYService : public YServiceBase {
         std::string m_sWindowName;
         int m_nWindowWidth;
         int m_nWindowHeight;
+        int m_nWindowWidthOrig;
+        int m_nWindowHeightOrig;
         RenderWindow *m_pRenderWindow;
 
 };
