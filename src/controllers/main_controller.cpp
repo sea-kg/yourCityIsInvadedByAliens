@@ -36,15 +36,10 @@ MainController::MainController(const std::string &sWindowName) {
     m_pMainAiThread = new MainAiThread();
     m_nCurrentState = MainState::LOADING;
     m_pSettings = findYService<SettingsYService>();
-    // std::string sResourceDir = m_pSettings->getResourceDir();
 }
 
 MainController::~MainController() {
     delete m_pMainAiThread;
-}
-
-std::string MainController::getResourceDir() {
-    return m_pSettings->getResourceDir();
 }
 
 bool MainController::init() {
@@ -57,7 +52,7 @@ bool MainController::init() {
     }
     
     m_pSoundController = new SoundController(
-        this->getResourceDir(),
+        m_pSettings->getResourceDir(),
         this->getGameState()
     );
     m_pSoundController->init();
@@ -223,7 +218,7 @@ void MainController::runGameLogicThread() {
     pAssets->setRenderWindow(m_pRenderWindow);
 
     std::string sError;
-    if (!pAssets->loadAsset(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {
+    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {
         YLog::throw_err(TAG, sError);
     }
 

@@ -21,6 +21,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets_factories")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
 
@@ -36,10 +37,13 @@ list (APPEND WSJCPP_SOURCES "src/ycore/coordxy.cpp")
 # yservices
 list (APPEND WSJCPP_SOURCES "src/yservices/yservices.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/settings_yservice.cpp")
+list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
+
+# yassets_factories
+list (APPEND WSJCPP_SOURCES "src/yassets_factories/yassets_factory_type_font.cpp")
 
 # yassets
-list (APPEND WSJCPP_SOURCES "src/yassets/yassets_service.cpp")
-list (APPEND WSJCPP_SOURCES "src/yassets/yassets_fabric_type_font.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/yasset_text.cpp")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")

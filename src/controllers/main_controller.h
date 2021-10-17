@@ -20,7 +20,7 @@ class MainController {
         MainController(const std::string &sWindowName);
         ~MainController();
         
-        std::string getResourceDir();
+        // std::string getResourceDir();
         bool init();
         bool initSDL2();
         bool initRenderWindow();

@@ -2,6 +2,9 @@
 #include "primitives/render_rect_texture.h"
 #include <chrono>
 #include <thread>
+#include <yassets_service.h>
+#include <yasset_text.h>
+
 
 LoaderController::LoaderController(
     const std::string &sResourceDir,
@@ -16,6 +19,7 @@ LoaderController::LoaderController(
 }
 
 void LoaderController::init() {
+    auto *pAssets = findYService<YAssetsService>();
     m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-background.png");
     m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
     m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-progressbar.png");
@@ -65,6 +69,12 @@ void LoaderController::init() {
 
     nTop += nProgressBarH + nPaddingTop;
 
+    YAssetText *pAssetText = pAssets->createAsset<YAssetText>("font1");
+    pAssetText->setAbsolutePosition(true);
+    pAssetText->setPosition((nWindowWidth - nLogoW)/2, nTop);
+    pAssetText->setText("Loading...йцукен");
+    this->addObject(pAssetText);
+    
     m_pText = new RenderAbsoluteTextBlock(
         CoordXY((nWindowWidth - nLogoW)/2, nTop),
         "Loading..."

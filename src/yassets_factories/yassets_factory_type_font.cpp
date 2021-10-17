@@ -1,11 +1,12 @@
-#include <yassets_fabric_type_font.h>
+#include <yassets_factory_type_font.h>
+#include <yasset_text.h>
 
 // ---------------------------------------------------------------------
 // YAssetFactoryFont
 
 YAssetFactoryFont::YAssetFactoryFont(
     YAssetsService *pAssetsService,
-    YAssetFabricTypeFont *pFactoryTypeFont,
+    YAssetFactoryTypeFont *pFactoryTypeFont,
     const std::string &sImagePath,
     const std::string &sAlphabet
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
@@ -13,27 +14,33 @@ YAssetFactoryFont::YAssetFactoryFont(
     m_pFactoryTypeFont = pFactoryTypeFont;
     m_sImagePath = sImagePath;
     m_sAlphabet = sAlphabet;
+    // TODO: Not working now because render window now initialized to this moment
     m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
 }
 
 YAsset *YAssetFactoryFont::createAsset() {
-    YLog::throw_err(TAG, "TODO");
-    return nullptr;
+    // TODO: ad-hoc - time loading textures wrong, before then created render window
+    m_pTexture = m_pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
+    return new YAssetText(
+        m_pAssetsService,
+        m_pTexture,
+        m_sAlphabet
+    );
 }
 
 // ---------------------------------------------------------------------
-// YAssetFabricTypeFont
+// YAssetFactoryTypeFont
 
-YAssetFabricTypeFont::YAssetFabricTypeFont(YAssetsService *pAssetsService) 
+YAssetFactoryTypeFont::YAssetFactoryTypeFont(YAssetsService *pAssetsService) 
     : YAssetFactoryType(pAssetsService) {
-    TAG = "YAssetFabricTypeFont";
+    TAG = "YAssetFactoryTypeFont";
 }
 
-std::string YAssetFabricTypeFont::getFabricTypeId() {
+std::string YAssetFactoryTypeFont::getFabricTypeId() {
     return "font";
 }
 
-YAssetFactory *YAssetFabricTypeFont::createFactory(
+YAssetFactory *YAssetFactoryTypeFont::createFactory(
     const std::string &sAssetFactoryPath,
     const std::string &sFactoryId,
     const YJsonObject &jsonFactoryConfig
