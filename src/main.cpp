@@ -9,7 +9,7 @@ int main(int argc, char* args[]) {
         return -1;
     }
 
-    MainController *pMainController = new MainController("Your City Is Invaded Aliens (v0.0.1)");
+    MainController *pMainController = new MainController();
 
     if (!pMainController->init()) {
         return -1;

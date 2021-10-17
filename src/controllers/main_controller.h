@@ -7,6 +7,7 @@
 #include "sound_controller.h"
 #include "loader_controller.h"
 #include "settings_yservice.h"
+#include "window_yservice.h"
 
 enum class MainState {
     LOADING,
@@ -17,19 +18,16 @@ enum class MainState {
 
 class MainController {
     public:
-        MainController(const std::string &sWindowName);
+        MainController();
         ~MainController();
         
         // std::string getResourceDir();
         bool init();
-        bool initSDL2();
-        bool initRenderWindow();
         bool initSoundController();
         int startUI();
         void startGameLogicThread();
         void runGameLogicThread();
 
-        RenderWindow *getWindow();
         GameState *getGameState();
         CoordXY getCoordCenter();
         bool loadGameDataWithProgressBar();
@@ -57,6 +55,7 @@ class MainController {
     private:
         std::string TAG;
         SettingsYService *m_pSettings;
+        WindowYService *m_pWindow;
 
         void loadBackgrounds(
             const std::string &sDefaultPath,
@@ -95,12 +94,9 @@ class MainController {
             const std::string &sDefaultPath,
             const YJsonObject &jsonRoads
         );
-
-        std::string m_sWindowName;
+        
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
-        int m_nWindowWidth;
-        int m_nWindowHeight;
         int m_nMapWidth;
         int m_nMapHeight;
         int m_nMaxClouds;
@@ -108,7 +104,7 @@ class MainController {
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
-        RenderWindow *m_pRenderWindow;
+        
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
         std::vector<SDL_Texture*> m_vTexturesClouds;

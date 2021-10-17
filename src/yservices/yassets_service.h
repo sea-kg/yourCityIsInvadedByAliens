@@ -2,7 +2,7 @@
 
 #include <yservices.h>
 #include <wsjcpp_core.h>
-#include "render_window.h"
+#include "window_yservice.h"
 #include <string>
 #include <map>
 #include <fstream>
@@ -60,7 +60,6 @@ class YAssetsService : public YServiceBase {
         static std::string name() { return "YAssetsService"; }
         virtual bool init() override;
         virtual bool deinit() override;
-        void setRenderWindow(RenderWindow *pRenderWindow);
         RenderWindow *getRenderWindow();
         void registerFabricType(YAssetFactoryType *);
         bool hasFabricType(const std::string &sFactoryTypeId);

@@ -20,22 +20,19 @@
 #include "buildings/render_building_simple.h"
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
-
+#include "window_yservice.h"
 
 // MainController
 
-MainController::MainController(const std::string &sWindowName) {
+MainController::MainController() {
     TAG = "MainController";
-    m_sWindowName = sWindowName;
-    m_nWindowWidth = 1280;
-    m_nWindowHeight = 720;
-    m_pRenderWindow = nullptr;
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
     m_nMaxClouds = 10000;
     m_pMainAiThread = new MainAiThread();
     m_nCurrentState = MainState::LOADING;
     m_pSettings = findYService<SettingsYService>();
+    m_pWindow = findYService<WindowYService>();
 }
 
 MainController::~MainController() {
@@ -43,9 +40,10 @@ MainController::~MainController() {
 }
 
 bool MainController::init() {
-    if (!this->initRenderWindow()) {
-        return false;
-    }
+    m_pGameState = new GameState(
+        m_pWindow->getWidth(),
+        m_pWindow->getHeight()
+    );
 
     if (!this->initSoundController()) {
         return false;
@@ -59,60 +57,12 @@ bool MainController::init() {
     
     m_pLoaderController = new LoaderController(
         m_pSettings->getResourceDir(),
-        m_pRenderWindow,
+        m_pWindow->getRenderWindow(),
         m_pGameState
     );
 
     this->getGameState()->init();
 
-    return true;
-}
-
-bool MainController::initSDL2() {
-    if (SDL_Init(SDL_INIT_VIDEO) > 0) {
-        std::cerr << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    if (!(IMG_Init(IMG_INIT_PNG))) {
-        std::cerr << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    if (TTF_Init() == -1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
-        return false;
-    }
-    
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        printf("Failed to init SDL\n");
-        exit(1);
-    }
-    int result = 0;
-    int flags = MIX_INIT_OGG;
-    if (flags != (result = Mix_Init(flags))) {
-        printf("Could not initialize mixer (result: %d).\n", result);
-        printf("Mix_Init: %s\n", Mix_GetError());
-        exit(1);
-    }
-    return true;
-}
-
-bool MainController::initRenderWindow() {
-    
-    if (!this->initSDL2()) {
-        return false;
-    }
-
-    m_pRenderWindow = new RenderWindow(
-        m_sWindowName.c_str(),
-        m_nWindowWidth,
-        m_nWindowHeight
-    );
-    m_pGameState = new GameState(
-        m_nWindowWidth,
-        m_nWindowHeight
-    );
     return true;
 }
 
@@ -194,7 +144,7 @@ int MainController::startUI() {
         updateFps();
     }
 
-    getWindow()->cleanUp();
+    m_pWindow->getRenderWindow()->cleanUp();
     // Mix_FreeMusic(music);
     SDL_Quit();
     return 0;
@@ -215,7 +165,6 @@ void MainController::runGameLogicThread() {
     YLog::info(TAG, "Starting...");
     YLog::info(TAG, "TODO Loading assets...");
     auto *pAssets = findYService<YAssetsService>();
-    pAssets->setRenderWindow(m_pRenderWindow);
 
     std::string sError;
     if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {
@@ -230,18 +179,14 @@ void MainController::runGameLogicThread() {
     YLog::info(TAG, "Stopped...");
 }
 
-RenderWindow *MainController::getWindow() {
-    return m_pRenderWindow;
-}
-
 GameState *MainController::getGameState() {
     return m_pGameState;
 }
 
 CoordXY MainController::getCoordCenter() {
     return CoordXY(
-        m_nWindowWidth/2,
-        m_nWindowHeight/2
+        m_pWindow->getWidth()/2,
+        m_pWindow->getHeight()/2
     );
 }
 
@@ -318,27 +263,27 @@ bool MainController::loadGameDataWithProgressBar() {
     // default
     m_pLoaderController->updateText("Loading... textures");
 
-    m_pRenderWindow->loadTextureBioplast(m_pSettings->getResourceDir() + "/default/sprites/alien-bioplast.png");
+    m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + "/default/sprites/alien-bioplast.png");
 
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud0.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud0.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud1.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud1.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud2.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud2.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud3.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud3.png")
     );
     m_vTexturesClouds.push_back(
-        m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud4.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud4.png")
     );
 
     // app
-    m_pTextureLeftPanel = m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/app/textures/left-panel-info.png");
-    m_pTexturePlayerPower0 = m_pRenderWindow->loadTexture(m_pSettings->getResourceDir() + "/app/textures/player-power.png");
+    m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/app/textures/left-panel-info.png");
+    m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/app/textures/player-power.png");
 
     this->loadAlienShip(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
@@ -354,7 +299,7 @@ bool MainController::loadGameDataWithProgressBar() {
             m_pLoaderController->updateText("Not found " + sPathTexture);
             return false;
         }
-        m_mapBuildingsTextures[sName] = m_pRenderWindow->loadTexture(sPathTexture.c_str());
+        m_mapBuildingsTextures[sName] = m_pWindow->getRenderWindow()->loadTexture(sPathTexture.c_str());
     }
     m_pLoaderController->addToProgressCurrent(1);
 
@@ -369,7 +314,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText("Prepare panels...");
-    m_pRenderWindow->addPanelsObject(
+    m_pWindow->getRenderWindow()->addPanelsObject(
         new RenderLeftPanelInfo(
             m_pTextureLeftPanel,
             new RenderPlayerPower(m_pTexturePlayerPower0, m_pGameState->getAlienShipState()),
@@ -378,12 +323,12 @@ bool MainController::loadGameDataWithProgressBar() {
     );
 
     // text
-    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 20), "FPS: ...", 5001);
-    m_pRenderWindow->addPanelsObject(m_pFpsText);
+    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 20), "FPS: ...", 5001);
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
     // coordinates of player
-    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_nWindowWidth - 270, 40), "x = ? y = ?", 5001);
-    m_pRenderWindow->addPanelsObject(m_pCoordText);
+    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 40), "x = ? y = ?", 5001);
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
     m_pLoaderController->addToProgressCurrent(1);
     m_pLoaderController->updateText("Press 'space' for continue...");
@@ -398,7 +343,7 @@ void MainController::deinitLoaderController() {
 bool MainController::showStartDialog() {
      UtilsStartDialog dialog(
         m_pSettings->getResourceDir(),
-        m_pRenderWindow,
+        m_pWindow->getRenderWindow(),
         m_pGameState
     );
     dialog.init();
@@ -432,7 +377,7 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             deinitLoaderController();
             // player
-            getWindow()->sortObjectsByPositionZ();
+            m_pWindow->getRenderWindow()->sortObjectsByPositionZ();
             startAllThreads();
         }
     } else if (getMainState() == MainState::GAME_ACTION) {
@@ -441,30 +386,25 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
 }
 
 bool MainController::isFullscreen() {
-    return m_pRenderWindow->isFullscreen();
+    return m_pWindow->getRenderWindow()->isFullscreen();
 }
 
 void MainController::toggleFullscreen() {
-    m_pRenderWindow->toggleFullscreen();
-    int w,h;
-    m_pRenderWindow->getWindowSize(&w,&h);
-    std::cout << "w,h = (" << w << "," << h << ")";
-    m_pGameState->updateWindowSize(w,h);
-    m_nWindowWidth = w;
-    m_nWindowHeight = h;
+    m_pWindow->toggleFullscreen();
+    m_pGameState->updateWindowSize(m_pWindow->getWidth(),m_pWindow->getHeight());
 }
 
 void MainController::clearWindow() {
-    m_pRenderWindow->clear();
+    m_pWindow->getRenderWindow()->clear();
 }
 
 void MainController::modifyObjects() {
-    m_pRenderWindow->modifyObjects(*m_pGameState);
+    m_pWindow->getRenderWindow()->modifyObjects(*m_pGameState);
 
     CoordXY p0 = m_pGameState->getAlienShipState()->getPosition();
     // calculate intersection rockets and player
-    for (int i = 0; i < m_pRenderWindow->m_vRockets.size(); i++) {
-        GameRocketState *pRocket = m_pRenderWindow->m_vRockets[i];
+    for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
+        GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
@@ -477,15 +417,15 @@ void MainController::modifyObjects() {
         }
     }
 
-    for (int i = 0; i < m_pRenderWindow->m_vRockets.size(); i++) {
-        GameRocketState *pRocket = m_pRenderWindow->m_vRockets[i];
+    for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
+        GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
         YPos p1 = pRocket->getPosition();
 
-        for (int b = 0; b < m_pRenderWindow->m_vBioplasts.size(); b++) {
-            GameBioplastState *pBioplast = m_pRenderWindow->m_vBioplasts[b];
+        for (int b = 0; b < m_pWindow->getRenderWindow()->m_vBioplasts.size(); b++) {
+            GameBioplastState *pBioplast = m_pWindow->getRenderWindow()->m_vBioplasts[b];
             CoordXY p2 = pBioplast->getPosition();
             // distance
             float nDistance = p1.getDistance(YPos(p2.x(), p2.y()));
@@ -498,7 +438,7 @@ void MainController::modifyObjects() {
 }
 
 void MainController::drawObjects() {
-    m_pRenderWindow->drawObjects(*m_pGameState);
+    m_pWindow->getRenderWindow()->drawObjects(*m_pGameState);
 }
 
 void MainController::updatePlayerCoord() {
@@ -554,7 +494,7 @@ void MainController::loadBackgrounds(
         if (!YCore::fileExists(sTexturePath)) {
             YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
         }
-        SDL_Texture* pTextureBackground = m_pRenderWindow->loadTexture(sTexturePath);
+        SDL_Texture* pTextureBackground = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
         int nTextureWidth = item["width"].getNumber();
         int nTextureHeight = item["height"].getNumber();
         const YJsonObject &fillRegion = item["fill-region"];
@@ -585,7 +525,7 @@ void MainController::generateBackground(
 ) {
     for (int x = startXY.x(); x <= endXY.x(); x += nTextureWidth) {
         for (int y = startXY.y(); y <= endXY.y(); y += nTextureHeight) {
-            m_pRenderWindow->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));        
+            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));        
         }
     }
 }
@@ -599,7 +539,7 @@ void MainController::generateClouds() {
 
         int nCloudType = std::rand() % m_vTexturesClouds.size();
         auto *pCloud0State = new GameCloud0State(CoordXY(nXpos,nYpos));
-        m_pRenderWindow->addCloudsObject(new RenderCloud0(
+        m_pWindow->getRenderWindow()->addCloudsObject(new RenderCloud0(
             pCloud0State,
             m_vTexturesClouds[nCloudType],
             1000
@@ -617,7 +557,7 @@ void MainController::loadRoads(
         if (!YCore::fileExists(sTexturePath)) {
             YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
         }
-        SDL_Texture* pTextureRoads = m_pRenderWindow->loadTexture(sTexturePath);
+        SDL_Texture* pTextureRoads = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
         int nTextureWidth = item["width"].getNumber();
         int nTextureHeight = item["height"].getNumber();
         const YJsonObject &fillList = item["fill"];
@@ -627,7 +567,7 @@ void MainController::loadRoads(
             int nX = roadItem["x"].getNumber();
             int nY = roadItem["y"].getNumber();
             std::string sRoadPart = roadItem["road-part"].getString();
-            m_pRenderWindow->addRoadsObject(new RenderRoad0(
+            m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
                 CoordXY(nX, nY),
                 pTextureRoads,
                 convertStringToRoadPart(sRoadPart)
@@ -645,7 +585,7 @@ void MainController::loadAlienShip(
         YLog::throw_err(TAG, "File not exists " + sFilenamePng);
     }
 
-    SDL_Texture* pTextureAlienShip1 = m_pRenderWindow->loadTexture(sFilenamePng);
+    SDL_Texture* pTextureAlienShip1 = m_pWindow->getRenderWindow()->loadTexture(sFilenamePng);
 
     std::string sFilenameJson = sDefaultPath + "/sprites/alien-ship0.json";
     if (!YCore::fileExists(sFilenameJson)) {
@@ -659,7 +599,7 @@ void MainController::loadAlienShip(
 
     // shadow
     if (jsonAlienShip["shadow"].getString() == "yes") {
-        m_pRenderWindow->addFlyingShadowObject(
+        m_pWindow->getRenderWindow()->addFlyingShadowObject(
         new RenderAlienShip0(
                 m_pGameState->getAlienShipState(),
                 jsonAlienShip,
@@ -671,7 +611,7 @@ void MainController::loadAlienShip(
     }
 
     // ship
-    m_pRenderWindow->addFlyingObject(
+    m_pWindow->getRenderWindow()->addFlyingObject(
         new RenderAlienShip0(
             m_pGameState->getAlienShipState(),
             jsonAlienShip,
@@ -693,7 +633,7 @@ void MainController::loadBuildings(
         if (!YCore::fileExists(sTexturePath)) {
             YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
         }
-        SDL_Texture* pTextureBuilding = m_pRenderWindow->loadTexture(sTexturePath);
+        SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
         int nTextureWidth = item["width"].getNumber();
         int nTextureHeight = item["height"].getNumber();
         const YJsonObject &fillList = item["fill"];
@@ -702,7 +642,7 @@ void MainController::loadBuildings(
             const YJsonObject &roadItem = fillList[n];
             int nX = roadItem["x"].getNumber();
             int nY = roadItem["y"].getNumber();
-            m_pRenderWindow->addBuildingsObject(new RenderBuildingSimple(
+            m_pWindow->getRenderWindow()->addBuildingsObject(new RenderBuildingSimple(
                 YPos(nX, nY),
                 nTextureWidth,
                 nTextureHeight,
@@ -722,7 +662,7 @@ void MainController::loadVegetations(
         if (!YCore::fileExists(sTexturePath)) {
             YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
         }
-        SDL_Texture* pTextureBuilding = m_pRenderWindow->loadTexture(sTexturePath);
+        SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
         int nTextureWidth = item["width"].getNumber();
         int nTextureHeight = item["height"].getNumber();
         const YJsonObject &fillList = item["fill"];
@@ -731,7 +671,7 @@ void MainController::loadVegetations(
             const YJsonObject &roadItem = fillList[n];
             int nX = roadItem["x"].getNumber();
             int nY = roadItem["y"].getNumber();
-            m_pRenderWindow->addVegetationObject(new RenderVegetationSimple(
+            m_pWindow->getRenderWindow()->addVegetationObject(new RenderVegetationSimple(
                 YPos(nX, nY),
                 nTextureWidth,
                 nTextureHeight,
@@ -752,12 +692,12 @@ void MainController::loadTransports(
         if (!YCore::fileExists(sSpritePath)) {
             YLog::throw_err(TAG, "File '" + sSpritePath + "' not found");
         }
-        SDL_Texture* pSprite = m_pRenderWindow->loadTexture(sSpritePath);
+        SDL_Texture* pSprite = m_pWindow->getRenderWindow()->loadTexture(sSpritePath);
 
         if (!YCore::fileExists(sSpriteRocketPath)) {
             YLog::throw_err(TAG, "File '" + sSpriteRocketPath + "' not found");
         }
-        SDL_Texture* pSpriteRocket = m_pRenderWindow->loadTexture(sSpriteRocketPath);
+        SDL_Texture* pSpriteRocket = m_pWindow->getRenderWindow()->loadTexture(sSpriteRocketPath);
 
         int nSpriteWidth = item["sprite-width"].getNumber();
         int nSpriteHeight = item["sprite-height"].getNumber();
@@ -771,7 +711,7 @@ void MainController::loadTransports(
             GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);
 
-            m_pRenderWindow->addTransportsObject(new RenderTank0(
+            m_pWindow->getRenderWindow()->addTransportsObject(new RenderTank0(
                 pTankState,
                 pSprite,
                 pSpriteRocket,

@@ -6,6 +6,7 @@
 #include <yjson.h>
 #include <yassets_factory_type_font.h>
 #include <settings_yservice.h>
+#include <window_yservice.h>
 
 // ---------------------------------------------------------------------
 // YAsset
@@ -37,7 +38,10 @@ YAssetFactory::YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *
 REGISTRY_YSERVICE(YAssetsService)
 
 YAssetsService::YAssetsService()
-    : YServiceBase(YAssetsService::name(), { SettingsYService::name() }) {
+    : YServiceBase(YAssetsService::name(), {
+        SettingsYService::name(),
+        WindowYService::name()
+    }) {
     TAG = YAssetsService::name();
     m_pRenderWindow = nullptr;
 }
@@ -45,6 +49,7 @@ YAssetsService::YAssetsService()
 bool YAssetsService::init() {
     // refistration of factory types
     registerFabricType(new YAssetFactoryTypeFont(this));
+    m_pRenderWindow = findYService<WindowYService>()->getRenderWindow();
     return true;
 }
 
@@ -52,10 +57,6 @@ bool YAssetsService::deinit() {
     // checking settings
     YLog::info(TAG, "deinit");
     return true;
-}
-
-void YAssetsService::setRenderWindow(RenderWindow *pRenderWindow) {
-    m_pRenderWindow = pRenderWindow;
 }
 
 RenderWindow *YAssetsService::getRenderWindow() {
