@@ -77,3 +77,7 @@ Just run a script for download SDL2 libraries and build project:
 * https://www.youtube.com/watch?v=OrkpfmXHP_Q
 * https://www.youtube.com/watch?v=h-a4KAWuMT0
 * https://tatrix.org/sdl-tutorial/11/
+
+## Interesting projects
+
+* https://docs.scummvm.org/
