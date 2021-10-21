@@ -8,12 +8,12 @@
 YAssetText::YAssetText(
     YAssetsService *pAssetsService,
     SDL_Texture *pTexture,
-    const std::wstring &sAlphabet
+    const std::vector<std::wstring> &vAlphabets
 )
 : YAsset(pAssetsService), RenderObject(1000) {
     m_pTexture = pTexture;
     // TODO redesign to wstring
-    m_sAlphabet = std::wstring(sAlphabet.begin(), sAlphabet.end());
+    m_vAlphabets = vAlphabets;
     m_bUpdatedText = false;
     m_nFontSize = 25;
 }
@@ -68,14 +68,25 @@ void YAssetText::draw(SDL_Renderer* renderer) {
 
     for (int i = 0; i < m_sText.size(); i++) {
         wchar_t c = m_sText[i];
-        currentFrame.x = 0;
-        for (int n = 0; n < m_sAlphabet.size(); n++) {
-            if (m_sAlphabet[n] == c) {
-                currentFrame.x = (n + 1)*50;
-            }
-        }
+        findPosition(currentFrame, c);
         dst.x = i*m_nFontSize + m_nX;
         SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
     }
 };
+
+void YAssetText::findPosition(SDL_Rect &frame, wchar_t c) {
+    frame.x = 0;
+    frame.y = 0;
+    for (int y = 0; y < m_vAlphabets.size(); y++) {
+        const std::wstring &sAlphabet = m_vAlphabets[y];
+        // std::wcout << sAlphabet << std::endl;
+        for (int x = 0; x < sAlphabet.size(); x++) {
+            if (sAlphabet[x] == c) {
+                frame.x = x*50;
+                frame.y = (y+1)*50; // ignore first line because it must has only one wrong character
+                return;
+            }
+        }
+    }
+}
 

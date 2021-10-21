@@ -166,7 +166,7 @@ void MainController::runGameLogicThread() {
     auto *pAssets = findYService<YAssetsService>();
 
     std::wstring sError;
-    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories/font1", sError)) {
+    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-first/font1", sError)) {
         YLog::throw_err(TAG, sError);
     }
 

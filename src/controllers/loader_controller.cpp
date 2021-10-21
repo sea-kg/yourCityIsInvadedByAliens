@@ -69,18 +69,11 @@ void LoaderController::init() {
 
     nTop += nProgressBarH + nPaddingTop;
 
-    YAssetText *pAssetText = pAssets->createAsset<YAssetText>(L"font1");
-    pAssetText->setAbsolutePosition(true);
-    pAssetText->setPosition((nWindowWidth - nLogoW)/2, nTop);
-    pAssetText->setText(L"Loading...йцукен");
-    this->addObject(pAssetText);
-    
-    m_pText = new RenderAbsoluteTextBlock(
-        CoordXY((nWindowWidth - nLogoW)/2, nTop),
-        L"Loading..."
-    );
-    this->addObject(m_pText);
-
+    m_pAssetText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pAssetText->setAbsolutePosition(true);
+    m_pAssetText->setPosition((nWindowWidth - nLogoW)/2, nTop);
+    m_pAssetText->setText(L"Loading...");
+    this->addObject(m_pAssetText);
     this->draw();
 }
 
@@ -92,7 +85,7 @@ void LoaderController::deinit() {
 }
 
 void LoaderController::updateText(const std::wstring &sNewText) {
-    m_pText->updateText(sNewText);
+    m_pAssetText->setText(sNewText);
     this->draw();
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

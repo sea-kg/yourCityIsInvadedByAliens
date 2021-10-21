@@ -10,14 +10,14 @@ class YAssetFactoryFont : public YAssetFactory {
             YAssetsService *pAssetsService,
             YAssetFactoryTypeFont *pFactoryTypeFont,
             const std::wstring &sImagePath,
-            const std::wstring &sAlphabet
+            const std::vector<std::wstring> &vAlphabets
         );
         virtual YAsset *createAsset() override;
         
     private:
         YAssetFactoryTypeFont *m_pFactoryTypeFont;
         std::wstring m_sImagePath;
-        std::wstring m_sAlphabet;
+        std::vector<std::wstring> m_vAlphabets;
         SDL_Texture *m_pTexture;
 };
 

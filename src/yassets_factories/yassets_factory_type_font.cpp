@@ -8,12 +8,12 @@ YAssetFactoryFont::YAssetFactoryFont(
     YAssetsService *pAssetsService,
     YAssetFactoryTypeFont *pFactoryTypeFont,
     const std::wstring &sImagePath,
-    const std::wstring &sAlphabet
+    const std::vector<std::wstring> &vAlphabets
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
     TAG = L"YAssetFactoryFont";
     m_pFactoryTypeFont = pFactoryTypeFont;
     m_sImagePath = sImagePath;
-    m_sAlphabet = sAlphabet;
+    m_vAlphabets = vAlphabets;
     // TODO: Not working now because render window now initialized to this moment
     m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
 }
@@ -24,7 +24,7 @@ YAsset *YAssetFactoryFont::createAsset() {
     return new YAssetText(
         m_pAssetsService,
         m_pTexture,
-        m_sAlphabet
+        m_vAlphabets
     );
 }
 
@@ -49,12 +49,16 @@ YAssetFactory *YAssetFactoryTypeFont::createFactory(
     if (!YCore::fileExists(sImagePath)) {
         YLog::throw_err(TAG, L"Did not font-image " + sImagePath);
     }
-    std::wstring sAlphabet = jsonFactoryConfig[L"font-alphabet"].getString();
+    std::vector<std::wstring> vAlphabets;
+    YJsonObject obj = jsonFactoryConfig[L"font-alphabets"];
+    for (int i = 0; i < obj.length(); i++) {
+        vAlphabets.push_back(obj[i].getString());
+    }
 
     return new YAssetFactoryFont(
         m_pAssetsService, 
         this,
         sImagePath,
-        sAlphabet
+        vAlphabets
     );
 }

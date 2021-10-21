@@ -80,7 +80,10 @@ class YJson {
         void pushObjectToStack(YJsonObject *);
         void popObjectFromStack();
         YJsonObject *getLastObjectFromStack();
+        void printParserErrorWithChar(const std::wstring &sDescription, wchar_t appendChar);
         void printParserError(const std::wstring &sDescription);
+        std::wstring getObjectType(YJsonObject *pObject);
+        std::wstring getParserStateName();
         int m_nLineNumber;
         std::wstring m_sLineParse;
         std::wstring m_sFilename;

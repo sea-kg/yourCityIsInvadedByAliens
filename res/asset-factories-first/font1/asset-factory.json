@@ -1,0 +1,14 @@
+{
+    "asset-faсtory-id": "font1",
+    "asset-faсtory-type": "font",
+    "asset-faсtory-config": {
+        "font-image": "font1.png",
+        "font-alphabets": [
+            "0123456789!@#$%^&*()_+[]{};:\\\" .'",
+            "qwertyuiopasdfghjklzxcvbnm",
+            "QWERTYUIOPASDFGHJKLZXCVBNM",
+            "йцукенгшщзхъфывапролджэячсмитьбю",
+            "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+        ]
+    }
+}

@@ -2,6 +2,7 @@
 #include <string>
 #include "render.h"
 #include "render_ui.h"
+#include <yasset_text.h>
 
 class LoaderController {
     public:
@@ -30,7 +31,7 @@ class LoaderController {
         SDL_Texture *m_pTextureProgressBar;
         std::vector<RenderObject *> m_vObjects;
 
-        RenderAbsoluteTextBlock *m_pText;
+        YAssetText *m_pAssetText;
         RenderBootScreenProgressBar *m_pProgressBar;
         int m_nProgressCurrent;
         int m_nProgressMax;

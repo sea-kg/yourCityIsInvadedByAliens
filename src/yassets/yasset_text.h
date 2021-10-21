@@ -7,7 +7,7 @@ class YAssetText : public YAsset, public RenderObject {
         YAssetText(
             YAssetsService *pAssetsService,
             SDL_Texture *pTexture,
-            const std::wstring &sAlphabet
+            const std::vector<std::wstring> &vAlphabets
         );
         void setAbsolutePosition(bool bAbsolutePosition);
         void setPosition(int nX, int nY);
@@ -31,7 +31,9 @@ class YAssetText : public YAsset, public RenderObject {
         std::wstring m_sText;
         std::wstring m_sUpdateText;
         SDL_Texture *m_pTexture;
-        std::wstring m_sAlphabet;
+        std::vector<std::wstring> m_vAlphabets;
+
+        void findPosition(SDL_Rect &frame, wchar_t c);
 };
 
 YASSET_DECLARE_INLINE(YAssetText)
