@@ -27,6 +27,9 @@ RenderBootScreenProgressBar::RenderBootScreenProgressBar(
 void RenderBootScreenProgressBar::updateProgress(int nProgressMax, int nProgressCurrent) {
     m_nCurProgress = nProgressCurrent;
     m_nMaxProgress = nProgressMax;
+    if (m_nCurProgress > nProgressMax) {
+        m_nCurProgress = m_nMaxProgress;
+    }
 }
 
 void RenderBootScreenProgressBar::modify(const GameState& state, IRenderWindow* pRenderWindow) {
