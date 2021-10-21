@@ -21,7 +21,7 @@ LoaderController::LoaderController(
 void LoaderController::init() {
     auto *pAssets = findYService<YAssetsService>();
     m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-background.png");
-    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/logo-big-500x500.png");
+    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-logo.png");
     m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-progressbar.png");
     
     int nBackW = 1280;
