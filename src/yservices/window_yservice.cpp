@@ -33,11 +33,6 @@ bool WindowYService::init() {
         return false;
     }
 
-    if (TTF_Init() == -1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
-        return false;
-    }
-
     // TODO move to sound service    
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         printf("Failed to init SDL\n");

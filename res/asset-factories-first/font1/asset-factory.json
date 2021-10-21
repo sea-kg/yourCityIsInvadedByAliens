@@ -5,7 +5,7 @@
         "font-image": "font1.png",
         "font-alphabets": [
             "0123456789!@#$%^&*()_+[]{};:\\\" .'",
-            "qwertyuiopasdfghjklzxcvbnm",
+            "qwertyuiopasdfghjklzxcvbnm-=~",
             "QWERTYUIOPASDFGHJKLZXCVBNM",
             "йцукенгшщзхъфывапролджэячсмитьбю",
             "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"

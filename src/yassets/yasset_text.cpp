@@ -30,15 +30,11 @@ void YAssetText::setPosition(int nX, int nY) {
 void YAssetText::setText(const std::wstring& sText) {
     m_sUpdateText = sText;
     m_bUpdatedText = true;
-    YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
+    // YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
 }
 
-RenderObject *YAssetText::getRenderObject() {
-    // TOOD redesign
-    return new RenderAbsoluteTextBlock(
-        CoordXY(m_nX, m_nY),
-        m_sText
-    );
+void YAssetText::setOrderZ(int nOrder) {
+    m_nPositionZ = nOrder;
 }
 
 void YAssetText::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -66,11 +62,19 @@ void YAssetText::draw(SDL_Renderer* renderer) {
     dst.w = m_nFontSize;
     dst.h = m_nFontSize;
 
+    int nPos = 0;
+
     for (int i = 0; i < m_sText.size(); i++) {
         wchar_t c = m_sText[i];
+        if (c == L'\n') {
+            dst.y += m_nFontSize;
+            nPos = 0;
+            continue;
+        }
         findPosition(currentFrame, c);
-        dst.x = i*m_nFontSize + m_nX;
+        dst.x = nPos*m_nFontSize + m_nX;
         SDL_RenderCopy(renderer, m_pTexture, &currentFrame, &dst);
+        nPos++;
     }
 };
 

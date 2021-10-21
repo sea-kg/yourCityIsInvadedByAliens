@@ -12,9 +12,9 @@ class YAssetText : public YAsset, public RenderObject {
         void setAbsolutePosition(bool bAbsolutePosition);
         void setPosition(int nX, int nY);
         void setText(const std::wstring& sText);
-
+        
         // YAsset
-        virtual RenderObject *getRenderObject() override;
+        virtual void setOrderZ(int nOrder) override;
 
         // RenderObject
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;

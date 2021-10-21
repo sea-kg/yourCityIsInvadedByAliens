@@ -58,7 +58,6 @@ class RenderObject {
 
     protected:
         bool m_bDestroyed;
-
-    private:
         int m_nPositionZ;
+       
 };

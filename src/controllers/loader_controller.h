@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "render.h"
 #include "render_ui.h"
 #include <yasset_text.h>
 

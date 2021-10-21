@@ -321,12 +321,22 @@ bool MainController::loadGameDataWithProgressBar() {
         )
     );
 
+    auto *pAssets = findYService<YAssetsService>();
+
     // text
-    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 20), L"FPS: ...", 5001);
+    m_pFpsText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pFpsText->setOrderZ(5001);
+    m_pFpsText->setAbsolutePosition(true);
+    m_pFpsText->setPosition(m_pWindow->getWidth() - 270, 20);
+    m_pFpsText->setText(L"FPS: ...");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
     // coordinates of player
-    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 40), L"x = ? y = ?", 5001);
+    m_pCoordText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pCoordText->setOrderZ(5001);
+    m_pCoordText->setAbsolutePosition(true);
+    m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);
+    m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
     m_pLoaderController->addToProgressCurrent(1);
@@ -443,8 +453,8 @@ void MainController::drawObjects() {
 void MainController::updatePlayerCoord() {
     const CoordXY &playerCoord = m_pGameState->getAlienShipState()->getPosition();
     std::wstring sCoordPlayer = L"X=" + std::to_wstring(playerCoord.x())
-            + L" Y=" + std::to_wstring(playerCoord.y());
-    m_pCoordText->updateText(sCoordPlayer);
+            + L"\nY=" + std::to_wstring(playerCoord.y());
+    m_pCoordText->setText(sCoordPlayer);
 }
 
 void MainController::startFpsCounting() {
@@ -467,7 +477,7 @@ void MainController::updateFps() {
 }
 
 void MainController::updateFpsValue(int nFps) {
-    m_pFpsText->updateText(L"FPS: ~" + std::to_wstring(nFps));
+    m_pFpsText->setText(L"FPS: ~" + std::to_wstring(nFps));
     std::cout << "FPS: ~" << nFps << std::endl;
 }
 

@@ -113,8 +113,8 @@ class MainController {
         SDL_Texture* m_pTexturePlayerPower0;
         std::map<std::wstring, SDL_Texture*> m_mapBuildingsTextures;
 
-        RenderAbsoluteTextBlock *m_pCoordText;
-        RenderAbsoluteTextBlock *m_pFpsText;
+        YAssetText *m_pCoordText;
+        YAssetText *m_pFpsText;
 
         long m_nFpsNumberOfFrames;
         long m_nFpsStartTime;

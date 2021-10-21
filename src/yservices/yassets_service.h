@@ -15,7 +15,7 @@ class YAsset {
     friend class YAssetsService;
     public:
         YAsset(YAssetsService *pAssetsService);
-        virtual RenderObject *getRenderObject() = 0;
+        virtual void setOrderZ(int nOrder) = 0;
 
     protected:
         YAssetsService *m_pAssetsService;

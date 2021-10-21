@@ -142,15 +142,6 @@ endif( SDL2_image_FOUND )
 ############################
 
 ############################
-# SDL2_ttf
-find_package(SDL2TTF REQUIRED)
-if ( SDL2_TTF_FOUND )
-    list (APPEND WSJCPP_INCLUDE_DIRS ${SDL2_TTF_INCLUDE_DIRS})
-    list (APPEND WSJCPP_LIBRARIES ${SDL2_TTF_LIBRARIES})
-endif( SDL2_TTF_FOUND )
-############################
-
-############################
 # SDL2_mixer
 find_package(SDL2_mixer REQUIRED)
 if ( SDL2_MIXER_FOUND )
