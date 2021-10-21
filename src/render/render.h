@@ -13,18 +13,18 @@ class RenderAbsoluteTextBlock : public RenderObject {
     public:
         RenderAbsoluteTextBlock(
             const CoordXY &p0,
-            const std::string &sText,
+            const std::wstring &sText,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
-        void updateText(const std::string &sNewText);
+        void updateText(const std::wstring &sNewText);
 
     private:
         CoordXY m_coordCenter;
-        std::string m_sText;
-        std::string m_sUpdateText;
+        std::wstring m_sText;
+        std::wstring m_sUpdateText;
         TTF_Font* m_pFont;
         SDL_Color m_color;
 

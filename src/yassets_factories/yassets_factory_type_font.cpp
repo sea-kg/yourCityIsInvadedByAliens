@@ -7,10 +7,10 @@
 YAssetFactoryFont::YAssetFactoryFont(
     YAssetsService *pAssetsService,
     YAssetFactoryTypeFont *pFactoryTypeFont,
-    const std::string &sImagePath,
-    const std::string &sAlphabet
+    const std::wstring &sImagePath,
+    const std::wstring &sAlphabet
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
-    TAG = "YAssetFactoryFont";
+    TAG = L"YAssetFactoryFont";
     m_pFactoryTypeFont = pFactoryTypeFont;
     m_sImagePath = sImagePath;
     m_sAlphabet = sAlphabet;
@@ -33,23 +33,23 @@ YAsset *YAssetFactoryFont::createAsset() {
 
 YAssetFactoryTypeFont::YAssetFactoryTypeFont(YAssetsService *pAssetsService) 
     : YAssetFactoryType(pAssetsService) {
-    TAG = "YAssetFactoryTypeFont";
+    TAG = L"YAssetFactoryTypeFont";
 }
 
-std::string YAssetFactoryTypeFont::getFabricTypeId() {
-    return "font";
+std::wstring YAssetFactoryTypeFont::getFabricTypeId() {
+    return L"font";
 }
 
 YAssetFactory *YAssetFactoryTypeFont::createFactory(
-    const std::string &sAssetFactoryPath,
-    const std::string &sFactoryId,
+    const std::wstring &sAssetFactoryPath,
+    const std::wstring &sFactoryId,
     const YJsonObject &jsonFactoryConfig
 ) {
-    std::string sImagePath = sAssetFactoryPath + "/" + jsonFactoryConfig["font-image"].getString();
+    std::wstring sImagePath = sAssetFactoryPath + L"/" + jsonFactoryConfig[L"font-image"].getString();
     if (!YCore::fileExists(sImagePath)) {
-        YLog::throw_err(TAG, "Did not font-image " + sImagePath);
+        YLog::throw_err(TAG, L"Did not font-image " + sImagePath);
     }
-    std::string sAlphabet = jsonFactoryConfig["font-alphabet"].getString();
+    std::wstring sAlphabet = jsonFactoryConfig[L"font-alphabet"].getString();
 
     return new YAssetFactoryFont(
         m_pAssetsService, 

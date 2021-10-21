@@ -7,11 +7,11 @@ class YAssetText : public YAsset, public RenderObject {
         YAssetText(
             YAssetsService *pAssetsService,
             SDL_Texture *pTexture,
-            const std::string &sAlphabet
+            const std::wstring &sAlphabet
         );
         void setAbsolutePosition(bool bAbsolutePosition);
         void setPosition(int nX, int nY);
-        void setText(const std::string& sText);
+        void setText(const std::wstring& sText);
 
         // YAsset
         virtual RenderObject *getRenderObject() override;
@@ -22,14 +22,14 @@ class YAssetText : public YAsset, public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        std::string TAG;
+        std::wstring TAG;
         bool m_bAbsolutePosition;
         int m_nX;
         int m_nY;
         int m_nFontSize;
         bool m_bUpdatedText;
-        std::string m_sText;
-        std::string m_sUpdateText;
+        std::wstring m_sText;
+        std::wstring m_sUpdateText;
         SDL_Texture *m_pTexture;
         std::wstring m_sAlphabet;
 };

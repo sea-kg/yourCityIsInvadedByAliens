@@ -7,7 +7,7 @@
 
 
 LoaderController::LoaderController(
-    const std::string &sResourceDir,
+    const std::wstring &sResourceDir,
     RenderWindow *pRenderWindow,
     GameState *pGameState
 ) {
@@ -20,13 +20,13 @@ LoaderController::LoaderController(
 
 void LoaderController::init() {
     auto *pAssets = findYService<YAssetsService>();
-    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-background.png");
-    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo-big-500x500.png");
-    m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/bootscreen-progressbar.png");
+    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-background.png");
+    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/logo-big-500x500.png");
+    m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-progressbar.png");
     
     int nBackW = 1280;
     int nBackH = 720;
-    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/logo.png");
+    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/logo.png");
     int nWindowWidth, nWindowHeight;
 
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);
@@ -69,15 +69,15 @@ void LoaderController::init() {
 
     nTop += nProgressBarH + nPaddingTop;
 
-    YAssetText *pAssetText = pAssets->createAsset<YAssetText>("font1");
+    YAssetText *pAssetText = pAssets->createAsset<YAssetText>(L"font1");
     pAssetText->setAbsolutePosition(true);
     pAssetText->setPosition((nWindowWidth - nLogoW)/2, nTop);
-    pAssetText->setText("Loading...йцукен");
+    pAssetText->setText(L"Loading...йцукен");
     this->addObject(pAssetText);
     
     m_pText = new RenderAbsoluteTextBlock(
         CoordXY((nWindowWidth - nLogoW)/2, nTop),
-        "Loading..."
+        L"Loading..."
     );
     this->addObject(m_pText);
 
@@ -91,7 +91,7 @@ void LoaderController::deinit() {
     }
 }
 
-void LoaderController::updateText(const std::string &sNewText) {
+void LoaderController::updateText(const std::wstring &sNewText) {
     m_pText->updateText(sNewText);
     this->draw();
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

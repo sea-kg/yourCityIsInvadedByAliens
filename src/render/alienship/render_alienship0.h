@@ -23,7 +23,7 @@ class RenderAlienShip0 : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        std::string TAG;
+        std::wstring TAG;
         GameAlienShipState *m_pState;
         CoordXY m_coordPositionRendering;
         int m_nFrameWidth;

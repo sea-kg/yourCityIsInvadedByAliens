@@ -4,7 +4,7 @@
 
 class RanderWindowLayer {
     public:
-        RanderWindowLayer(const std::string &sName);
+        RanderWindowLayer(const std::wstring &sName);
         void addObject(RenderObject *pObject);
         void removeObject(RenderObject *pObject);
         void drawObjects(const GameState& state, SDL_Renderer *pRenderer);
@@ -12,14 +12,14 @@ class RanderWindowLayer {
         void sortObjectsByPositionZ();
 
     private:
-        std::string m_sName;
+        std::wstring m_sName;
         std::vector<RenderObject *> m_vObjects;
 };
 
 class RenderWindow : public IRenderWindow {
 
     public:
-        RenderWindow(const char* p_title, int p_w, int p_h);
+        RenderWindow(const std::wstring &sTitle, int p_w, int p_h);
         ~RenderWindow();
         virtual void addGroundObject(RenderObject *pObject) override;
         virtual void addRoadsObject(RenderObject *pObject) override;
@@ -40,8 +40,8 @@ class RenderWindow : public IRenderWindow {
         void removeObject(RenderObject *pObject);
         void sortObjectsByPositionZ();
 
-        SDL_Texture* loadTexture(const std::string &sFilePath);
-        void loadTextureBioplast(const std::string &sFilePath);
+        SDL_Texture* loadTexture(const std::wstring &sFilePath);
+        void loadTextureBioplast(const std::wstring &sFilePath);
         void cleanUp();
         void clear();
         void modifyObjects(const GameState& state);
@@ -54,7 +54,7 @@ class RenderWindow : public IRenderWindow {
         std::vector<GameBioplastState *> m_vBioplasts;
         
     private:
-        int createRenderWindowLayer(const std::string &sName);
+        int createRenderWindowLayer(const std::wstring &sName);
         RanderWindowLayer *getLayer(int nLayer);
 
         bool m_bFullsreeen;

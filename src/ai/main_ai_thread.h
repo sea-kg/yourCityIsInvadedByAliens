@@ -25,7 +25,7 @@ class MainAiThread {
     private:
         void cleanDestroyed();
 
-        std::string TAG;
+        std::wstring TAG;
         bool m_bStop;
         std::thread *m_pThread;
         std::vector<AiObject *> m_vObjects;

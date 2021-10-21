@@ -19,8 +19,8 @@ class YJsonObject {
 
         bool isString();
         void doString();
-        std::string getString() const;
-        void setString(std::string sValue);
+        std::wstring getString() const;
+        void setString(std::wstring sValue);
 
         bool isNumber();
         void doNumber();
@@ -29,10 +29,10 @@ class YJsonObject {
 
         bool isObject();
         void doObject();
-        std::vector<std::string> getKeys() const;
-        const YJsonObject &operator[](const std::string &sName) const;
-        void addKeyValue(const std::string &sKey, YJsonObject *pValue);
-        bool containsKey(const std::string &sKey) const;
+        std::vector<std::wstring> getKeys() const;
+        const YJsonObject &operator[](const std::wstring &sName) const;
+        void addKeyValue(const std::wstring &sKey, YJsonObject *pValue);
+        bool containsKey(const std::wstring &sKey) const;
 
         bool isArray() const;
         void doArray();
@@ -42,11 +42,11 @@ class YJsonObject {
 
     private:
         void reset();
-        std::string TAG;
+        std::wstring TAG;
         YJsonObjectType m_nType;
-        std::string m_sValue;
+        std::wstring m_sValue;
         int m_nValue;
-        std::map<std::string, YJsonObject *> m_mapObjects;
+        std::map<std::wstring, YJsonObject *> m_mapObjects;
         std::vector<YJsonObject *> m_arrObjects;
 };
 
@@ -69,27 +69,27 @@ enum class YJsonParserState {
 class YJson {
     public:
         YJson();
-        YJson(const std::string &sFilename);
+        YJson(const std::wstring &sFilename);
         bool isParserFailed();
-        std::vector<std::string> getKeys() const;
-        const YJsonObject &operator[](const std::string &sName) const;
+        std::vector<std::wstring> getKeys() const;
+        const YJsonObject &operator[](const std::wstring &sName) const;
 
     private:
-        bool toParse(const std::string &sLine);
+        bool toParse(const std::wstring &sLine);
         bool isSkipChar(char c);
         void pushObjectToStack(YJsonObject *);
         void popObjectFromStack();
         YJsonObject *getLastObjectFromStack();
-        void printParserError(const std::string &sDescription);
+        void printParserError(const std::wstring &sDescription);
         int m_nLineNumber;
-        std::string m_sLineParse;
-        std::string m_sFilename;
+        std::wstring m_sLineParse;
+        std::wstring m_sFilename;
         bool m_bParserFailed;
         YJsonParserState m_nParserState;
         YJsonObject m_root;
         bool m_bStartRoot;
         std::vector<YJsonObject *> m_vParserStack;
-        std::string sParseKeyName;
-        std::string sParseKeyValue;
-        std::string m_sValue;
+        std::wstring sParseKeyName;
+        std::wstring sParseKeyValue;
+        std::wstring m_sValue;
 };

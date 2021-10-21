@@ -3,9 +3,9 @@
 
 int main(int argc, char* args[]) {
 
-    YLog::info("main", "Init yservices");
+    YLog::info(L"main", L"Init yservices");
     if (!YServices::init({})) {
-        YLog::err("main", "Could not init services");
+        YLog::err(L"main", L"Could not init services");
         return -1;
     }
 

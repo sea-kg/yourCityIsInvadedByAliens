@@ -8,7 +8,7 @@
 YAssetText::YAssetText(
     YAssetsService *pAssetsService,
     SDL_Texture *pTexture,
-    const std::string &sAlphabet
+    const std::wstring &sAlphabet
 )
 : YAsset(pAssetsService), RenderObject(1000) {
     m_pTexture = pTexture;
@@ -27,12 +27,10 @@ void YAssetText::setPosition(int nX, int nY) {
     m_nY = nY;
 }
 
-void YAssetText::setText(const std::string& sText) {
+void YAssetText::setText(const std::wstring& sText) {
     m_sUpdateText = sText;
     m_bUpdatedText = true;
-    std::cout << "m_sUpdateText = " << m_sUpdateText << std::endl;
-    
-    
+    YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
 }
 
 RenderObject *YAssetText::getRenderObject() {
@@ -68,11 +66,8 @@ void YAssetText::draw(SDL_Renderer* renderer) {
     dst.w = m_nFontSize;
     dst.h = m_nFontSize;
 
-    std::wstring sText = std::wstring(m_sText.begin(), m_sText.end());
-     
-
-    for (int i = 0; i < sText.size(); i++) {
-        wchar_t c = sText[i];
+    for (int i = 0; i < m_sText.size(); i++) {
+        wchar_t c = m_sText[i];
         currentFrame.x = 0;
         for (int n = 0; n < m_sAlphabet.size(); n++) {
             if (m_sAlphabet[n] == c) {

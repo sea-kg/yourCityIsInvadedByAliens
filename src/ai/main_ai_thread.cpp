@@ -8,7 +8,7 @@ void* processJobsThreadWorker(void *arg) {
 }
 
 MainAiThread::MainAiThread() {
-    TAG = "MainAiThread";
+    TAG = L"MainAiThread";
     m_bStop = false;
     m_pThread = nullptr;
 }
@@ -23,7 +23,7 @@ void MainAiThread::stop() {
 }
 
 void MainAiThread::run() {
-    YLog::info(TAG, "Starting...");
+    YLog::info(TAG, L"Starting...");
     while (!m_bStop) {
         std::lock_guard<std::mutex> guard(m_vMutexObjects);
         int nSize = m_vObjects.size();
@@ -32,7 +32,7 @@ void MainAiThread::run() {
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    YLog::info(TAG, "Stopped...");
+    YLog::info(TAG, L"Stopped...");
 }
 
 void MainAiThread::addAiObject(AiObject *pAiObject) {

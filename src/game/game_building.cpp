@@ -6,16 +6,16 @@
 // GameBuilding
 
 GameBuilding::GameBuilding(const YJsonObject &jsonData) {
-    m_sName = jsonData["name"].getString();
-    int nPoints = jsonData["points"].getNumber();
+    m_sName = jsonData[L"name"].getString();
+    int nPoints = jsonData[L"points"].getNumber();
     for (int i = 0; i < nPoints; i++) {
-        int nX = jsonData["x" + std::to_string(i)].getNumber();
-        int nY = jsonData["y" + std::to_string(i)].getNumber();
+        int nX = jsonData[L"x" + std::to_wstring(i)].getNumber();
+        int nY = jsonData[L"y" + std::to_wstring(i)].getNumber();
         m_vPoints.push_back(CoordXY(nX,nY));
     }
 }
 
-const std::string &GameBuilding::getName() {
+const std::wstring &GameBuilding::getName() {
     return m_sName;
 }
 

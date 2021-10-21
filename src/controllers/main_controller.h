@@ -21,7 +21,7 @@ class MainController {
         MainController();
         ~MainController();
         
-        // std::string getResourceDir();
+        // std::wstring getResourceDir();
         bool init();
         bool initSoundController();
         int startUI();
@@ -53,12 +53,12 @@ class MainController {
         void setMainState(const MainState &newMainState);
 
     private:
-        std::string TAG;
+        std::wstring TAG;
         SettingsYService *m_pSettings;
         WindowYService *m_pWindow;
 
         void loadBackgrounds(
-            const std::string &sDefaultPath,
+            const std::wstring &sDefaultPath,
             const YJsonObject &jsonBackground
         );
         void generateBackground(
@@ -72,26 +72,26 @@ class MainController {
         void generateClouds();
         
         void loadRoads(
-            const std::string &sDefaultPath,
+            const std::wstring &sDefaultPath,
             const YJsonObject &jsonRoads
         );
 
         void loadAlienShip(
-            const std::string &sDefaultPath
+            const std::wstring &sDefaultPath
         );
 
         void loadBuildings(
-            const std::string &sDefaultPath,
+            const std::wstring &sDefaultPath,
             const YJsonObject &jsonRoads
         );
 
         void loadVegetations(
-            const std::string &sDefaultPath,
+            const std::wstring &sDefaultPath,
             const YJsonObject &jsonRoads
         );
 
         void loadTransports(
-            const std::string &sDefaultPath,
+            const std::wstring &sDefaultPath,
             const YJsonObject &jsonRoads
         );
         
@@ -100,7 +100,7 @@ class MainController {
         int m_nMapWidth;
         int m_nMapHeight;
         int m_nMaxClouds;
-        std::string m_sMapName;
+        std::wstring m_sMapName;
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
@@ -111,7 +111,7 @@ class MainController {
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
         SDL_Texture* m_pTexturePlayerPower0;
-        std::map<std::string, SDL_Texture*> m_mapBuildingsTextures;
+        std::map<std::wstring, SDL_Texture*> m_mapBuildingsTextures;
 
         RenderAbsoluteTextBlock *m_pCoordText;
         RenderAbsoluteTextBlock *m_pFpsText;

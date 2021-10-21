@@ -12,7 +12,6 @@
 #include "render_alienship.h"
 #include "render_cloud0.h"
 #include "roads/render_road0.h"
-#include "wsjcpp_core.h"
 #include "ycore.h"
 #include "ykeyboard.h"
 #include "game_cloud0_state.h"
@@ -25,7 +24,7 @@
 // MainController
 
 MainController::MainController() {
-    TAG = "MainController";
+    TAG = L"MainController";
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
     m_nMaxClouds = 10000;
@@ -162,12 +161,12 @@ void MainController::startGameLogicThread() {
 }
 
 void MainController::runGameLogicThread() {
-    YLog::info(TAG, "Starting...");
-    YLog::info(TAG, "TODO Loading assets...");
+    YLog::info(TAG, L"Starting...");
+    YLog::info(TAG, L"TODO Loading assets...");
     auto *pAssets = findYService<YAssetsService>();
 
-    std::string sError;
-    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + "/asset-factories/font1", sError)) {
+    std::wstring sError;
+    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories/font1", sError)) {
         YLog::throw_err(TAG, sError);
     }
 
@@ -176,7 +175,7 @@ void MainController::runGameLogicThread() {
         // YLog::info(TAG, "TODO step...");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-    YLog::info(TAG, "Stopped...");
+    YLog::info(TAG, L"Stopped...");
 }
 
 GameState *MainController::getGameState() {
@@ -195,125 +194,125 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->setProgressMax(10);
     m_pLoaderController->setProgressCurrent(0);
 
-    m_pLoaderController->updateText("Loading... default map");
-    std::cout << "default/map.json" << std::endl;
-    std::string sDefaultPath = m_pSettings->getResourceDir() + "/default";
-    YJson jsonDefaultMap(sDefaultPath + "/map.json");
+    m_pLoaderController->updateText(L"Loading... default map");
+    std::cout << L"default/map.json" << std::endl;
+    std::wstring sDefaultPath = m_pSettings->getResourceDir() + L"/default";
+    YJson jsonDefaultMap(sDefaultPath + L"/map.json");
     if (jsonDefaultMap.isParserFailed()) {
         return false;
     }
     m_minPointMap = CoordXY(0,0);
-    m_sMapName = jsonDefaultMap["title"].getString();
-    m_nMaxClouds = jsonDefaultMap["max-clouds"].getNumber();
-    m_nMapWidth = jsonDefaultMap["width"].getNumber();
-    m_nMapHeight = jsonDefaultMap["height"].getNumber();
+    m_sMapName = jsonDefaultMap[L"title"].getString();
+    m_nMaxClouds = jsonDefaultMap[L"max-clouds"].getNumber();
+    m_nMapWidth = jsonDefaultMap[L"width"].getNumber();
+    m_nMapHeight = jsonDefaultMap[L"height"].getNumber();
     m_maxPointMap = CoordXY(
         m_nMapWidth,
         m_nMapHeight
     );
     m_pGameState->updatePlayerStartPosition(CoordXY(
-        jsonDefaultMap["player-start-x"].getNumber(),
-        jsonDefaultMap["player-start-y"].getNumber()
+        jsonDefaultMap[L"player-start-x"].getNumber(),
+        jsonDefaultMap[L"player-start-y"].getNumber()
     ));
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Generating background...");
-    loadBackgrounds(sDefaultPath, jsonDefaultMap["background"]);
+    m_pLoaderController->updateText(L"Generating background...");
+    loadBackgrounds(sDefaultPath, jsonDefaultMap[L"background"]);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Load roads...");
+    m_pLoaderController->updateText(L"Load roads...");
     std::cout << "default/roads.json" << std::endl;
-    YJson jsonDefaultRoads(sDefaultPath + "/roads.json");
+    YJson jsonDefaultRoads(sDefaultPath + L"/roads.json");
     if (jsonDefaultMap.isParserFailed()) {
         return false;
     }
-    this->loadRoads(sDefaultPath, jsonDefaultRoads["roads"]);
+    this->loadRoads(sDefaultPath, jsonDefaultRoads[L"roads"]);
     m_pLoaderController->addToProgressCurrent(1);
 
 
-    m_pLoaderController->updateText("Load buildings...");
-    std::cout << "default/buildings.json" << std::endl;
-    YJson jsonDefaultBuildings(sDefaultPath + "/buildings.json");
+    m_pLoaderController->updateText(L"Load buildings...");
+    std::cout << L"default/buildings.json" << std::endl;
+    YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
     if (jsonDefaultBuildings.isParserFailed()) {
         return false;
     }
-    this->loadBuildings(sDefaultPath, jsonDefaultBuildings["buildings"]);
+    this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Load vegetations...");
+    m_pLoaderController->updateText(L"Load vegetations...");
     std::cout << "default/vegetations.json" << std::endl;
-    YJson jsonDefaultVegetations(sDefaultPath + "/vegetations.json");
+    YJson jsonDefaultVegetations(sDefaultPath + L"/vegetations.json");
     if (jsonDefaultVegetations.isParserFailed()) {
         return false;
     }
-    this->loadVegetations(sDefaultPath, jsonDefaultVegetations["vegetations"]);
+    this->loadVegetations(sDefaultPath, jsonDefaultVegetations[L"vegetations"]);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Load transports...");
+    m_pLoaderController->updateText(L"Load transports...");
     std::cout << "default/transports.json" << std::endl;
-    YJson jsonDefaultTransports(sDefaultPath + "/transports.json");
+    YJson jsonDefaultTransports(sDefaultPath + L"/transports.json");
     if (jsonDefaultTransports.isParserFailed()) {
         return false;
     }
-    this->loadTransports(sDefaultPath, jsonDefaultTransports["transports"]);
+    this->loadTransports(sDefaultPath, jsonDefaultTransports[L"transports"]);
     m_pLoaderController->addToProgressCurrent(1);
 
 
     // sDefaultPath
     // default
-    m_pLoaderController->updateText("Loading... textures");
+    m_pLoaderController->updateText(L"Loading... textures");
 
-    m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + "/default/sprites/alien-bioplast.png");
+    m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + L"/default/sprites/alien-bioplast.png");
 
     m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud0.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud0.png")
     );
     m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud1.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud1.png")
     );
     m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud2.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud2.png")
     );
     m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud3.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud3.png")
     );
     m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/default/textures/cloud4.png")
+        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud4.png")
     );
 
     // app
-    m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/app/textures/left-panel-info.png");
-    m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + "/app/textures/player-power.png");
+    m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/left-panel-info.png");
+    m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/player-power.png");
 
     this->loadAlienShip(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Loading... buildings textures");
+    m_pLoaderController->updateText(L"Loading... buildings textures");
     // TODO remove
-    std::vector<std::string> vBuildings = YCore::getListOfDirs(m_pSettings->getResourceDir() + "/buildings");
+    std::vector<std::wstring> vBuildings = YCore::getListOfDirs(m_pSettings->getResourceDir() + L"/buildings");
     for (int i = 0; i < vBuildings.size(); i++) {
-        std::string sName = vBuildings[i];
-        std::string sPathTexture = m_pSettings->getResourceDir() + "/buildings/" + sName + "/texture.png";
+        std::wstring sName = vBuildings[i];
+        std::wstring sPathTexture = m_pSettings->getResourceDir() + L"/buildings/" + sName + L"/texture.png";
         if (!YCore::fileExists(sPathTexture)) {
-            YLog::err(TAG, "Not found " + sPathTexture);
-            m_pLoaderController->updateText("Not found " + sPathTexture);
+            YLog::err(TAG, L"Not found " + sPathTexture);
+            m_pLoaderController->updateText(L"Not found " + sPathTexture);
             return false;
         }
         m_mapBuildingsTextures[sName] = m_pWindow->getRenderWindow()->loadTexture(sPathTexture.c_str());
     }
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Loading... buildings");
+    m_pLoaderController->updateText(L"Loading... buildings");
 
     m_pGameState->setMinPoint(m_minPointMap);
     m_pGameState->setMaxPoint(m_maxPointMap);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Generating clouds...");
+    m_pLoaderController->updateText(L"Generating clouds...");
     this->generateClouds();
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText("Prepare panels...");
+    m_pLoaderController->updateText(L"Prepare panels...");
     m_pWindow->getRenderWindow()->addPanelsObject(
         new RenderLeftPanelInfo(
             m_pTextureLeftPanel,
@@ -323,15 +322,15 @@ bool MainController::loadGameDataWithProgressBar() {
     );
 
     // text
-    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 20), "FPS: ...", 5001);
+    m_pFpsText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 20), L"FPS: ...", 5001);
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
     // coordinates of player
-    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 40), "x = ? y = ?", 5001);
+    m_pCoordText = new RenderAbsoluteTextBlock(CoordXY(m_pWindow->getWidth() - 270, 40), L"x = ? y = ?", 5001);
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
     m_pLoaderController->addToProgressCurrent(1);
-    m_pLoaderController->updateText("Press 'space' for continue...");
+    m_pLoaderController->updateText(L"Press 'space' for continue...");
     this->setMainState(MainState::WAITING_SPACE);
     return true;
 }
@@ -443,8 +442,8 @@ void MainController::drawObjects() {
 
 void MainController::updatePlayerCoord() {
     const CoordXY &playerCoord = m_pGameState->getAlienShipState()->getPosition();
-    std::string sCoordPlayer = "X=" + std::to_string(playerCoord.x())
-            + " Y=" + std::to_string(playerCoord.y());
+    std::wstring sCoordPlayer = L"X=" + std::to_wstring(playerCoord.x())
+            + L" Y=" + std::to_wstring(playerCoord.y());
     m_pCoordText->updateText(sCoordPlayer);
 }
 
@@ -468,7 +467,7 @@ void MainController::updateFps() {
 }
 
 void MainController::updateFpsValue(int nFps) {
-    m_pFpsText->updateText("FPS: ~" + std::to_string(nFps));
+    m_pFpsText->updateText(L"FPS: ~" + std::to_wstring(nFps));
     std::cout << "FPS: ~" << nFps << std::endl;
 }
 
@@ -485,26 +484,26 @@ void MainController::setMainState(const MainState &newMainState) {
 }
 
 void MainController::loadBackgrounds(
-    const std::string &sDefaultPath,
+    const std::wstring &sDefaultPath,
     const YJsonObject &jsonBackground
 ) {
     for (int i = 0; i < jsonBackground.length(); i++) {
         const YJsonObject &item = jsonBackground[i];
-        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
         if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
         }
         SDL_Texture* pTextureBackground = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item["width"].getNumber();
-        int nTextureHeight = item["height"].getNumber();
-        const YJsonObject &fillRegion = item["fill-region"];
+        int nTextureWidth = item[L"width"].getNumber();
+        int nTextureHeight = item[L"height"].getNumber();
+        const YJsonObject &fillRegion = item[L"fill-region"];
         CoordXY startXY(
-            fillRegion["start-x"].getNumber(),
-            fillRegion["start-y"].getNumber()
+            fillRegion[L"start-x"].getNumber(),
+            fillRegion[L"start-y"].getNumber()
         );
         CoordXY endXY(
-            fillRegion["end-x"].getNumber(),
-            fillRegion["end-y"].getNumber()
+            fillRegion[L"end-x"].getNumber(),
+            fillRegion[L"end-y"].getNumber()
         );
         generateBackground(
             pTextureBackground,
@@ -548,25 +547,25 @@ void MainController::generateClouds() {
 }
 
 void MainController::loadRoads(
-    const std::string &sDefaultPath,
+    const std::wstring &sDefaultPath,
     const YJsonObject &jsonRoads
 ) {
     for (int i = 0; i < jsonRoads.length(); i++) {
         const YJsonObject &item = jsonRoads[i];
-        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
         if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
         }
         SDL_Texture* pTextureRoads = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item["width"].getNumber();
-        int nTextureHeight = item["height"].getNumber();
-        const YJsonObject &fillList = item["fill"];
+        int nTextureWidth = item[L"width"].getNumber();
+        int nTextureHeight = item[L"height"].getNumber();
+        const YJsonObject &fillList = item[L"fill"];
 
         for (int n = 0; n < fillList.length(); n++) {
             const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem["x"].getNumber();
-            int nY = roadItem["y"].getNumber();
-            std::string sRoadPart = roadItem["road-part"].getString();
+            int nX = roadItem[L"x"].getNumber();
+            int nY = roadItem[L"y"].getNumber();
+            std::wstring sRoadPart = roadItem[L"road-part"].getString();
             m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
                 CoordXY(nX, nY),
                 pTextureRoads,
@@ -577,28 +576,28 @@ void MainController::loadRoads(
 }
 
 void MainController::loadAlienShip(
-    const std::string &sDefaultPath
+    const std::wstring &sDefaultPath
 ) {
     
-    std::string sFilenamePng = sDefaultPath + "/sprites/alien-ship0.png";
+    std::wstring sFilenamePng = sDefaultPath + L"/sprites/alien-ship0.png";
     if (!YCore::fileExists(sFilenamePng)) {
-        YLog::throw_err(TAG, "File not exists " + sFilenamePng);
+        YLog::throw_err(TAG, L"File not exists " + sFilenamePng);
     }
 
     SDL_Texture* pTextureAlienShip1 = m_pWindow->getRenderWindow()->loadTexture(sFilenamePng);
 
-    std::string sFilenameJson = sDefaultPath + "/sprites/alien-ship0.json";
+    std::wstring sFilenameJson = sDefaultPath + L"/sprites/alien-ship0.json";
     if (!YCore::fileExists(sFilenameJson)) {
-        YLog::throw_err(TAG, "File not exists " + sFilenameJson);
+        YLog::throw_err(TAG, L"File not exists " + sFilenameJson);
     }
     
     YJson jsonAlienShip(sFilenameJson);
     if (jsonAlienShip.isParserFailed()) {
-        YLog::throw_err(TAG, "Could not parse file " + sFilenameJson);
+        YLog::throw_err(TAG, L"Could not parse file " + sFilenameJson);
     }
 
     // shadow
-    if (jsonAlienShip["shadow"].getString() == "yes") {
+    if (jsonAlienShip[L"shadow"].getString() == L"yes") {
         m_pWindow->getRenderWindow()->addFlyingShadowObject(
         new RenderAlienShip0(
                 m_pGameState->getAlienShipState(),
@@ -624,24 +623,24 @@ void MainController::loadAlienShip(
 
 
 void MainController::loadBuildings(
-    const std::string &sDefaultPath,
+    const std::wstring &sDefaultPath,
     const YJsonObject &jsonRoads
 ) {
     for (int i = 0; i < jsonRoads.length(); i++) {
         const YJsonObject &item = jsonRoads[i];
-        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
         if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
         }
         SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item["width"].getNumber();
-        int nTextureHeight = item["height"].getNumber();
-        const YJsonObject &fillList = item["fill"];
+        int nTextureWidth = item[L"width"].getNumber();
+        int nTextureHeight = item[L"height"].getNumber();
+        const YJsonObject &fillList = item[L"fill"];
 
         for (int n = 0; n < fillList.length(); n++) {
             const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem["x"].getNumber();
-            int nY = roadItem["y"].getNumber();
+            int nX = roadItem[L"x"].getNumber();
+            int nY = roadItem[L"y"].getNumber();
             m_pWindow->getRenderWindow()->addBuildingsObject(new RenderBuildingSimple(
                 YPos(nX, nY),
                 nTextureWidth,
@@ -653,24 +652,24 @@ void MainController::loadBuildings(
 }
 
 void MainController::loadVegetations(
-    const std::string &sDefaultPath,
+    const std::wstring &sDefaultPath,
     const YJsonObject &jsonVegetations
 ) {
     for (int i = 0; i < jsonVegetations.length(); i++) {
         const YJsonObject &item = jsonVegetations[i];
-        std::string sTexturePath = sDefaultPath + "/" + item["texture"].getString();
+        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
         if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, "File '" + sTexturePath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
         }
         SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item["width"].getNumber();
-        int nTextureHeight = item["height"].getNumber();
-        const YJsonObject &fillList = item["fill"];
+        int nTextureWidth = item[L"width"].getNumber();
+        int nTextureHeight = item[L"height"].getNumber();
+        const YJsonObject &fillList = item[L"fill"];
 
         for (int n = 0; n < fillList.length(); n++) {
             const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem["x"].getNumber();
-            int nY = roadItem["y"].getNumber();
+            int nX = roadItem[L"x"].getNumber();
+            int nY = roadItem[L"y"].getNumber();
             m_pWindow->getRenderWindow()->addVegetationObject(new RenderVegetationSimple(
                 YPos(nX, nY),
                 nTextureWidth,
@@ -682,31 +681,31 @@ void MainController::loadVegetations(
 }
 
 void MainController::loadTransports(
-    const std::string &sDefaultPath,
+    const std::wstring &sDefaultPath,
     const YJsonObject &jsonTransports
 ) {
     for (int i = 0; i < jsonTransports.length(); i++) {
         const YJsonObject &item = jsonTransports[i];
-        std::string sSpritePath = sDefaultPath + "/" + item["sprite"].getString();
-        std::string sSpriteRocketPath = sDefaultPath + "/" + item["sprite-rocket"].getString();
+        std::wstring sSpritePath = sDefaultPath + L"/" + item[L"sprite"].getString();
+        std::wstring sSpriteRocketPath = sDefaultPath + L"/" + item[L"sprite-rocket"].getString();
         if (!YCore::fileExists(sSpritePath)) {
-            YLog::throw_err(TAG, "File '" + sSpritePath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sSpritePath + L"' not found");
         }
         SDL_Texture* pSprite = m_pWindow->getRenderWindow()->loadTexture(sSpritePath);
 
         if (!YCore::fileExists(sSpriteRocketPath)) {
-            YLog::throw_err(TAG, "File '" + sSpriteRocketPath + "' not found");
+            YLog::throw_err(TAG, L"File '" + sSpriteRocketPath + L"' not found");
         }
         SDL_Texture* pSpriteRocket = m_pWindow->getRenderWindow()->loadTexture(sSpriteRocketPath);
 
-        int nSpriteWidth = item["sprite-width"].getNumber();
-        int nSpriteHeight = item["sprite-height"].getNumber();
-        const YJsonObject &fillList = item["fill"];
+        int nSpriteWidth = item[L"sprite-width"].getNumber();
+        int nSpriteHeight = item[L"sprite-height"].getNumber();
+        const YJsonObject &fillList = item[L"fill"];
 
         for (int n = 0; n < fillList.length(); n++) {
             const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem["x"].getNumber();
-            int nY = roadItem["y"].getNumber();
+            int nX = roadItem[L"x"].getNumber();
+            int nY = roadItem[L"y"].getNumber();
 
             GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);

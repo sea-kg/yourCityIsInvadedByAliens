@@ -12,21 +12,21 @@ RenderAlienShip0::RenderAlienShip0(
     int nPositionZ
 ) 
 : RenderObject(nPositionZ) {
-    TAG = "RenderAlienShip0";
+    TAG = L"RenderAlienShip0";
     m_bShadow = bShadow;
     m_pState = pState;
     m_pTexture = tex;
-    m_nFrameWidth = jsonAlienShip["frame"]["width-px"].getNumber();
-    m_nFrameHeight = jsonAlienShip["frame"]["height-px"].getNumber();
-    m_nFramesCount = jsonAlienShip["frame"]["count"].getNumber();
+    m_nFrameWidth = jsonAlienShip[L"frame"][L"width-px"].getNumber();
+    m_nFrameHeight = jsonAlienShip[L"frame"][L"height-px"].getNumber();
+    m_nFramesCount = jsonAlienShip[L"frame"][L"count"].getNumber();
 
-    std::string sMoveDirectiron = jsonAlienShip["frame"]["move-direction"].getString();
-    if (sMoveDirectiron == "vertical") {
+    std::wstring sMoveDirectiron = jsonAlienShip[L"frame"][L"move-direction"].getString();
+    if (sMoveDirectiron == L"vertical") {
         m_bFrameMoveDirectionVertical = true;
-    } else if (sMoveDirectiron == "horizontal") {
+    } else if (sMoveDirectiron == L"horizontal") {
         m_bFrameMoveDirectionVertical = false;
     } else {
-        YLog::throw_err(TAG, "frame.move-direction expected 'vertical' or 'horizontal', but got '" + sMoveDirectiron + "'");
+        YLog::throw_err(TAG, L"frame.move-direction expected 'vertical' or 'horizontal', but got '" + sMoveDirectiron + L"'");
     }
 
     if (m_bShadow) {
@@ -39,7 +39,7 @@ RenderAlienShip0::RenderAlienShip0(
     m_currentFrame.w = m_nFrameWidth;
     m_currentFrame.h = m_nFrameHeight;
     m_nPrevPosition = 0;
-    m_nSpeedAnimation = jsonAlienShip["animation"]["speed-ms"].getNumber();
+    m_nSpeedAnimation = jsonAlienShip[L"animation"][L"speed-ms"].getNumber();
 }
 
 void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -58,7 +58,7 @@ void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWind
     }
 
     if (m_pState->isShooting()) {
-        std::cout << "Shooting!!!!";
+        std::cout << "Shooting!  ";
         m_pState->shot();
     }
 

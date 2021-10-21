@@ -4,7 +4,7 @@
 #include "render_ui.h"
 
 UtilsStartDialog::UtilsStartDialog(
-    const std::string &sResourceDir,
+    const std::wstring &sResourceDir,
     RenderWindow *pRenderWindow,
     GameState *pGameState
 ) {
@@ -27,7 +27,7 @@ void UtilsStartDialog::init() {
 
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);
 
-    m_pTextureDialogBackground = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/dialog-background.png");
+    m_pTextureDialogBackground = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/dialog-background.png");
     this->addObject(new RenderDialog(
         m_pTextureDialogBackground,
         550,
@@ -35,7 +35,7 @@ void UtilsStartDialog::init() {
         3000
     ));
 
-    auto *pTextureButtonStart = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/button-start.png");
+    auto *pTextureButtonStart = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/button-start.png");
     SDL_Point size;
     SDL_QueryTexture(pTextureButtonStart, NULL, NULL, &size.x, &size.y);
     m_posButtonStartTopLeft = CoordXY(
@@ -50,7 +50,7 @@ void UtilsStartDialog::init() {
     );
     this->addObject(m_pRenderButtonStart);
 
-    auto *pTextureButtonMisicOnOff = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/music-on-off.png");
+    auto *pTextureButtonMisicOnOff = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/music-on-off.png");
     SDL_Point size2;
     SDL_QueryTexture(pTextureButtonMisicOnOff, NULL, NULL, &size2.x, &size2.y);
     m_posTopLeftMusicOnOff = CoordXY(
@@ -68,7 +68,7 @@ void UtilsStartDialog::init() {
     );
     this->addObject(m_pRenderButtonMusicOnOff);
 
-    SDL_Texture* pTextureCursor = m_pRenderWindow->loadTexture(m_sResourceDir + "/app/textures/mouse-target.png");
+    SDL_Texture* pTextureCursor = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/mouse-target.png");
     m_pMouseCursor = new RenderMouse(
         CoordXY(nWindowWidth/2,nWindowHeight/2),
         pTextureCursor,

@@ -16,7 +16,7 @@ class AiObject {
         bool isDestroyed();
 
     protected:
-        std::string TAG;
+        std::wstring TAG;
 
     private:
         bool m_bDestroyed;

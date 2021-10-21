@@ -5,7 +5,7 @@
 class UtilsStartDialog {
     public:
         UtilsStartDialog(
-            const std::string &sResourceDir,
+            const std::wstring &sResourceDir,
             RenderWindow *pRenderWindow,
             GameState *pGameState
         );
@@ -16,7 +16,7 @@ class UtilsStartDialog {
 
     private:
         void addObject(RenderObject *pObject);
-        std::string m_sResourceDir;
+        std::wstring m_sResourceDir;
         GameState *m_pGameState;
         CoordXY m_posTopLeftMusicOnOff;
         CoordXY m_posBottomRightMusicOnOff;

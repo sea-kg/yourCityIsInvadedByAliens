@@ -9,7 +9,7 @@
 class WindowYService : public YServiceBase {
     public:
         WindowYService();
-        static std::string name() { return "WindowYService"; }
+        static std::wstring name() { return L"WindowYService"; }
         virtual bool init() override;
         virtual bool deinit() override;
         RenderWindow *getRenderWindow();
@@ -18,9 +18,9 @@ class WindowYService : public YServiceBase {
         void toggleFullscreen();
 
     private:
-        std::string TAG;
+        std::wstring TAG;
 
-        std::string m_sWindowName;
+        std::wstring m_sWindowName;
         int m_nWindowWidth;
         int m_nWindowHeight;
         int m_nWindowWidthOrig;

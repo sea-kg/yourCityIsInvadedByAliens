@@ -6,13 +6,13 @@
 class LoaderController {
     public:
         LoaderController(
-            const std::string &sResourceDir,
+            const std::wstring &sResourceDir,
             RenderWindow *pRenderWindow,
             GameState *pGameState
         );
         void init();
         void deinit();
-        void updateText(const std::string &sNewText);
+        void updateText(const std::wstring &sNewText);
         void setProgressMax(int nVal);
         void setProgressCurrent(int nVal);
         void addToProgressMax(int nVal);
@@ -21,7 +21,7 @@ class LoaderController {
 
     private:
         void addObject(RenderObject *pObject);
-        std::string m_sResourceDir;
+        std::wstring m_sResourceDir;
         GameState *m_pGameState;
 
         RenderWindow *m_pRenderWindow;

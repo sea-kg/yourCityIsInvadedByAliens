@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.7)
 
+add_definitions(-DWSJCPP_APP_VERSION="v0.0.1")
+add_definitions(-DWSJCPP_APP_NAME="yourCityIsInvadedByAliens_Tomsk.git")
+
 project(yourCityIsInvadedByAliens)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
-
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(EXECUTABLE_OUTPUT_PATH ${yourCityIsInvadedByAliens_SOURCE_DIR})
 
 # Sources

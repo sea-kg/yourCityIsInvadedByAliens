@@ -2,7 +2,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <algorithm>
-
+#include "ycore.h"
 #include "render_window.h"
 #include "transports/render_tank0.h"
 #include "render_alienship.h"
@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------
 // RanderWindowLayer
 
-RanderWindowLayer::RanderWindowLayer(const std::string &sName) {
+RanderWindowLayer::RanderWindowLayer(const std::wstring &sName) {
     m_sName = sName;
 }
 
@@ -79,11 +79,11 @@ void RanderWindowLayer::sortObjectsByPositionZ() {
 // ---------------------------------------------------------------------
 // RenderWindow
 
-RenderWindow::RenderWindow(const char* title, int w, int h) {
+RenderWindow::RenderWindow(const std::wstring &sTitle, int w, int h) {
     m_pWindow = NULL;
     m_bFullsreeen = false;
     m_pWindow = SDL_CreateWindow(
-        title,
+        YCore::ws2s(sTitle).c_str(),
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         w, h,
@@ -98,17 +98,17 @@ RenderWindow::RenderWindow(const char* title, int w, int h) {
     m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
 
     // order is important
-    m_nLayerGround = createRenderWindowLayer("ground");
-    m_nLayerRoads = createRenderWindowLayer("roads");
-    m_nLayerVegetation = createRenderWindowLayer("vegetation");
-    m_nLayerBuildings = createRenderWindowLayer("buildings");
-    m_nLayerTransport = createRenderWindowLayer("transport");
-    m_nLayerFlyingShadow = createRenderWindowLayer("flying-shadow");
-    m_nLayerRockets = createRenderWindowLayer("rockets");
-    m_nLayerFlying = createRenderWindowLayer("flying");
-    m_nLayerClouds = createRenderWindowLayer("clouds");
-    m_nLayerPanels = createRenderWindowLayer("panels");
-    m_nLayerLoader = createRenderWindowLayer("loader");
+    m_nLayerGround = createRenderWindowLayer(L"ground");
+    m_nLayerRoads = createRenderWindowLayer(L"roads");
+    m_nLayerVegetation = createRenderWindowLayer(L"vegetation");
+    m_nLayerBuildings = createRenderWindowLayer(L"buildings");
+    m_nLayerTransport = createRenderWindowLayer(L"transport");
+    m_nLayerFlyingShadow = createRenderWindowLayer(L"flying-shadow");
+    m_nLayerRockets = createRenderWindowLayer(L"rockets");
+    m_nLayerFlying = createRenderWindowLayer(L"flying");
+    m_nLayerClouds = createRenderWindowLayer(L"clouds");
+    m_nLayerPanels = createRenderWindowLayer(L"panels");
+    m_nLayerLoader = createRenderWindowLayer(L"loader");
 
     // if (SDL_GetDesktopDisplayMode(0, &m_displayMode)) {
     //     printf("Error getting desktop display mode\n");
@@ -201,18 +201,18 @@ void RenderWindow::sortObjectsByPositionZ() {
     }
 }
 
-SDL_Texture* RenderWindow::loadTexture(const std::string &sFilePath) {
+SDL_Texture* RenderWindow::loadTexture(const std::wstring &sFilePath) {
     SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(m_pRenderer, sFilePath.c_str());
+    texture = IMG_LoadTexture(m_pRenderer, YCore::ws2s(sFilePath).c_str());
 
     if (texture == NULL) {
-        std::cout << "Failed to load texture by path " << sFilePath << ". Error: " << SDL_GetError() << std::endl;
+        std::wcout << L"Failed to load texture by path " << sFilePath << L". Error: " << YCore::s2ws(SDL_GetError()) << std::endl;
     }
 
     return texture;
 }
 
-void RenderWindow::loadTextureBioplast(const std::string &sFilePath) {
+void RenderWindow::loadTextureBioplast(const std::wstring &sFilePath) {
     m_pTextureBioplast = this->loadTexture(sFilePath.c_str());
 }
 
@@ -250,7 +250,7 @@ void RenderWindow::getWindowSize(int* w, int* h) {
     SDL_GetWindowSize(m_pWindow, w, h);
 }
 
-int RenderWindow::createRenderWindowLayer(const std::string &sName) {
+int RenderWindow::createRenderWindowLayer(const std::wstring &sName) {
     auto pLayer = new RanderWindowLayer(sName);
     m_vLayers.push_back(pLayer);
     return m_vLayers.size() - 1;

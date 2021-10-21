@@ -14,7 +14,7 @@ WindowYService::WindowYService()
         SettingsYService::name()
     }) {
     TAG = WindowYService::name();
-    m_sWindowName = "Your City Is Invaded Aliens (v0.0.0)";
+    m_sWindowName = L"Your City Is Invaded Aliens (v0.0.0)";
     m_nWindowWidth = 1280;
     m_nWindowHeight = 720;
     m_nWindowWidthOrig = 1280;
@@ -53,7 +53,7 @@ bool WindowYService::init() {
 
     // init
     m_pRenderWindow = new RenderWindow(
-        m_sWindowName.c_str(),
+        m_sWindowName,
         m_nWindowWidth,
         m_nWindowHeight
     );
@@ -89,5 +89,5 @@ void WindowYService::toggleFullscreen() {
         m_nWindowWidth = w;
         m_nWindowHeight = h;
     }
-    std::cout << m_nWindowWidth << ":" << m_nWindowHeight << std::endl;
+    std::cout << m_nWindowWidth << L":" << m_nWindowHeight << std::endl;
 }

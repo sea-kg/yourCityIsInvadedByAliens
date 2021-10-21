@@ -1,5 +1,4 @@
 #include "yassets_service.h"
-#include <wsjcpp_core.h>
 #include <algorithm>
 #include <fstream>
 #include <ycore.h>
@@ -55,7 +54,7 @@ bool YAssetsService::init() {
 
 bool YAssetsService::deinit() {
     // checking settings
-    YLog::info(TAG, "deinit");
+    YLog::info(TAG, L"deinit");
     return true;
 }
 
@@ -64,62 +63,62 @@ RenderWindow *YAssetsService::getRenderWindow() {
 }
 
 void YAssetsService::registerFabricType(YAssetFactoryType *pFactoryType) {
-    std::string sFactoryTypeId = pFactoryType->getFabricTypeId();
+    std::wstring sFactoryTypeId = pFactoryType->getFabricTypeId();
     if (hasFabricType(sFactoryTypeId)) {
-        YLog::throw_err(TAG, "Already registered fabric-type: " + sFactoryTypeId);
+        YLog::throw_err(TAG, L"Already registered fabric-type: " + sFactoryTypeId);
     }
     m_mapYAssetsFactoryTypes[sFactoryTypeId] = pFactoryType;
-    YLog::ok(TAG, "registered fabric-type '" + sFactoryTypeId + "'");
+    YLog::ok(TAG, L"registered fabric-type '" + sFactoryTypeId + L"'");
 }
 
-bool YAssetsService::hasFabricType(const std::string &sFactoryTypeId) {
+bool YAssetsService::hasFabricType(const std::wstring &sFactoryTypeId) {
     return m_mapYAssetsFactoryTypes.find(sFactoryTypeId) != m_mapYAssetsFactoryTypes.end();
 }
 
-bool YAssetsService::loadAssetFactory(const std::string &sPath, std::string &sError) {
+bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &sError) {
     auto *pSettings = findYService<SettingsYService>();
-    std::string sResourceDir = pSettings->getResourceDir();
+    std::wstring sResourceDir = pSettings->getResourceDir();
 
-    std::string sAssetsInfoPath = sPath + "/asset-factory.json";
+    std::wstring sAssetsInfoPath = sPath + L"/asset-factory.json";
     if (!YCore::fileExists(sAssetsInfoPath)) {
-        sError = "Did not find file " + sAssetsInfoPath;
+        sError = L"Did not find file " + sAssetsInfoPath;
         YLog::err(TAG, sError);
         return false;
     }
     
     YJson jsonAssetFactory(sAssetsInfoPath);
     if (jsonAssetFactory.isParserFailed()) {
-        sError = "Could not parse asset-factory" + sAssetsInfoPath;
+        sError = L"Could not parse asset-factory" + sAssetsInfoPath;
         YLog::err(TAG, sError);
         return false;
     }
     
-    std::string sAssetFactoryType = jsonAssetFactory["asset-faсtory-type"].getString();
+    std::wstring sAssetFactoryType = jsonAssetFactory[L"asset-faсtory-type"].getString();
     if (!hasFabricType(sAssetFactoryType)) {
-        sError = "Not found asset fabric type: " + sAssetFactoryType;
+        sError = L"Not found asset fabric type: " + sAssetFactoryType;
         YLog::err(TAG, sError);
         return false;
     }
     YAssetFactoryType* pFactoryType = m_mapYAssetsFactoryTypes[sAssetFactoryType];
 
-    std::string sAssetFactoryId = jsonAssetFactory["asset-faсtory-id"].getString();
+    std::wstring sAssetFactoryId = jsonAssetFactory[L"asset-faсtory-id"].getString();
     if (m_mapYAssetsFactories.find(sAssetFactoryId) != m_mapYAssetsFactories.end()) {
-        sError = "Already exists asset-factory-id: " + sAssetFactoryId;
+        sError = L"Already exists asset-factory-id: " + sAssetFactoryId;
         YLog::err(TAG, sError);
         return false;
     }
     m_mapYAssetsFactories[sAssetFactoryId] = pFactoryType->createFactory(
         sPath,
         sAssetFactoryId,
-        jsonAssetFactory["asset-faсtory-config"]
+        jsonAssetFactory[L"asset-faсtory-config"]
     );
 
     return true;
 }
 
-YAsset *YAssetsService::createAsset(const std::string &sAssetFactoryId) {
+YAsset *YAssetsService::createAsset(const std::wstring &sAssetFactoryId) {
     if (m_mapYAssetsFactories.find(sAssetFactoryId) == m_mapYAssetsFactories.end()) {
-        YLog::throw_err(TAG, "Not found asset-factory-id: " + sAssetFactoryId);
+        YLog::throw_err(TAG, L"Not found asset-factory-id: " + sAssetFactoryId);
     }
     return m_mapYAssetsFactories[sAssetFactoryId]->createAsset();
 }

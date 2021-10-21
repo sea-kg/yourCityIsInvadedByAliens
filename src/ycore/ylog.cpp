@@ -1,27 +1,32 @@
 #include "ylog.h"
 
 #include <iostream>
+#include <codecvt>
+#include <sstream>
+#include <locale>
 
 // ---------------------------------------------------------------------
 // YLog
 
-void YLog::info(const std::string &sTag, const std::string &sMessage) {
-    std::string sLogMessage = "INFO: <" + sTag + "> " + sMessage;
-    std::cout << sLogMessage << std::endl;
+void YLog::info(const std::wstring &sTag, const std::wstring &sMessage) {
+    std::wstring sLogMessage = L"INFO: <" + sTag + L"> " + sMessage;
+    std::wcout << sLogMessage << std::endl;
 }
 
-void YLog::ok(const std::string &sTag, const std::string &sMessage) {
-    std::string sLogMessage = "OK: <" + sTag + "> " + sMessage;
-    std::cout << sLogMessage << std::endl;
+void YLog::ok(const std::wstring &sTag, const std::wstring &sMessage) {
+    std::wstring sLogMessage = L"OK: <" + sTag + L"> " + sMessage;
+    std::wcout << sLogMessage << std::endl;
 }
 
-void YLog::err(const std::string &sTag, const std::string &sMessage) {
-    std::string sLogMessage = "ERROR: <" + sTag + "> " + sMessage;
-    std::cout << sLogMessage << std::endl;
+void YLog::err(const std::wstring &sTag, const std::wstring &sMessage) {
+    std::wstring sLogMessage = L"ERROR: <" + sTag + L"> " + sMessage;
+    std::wcout << sLogMessage << std::endl;
 }
 
-void YLog::throw_err(const std::string &sTag, const std::string &sMessage) {
-    std::string sLogMessage = "CRITICAL ERROR: <" + sTag + "> " + sMessage;
-    std::cout << sLogMessage << std::endl;
-    throw std::runtime_error(sLogMessage);
+void YLog::throw_err(const std::wstring &sTag, const std::wstring &sMessage) {
+    std::wstring sLogMessage = L"CRITICAL ERROR: <" + sTag + L"> " + sMessage;
+    std::wcout << sLogMessage << std::endl;
+    using convert_typeX = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_typeX, wchar_t> converterX;
+    throw std::runtime_error(converterX.to_bytes(sLogMessage));
 }

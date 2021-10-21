@@ -5,7 +5,7 @@
 class SoundController {
     public:
         SoundController(
-            const std::string &sResourceDir,
+            const std::wstring &sResourceDir,
             GameState *pGameState
         );
         ~SoundController();
@@ -13,12 +13,14 @@ class SoundController {
         void update();
 
     private:
-        std::string m_sResourceDir;
+        std::wstring TAG;
+
+        std::wstring m_sResourceDir;
         GameState *m_pGameState;
-        std::vector<std::string> m_vPlaylistFight;
+        std::vector<std::wstring> m_vPlaylistFight;
         std::vector<Mix_Music *> m_vPlaylistFightMusic;
         int m_nCurrentMusicFightTrack = 0;
 
-        std::vector<std::string> m_vPlaylistEmbient;
+        std::vector<std::wstring> m_vPlaylistEmbient;
         
 };

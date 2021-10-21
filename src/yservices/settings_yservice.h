@@ -8,18 +8,18 @@
 class SettingsYService : public YServiceBase {
     public:
         SettingsYService();
-        static std::string name() { return "SettingsYService"; }
+        static std::wstring name() { return L"SettingsYService"; }
         virtual bool init() override;
         virtual bool deinit() override;
-        void set(const std::string &sName, const std::string &sValue);
-        bool has(const std::string &sName);
-        std::string get(const std::string &sName);
-        std::string getResourceDir();
+        void set(const std::wstring &sName, const std::wstring &sValue);
+        bool has(const std::wstring &sName);
+        std::wstring get(const std::wstring &sName);
+        std::wstring getResourceDir();
 
     private:
         bool findResourceDir();
 
-        std::string TAG;
-        std::map<std::string, std::string> m_sStringMap;
-        std::string m_sResourceDir;
+        std::wstring TAG;
+        std::map<std::wstring, std::wstring> m_sStringMap;
+        std::wstring m_sResourceDir;
 };

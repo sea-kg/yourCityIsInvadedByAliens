@@ -1,10 +1,10 @@
 #include "render.h"
 
-
+#include "ycore.h"
 // ---------------------------------------------------------------------
 // RenderTextBlock
 
-RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::string &sText, int nPositionZ)
+RenderAbsoluteTextBlock::RenderAbsoluteTextBlock(const CoordXY &p0, const std::wstring &sText, int nPositionZ)
 : RenderObject(nPositionZ) {
     m_coordCenter = p0;
     m_sText = sText;
@@ -39,7 +39,7 @@ void RenderAbsoluteTextBlock::draw(SDL_Renderer* renderer) {
     //    printf("width=%d height=%d\n",w,h);
     // }
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(m_pFont, m_sText.c_str(), m_color);
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(m_pFont, YCore::ws2s(m_sText).c_str(), m_color);
      // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 
     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
@@ -61,7 +61,7 @@ void RenderAbsoluteTextBlock::draw(SDL_Renderer* renderer) {
     SDL_DestroyTexture(Message);
 };
 
-void RenderAbsoluteTextBlock::updateText(const std::string &sNewText) {
+void RenderAbsoluteTextBlock::updateText(const std::wstring &sNewText) {
     m_sUpdateText = sNewText;
 }
 

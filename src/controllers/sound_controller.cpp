@@ -1,20 +1,23 @@
 #include "sound_controller.h"
+#include "ylog.h"
+#include "ycore.h"
 
 SoundController::SoundController(
-    const std::string &sResourceDir,
+    const std::wstring &sResourceDir,
     GameState *pGameState
 ) {
+    TAG = L"SoundController";
     m_sResourceDir = sResourceDir;
     m_pGameState = pGameState;
 
     // TODO redesign load from playlists.json
-    m_vPlaylistEmbient.push_back(sResourceDir + "/app/music/sea5kg - 00 AaaalientsBackOff.ogg");
+    m_vPlaylistEmbient.push_back(sResourceDir + L"/app/music/sea5kg - 00 AaaalientsBackOff.ogg");
 
     // fight list
     
-    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 01 InvitedByAliens.ogg");
-    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 02 Diphdo.ogg");
-    m_vPlaylistFight.push_back(sResourceDir + "/app/music/sea5kg - 03 SuchMyEnimies.ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 01 InvitedByAliens.ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 02 Diphdo.ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 03 SuchMyEnimies.ogg");
 
     
 }
@@ -37,10 +40,11 @@ void SoundController::init() {
         }
 
         for (int i = 0; i < m_vPlaylistFight.size(); i++) {
-        std::string sPathToFile = m_vPlaylistFight[i];
-        std::cout << "Trying load music from '" << sPathToFile << "'" << std::endl;
-        Mix_Music *pMusic = Mix_LoadMUS(sPathToFile.c_str());
+            std::wstring sPathToFile = m_vPlaylistFight[i];
+            YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'");
+            Mix_Music *pMusic = Mix_LoadMUS(YCore::ws2s(sPathToFile).c_str());
             if (!pMusic) {
+                // YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'")
                 std::cout << "ERROR: " << Mix_GetError() << std::endl;
                 // this might be a critical error...
             } else {

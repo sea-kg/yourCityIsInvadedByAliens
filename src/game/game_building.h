@@ -7,10 +7,10 @@
 class GameBuilding {
     public:
         GameBuilding(const YJsonObject &jsonData);
-        const std::string &getName();
+        const std::wstring &getName();
         const std::vector<CoordXY> &getPoints();
 
     private:
-        std::string m_sName;
+        std::wstring m_sName;
         std::vector<CoordXY> m_vPoints;
 };

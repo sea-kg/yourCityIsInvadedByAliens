@@ -18,31 +18,31 @@ enum class RoadPart {
     LEFT_RIGHT_DOWN = 10,
 };
 
-static RoadPart convertStringToRoadPart(const std::string &sRoadPart) {
-    if (sRoadPart == "vertical") {
+static RoadPart convertStringToRoadPart(const std::wstring &sRoadPart) {
+    if (sRoadPart == L"vertical") {
         return RoadPart::VERTICAL;
-    } else if (sRoadPart == "horizontal") {
+    } else if (sRoadPart == L"horizontal") {
         return RoadPart::HORIZONTAL;
-    } else if (sRoadPart == "right-down") {
+    } else if (sRoadPart == L"right-down") {
         return RoadPart::RIGHT_DOWN;
-    } else if (sRoadPart == "left-down") {
+    } else if (sRoadPart == L"left-down") {
         return RoadPart::LEFT_DOWN;
-    } else if (sRoadPart == "left-up") {
+    } else if (sRoadPart == L"left-up") {
         return RoadPart::LEFT_UP;
-    } else if (sRoadPart == "right-up") {
+    } else if (sRoadPart == L"right-up") {
         return RoadPart::RIGHT_UP;
-    } else if (sRoadPart == "cross") {
+    } else if (sRoadPart == L"cross") {
         return RoadPart::CROSS;
-    } else if (sRoadPart == "left-up-down") {
+    } else if (sRoadPart == L"left-up-down") {
         return RoadPart::LEFT_UP_DOWN;
-    } else if (sRoadPart == "left-right-up") {
+    } else if (sRoadPart == L"left-right-up") {
         return RoadPart::LEFT_RIGHT_UP;
-    } else if (sRoadPart == "right-up-down") {
+    } else if (sRoadPart == L"right-up-down") {
         return RoadPart::RIGHT_UP_DOWN;
-    } else if (sRoadPart == "left-right-down") {
+    } else if (sRoadPart == L"left-right-down") {
         return RoadPart::LEFT_RIGHT_DOWN;
     }
-    YLog::throw_err("convertStringToRoadPart", "'" + sRoadPart + "' not expected");
+    YLog::throw_err(L"convertStringToRoadPart", L"'" + sRoadPart + L"' not expected");
     return RoadPart::NONE;
 };
 

@@ -4,10 +4,13 @@
 
 class YCore {
     public:
-        static std::string getCurrentDirectory();
-        static bool dirExists(const std::string &sFilename);
-        static bool fileExists(const std::string &sFilename);
-        static std::vector<std::string> getListOfDirs(const std::string &sDirname);
-        static std::vector<std::string> getListOfFiles(const std::string &sDirname);
+        static std::wstring getCurrentDirectory();
+        static bool dirExists(const std::wstring &sFilename);
+        static bool fileExists(const std::wstring &sFilename);
+        static std::vector<std::wstring> getListOfDirs(const std::wstring &sDirname);
+        static std::vector<std::wstring> getListOfFiles(const std::wstring &sDirname);
+        static std::wstring join(const std::vector<std::wstring> &vWhat, const std::wstring& sDelim);
+        static std::wstring s2ws(const std::string& str);
+        static std::string ws2s(const std::wstring& wstr);
 };
 

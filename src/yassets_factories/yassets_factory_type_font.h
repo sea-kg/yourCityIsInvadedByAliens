@@ -9,27 +9,27 @@ class YAssetFactoryFont : public YAssetFactory {
         YAssetFactoryFont(
             YAssetsService *pAssetsService,
             YAssetFactoryTypeFont *pFactoryTypeFont,
-            const std::string &sImagePath,
-            const std::string &sAlphabet
+            const std::wstring &sImagePath,
+            const std::wstring &sAlphabet
         );
         virtual YAsset *createAsset() override;
         
     private:
         YAssetFactoryTypeFont *m_pFactoryTypeFont;
-        std::string m_sImagePath;
-        std::string m_sAlphabet;
+        std::wstring m_sImagePath;
+        std::wstring m_sAlphabet;
         SDL_Texture *m_pTexture;
 };
 
 class YAssetFactoryTypeFont : public YAssetFactoryType {
     public:
         YAssetFactoryTypeFont(YAssetsService *pAssetsService);
-        virtual std::string getFabricTypeId() override;
+        virtual std::wstring getFabricTypeId() override;
         virtual YAssetFactory *createFactory(
-            const std::string &sAssetFactoryPath,
-            const std::string &sFactoryId,
+            const std::wstring &sAssetFactoryPath,
+            const std::wstring &sFactoryId,
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
-        std::string TAG;
+        std::wstring TAG;
 };

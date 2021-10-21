@@ -1,7 +1,6 @@
 #pragma once
 
 #include <yservices.h>
-#include <wsjcpp_core.h>
 #include "window_yservice.h"
 #include <string>
 #include <map>
@@ -28,15 +27,15 @@ class YAssetFactoryType {
     friend class YAssetsService;
     public:
         YAssetFactoryType(YAssetsService *pAssetsService);
-        virtual std::string getFabricTypeId() = 0;
+        virtual std::wstring getFabricTypeId() = 0;
         virtual YAssetFactory *createFactory(
-            const std::string &sAssetFactoryPath,
-            const std::string &sFactoryId,
+            const std::wstring &sAssetFactoryPath,
+            const std::wstring &sFactoryId,
             const YJsonObject &jsonFactoryConfig
         ) = 0;
 
     protected:
-        std::string TAG;
+        std::wstring TAG;
         YAssetsService *m_pAssetsService;
 };
 
@@ -47,7 +46,7 @@ class YAssetFactory {
         virtual YAsset *createAsset() = 0;
 
     protected:
-        std::string TAG;
+        std::wstring TAG;
         YAssetsService *m_pAssetsService;
         YAssetFactoryType *m_pFactoryType;
 };
@@ -57,32 +56,32 @@ class YAssetsService : public YServiceBase {
 
     public:
         YAssetsService();
-        static std::string name() { return "YAssetsService"; }
+        static std::wstring name() { return L"YAssetsService"; }
         virtual bool init() override;
         virtual bool deinit() override;
         RenderWindow *getRenderWindow();
         void registerFabricType(YAssetFactoryType *);
-        bool hasFabricType(const std::string &sFactoryTypeId);
-        bool loadAssetFactory(const std::string &sPath, std::string &sRetError);
+        bool hasFabricType(const std::wstring &sFactoryTypeId);
+        bool loadAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
         
-        YAsset *createAsset(const std::string &sAssetFactoryId);
-        template<class T> T *createAsset(const std::string &sAssetFactoryId);
+        YAsset *createAsset(const std::wstring &sAssetFactoryId);
+        template<class T> T *createAsset(const std::wstring &sAssetFactoryId);
 
     private:
-        std::string TAG;
-        std::map<std::string, YAssetFactoryType*> m_mapYAssetsFactoryTypes;
-        std::map<std::string, YAssetFactory*> m_mapYAssetsFactories;
+        std::wstring TAG;
+        std::map<std::wstring, YAssetFactoryType*> m_mapYAssetsFactoryTypes;
+        std::map<std::wstring, YAssetFactory*> m_mapYAssetsFactories;
         RenderWindow *m_pRenderWindow;
 };
 
 // define for inline templates
 #define YASSET_DECLARE_INLINE( classname ) \
     template<> inline \
-    classname *YAssetsService::createAsset< classname >(const std::string &sAssetFactoryId) { \
+    classname *YAssetsService::createAsset< classname >(const std::wstring &sAssetFactoryId) { \
         YAsset *pAsset = this->createAsset(sAssetFactoryId); \
         classname *pAssetRet = dynamic_cast<classname *>(pAsset); \
         if (pAssetRet == nullptr) { \
-            YLog::throw_err(TAG, "Could not cast for " + sAssetFactoryId + " to "); \
+            YLog::throw_err(TAG, L"Could not cast for " + sAssetFactoryId + L" to "); \
         } \
         return pAssetRet; \
     }
