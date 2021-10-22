@@ -42,7 +42,7 @@ list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 
 # yassets_factories
-list (APPEND WSJCPP_SOURCES "src/yassets_factories/yassets_factory_type_font.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets_factories/yassets_factory_type_font50x50.cpp")
 
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/yasset_text.cpp")

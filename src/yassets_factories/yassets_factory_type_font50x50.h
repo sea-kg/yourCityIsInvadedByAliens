@@ -2,28 +2,28 @@
 
 #include <yassets_service.h>
 
-class YAssetFactoryTypeFont;
+class YAssetFactoryTypeFont50x50;
 
-class YAssetFactoryFont : public YAssetFactory {
+class YAssetFactoryFont50x50 : public YAssetFactory {
     public:
-        YAssetFactoryFont(
+        YAssetFactoryFont50x50(
             YAssetsService *pAssetsService,
-            YAssetFactoryTypeFont *pFactoryTypeFont,
+            YAssetFactoryTypeFont50x50 *pFactoryTypeFont,
             const std::wstring &sImagePath,
             const std::vector<std::wstring> &vAlphabets
         );
         virtual YAsset *createAsset() override;
         
     private:
-        YAssetFactoryTypeFont *m_pFactoryTypeFont;
+        YAssetFactoryTypeFont50x50 *m_pFactoryTypeFont;
         std::wstring m_sImagePath;
         std::vector<std::wstring> m_vAlphabets;
         SDL_Texture *m_pTexture;
 };
 
-class YAssetFactoryTypeFont : public YAssetFactoryType {
+class YAssetFactoryTypeFont50x50 : public YAssetFactoryType {
     public:
-        YAssetFactoryTypeFont(YAssetsService *pAssetsService);
+        YAssetFactoryTypeFont50x50(YAssetsService *pAssetsService);
         virtual std::wstring getFabricTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,

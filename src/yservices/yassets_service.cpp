@@ -3,7 +3,7 @@
 #include <fstream>
 #include <ycore.h>
 #include <yjson.h>
-#include <yassets_factory_type_font.h>
+#include <yassets_factory_type_font50x50.h>
 #include <settings_yservice.h>
 #include <window_yservice.h>
 
@@ -47,7 +47,7 @@ YAssetsService::YAssetsService()
 
 bool YAssetsService::init() {
     // refistration of factory types
-    registerFabricType(new YAssetFactoryTypeFont(this));
+    registerFabricType(new YAssetFactoryTypeFont50x50(this));
     m_pRenderWindow = findYService<WindowYService>()->getRenderWindow();
     return true;
 }

@@ -1,6 +1,6 @@
 {
     "asset-faсtory-id": "font1",
-    "asset-faсtory-type": "font",
+    "asset-faсtory-type": "font50x50",
     "asset-faсtory-config": {
         "font-image": "font1.png",
         "font-alphabets": [

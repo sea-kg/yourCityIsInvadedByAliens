@@ -1,0 +1,9 @@
+{
+    "asset-faсtory-id": "progressbar1",
+    "asset-faсtory-type": "progressbar500x50",
+    "asset-faсtory-config": {
+        "progress-image": "progressbar1.png",
+        "progress-width": 500,
+        "progress-height": 50
+    }
+}

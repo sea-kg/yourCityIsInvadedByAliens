@@ -1,16 +1,16 @@
-#include <yassets_factory_type_font.h>
+#include <yassets_factory_type_font50x50.h>
 #include <yasset_text.h>
 
 // ---------------------------------------------------------------------
-// YAssetFactoryFont
+// YAssetFactoryFont50x50
 
-YAssetFactoryFont::YAssetFactoryFont(
+YAssetFactoryFont50x50::YAssetFactoryFont50x50(
     YAssetsService *pAssetsService,
-    YAssetFactoryTypeFont *pFactoryTypeFont,
+    YAssetFactoryTypeFont50x50 *pFactoryTypeFont,
     const std::wstring &sImagePath,
     const std::vector<std::wstring> &vAlphabets
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
-    TAG = L"YAssetFactoryFont";
+    TAG = L"YAssetFactoryFont50x50";
     m_pFactoryTypeFont = pFactoryTypeFont;
     m_sImagePath = sImagePath;
     m_vAlphabets = vAlphabets;
@@ -18,7 +18,7 @@ YAssetFactoryFont::YAssetFactoryFont(
     m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
 }
 
-YAsset *YAssetFactoryFont::createAsset() {
+YAsset *YAssetFactoryFont50x50::createAsset() {
     // TODO: ad-hoc - time loading textures wrong, before then created render window
     m_pTexture = m_pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
     return new YAssetText(
@@ -29,18 +29,18 @@ YAsset *YAssetFactoryFont::createAsset() {
 }
 
 // ---------------------------------------------------------------------
-// YAssetFactoryTypeFont
+// YAssetFactoryTypeFont50x50
 
-YAssetFactoryTypeFont::YAssetFactoryTypeFont(YAssetsService *pAssetsService) 
+YAssetFactoryTypeFont50x50::YAssetFactoryTypeFont50x50(YAssetsService *pAssetsService) 
     : YAssetFactoryType(pAssetsService) {
-    TAG = L"YAssetFactoryTypeFont";
+    TAG = L"YAssetFactoryTypeFont50x50";
 }
 
-std::wstring YAssetFactoryTypeFont::getFabricTypeId() {
-    return L"font";
+std::wstring YAssetFactoryTypeFont50x50::getFabricTypeId() {
+    return L"font50x50";
 }
 
-YAssetFactory *YAssetFactoryTypeFont::createFactory(
+YAssetFactory *YAssetFactoryTypeFont50x50::createFactory(
     const std::wstring &sAssetFactoryPath,
     const std::wstring &sFactoryId,
     const YJsonObject &jsonFactoryConfig
@@ -55,7 +55,7 @@ YAssetFactory *YAssetFactoryTypeFont::createFactory(
         vAlphabets.push_back(obj[i].getString());
     }
 
-    return new YAssetFactoryFont(
+    return new YAssetFactoryFont50x50(
         m_pAssetsService, 
         this,
         sImagePath,
