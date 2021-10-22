@@ -2,8 +2,6 @@
 #include "primitives/render_rect_texture.h"
 #include <chrono>
 #include <thread>
-#include <yassets_service.h>
-#include <yasset_text.h>
 
 
 LoaderController::LoaderController(
@@ -60,16 +58,15 @@ void LoaderController::init() {
 
     nTop += nLogoH + nPaddingTop;
 
-    m_pProgressBar = new RenderBootScreenProgressBar(
-        m_pTextureProgressBar,
-        CoordXY((nWindowWidth - nLogoW)/2, nTop)
-    );
-    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
-    this->addObject(m_pProgressBar);
+    m_pAssetProgressBar = pAssets->createAsset<YAssetProgressBar>(L"progressbar1");
+    m_pAssetProgressBar->setPosition((nWindowWidth - nLogoW)/2, nTop);
+    m_pAssetProgressBar->setProgressMax(m_nProgressMax);
+    m_pAssetProgressBar->setProgressCurrent(m_nProgressCurrent);
+    this->addObject(m_pAssetProgressBar);
 
     nTop += nProgressBarH + nPaddingTop;
 
-    m_pAssetText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pAssetText = pAssets->createAsset<YAssetText>(L"text1");
     m_pAssetText->setAbsolutePosition(true);
     m_pAssetText->setPosition((nWindowWidth - nLogoW)/2, nTop);
     m_pAssetText->setText(L"Loading...");
@@ -92,25 +89,25 @@ void LoaderController::updateText(const std::wstring &sNewText) {
 
 void LoaderController::setProgressMax(int nVal) {
     m_nProgressMax = nVal;
-    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    m_pAssetProgressBar->setProgressMax(nVal);
     this->draw();
 };
 
 void LoaderController::setProgressCurrent(int nVal) {
     m_nProgressCurrent = nVal;
-    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    m_pAssetProgressBar->setProgressCurrent(m_nProgressCurrent);
     this->draw();
 };
 
 void LoaderController::addToProgressMax(int nVal) {
     m_nProgressMax += nVal;
-    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    m_pAssetProgressBar->setProgressMax(m_nProgressMax);
     this->draw();
 };
 
 void LoaderController::addToProgressCurrent(int nVal) {
     m_nProgressCurrent += nVal;
-    m_pProgressBar->updateProgress(m_nProgressMax, m_nProgressCurrent);
+    m_pAssetProgressBar->setProgressCurrent(m_nProgressCurrent);
     this->draw();
 };
 

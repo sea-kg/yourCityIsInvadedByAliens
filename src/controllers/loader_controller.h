@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "render_ui.h"
-#include <yasset_text.h>
+#include <yassets_ui.h>
 
 class LoaderController {
     public:
@@ -31,7 +31,7 @@ class LoaderController {
         std::vector<RenderObject *> m_vObjects;
 
         YAssetText *m_pAssetText;
-        RenderBootScreenProgressBar *m_pProgressBar;
+        YAssetProgressBar *m_pAssetProgressBar;
         int m_nProgressCurrent;
         int m_nProgressMax;
 };

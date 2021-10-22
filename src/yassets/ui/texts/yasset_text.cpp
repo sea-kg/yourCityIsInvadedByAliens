@@ -1,4 +1,4 @@
-#include <yasset_text.h>
+#include "yasset_text.h"
 #include <render.h>
 #include <codecvt>
 
@@ -12,7 +12,6 @@ YAssetText::YAssetText(
 )
 : YAsset(pAssetsService), RenderObject(1000) {
     m_pTexture = pTexture;
-    // TODO redesign to wstring
     m_vAlphabets = vAlphabets;
     m_bUpdatedText = false;
     m_nFontSize = 25;
@@ -63,7 +62,7 @@ void YAssetText::draw(SDL_Renderer* renderer) {
     dst.h = m_nFontSize;
 
     int nPos = 0;
-
+    // TODO optimaze here - move find positions on step setText
     for (int i = 0; i < m_sText.size(); i++) {
         wchar_t c = m_sText[i];
         if (c == L'\n') {

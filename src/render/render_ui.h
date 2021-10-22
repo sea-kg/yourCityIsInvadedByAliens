@@ -6,4 +6,3 @@
 #include "ui/render_dialog.h"
 #include "ui/render_button_simple.h"
 #include "ui/render_button_music_on_off.h"
-#include "ui/render_bootscreen_progressbar.h"

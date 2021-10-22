@@ -2,17 +2,20 @@
 
 #include <yassets_service.h>
 
-class YAssetText : public YAsset, public RenderObject {
+class YAssetProgressBar : public YAsset, public RenderObject {
     public:
-        YAssetText(
+        YAssetProgressBar(
             YAssetsService *pAssetsService,
             SDL_Texture *pTexture,
-            const std::vector<std::wstring> &vAlphabets
+            int nWidth,
+            int nHeight
         );
         void setAbsolutePosition(bool bAbsolutePosition);
         void setPosition(int nX, int nY);
-        void setText(const std::wstring& sText);
-        
+        void setProgressMax(int nProgressMax);
+        void setProgressCurrent(int nProgressCurrent);
+        void incrementProgressCurrent();
+
         // YAsset
         virtual void setOrderZ(int nOrder) override;
 
@@ -26,15 +29,15 @@ class YAssetText : public YAsset, public RenderObject {
         bool m_bAbsolutePosition;
         int m_nX;
         int m_nY;
-        int m_nFontSize;
-        bool m_bUpdatedText;
-        std::wstring m_sText;
-        std::wstring m_sUpdateText;
+        int m_nWidth;
+        int m_nHeight;
+        int m_nProgressCurrent;
+        int m_nProgressMax;
+        bool m_bUpdated; // TODO make a special class with autoreset
         SDL_Texture *m_pTexture;
-        std::vector<std::wstring> m_vAlphabets;
-
-        void findPosition(SDL_Rect &frame, wchar_t c);
+        SDL_Rect m_currentFrameEmptyProgressBar;
+        SDL_Rect m_currentFrameFillProgressBar;
 };
 
-YASSET_DECLARE_INLINE(YAssetText)
 
+YASSET_DECLARE_INLINE(YAssetProgressBar)

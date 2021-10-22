@@ -166,7 +166,10 @@ void MainController::runGameLogicThread() {
     auto *pAssets = findYService<YAssetsService>();
 
     std::wstring sError;
-    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/font1", sError)) {
+    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/text1", sError)) {
+        YLog::throw_err(TAG, sError);
+    }
+    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/progressbar1", sError)) {
         YLog::throw_err(TAG, sError);
     }
 
@@ -324,7 +327,7 @@ bool MainController::loadGameDataWithProgressBar() {
     auto *pAssets = findYService<YAssetsService>();
 
     // text
-    m_pFpsText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pFpsText = pAssets->createAsset<YAssetText>(L"text1");
     m_pFpsText->setOrderZ(5001);
     m_pFpsText->setAbsolutePosition(true);
     m_pFpsText->setPosition(m_pWindow->getWidth() - 270, 20);
@@ -332,7 +335,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
     // coordinates of player
-    m_pCoordText = pAssets->createAsset<YAssetText>(L"font1");
+    m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
     m_pCoordText->setOrderZ(5001);
     m_pCoordText->setAbsolutePosition(true);
     m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);

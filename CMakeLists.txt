@@ -22,7 +22,6 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
-list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets_factories")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
 
@@ -42,10 +41,13 @@ list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 
 # yassets_factories
-list (APPEND WSJCPP_SOURCES "src/yassets_factories/yassets_factory_type_font50x50.cpp")
+
 
 # yassets
-list (APPEND WSJCPP_SOURCES "src/yassets/yasset_text.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yasset_progressbar.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yassets_factory_type_progressbar.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yasset_text.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yassets_factory_type_text.cpp")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
@@ -100,7 +102,6 @@ list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.h")
 list (APPEND WSJCPP_SOURCES "src/render/transports/render_tank0.cpp")
 
 ## renders / ui
-list (APPEND WSJCPP_SOURCES "src/render/ui/render_bootscreen_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_music_on_off.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_simple.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_dialog.cpp")
