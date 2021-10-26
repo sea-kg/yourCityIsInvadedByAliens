@@ -14,3 +14,12 @@ class YCore {
         static std::string ws2s(const std::wstring& wstr);
 };
 
+
+class YNeedUpdate {
+    public:
+        YNeedUpdate();
+        void setYes();
+        bool isAndDoReset();
+    private:
+        bool m_bNeedUpdated;
+};

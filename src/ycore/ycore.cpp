@@ -126,3 +126,22 @@ std::string YCore::ws2s(const std::wstring& wstr) {
     std::wstring_convert<convert_typeX, wchar_t> converterX;
     return converterX.to_bytes(wstr);
 }
+
+// ---------------------------------------------------------------------
+// YCore
+
+YNeedUpdate::YNeedUpdate() {
+    m_bNeedUpdated = true;
+}
+
+void YNeedUpdate::setYes() {
+    m_bNeedUpdated = true;
+}
+
+bool YNeedUpdate::isAndDoReset() {
+    if (m_bNeedUpdated) {
+        m_bNeedUpdated = false;
+        return true;
+    }
+    return false;
+}

@@ -27,7 +27,7 @@ class YAssetText : public YAsset, public RenderObject {
         int m_nX;
         int m_nY;
         int m_nFontSize;
-        bool m_bUpdatedText;
+        YNeedUpdate m_needUpdate;
         std::wstring m_sText;
         std::wstring m_sUpdateText;
         SDL_Texture *m_pTexture;

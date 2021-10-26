@@ -17,7 +17,6 @@ YAssetProgressBar::YAssetProgressBar(
     m_nProgressMax = 100;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
-    m_bUpdated = false;
 
     m_currentFrameEmptyProgressBar.x = 0;
     m_currentFrameEmptyProgressBar.y = 0;
@@ -48,7 +47,7 @@ void YAssetProgressBar::setProgressMax(int nProgressMax) {
     if (m_nProgressCurrent > m_nProgressMax) {
         m_nProgressCurrent = m_nProgressMax;
     }
-    m_bUpdated = true;
+    m_needUpdate.setYes();
 }
 
 void YAssetProgressBar::setProgressCurrent(int nProgressCurrent) {
@@ -56,7 +55,7 @@ void YAssetProgressBar::setProgressCurrent(int nProgressCurrent) {
     if (m_nProgressCurrent > m_nProgressMax) {
         m_nProgressCurrent = m_nProgressMax;
     }
-    m_bUpdated = true;
+    m_needUpdate.setYes();
 }
 
 void YAssetProgressBar::incrementProgressCurrent() {
@@ -64,17 +63,16 @@ void YAssetProgressBar::incrementProgressCurrent() {
     if (m_nProgressCurrent > m_nProgressMax) {
         m_nProgressCurrent = m_nProgressMax;
     }
-    m_bUpdated = true;
+    m_needUpdate.setYes();
 }
 
 void YAssetProgressBar::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    if (m_bUpdated) {
+    if (m_needUpdate.isAndDoReset()) {
         if (m_nProgressMax > 0) {
             m_currentFrameFillProgressBar.w = (m_nProgressCurrent * 500) / m_nProgressMax;
         } else {
             m_currentFrameFillProgressBar.w = 0;
         }
-        m_bUpdated = false;
     }
 };
 

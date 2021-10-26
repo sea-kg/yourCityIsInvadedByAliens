@@ -33,7 +33,7 @@ class YAssetProgressBar : public YAsset, public RenderObject {
         int m_nHeight;
         int m_nProgressCurrent;
         int m_nProgressMax;
-        bool m_bUpdated; // TODO make a special class with autoreset
+        YNeedUpdate m_needUpdate;
         SDL_Texture *m_pTexture;
         SDL_Rect m_currentFrameEmptyProgressBar;
         SDL_Rect m_currentFrameFillProgressBar;

@@ -13,7 +13,6 @@ YAssetText::YAssetText(
 : YAsset(pAssetsService), RenderObject(1000) {
     m_pTexture = pTexture;
     m_vAlphabets = vAlphabets;
-    m_bUpdatedText = false;
     m_nFontSize = 25;
 }
 
@@ -28,7 +27,7 @@ void YAssetText::setPosition(int nX, int nY) {
 
 void YAssetText::setText(const std::wstring& sText) {
     m_sUpdateText = sText;
-    m_bUpdatedText = true;
+    m_needUpdate.setYes();
     // YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
 }
 
@@ -38,9 +37,9 @@ void YAssetText::setOrderZ(int nOrder) {
 
 void YAssetText::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     // nothing i think
-    if (m_bUpdatedText) {
+    if (m_needUpdate.isAndDoReset()) {
         m_sText = m_sUpdateText;
-        m_bUpdatedText = false;
+        // TODO recalculate positions here
     }
 };
 
