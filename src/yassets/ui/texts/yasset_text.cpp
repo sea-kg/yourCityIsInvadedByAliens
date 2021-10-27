@@ -8,12 +8,16 @@
 YAssetText::YAssetText(
     YAssetsService *pAssetsService,
     SDL_Texture *pTexture,
-    const std::vector<std::wstring> &vAlphabets
+    const std::vector<std::wstring> &vAlphabets,
+    int nLetterHeight,
+    int nLetterWidth
 )
 : YAsset(pAssetsService), RenderObject(1000) {
     m_pTexture = pTexture;
     m_vAlphabets = vAlphabets;
     m_nFontSize = 25;
+    m_nLetterHeight = nLetterHeight;
+    m_nLetterWidth = nLetterWidth;
 }
 
 void YAssetText::setAbsolutePosition(bool bAbsolutePosition) {
@@ -51,8 +55,8 @@ void YAssetText::draw(SDL_Renderer* renderer) {
     SDL_Rect currentFrame;
     currentFrame.x = 0;
     currentFrame.y = 0;
-    currentFrame.w = 50;
-    currentFrame.h = 50;
+    currentFrame.w = m_nLetterWidth;
+    currentFrame.h = m_nLetterHeight;
 
     SDL_Rect dst;
     dst.x = 0;
@@ -84,8 +88,8 @@ void YAssetText::findPosition(SDL_Rect &frame, wchar_t c) {
         // std::wcout << sAlphabet << std::endl;
         for (int x = 0; x < sAlphabet.size(); x++) {
             if (sAlphabet[x] == c) {
-                frame.x = x*50;
-                frame.y = (y+1)*50; // ignore first line because it must has only one wrong character
+                frame.x = x*m_nLetterWidth;
+                frame.y = (y+1)*m_nLetterHeight; // ignore first line because it must has only one wrong character
                 return;
             }
         }

@@ -8,7 +8,9 @@ YAssetFactoryText::YAssetFactoryText(
     YAssetsService *pAssetsService,
     YAssetFactoryTypeText *pFactoryTypeFont,
     const std::wstring &sImagePath,
-    const std::vector<std::wstring> &vAlphabets
+    const std::vector<std::wstring> &vAlphabets,
+    int nLetterHeight,
+    int nLetterWidth
 ) : YAssetFactory(pAssetsService, pFactoryTypeFont) {
     TAG = L"YAssetFactoryText";
     m_pFactoryTypeFont = pFactoryTypeFont;
@@ -16,6 +18,8 @@ YAssetFactoryText::YAssetFactoryText(
     m_vAlphabets = vAlphabets;
     // TODO: Not working now because render window now initialized to this moment
     m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
+    m_nLetterHeight = nLetterHeight;
+    m_nLetterWidth = nLetterWidth;
 }
 
 YAsset *YAssetFactoryText::createAsset() {
@@ -24,7 +28,9 @@ YAsset *YAssetFactoryText::createAsset() {
     return new YAssetText(
         m_pAssetsService,
         m_pTexture,
-        m_vAlphabets
+        m_vAlphabets,
+        m_nLetterHeight,
+        m_nLetterWidth
     );
 }
 
@@ -57,10 +63,14 @@ YAssetFactory *YAssetFactoryTypeText::createFactory(
         vAlphabets.push_back(obj[i].getString());
     }
 
+    int nLetterHeight = jsonFactoryConfig[L"letter-height"].getNumber();
+    int nLetterWidth = jsonFactoryConfig[L"letter-width"].getNumber();
     return new YAssetFactoryText(
         m_pAssetsService, 
         this,
         sImagePath,
-        vAlphabets
+        vAlphabets,
+        nLetterHeight,
+        nLetterWidth
     );
 }

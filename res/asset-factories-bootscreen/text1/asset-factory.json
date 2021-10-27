@@ -3,6 +3,8 @@
     "asset-faсtory-type": "text",
     "asset-faсtory-config": {
         "font-image": "font1.png",
+        "letter-height": 50,
+        "letter-width": 50,
         "font-alphabets": [
             "0123456789!@#$%^&*()_+[]{};:\\\" .'",
             "qwertyuiopasdfghjklzxcvbnm-=~",

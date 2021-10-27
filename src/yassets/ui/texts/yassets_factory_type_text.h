@@ -10,7 +10,9 @@ class YAssetFactoryText : public YAssetFactory {
             YAssetsService *pAssetsService,
             YAssetFactoryTypeText *pFactoryTypeFont,
             const std::wstring &sImagePath,
-            const std::vector<std::wstring> &vAlphabets
+            const std::vector<std::wstring> &vAlphabets,
+            int nLetterHeight,
+            int nLetterWidth
         );
         virtual YAsset *createAsset() override;
 
@@ -19,6 +21,8 @@ class YAssetFactoryText : public YAssetFactory {
         std::wstring m_sImagePath;
         std::vector<std::wstring> m_vAlphabets;
         SDL_Texture *m_pTexture;
+        int m_nLetterHeight;
+        int m_nLetterWidth;
 };
 
 class YAssetFactoryTypeText : public YAssetFactoryType {
