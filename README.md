@@ -79,3 +79,4 @@ Just run a script for download SDL2 libraries and build project:
 ## Interesting projects
 
 * https://docs.scummvm.org/
+
