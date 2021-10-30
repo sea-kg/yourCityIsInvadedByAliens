@@ -25,13 +25,12 @@ class LoaderController {
         GameState *m_pGameState;
 
         RenderWindow *m_pRenderWindow;
-        SDL_Texture *m_pTextureLoaderBackground;
         SDL_Texture *m_pTextureLogoBig;
-        SDL_Texture *m_pTextureProgressBar;
         std::vector<RenderObject *> m_vObjects;
 
         YAssetText *m_pAssetText;
         YAssetProgressBar *m_pAssetProgressBar;
+        YAssetBackground *m_pAssetBackground;
         int m_nProgressCurrent;
         int m_nProgressMax;
 };

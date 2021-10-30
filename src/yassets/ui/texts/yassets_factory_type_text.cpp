@@ -16,15 +16,12 @@ YAssetFactoryText::YAssetFactoryText(
     m_pFactoryTypeFont = pFactoryTypeFont;
     m_sImagePath = sImagePath;
     m_vAlphabets = vAlphabets;
-    // TODO: Not working now because render window now initialized to this moment
-    m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
+    m_pTexture = loadTexture(m_sImagePath);
     m_nLetterHeight = nLetterHeight;
     m_nLetterWidth = nLetterWidth;
 }
 
 YAsset *YAssetFactoryText::createAsset() {
-    // TODO: ad-hoc - time loading textures wrong, before then created render window
-    m_pTexture = m_pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
     return new YAssetText(
         m_pAssetsService,
         m_pTexture,

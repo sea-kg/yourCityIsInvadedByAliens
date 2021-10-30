@@ -81,6 +81,7 @@ bool YAssetProgressBar::canDraw(const GameState& state) {
 }
 
 void YAssetProgressBar::draw(SDL_Renderer* renderer) {
+    // std::wcout << L"YAssetProgressBar::draw " << std::endl;
     SDL_Rect dst;
     dst.x = m_nX;
     dst.y = m_nY;

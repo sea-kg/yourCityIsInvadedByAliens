@@ -18,6 +18,7 @@ class YAsset {
         virtual void setOrderZ(int nOrder) = 0;
 
     protected:
+        YNeedUpdate m_needUpdate;
         YAssetsService *m_pAssetsService;
 };
 
@@ -54,6 +55,8 @@ class YAssetFactory {
         std::wstring TAG;
         YAssetsService *m_pAssetsService;
         YAssetFactoryType *m_pFactoryType;
+
+        SDL_Texture *loadTexture(const std::wstring &sImagePath);
 };
 
 extern std::vector<IYAssetFactoryFactoryType*> *g_pYAssetFactoryFactoryType;
@@ -70,6 +73,7 @@ class YAssetsService : public YServiceBase {
         void registerFactoryType(YAssetFactoryType *);
         bool hasFactoryType(const std::wstring &sFactoryTypeId);
         bool loadAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
+        bool loadAllAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
         
         YAsset *createAsset(const std::wstring &sAssetFactoryId);
         template<class T> T *createAsset(const std::wstring &sAssetFactoryId);

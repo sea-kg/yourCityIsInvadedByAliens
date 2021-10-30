@@ -16,14 +16,10 @@ YAssetFactoryProgressBar::YAssetFactoryProgressBar(
     m_sImagePath = sImagePath;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
-
-    // TODO: Not working now because render window now initialized to this moment
-    m_pTexture = pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
+    m_pTexture = loadTexture(m_sImagePath);
 }
 
 YAsset *YAssetFactoryProgressBar::createAsset() {
-    // TODO: ad-hoc - time loading textures wrong, before then created render window
-    m_pTexture = m_pAssetsService->getRenderWindow()->loadTexture(m_sImagePath);
     return new YAssetProgressBar(
         m_pAssetsService,
         m_pTexture,

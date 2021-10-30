@@ -14,6 +14,8 @@
 #include <codecvt>
 #include <sstream>
 #include <locale>
+#include <filesystem>
+#include <iostream>
 
 // ---------------------------------------------------------------------
 // YCore
@@ -55,25 +57,16 @@ std::vector<std::wstring> YCore::getListOfDirs(const std::wstring &sDirname) {
     if (!YCore::dirExists(sDirname)) {
         return vDirs;
     }
-    #ifndef _WIN32
-        DIR *dir = opendir(ws2s(sDirname).c_str());
-        if (dir != NULL) {
-            struct dirent *entry = readdir(dir);
-            while (entry != NULL) {
-                if (entry->d_type == DT_DIR) {
-                    std::string sDir(entry->d_name);
-                    if (sDir != "." && sDir != "..") {
-                        vDirs.push_back(s2ws(sDir));
-                    }
-                }
-                entry = readdir(dir);
-            }
-            closedir(dir);
+    for (auto& entry : std::filesystem::directory_iterator(sDirname)) {
+        if (entry.is_directory()) {
+            std::wstring sPath = YCore::s2ws(entry.path());
+            // std::wcout << sPath << std::endl;
+            sPath = sPath.substr(sDirname.size());
+            // std::wcout << sPath << std::endl;
+            vDirs.push_back(sPath);
         }
-        std::sort(vDirs.begin(), vDirs.end());
-    #else
-        // TODO
-    #endif
+    }
+    std::sort(vDirs.begin(), vDirs.end());
     return vDirs;
 }
 

@@ -11,6 +11,7 @@
 
 YAsset::YAsset(YAssetsService *pAssetsService) {
     m_pAssetsService = pAssetsService;
+    m_needUpdate.setYes(); // On first init
 }
 
 // virtual RenderObject *YAsset::getRenderObject() = 0;
@@ -28,6 +29,14 @@ YAssetFactoryType::YAssetFactoryType(YAssetsService *pAssetsService) {
 YAssetFactory::YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *pFactoryType) {
     m_pAssetsService = pAssetsService;
     m_pFactoryType = pFactoryType;
+}
+
+SDL_Texture *YAssetFactory::loadTexture(const std::wstring &sImagePath) {
+    SDL_Texture *pTexture = m_pAssetsService->getRenderWindow()->loadTexture(sImagePath);
+    if (pTexture == NULL) {
+        YLog::throw_err(TAG, L"Could not load texture");
+    }
+    return pTexture;
 }
 
 // ---------------------------------------------------------------------
@@ -53,8 +62,14 @@ bool YAssetsService::init() {
              registerFactoryType((*it)->create(this));
          }
     }
+    auto *pSettings = findYService<SettingsYService>();
 
-    // TODO: load all asset-factories from asset-factories-bootscreen first
+    std::wstring sError;
+    if (!this->loadAllAssetFactory(pSettings->getResourceDir() + L"/asset-factories-bootscreen/", sError)) {
+        YLog::err(TAG, sError);
+        // YLog::throw_err(TAG, sError);
+        return false;
+    }
 
     return true;
 }
@@ -121,6 +136,25 @@ bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &s
     );
 
     return true;
+}
+
+bool YAssetsService::loadAllAssetFactory(const std::wstring &sPath, std::wstring &sRetError) {
+    bool bRet = true;
+    sRetError = L"";
+    std::vector<std::wstring> vAssetsBootscreen = YCore::getListOfDirs(sPath);
+    for (int i = 0; i < vAssetsBootscreen.size(); i++) {
+        std::wstring sFactoryPath = sPath + vAssetsBootscreen[i];
+        YLog::info(TAG, L"Try loading '" + sFactoryPath + L"'");
+
+        std::wstring sError;
+        if (!this->loadAssetFactory(sFactoryPath, sError)) {
+            sRetError += sError + L"\n";
+            bRet = false;
+        } else {
+            YLog::info(TAG, L"Loaded and registered factory '" + vAssetsBootscreen[i] + L"' from " + sFactoryPath);
+        }
+    }
+    return bRet;
 }
 
 YAsset *YAssetsService::createAsset(const std::wstring &sAssetFactoryId) {

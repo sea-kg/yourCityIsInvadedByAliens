@@ -165,14 +165,6 @@ void MainController::runGameLogicThread() {
     YLog::info(TAG, L"TODO Loading assets...");
     auto *pAssets = findYService<YAssetsService>();
 
-    std::wstring sError;
-    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/text1", sError)) {
-        YLog::throw_err(TAG, sError);
-    }
-    if (!pAssets->loadAssetFactory(m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/progressbar1", sError)) {
-        YLog::throw_err(TAG, sError);
-    }
-
     while (!m_bGameLogicThreadStop) {
         std::lock_guard<std::mutex> guard(m_mutexGameLogicThread);
         // YLog::info(TAG, "TODO step...");

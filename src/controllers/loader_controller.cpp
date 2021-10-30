@@ -18,9 +18,8 @@ LoaderController::LoaderController(
 
 void LoaderController::init() {
     auto *pAssets = findYService<YAssetsService>();
-    m_pTextureLoaderBackground = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-background.png");
+    
     m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-logo.png");
-    m_pTextureProgressBar = m_pRenderWindow->loadTexture(m_sResourceDir + L"/asset-factories-bootscreen/progressbar1/progressbar1.png");
     
     int nBackW = 1280;
     int nBackH = 720;
@@ -28,20 +27,10 @@ void LoaderController::init() {
     int nWindowWidth, nWindowHeight;
 
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);
-
-    for (int x = 0; x < nBackW*2; x += nBackW) {
-        for (int y = 0; y < nBackH*2; y += nBackH) {
-            this->addObject(
-                new RenderRectTexture(
-                    CoordXY(x,y),
-                    m_pTextureLoaderBackground,
-                    nBackW,
-                    nBackH,
-                    0
-                )
-            );
-        }
-    }
+    m_pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
+    // m_pAssetBackground->setOrderZ(1000);
+    m_pAssetBackground->setWindowSize(nWindowWidth, nWindowHeight);
+    this->addObject(m_pAssetBackground);
 
     int nLogoW = 500;
     int nLogoH = 500;

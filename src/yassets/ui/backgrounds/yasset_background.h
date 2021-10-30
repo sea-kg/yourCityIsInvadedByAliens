@@ -2,19 +2,15 @@
 
 #include <yassets_service.h>
 
-class YAssetProgressBar : public YAsset, public RenderObject {
+class YAssetBackground : public YAsset, public RenderObject {
     public:
-        YAssetProgressBar(
+        YAssetBackground(
             YAssetsService *pAssetsService,
             SDL_Texture *pTexture,
             int nWidth,
             int nHeight
         );
-        void setAbsolutePosition(bool bAbsolutePosition);
-        void setPosition(int nX, int nY);
-        void setProgressMax(int nProgressMax);
-        void setProgressCurrent(int nProgressCurrent);
-        void incrementProgressCurrent();
+        void setWindowSize(int nWindowWidth, int nWindowHeight); // TODO replace by event-base + registering
 
         // YAsset
         virtual void setOrderZ(int nOrder) override;
@@ -31,12 +27,11 @@ class YAssetProgressBar : public YAsset, public RenderObject {
         int m_nY;
         int m_nWidth;
         int m_nHeight;
-        int m_nProgressCurrent;
-        int m_nProgressMax;
+        int m_nWindowWidth;
+        int m_nWindowHeight;
         SDL_Texture *m_pTexture;
-        SDL_Rect m_currentFrameEmptyProgressBar;
-        SDL_Rect m_currentFrameFillProgressBar;
+        SDL_Rect m_currentFrame;
 };
 
 
-YASSET_DECLARE_INLINE(YAssetProgressBar)
+YASSET_DECLARE_INLINE(YAssetBackground)
