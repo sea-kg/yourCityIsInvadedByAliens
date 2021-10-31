@@ -30,12 +30,6 @@ void YAssetBackground::setOrderZ(int nOrder) {
     m_nPositionZ = nOrder;
 }
 
-void YAssetBackground::setWindowSize(int nWindowWidth, int nWindowHeight) {
-    // int m_nWindowWidth = nWindowWidth;
-    // int m_nWindowHeight = nWindowHeight;
-    // m_needUpdate.setYes();
-}
-
 void YAssetBackground::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     if (m_needUpdate.isAndDoReset()) {
         // TODO

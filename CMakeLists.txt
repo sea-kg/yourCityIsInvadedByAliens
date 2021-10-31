@@ -46,6 +46,8 @@ list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/backgrounds/yasset_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/backgrounds/yassets_factory_type_background.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/images/yasset_image.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/ui/images/yassets_factory_type_image.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yasset_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yassets_factory_type_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yasset_text.cpp")

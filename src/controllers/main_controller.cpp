@@ -55,7 +55,6 @@ bool MainController::init() {
     m_pSoundController->init();
     
     m_pLoaderController = new LoaderController(
-        m_pSettings->getResourceDir(),
         m_pWindow->getRenderWindow(),
         m_pGameState
     );

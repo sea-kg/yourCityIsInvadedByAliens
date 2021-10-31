@@ -5,11 +5,9 @@
 
 
 LoaderController::LoaderController(
-    const std::wstring &sResourceDir,
     RenderWindow *pRenderWindow,
     GameState *pGameState
 ) {
-    m_sResourceDir = sResourceDir;
     m_pRenderWindow = pRenderWindow;
     m_pGameState = pGameState;
     m_nProgressCurrent = 0;
@@ -19,31 +17,25 @@ LoaderController::LoaderController(
 void LoaderController::init() {
     auto *pAssets = findYService<YAssetsService>();
     
-    m_pTextureLogoBig = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/bootscreen-logo.png");
+    auto *pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
+    this->addObject(pAssetBackground);
     
+    auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
+    pAssetLogo1->setAbsolutePosition(true);
+
+    // TODO redesign 
     int nBackW = 1280;
     int nBackH = 720;
-    // m_pTextureLogo = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/logo.png");
     int nWindowWidth, nWindowHeight;
-
     m_pRenderWindow->getWindowSize(&nWindowWidth, &nWindowHeight);
-    m_pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
-    // m_pAssetBackground->setOrderZ(1000);
-    m_pAssetBackground->setWindowSize(nWindowWidth, nWindowHeight);
-    this->addObject(m_pAssetBackground);
-
     int nLogoW = 500;
     int nLogoH = 500;
     int nProgressBarH = 50;
     int nPaddingTop = 10;
     int nTop = (nWindowHeight - nLogoH - nProgressBarH - 2*nPaddingTop)/2;
 
-    this->addObject(new RenderRectTexture(
-        CoordXY((nWindowWidth - nLogoW)/2, nTop),
-        m_pTextureLogoBig,
-        500, 500,
-        1 // z-position
-    ));
+    pAssetLogo1->setPosition((nWindowWidth - nLogoW)/2, nTop);
+    this->addObject(pAssetLogo1);
 
     nTop += nLogoH + nPaddingTop;
 
