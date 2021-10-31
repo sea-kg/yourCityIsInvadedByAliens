@@ -52,6 +52,9 @@ list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yasset_progressbar.cpp"
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/progressbars/yassets_factory_type_progressbar.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yasset_text.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yassets_factory_type_text.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/weather/clouds/yasset_clouds.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/weather/clouds/yassets_factory_type_clouds.cpp")
+
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
@@ -59,8 +62,6 @@ list (APPEND WSJCPP_SOURCES "src/game/game_alien_ship_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_bioplast_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_rocket_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_building.cpp")
-list (APPEND WSJCPP_SOURCES "src/game/game_cloud0_state.h")
-list (APPEND WSJCPP_SOURCES "src/game/game_cloud0_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_state.h")
 list (APPEND WSJCPP_SOURCES "src/game/game_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_tank0_state.h")
@@ -112,8 +113,6 @@ list (APPEND WSJCPP_SOURCES "src/render/ui/render_dialog.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_left_panel_info.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_mouse.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_player_power.cpp")
-list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.h")
-list (APPEND WSJCPP_SOURCES "src/render/render_cloud0.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.h")
 list (APPEND WSJCPP_SOURCES "src/render/render_window.cpp")
 

@@ -107,7 +107,7 @@ class MainController {
         
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
-        std::vector<SDL_Texture*> m_vTexturesClouds;
+
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
         SDL_Texture* m_pTexturePlayerPower0;

@@ -1,6 +1,6 @@
 # Game: Your City Is Invaded By Aliens
 
-[![Build Status](https://travis-ci.com/sea-kg/yourCityIsInvadedByAliens.svg?branch=main)](https://travis-ci.com/sea-kg/yourCityIsInvadedByAliens) [![Github Stars](https://img.shields.io/github/stars/sea-kg/yourCityIsInvadedByAliens.svg?label=github%20%E2%98%85)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Github Stars](https://img.shields.io/github/contributors/sea-kg/yourCityIsInvadedByAliens.svg)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Github Forks](https://img.shields.io/github/forks/sea-kg/yourCityIsInvadedByAliens.svg?label=github%20forks)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Total alerts](https://img.shields.io/lgtm/alerts/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/context:python) [![Language grade: Python](https://img.shields.io/lgtm/grade/cpp/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/context:cpp) [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6InNlYS1rZyIsInJlcG8xIjoieW91ckNpdHlJc0ludmFkZWRCeUFsaWVuc19Ub21zayIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjE1NjQxLCJpYXQiOjE2MTgwNTk1Nzh9.TepnsVXpVZe3MscukV6MJFJP7yJT2CUh36MR9rM3bwA)](https://www.deepcode.ai/app/gh/sea-kg/yourCityIsInvadedByAliens/_/dashboard?utm_content=gh%2Fsea-kg%2FyourCityIsInvadedByAliens)
+[![Build Status](https://travis-ci.com/sea-kg/yourCityIsInvadedByAliens.svg?branch=main)](https://travis-ci.com/github/sea-kg/yourCityIsInvadedByAliens) [![Github Stars](https://img.shields.io/github/stars/sea-kg/yourCityIsInvadedByAliens.svg?label=github%20%E2%98%85)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Github Stars](https://img.shields.io/github/contributors/sea-kg/yourCityIsInvadedByAliens.svg)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Github Forks](https://img.shields.io/github/forks/sea-kg/yourCityIsInvadedByAliens.svg?label=github%20forks)](https://github.com/sea-kg/yourCityIsInvadedByAliens/) [![Total alerts](https://img.shields.io/lgtm/alerts/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/context:python) [![Language grade: Python](https://img.shields.io/lgtm/grade/cpp/g/sea-kg/yourCityIsInvadedByAliens.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sea-kg/yourCityIsInvadedByAliens/context:cpp)
 
 Game 2D with open source code based on cross platform graphical library SDL2.
 
@@ -55,11 +55,27 @@ Just run a script for download SDL2 libraries and build project:
 > msvc2015x86_build_simple.bat
 ```
 
+## Target controls
+
+- keyboard *for desctops* - **Done**
+- ~~joystick *for desctops*~~ - **Yet not**
+- ~~touchscreen *for mobiles*~~ - **Yet not**
+
+## Target platforms
+
+- linux (Ubuntu 20.04) - **Compiled**
+- windows - **Need check**
+- mac - **Need check again**
+- ~~android~~ - **Not configured yet**
+- ~~ios~~ - **Not configured yet**
+- ~~apple tv~~ - **Not configured yet**
+
 ## Struct of res
 
 `./res/app` - contains basic configuration / textures for panels, buttons and etc...
 `./res/default` - contains default map / textures / sprites and etc
-`./res/buildings` - contains all type of buildings
+`./res/asset-factories-bootscreen` - contains all resources needed for bootscreen
+`./res/asset-factories` - contains all resources needed for game
 
 
 ## Other Intruments

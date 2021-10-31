@@ -16,7 +16,6 @@ YAssetFactoryImage::YAssetFactoryImage(
     m_sImagePath = sImagePath;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
-    // TODO loadTexture: move to parent class 
     m_pTexture = loadTexture(m_sImagePath);
 }
 

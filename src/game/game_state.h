@@ -18,6 +18,7 @@ class GameState {
         long getElapsedTime() const;
         const CoordXY &getCoordLeftTop() const;
         void setCoordLeftTop(const CoordXY &);
+        const YPos &getYPosLeftTop() const;
 
         bool isChangedWindowSize() const;
         int getWindowWidth() const;
@@ -49,6 +50,7 @@ class GameState {
         bool m_bShowLoader;
         long m_nElapsedTime;
         long m_nStartTime;
+        YPos m_posLeftTop;
         CoordXY m_coordLeftTop;
         CoordXY m_maxPoint;
         CoordXY m_minPoint;

@@ -42,8 +42,13 @@ const CoordXY &GameState::getCoordLeftTop() const {
     return m_coordLeftTop;
 }
 
+const YPos &GameState::getYPosLeftTop() const {
+    return m_posLeftTop;
+}
+
 void GameState::setCoordLeftTop(const CoordXY &newCoordLeftTop) {
     m_coordLeftTop = newCoordLeftTop;
+    m_posLeftTop = YPos(newCoordLeftTop.x(), newCoordLeftTop.y());
 }
 
 bool GameState::isChangedWindowSize() const {

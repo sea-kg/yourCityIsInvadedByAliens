@@ -10,16 +10,15 @@
 #include <fstream>
 #include <algorithm>
 #include "render_alienship.h"
-#include "render_cloud0.h"
 #include "roads/render_road0.h"
 #include "ycore.h"
 #include "ykeyboard.h"
-#include "game_cloud0_state.h"
 #include "render_background.h"
 #include "buildings/render_building_simple.h"
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
 #include "window_yservice.h"
+#include <yassets.h>
 
 // MainController
 
@@ -210,6 +209,20 @@ bool MainController::loadGameDataWithProgressBar() {
     ));
     m_pLoaderController->addToProgressCurrent(1);
 
+    auto *pAssets = findYService<YAssetsService>();
+    std::wstring sPath = m_pSettings->getResourceDir() + L"/asset-factories/";
+    std::vector<std::wstring> vAssets = YCore::getListOfDirs(sPath);
+    for (int i = 0; i < vAssets.size(); i++) {
+        std::wstring sFactoryPath = sPath + vAssets[i];
+        YLog::info(TAG, L"Try loading '" + sFactoryPath + L"'");
+        std::wstring sError;
+        if (!pAssets->loadAssetFactory(sFactoryPath, sError)) {
+            YLog::throw_err(TAG, sError);
+        } else {
+            YLog::info(TAG, L"Loaded and registered factory '" + vAssets[i] + L"' from " + sFactoryPath);
+        }
+    }
+
     m_pLoaderController->updateText(L"Generating background...");
     loadBackgrounds(sDefaultPath, jsonDefaultMap[L"background"]);
     m_pLoaderController->addToProgressCurrent(1);
@@ -258,22 +271,6 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + L"/default/sprites/alien-bioplast.png");
 
-    m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud0.png")
-    );
-    m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud1.png")
-    );
-    m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud2.png")
-    );
-    m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud3.png")
-    );
-    m_vTexturesClouds.push_back(
-        m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/default/textures/cloud4.png")
-    );
-
     // app
     m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/left-panel-info.png");
     m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/player-power.png");
@@ -315,7 +312,7 @@ bool MainController::loadGameDataWithProgressBar() {
         )
     );
 
-    auto *pAssets = findYService<YAssetsService>();
+    
 
     // text
     m_pFpsText = pAssets->createAsset<YAssetText>(L"text1");
@@ -534,19 +531,24 @@ void MainController::generateBackground(
 }
 
 void MainController::generateClouds() {
-    for (int i = 0; i < m_nMaxClouds; i++) {
-        int nXpos = std::rand() % m_nMapWidth;
-        nXpos += m_minPointMap.x();
-        int nYpos = std::rand() % m_nMapHeight;
-        nYpos += m_minPointMap.y();
+    auto *pAssets = findYService<YAssetsService>();
 
-        int nCloudType = std::rand() % m_vTexturesClouds.size();
-        auto *pCloud0State = new GameCloud0State(CoordXY(nXpos,nYpos));
-        m_pWindow->getRenderWindow()->addCloudsObject(new RenderCloud0(
-            pCloud0State,
-            m_vTexturesClouds[nCloudType],
-            1000
-        ));
+    for (int i = 0; i < m_nMaxClouds; i++) {
+        int nX = std::rand() % m_nMapWidth;
+        nX += m_minPointMap.x();
+        int nY = std::rand() % m_nMapHeight;
+        nY += m_minPointMap.y();
+        
+        auto *pClouds = pAssets->createAsset<YAssetClouds>(L"clouds1");
+        pClouds->setPosition(nX, nY);
+        m_pWindow->getRenderWindow()->addCloudsObject(pClouds);
+
+        // int nCloudType = std::rand() % m_vTexturesClouds.size();
+        // m_pWindow->getRenderWindow()->addCloudsObject(new RenderCloud0(
+        //     pCloud0State,
+        //     m_vTexturesClouds[nCloudType],
+        //     1000
+        // ));
     }
 }
 

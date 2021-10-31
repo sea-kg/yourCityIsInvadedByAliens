@@ -1,0 +1,15 @@
+{
+    "asset-faсtory-id": "clouds1",
+    "asset-faсtory-type": "clouds",
+    "asset-faсtory-config": {
+        "images": [
+            "cloud_white.png",
+            "cloud_red.png",
+            "cloud_black.png",
+            "cloud_green.png",
+            "cloud_purple.png"
+        ],
+        "image-height": 500,
+        "image-width": 500
+    }
+}
