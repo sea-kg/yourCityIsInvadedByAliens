@@ -70,15 +70,15 @@ Just run a script for download SDL2 libraries and build project:
 - ~~ios~~ - **Not configured yet**
 - ~~apple tv~~ - **Not configured yet**
 
-## Struct of res
+## Structure of directory `res`
 
-`./res/app` - contains basic configuration / textures for panels, buttons and etc...
-`./res/default` - contains default map / textures / sprites and etc
-`./res/asset-factories-bootscreen` - contains all resources needed for bootscreen
-`./res/asset-factories` - contains all resources needed for game
+- `./res/app` - contains basic configuration / textures for panels, buttons and etc...
+- `./res/default` - contains default map / textures / sprites and etc
+- `./res/asset-factories-bootscreen` - contains all resources needed for bootscreen
+- `./res/asset-factories` - contains all resources needed for game
 
 
-## Other Intruments
+## Other instruments
 
 - cmake - for compiling project
 - Visual Studio Code - for editing code 
