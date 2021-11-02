@@ -269,7 +269,7 @@ bool MainController::loadGameDataWithProgressBar() {
     // default
     m_pLoaderController->updateText(L"Loading... textures");
 
-    m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + L"/default/sprites/alien-bioplast.png");
+    m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + L"/asset-factories/bioplasm1/bioplasm.png");
 
     // app
     m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/left-panel-info.png");

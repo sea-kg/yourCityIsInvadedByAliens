@@ -54,7 +54,8 @@ list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yasset_text.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/texts/yassets_factory_type_text.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/weather/clouds/yasset_clouds.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/weather/clouds/yassets_factory_type_clouds.cpp")
-
+list (APPEND WSJCPP_SOURCES "src/yassets/weapons/alien-weapon/yasset_alienweapon.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/weapons/alien-weapon/yassets_factory_type_alienweapon.cpp")
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
