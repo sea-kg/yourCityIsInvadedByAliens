@@ -20,6 +20,10 @@ class YKeyboard {
         bool isF12();
         bool isSpace();
         bool isEscape();
+        bool isK();
+        bool isL();
+        bool isG();
+        bool isH();
     
     private:
         const Uint8 *m_pKeyboardStateArray;

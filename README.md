@@ -61,6 +61,11 @@ Just run a script for download SDL2 libraries and build project:
 - ~~joystick *for desctops*~~ - **Yet not**
 - ~~touchscreen *for mobiles*~~ - **Yet not**
 
+Keyboard:
+ - Moving arrow's keys or `W` `A` `S` `D`
+ - Shooting bioplasm: `G` or `K`
+ - Biobomb: `L` or `H`
+
 ## Target platforms
 
 - linux (Ubuntu 20.04) - **Compiled**

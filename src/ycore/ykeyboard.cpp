@@ -144,3 +144,19 @@ bool YKeyboard::isSpace() {
 bool YKeyboard::isEscape() {
     return m_pKeyboardStateArray[SDL_SCANCODE_ESCAPE];
 }
+
+bool YKeyboard::isK() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_K];
+}
+
+bool YKeyboard::isL() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_L];
+}
+
+bool YKeyboard::isG() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_G];
+}
+
+bool YKeyboard::isH() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_H];
+}
