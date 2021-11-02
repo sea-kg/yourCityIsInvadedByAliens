@@ -1,0 +1,9 @@
+{
+    "asset-faсtory-id": "help1",
+    "asset-faсtory-type": "image",
+    "asset-faсtory-config": {
+        "image": "help.png",
+        "image-height": 500,
+        "image-width": 500
+    }
+}
