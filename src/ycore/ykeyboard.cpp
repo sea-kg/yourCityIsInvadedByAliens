@@ -160,3 +160,7 @@ bool YKeyboard::isG() {
 bool YKeyboard::isH() {
     return m_pKeyboardStateArray[SDL_SCANCODE_H];
 }
+
+std::wstring YKeyboard::toString() {
+    return L"TODO";
+}

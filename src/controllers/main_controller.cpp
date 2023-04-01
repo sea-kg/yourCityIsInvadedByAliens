@@ -42,6 +42,7 @@ bool MainController::init() {
         m_pWindow->getWidth(),
         m_pWindow->getHeight()
     );
+    m_pGameState->setPlayMusic(true);
 
     if (!this->initSoundController()) {
         return false;
@@ -73,10 +74,6 @@ int MainController::startUI() {
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
     startGameLogicThread();
 
-    // if (!pMainController->showStartDialog()) {
-    //     return -1;
-    // }
-
     startFpsCounting();
     while (getMainState() != MainState::GAME_EXIT) {
         long nStartTime = getCurrentTimeInMilliseconds();
@@ -95,6 +92,7 @@ int MainController::startUI() {
             if (event.type == SDL_QUIT) {
                 setMainState(MainState::GAME_EXIT);
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+                YLog::info(TAG, L"SDL_KEYDOWN SDL_KEYUP " + pKeyboard->toString());
                 this->handleKeyboardCommand(pKeyboard);
             }
         }
@@ -102,11 +100,15 @@ int MainController::startUI() {
         if (getMainState() == MainState::LOADING) {
             // TODO must be load in other thread
             if (!loadGameDataWithProgressBar()) {
-                // todo shoe error ?
+                // todo show error ?
                 setMainState(MainState::GAME_EXIT);
-            } else {
-                setMainState(MainState::WAITING_SPACE);
             }
+            // reset time
+            nStartTime = getCurrentTimeInMilliseconds();
+            // } else {
+            //     std::cout << "MainState::WAITING_SPACE" << std::endl;
+            //     setMainState(MainState::WAITING_SPACE);
+            // }
         } else if (getMainState() == MainState::GAME_ACTION) {
             // window must move to the player
             /*
@@ -134,9 +136,10 @@ int MainController::startUI() {
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
+            // YLog::info(TAG, L"Waiting " + std::to_wstring(nFrameTime));
             std::this_thread::sleep_for(std::chrono::milliseconds(nFrameTime));
         } else {
-            std::cout << "Warning " << nFrameTime << std::endl;
+            YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
         }
         updateFps();
     }
@@ -332,6 +335,7 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pLoaderController->addToProgressCurrent(1);
     m_pLoaderController->updateText(L"Press 'space' for continue...");
+    YLog::info(TAG, L"MainState::WAITING_SPACE");
     this->setMainState(MainState::WAITING_SPACE);
     return true;
 }
@@ -370,10 +374,14 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
     if (pKeyboard->isF1()) {
         // pMainController->getWindow()->toggleFullscreen();
         // TODO show help and pause of the game
+        // if (!this->showStartDialog()) {
+        //     return;
+        // }
     }
 
     if (getMainState() == MainState::WAITING_SPACE) {
         if (pKeyboard->isSpace()) {
+            YLog::info(TAG, L"pKeyboard->isSpace()");
             setMainState(MainState::GAME_ACTION);
             deinitLoaderController();
             // player
@@ -482,6 +490,18 @@ MainState MainController::getMainState() {
 
 void MainController::setMainState(const MainState &newMainState) {
     m_nCurrentState = newMainState;
+
+    if (m_nCurrentState == MainState::LOADING) {
+        YLog::info(TAG, L"setMainState MainState::LOADING");
+    } else if (m_nCurrentState == MainState::WAITING_SPACE) {
+        YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
+    } else if (m_nCurrentState == MainState::GAME_ACTION) {
+        YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
+    } else if (m_nCurrentState == MainState::GAME_EXIT) {
+        YLog::info(TAG, L"setMainState MainState::GAME_EXIT");
+    } else {
+        YLog::info(TAG, L"setMainState ???");
+    }
 }
 
 void MainController::loadBackgrounds(

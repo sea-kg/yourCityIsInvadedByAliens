@@ -1,6 +1,7 @@
 
 #pragma once
 #include "SDL.h"
+#include <string>
 
 class YKeyboard {
 
@@ -24,7 +25,7 @@ class YKeyboard {
         bool isL();
         bool isG();
         bool isH();
-    
+        std::wstring toString();
     private:
         const Uint8 *m_pKeyboardStateArray;
 };
