@@ -108,6 +108,7 @@ RenderWindow::RenderWindow(const std::wstring &sTitle, int w, int h) {
     m_nLayerFlying = createRenderWindowLayer(L"flying");
     m_nLayerClouds = createRenderWindowLayer(L"clouds");
     m_nLayerPanels = createRenderWindowLayer(L"panels");
+    m_nLayerScreenEffects = createRenderWindowLayer(L"screen-effects");
     m_nLayerLoader = createRenderWindowLayer(L"loader");
 
     // if (SDL_GetDesktopDisplayMode(0, &m_displayMode)) {
@@ -159,6 +160,10 @@ void RenderWindow::addCloudsObject(RenderObject *pObject) {
 
 void RenderWindow::addPanelsObject(RenderObject *pObject) {
     m_vLayers[m_nLayerPanels]->addObject(pObject);
+}
+
+void RenderWindow::addScreenEffectsObject(RenderObject *pObject) {
+    m_vLayers[m_nLayerScreenEffects]->addObject(pObject);
 }
 
 void RenderWindow::addLoaderObject(RenderObject *pObject) {

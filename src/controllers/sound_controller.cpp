@@ -19,7 +19,6 @@ SoundController::SoundController(
     m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 02 Diphdo.ogg");
     m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 03 SuchMyEnimies.ogg");
 
-    
 }
 
 SoundController::~SoundController() {

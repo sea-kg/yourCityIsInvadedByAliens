@@ -70,6 +70,7 @@ class MainController {
         );
         void generateTanks();
         void generateClouds();
+        void generateScreenHighlights();
         
         void loadRoads(
             const std::wstring &sDefaultPath,
@@ -115,6 +116,9 @@ class MainController {
 
         YAssetText *m_pCoordText;
         YAssetText *m_pFpsText;
+
+        // TODO mustbe chnaged from GameState?
+        YAssetScreenBorderFlashHighlight *m_pScreenAttack;
 
         long m_nFpsNumberOfFrames;
         long m_nFpsStartTime;

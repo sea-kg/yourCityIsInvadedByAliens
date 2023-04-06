@@ -1,0 +1,21 @@
+{
+    "asset-faсtory-id": "screen_border_attach_highlight",
+    "asset-faсtory-type": "screen-border-flash-highlight",
+    "asset-faсtory-config": {
+        "image": "screen-lighting-red.png",
+        "image-height": 500,
+        "image-width": 500,
+        "left-top-angle-width": 100,
+        "left-top-angle-height": 100,
+        "left-bottom-angle-width": 100,
+        "left-bottom-angle-height": 100,
+        "right-top-angle-width": 100,
+        "right-top-angle-height": 100,
+        "right-bottom-angle-width": 100,
+        "right-bottom-angle-height": 100,
+        "middle-area-min-x": 75,
+        "middle-area-max-x": 425,
+        "middle-area-min-y": 75,
+        "middle-area-max-y": 425
+    }
+}

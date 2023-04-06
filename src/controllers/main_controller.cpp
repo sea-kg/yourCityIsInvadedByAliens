@@ -92,7 +92,7 @@ int MainController::startUI() {
             if (event.type == SDL_QUIT) {
                 setMainState(MainState::GAME_EXIT);
             } else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-                YLog::info(TAG, L"SDL_KEYDOWN SDL_KEYUP " + pKeyboard->toString());
+                // YLog::info(TAG, L"SDL_KEYDOWN SDL_KEYUP " + pKeyboard->toString());
                 this->handleKeyboardCommand(pKeyboard);
             }
         }
@@ -304,6 +304,8 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pLoaderController->updateText(L"Generating clouds...");
     this->generateClouds();
+    m_pLoaderController->updateText(L"Generating screen highlights...");
+    this->generateScreenHighlights();
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Prepare panels...");
@@ -315,7 +317,6 @@ bool MainController::loadGameDataWithProgressBar() {
         )
     );
 
-    
 
     // text
     m_pFpsText = pAssets->createAsset<YAssetText>(L"text1");
@@ -410,6 +411,7 @@ void MainController::modifyObjects() {
     m_pWindow->getRenderWindow()->modifyObjects(*m_pGameState);
 
     CoordXY p0 = m_pGameState->getAlienShipState()->getPosition();
+    
     // calculate intersection rockets and player
     for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
         GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
@@ -422,9 +424,12 @@ void MainController::modifyObjects() {
         if (nDistance < 30.0) {
             pRocket->explode();
             m_pGameState->getAlienShipState()->rocketAttack(pRocket);
+            YLog::info(TAG, L"Attacked");
+            m_pScreenAttack->flash(1000, 10);
         }
     }
 
+    // intersection player bioplasm and rocket
     for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
         GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
@@ -570,6 +575,12 @@ void MainController::generateClouds() {
         //     1000
         // ));
     }
+}
+
+void MainController::generateScreenHighlights() {
+    auto *pAssets = findYService<YAssetsService>();
+    m_pScreenAttack = pAssets->createAsset<YAssetScreenBorderFlashHighlight>(L"screen_border_attach_highlight");
+    m_pWindow->getRenderWindow()->addScreenEffectsObject(m_pScreenAttack);
 }
 
 void MainController::loadRoads(
