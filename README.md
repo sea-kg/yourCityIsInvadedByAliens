@@ -23,7 +23,7 @@ $ sudo apt install libsdl2-image-dev
 $ sudo apt install libsdl2-mixer-dev
 ```
 
-### MacOS 
+### MacOS
 
 ```
 % brew install cmake

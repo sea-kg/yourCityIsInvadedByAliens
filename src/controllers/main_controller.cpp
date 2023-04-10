@@ -18,6 +18,7 @@
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
 #include "window_yservice.h"
+#include "map_yservice.h"
 #include <yassets.h>
 
 // MainController
@@ -587,6 +588,7 @@ void MainController::loadRoads(
     const std::wstring &sDefaultPath,
     const YJsonObject &jsonRoads
 ) {
+    auto pMap = findYService<MapYService>();
     for (int i = 0; i < jsonRoads.length(); i++) {
         const YJsonObject &item = jsonRoads[i];
         std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
@@ -602,6 +604,8 @@ void MainController::loadRoads(
             const YJsonObject &roadItem = fillList[n];
             int nX = roadItem[L"x"].getNumber();
             int nY = roadItem[L"y"].getNumber();
+            pMap->addRoad(MapRoad(nX, nY, nTextureWidth, nTextureHeight));
+
             std::wstring sRoadPart = roadItem[L"road-part"].getString();
             m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
                 CoordXY(nX, nY),

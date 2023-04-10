@@ -1,6 +1,7 @@
 #pragma once
 #include "game_tank0_state.h"
 #include "ai_object.h"
+#include "map_yservice.h"
 
 class AiTank0 : public AiObject {
     public:
@@ -8,4 +9,5 @@ class AiTank0 : public AiObject {
         void makeStep();
     private:
         GameTank0State *m_pTank0State;
+        MapYService *m_pMap;
 };

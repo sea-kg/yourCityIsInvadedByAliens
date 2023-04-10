@@ -1,12 +1,29 @@
 #include "game_tank0_state.h"
+#include "ylog.h"
+// #include <string>
+// #include <sstream>
+// #include <codecvt>
 
 // ---------------------------------------------------------------------
 // GameTank0State
 
 GameTank0State::GameTank0State(const CoordXY &p0) 
 : m_nDirection(MoveObjectDirection::UP) {
+    TAG = L"GameTank0State";
     m_p0 = p0;
     m_bHasRocket = true;
+    m_nMoveStep = 10;
+
+    m_vMoveVectors.resize(9);
+    m_vMoveVectors[int(MoveObjectDirection::NONE)] = CoordXY(0, 0);
+    m_vMoveVectors[int(MoveObjectDirection::UP)] = CoordXY(0, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN)] = CoordXY(0, 1);
+    m_vMoveVectors[int(MoveObjectDirection::UP_LEFT)] = CoordXY(-1, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN_LEFT)] = CoordXY(-1, 1);
+    m_vMoveVectors[int(MoveObjectDirection::UP_RIGHT)] = CoordXY(1, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN_RIGHT)] = CoordXY(1, 1);
+    m_vMoveVectors[int(MoveObjectDirection::LEFT)] = CoordXY(-1, 0);
+    m_vMoveVectors[int(MoveObjectDirection::RIGHT)] = CoordXY(1, 0);
 }
 
 MoveObjectDirection GameTank0State::getDirection() {
@@ -75,25 +92,14 @@ void GameTank0State::turnRight() {
     }
 }
 
-void GameTank0State::move() {
-    int nStep = 10;
-    if (m_nDirection == MoveObjectDirection::UP) {
-        m_p0 += CoordXY(0,-1 * nStep);
-    } else if (m_nDirection == MoveObjectDirection::UP_LEFT) {
-        m_p0 += CoordXY(-1*nStep, -1*nStep);
-    } else if (m_nDirection == MoveObjectDirection::UP_RIGHT) {
-        m_p0 += CoordXY(nStep, -1*nStep);
-    } else if (m_nDirection == MoveObjectDirection::DOWN) {
-        m_p0 += CoordXY(0, nStep);
-    } else if (m_nDirection == MoveObjectDirection::DOWN_LEFT) {
-        m_p0 += CoordXY(-1*nStep, nStep);
-    } else if (m_nDirection == MoveObjectDirection::DOWN_RIGHT) {
-        m_p0 += CoordXY(nStep, nStep);
-    } else if (m_nDirection == MoveObjectDirection::LEFT) {
-        m_p0 += CoordXY(-1*nStep, 0);
-    } else if (m_nDirection == MoveObjectDirection::RIGHT) {
-        m_p0 += CoordXY(nStep, 0);
-    }
+CoordXY GameTank0State::calculateMoveForward() {
+    const CoordXY &vMove = m_vMoveVectors[int(m_nDirection)];
+    CoordXY xy = m_p0 + CoordXY(vMove.x() * m_nMoveStep, vMove.y() * m_nMoveStep);
+    return xy;
+}
+
+void GameTank0State::moveForward() {
+    m_p0 = calculateMoveForward();
 }
 
 bool GameTank0State::hasRocket() {

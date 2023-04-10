@@ -40,6 +40,7 @@ list (APPEND WSJCPP_SOURCES "src/yservices/yservices.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/settings_yservice.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
+list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
 # yassets_factories
 
