@@ -12,6 +12,8 @@ class SoundController {
         void init();
         void update();
 
+        void playAttacked();
+
     private:
         std::wstring TAG;
 
@@ -23,4 +25,6 @@ class SoundController {
 
         std::vector<std::wstring> m_vPlaylistEmbient;
         
+        std::wstring m_sAttackedPath;
+        Mix_Chunk *m_pAttackedSoundEffect;
 };

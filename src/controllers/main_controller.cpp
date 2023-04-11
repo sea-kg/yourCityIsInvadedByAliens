@@ -427,6 +427,7 @@ void MainController::modifyObjects() {
             m_pGameState->getAlienShipState()->rocketAttack(pRocket);
             YLog::info(TAG, L"Attacked");
             m_pScreenAttack->flash(1000, 10);
+            m_pSoundController->playAttacked();
         }
     }
 
