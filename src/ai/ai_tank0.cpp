@@ -14,6 +14,8 @@ void AiTank0::makeStep() {
     }
     const CoordXY &xy = m_pTank0State->getPosition();
 
+    // TODO prepare input data for NeuralNetwork
+
     int nRandom = std::rand() % 4;
     if (nRandom == 0) {
         m_pTank0State->turnLeft();

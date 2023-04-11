@@ -51,7 +51,7 @@ void MapYService::addRoad(const MapRoad &road) {
 
 bool MapYService::canDriveToPoint(int x, int y) {
     // TODO need optimization
-    YLog::info(TAG, std::to_wstring(m_vRoads.size()));
+    // YLog::info(TAG, std::to_wstring(m_vRoads.size()));
     for (int i = 0; i < m_vRoads.size(); i++) {
         if (m_vRoads[i].hasPoint(x, y)) {
             return true;

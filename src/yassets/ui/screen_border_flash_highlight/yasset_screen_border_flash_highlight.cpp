@@ -93,8 +93,8 @@ YAssetScreenBorderFlashHighlight::YAssetScreenBorderFlashHighlight(
 
     m_nMoves = 0;
     m_nMiddleFlashesNumber = 0;
-    m_nTimeFlashing = 5000;
-    m_alpha = 0xff;
+    m_nTimeFlashing = 0;
+    m_alpha = 0x0;
     m_bFadingReset = true;
     randomDiff();
 }
