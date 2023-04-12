@@ -59,7 +59,8 @@ std::vector<std::wstring> YCore::getListOfDirs(const std::wstring &sDirname) {
     }
     for (auto& entry : std::filesystem::directory_iterator(sDirname)) {
         if (entry.is_directory()) {
-            std::wstring sPath = YCore::s2ws(entry.path());
+            // fix windows
+            std::wstring sPath = YCore::s2ws(entry.path().string());
             // std::wcout << sPath << std::endl;
             sPath = sPath.substr(sDirname.size());
             // std::wcout << sPath << std::endl;
