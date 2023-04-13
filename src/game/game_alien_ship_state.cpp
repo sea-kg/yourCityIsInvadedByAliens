@@ -161,7 +161,7 @@ void GameAlienShipState::updatePosition(const CoordXY &p0) {
 }
 
 void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
-    if (pKeyboard->isK() || pKeyboard->isG()) {
+    if (pKeyboard->isSpace()) {
         this->setShooting(true);
     } else if (pKeyboard->isL() || pKeyboard->isH()) {
 
