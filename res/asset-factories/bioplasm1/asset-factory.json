@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "bioplasm1",
-    "asset-faсtory-type": "alien-weapon",
-    "asset-faсtory-config": {
+    "asset-factory-id": "bioplasm1",
+    "asset-factory-type": "alien-weapon",
+    "asset-factory-config": {
         "sprite": "bioplasm.png",
         "frame-height": 50,
         "frame-width": 50,

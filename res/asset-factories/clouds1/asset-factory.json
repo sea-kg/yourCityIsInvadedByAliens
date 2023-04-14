@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "clouds1",
-    "asset-faсtory-type": "clouds",
-    "asset-faсtory-config": {
+    "asset-factory-id": "clouds1",
+    "asset-factory-type": "clouds",
+    "asset-factory-config": {
         "images": [
             "cloud_white.png",
             "cloud_red.png",

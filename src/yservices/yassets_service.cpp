@@ -115,7 +115,7 @@ bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &s
         return false;
     }
     
-    std::wstring sAssetFactoryType = jsonAssetFactory[L"asset-faсtory-type"].getString();
+    std::wstring sAssetFactoryType = jsonAssetFactory[L"asset-factory-type"].getString();
     if (!hasFactoryType(sAssetFactoryType)) {
         sError = L"Not found asset Factory type: " + sAssetFactoryType;
         YLog::err(TAG, sError);
@@ -123,7 +123,7 @@ bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &s
     }
     YAssetFactoryType* pFactoryType = m_mapYAssetsFactoryTypes[sAssetFactoryType];
 
-    std::wstring sAssetFactoryId = jsonAssetFactory[L"asset-faсtory-id"].getString();
+    std::wstring sAssetFactoryId = jsonAssetFactory[L"asset-factory-id"].getString();
     if (m_mapYAssetsFactories.find(sAssetFactoryId) != m_mapYAssetsFactories.end()) {
         sError = L"Already exists asset-factory-id: " + sAssetFactoryId;
         YLog::err(TAG, sError);
@@ -132,7 +132,7 @@ bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &s
     m_mapYAssetsFactories[sAssetFactoryId] = pFactoryType->createFactory(
         sPath,
         sAssetFactoryId,
-        jsonAssetFactory[L"asset-faсtory-config"]
+        jsonAssetFactory[L"asset-factory-config"]
     );
 
     return true;

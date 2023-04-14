@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "logo1",
-    "asset-faсtory-type": "image",
-    "asset-faсtory-config": {
+    "asset-factory-id": "logo1",
+    "asset-factory-type": "image",
+    "asset-factory-config": {
         "image": "bootscreen-logo.png",
         "image-height": 500,
         "image-width": 500

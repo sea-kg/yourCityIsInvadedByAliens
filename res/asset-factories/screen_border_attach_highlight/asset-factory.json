@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "screen_border_attach_highlight",
-    "asset-faсtory-type": "screen-border-flash-highlight",
-    "asset-faсtory-config": {
+    "asset-factory-id": "screen_border_attach_highlight",
+    "asset-factory-type": "screen-border-flash-highlight",
+    "asset-factory-config": {
         "image": "screen-lighting-red.png",
         "image-height": 500,
         "image-width": 500,

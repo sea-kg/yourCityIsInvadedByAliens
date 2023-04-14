@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "biobomb1",
-    "asset-faсtory-type": "alien-weapon",
-    "asset-faсtory-config": {
+    "asset-factory-id": "biobomb1",
+    "asset-factory-type": "alien-weapon",
+    "asset-factory-config": {
         "sprite": "biobomb.png",
         "frame-height": 100,
         "frame-width": 100,

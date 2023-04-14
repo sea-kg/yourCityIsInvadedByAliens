@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "text1",
-    "asset-faсtory-type": "text",
-    "asset-faсtory-config": {
+    "asset-factory-id": "text1",
+    "asset-factory-type": "text",
+    "asset-factory-config": {
         "font-image": "font1.png",
         "letter-height": 50,
         "letter-width": 50,

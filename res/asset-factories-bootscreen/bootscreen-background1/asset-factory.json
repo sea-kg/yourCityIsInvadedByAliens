@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "bootscreen-background1",
-    "asset-faсtory-type": "background",
-    "asset-faсtory-config": {
+    "asset-factory-id": "bootscreen-background1",
+    "asset-factory-type": "background",
+    "asset-factory-config": {
         "image": "bootscreen-background1.png",
         "image-height": 720,
         "image-width": 1280

@@ -1,7 +1,7 @@
 {
-    "asset-faсtory-id": "progressbar1",
-    "asset-faсtory-type": "progressbar",
-    "asset-faсtory-config": {
+    "asset-factory-id": "progressbar1",
+    "asset-factory-type": "progressbar",
+    "asset-factory-config": {
         "progress-image": "progressbar1.png",
         "progress-width": 500,
         "progress-height": 50
