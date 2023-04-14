@@ -56,6 +56,9 @@ bool SettingsYService::findResourceDir() {
     std::vector<std::wstring> vPaths;
     vPaths.push_back(L"/usr/share/yourCityIsInvadedByAliens");
     vPaths.push_back(L"./res");
+    vPaths.push_back(L"../res");
+    vPaths.push_back(L"../../res");
+
     m_sResourceDir = L"";
     for (int i = 0; i < vPaths.size(); i++) {
         if (YCore::dirExists(vPaths[i])) {
