@@ -41,6 +41,7 @@ class IRenderWindow {
         virtual void addLoaderObject(RenderObject *pObject) = 0;
         virtual void addRocket(GameRocketState *pRocketState, RenderObject *pObject) = 0;
         virtual void addBioplast(GameBioplastState *pState) = 0;
+        virtual int getNumberOfObjects() = 0;
 };
 
 class RenderObject {

@@ -91,11 +91,11 @@ class MainController {
             const YJsonObject &jsonRoads
         );
 
-        void loadTransports(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonRoads
+        void generateTransports(
+            const std::wstring &sDefaultPath
         );
         
+        // TODO move to MapYService
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
         int m_nMapWidth;

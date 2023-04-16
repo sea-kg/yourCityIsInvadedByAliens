@@ -1,0 +1,10 @@
+{
+    "asset-factory-id": "tank1",
+    "asset-factory-type": "tank",
+    "asset-factory-config": {
+        "sprite-tank": "tank1.png",
+        "sprite-rocket": "tank1-rocket.png",
+        "frame-height": 50,
+        "frame-width": 50
+    }
+}

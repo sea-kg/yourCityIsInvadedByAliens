@@ -2,7 +2,6 @@
 #include "main_controller.h"
 #include <iostream>
 #include "render.h"
-#include "transports/render_tank0.h"
 #include "render_ui.h"
 #include "ai_tank0.h"
 #include "loader_controller.h"
@@ -259,13 +258,8 @@ bool MainController::loadGameDataWithProgressBar() {
     this->loadVegetations(sDefaultPath, jsonDefaultVegetations[L"vegetations"]);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText(L"Load transports...");
-    std::cout << "default/transports.json" << std::endl;
-    YJson jsonDefaultTransports(sDefaultPath + L"/transports.json");
-    if (jsonDefaultTransports.isParserFailed()) {
-        return false;
-    }
-    this->loadTransports(sDefaultPath, jsonDefaultTransports[L"transports"]);
+    m_pLoaderController->updateText(L"Generating transports...");
+    this->generateTransports(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
 
@@ -722,44 +716,26 @@ void MainController::loadVegetations(
     }
 }
 
-void MainController::loadTransports(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonTransports
+void MainController::generateTransports(
+    const std::wstring &sDefaultPath
 ) {
-    for (int i = 0; i < jsonTransports.length(); i++) {
-        const YJsonObject &item = jsonTransports[i];
-        std::wstring sSpritePath = sDefaultPath + L"/" + item[L"sprite"].getString();
-        std::wstring sSpriteRocketPath = sDefaultPath + L"/" + item[L"sprite-rocket"].getString();
-        if (!YCore::fileExists(sSpritePath)) {
-            YLog::throw_err(TAG, L"File '" + sSpritePath + L"' not found");
-        }
-        SDL_Texture* pSprite = m_pWindow->getRenderWindow()->loadTexture(sSpritePath);
+    auto pAssets = findYService<YAssetsService>();
+    auto pMap = findYService<MapYService>();
+    
+    int nGenerated = 0;
+    int nMaxGenerated = 100;
 
-        if (!YCore::fileExists(sSpriteRocketPath)) {
-            YLog::throw_err(TAG, L"File '" + sSpriteRocketPath + L"' not found");
-        }
-        SDL_Texture* pSpriteRocket = m_pWindow->getRenderWindow()->loadTexture(sSpriteRocketPath);
-
-        int nSpriteWidth = item[L"sprite-width"].getNumber();
-        int nSpriteHeight = item[L"sprite-height"].getNumber();
-        const YJsonObject &fillList = item[L"fill"];
-
-        for (int n = 0; n < fillList.length(); n++) {
-            const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem[L"x"].getNumber();
-            int nY = roadItem[L"y"].getNumber();
-
+    while (nGenerated < nMaxGenerated) {
+        int nX = std::rand() % m_nMapWidth;
+        int nY = std::rand() % m_nMapHeight;
+        if (pMap->canDriveToPoint(nX, nY)) {
+            nGenerated++;
             GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);
-
-            m_pWindow->getRenderWindow()->addTransportsObject(new RenderTank0(
-                pTankState,
-                pSprite,
-                pSpriteRocket,
-                nSpriteWidth,
-                nSpriteHeight
-            ));
-            m_pMainAiThread->addAiObject(pAiTank0);
+            auto *pTank = pAssets->createAsset<YAssetTank>(L"tank1");
+            pTank->setGameStateTank(pTankState);
+            m_pWindow->getRenderWindow()->addTransportsObject(pTank);
+            m_pMainAiThread->addAiObject(pAiTank0);        
         }
     }
 }

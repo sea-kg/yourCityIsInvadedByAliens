@@ -10,6 +10,7 @@ class RanderWindowLayer {
         void drawObjects(const GameState& state, SDL_Renderer *pRenderer);
         void modifyObjects(const GameState& state, IRenderWindow *pWindow);
         void sortObjectsByPositionZ();
+        int getNumberOfObjects();
 
     private:
         std::wstring m_sName;
@@ -36,6 +37,8 @@ class RenderWindow : public IRenderWindow {
         
         virtual void addRocket(GameRocketState *pState, RenderObject *pObject) override;
         virtual void addBioplast(GameBioplastState *pState) override;
+        virtual int getNumberOfObjects() override;
+
         bool isFullscreen();
         bool toggleFullscreen();
         void removeObject(RenderObject *pObject);
@@ -77,4 +80,6 @@ class RenderWindow : public IRenderWindow {
         int m_nLayerPanels;
         int m_nLayerScreenEffects;
         int m_nLayerLoader;
+
+        int m_nDebugLastDrawObjects;
 };

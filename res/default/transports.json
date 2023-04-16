@@ -1,10 +1,6 @@
 {
     "transports": [
         {
-            "sprite": "sprites/tank0.png",
-            "sprite-rocket": "sprites/tank0-rocket.png",
-            "sprite-width": 50,
-            "sprite-height": 50,
             "fill": [
                 {
                     "x": 1400,

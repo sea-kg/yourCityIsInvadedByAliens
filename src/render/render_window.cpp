@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "ycore.h"
 #include "render_window.h"
-#include "transports/render_tank0.h"
 #include "render_alienship.h"
 
 // ---------------------------------------------------------------------
@@ -76,6 +75,10 @@ void RanderWindowLayer::sortObjectsByPositionZ() {
     }
 }
 
+int RanderWindowLayer::getNumberOfObjects() {
+    return m_vObjects.size();
+}
+
 // ---------------------------------------------------------------------
 // RenderWindow
 
@@ -114,6 +117,7 @@ RenderWindow::RenderWindow(const std::wstring &sTitle, int w, int h) {
     // if (SDL_GetDesktopDisplayMode(0, &m_displayMode)) {
     //     printf("Error getting desktop display mode\n");
     // }
+    m_nDebugLastDrawObjects = 0;
 }
 
 RenderWindow::~RenderWindow() {
@@ -168,6 +172,14 @@ void RenderWindow::addScreenEffectsObject(RenderObject *pObject) {
 
 void RenderWindow::addLoaderObject(RenderObject *pObject) {
     m_vLayers[m_nLayerLoader]->addObject(pObject);
+}
+
+int RenderWindow::getNumberOfObjects() {
+    int nRet = 0;
+    for (int i = 0; i < m_vLayers.size(); ++i) {
+        nRet += m_vLayers[i]->getNumberOfObjects();
+    }
+    return nRet;
 }
 
 void RenderWindow::addRocket(GameRocketState *pState, RenderObject *pObject) {
@@ -242,7 +254,13 @@ void RenderWindow::drawObjects(const GameState& state) {
     for (int i = 0; i < m_vLayers.size(); i++) {
         m_vLayers[i]->drawObjects(state, m_pRenderer);
     }
-
+    // int nNumberDrawObjctes = this->getNumberOfObjects();
+    // if (m_nDebugLastDrawObjects != nNumberDrawObjctes) {
+    //     // 3016 on start
+    //     // YLog::info(L"123", std::to_wstring(nNumberDrawObjctes));
+    //     m_nDebugLastDrawObjects = nNumberDrawObjctes;
+    // }
+    
     // finish
     SDL_RenderPresent(m_pRenderer);
 }
