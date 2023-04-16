@@ -1,20 +1,27 @@
-
 #pragma once
-#include "render.h"
-#include "game_tank0_state.h"
-#include "game_rocket_state.h"
 
-class RenderTank0 : public RenderObject {
+#include <yassets_service.h>
+#include <game_tank0_state.h>
 
+class YAssetTank : public YAsset, public RenderObject {
     public:
-        RenderTank0(
-            GameTank0State *pTank0State,
-            SDL_Texture* pTexture,
-            SDL_Texture* pTexRocket,
-            int nTextureTileWidth,
-            int nTextureTileHeight,
-            int nPositionZ = 0
+        YAssetTank(
+            YAssetsService *pAssetsService,
+            SDL_Texture *pTextureTank,
+            SDL_Texture *pTextureRocket,
+            int nFrameWidth,
+            int nFrameHeight
         );
+
+        // void setAbsolutePosition(bool bAbsolutePosition);
+        // void setPosition(int nX, int nY);
+
+        void setGameStateTank(GameTank0State *pTank0State);
+
+        // YAsset
+        virtual void setOrderZ(int nOrder) override;
+
+        // RenderObject
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
@@ -32,6 +39,9 @@ class RenderTank0 : public RenderObject {
         SDL_Texture* m_pTexture;
         SDL_Texture* m_pTextureRocket;
 };
+
+
+YASSET_DECLARE_INLINE(YAssetTank)
 
 class RenderTank0Rocket : public RenderObject {
 
@@ -65,3 +75,4 @@ class RenderTank0Rocket : public RenderObject {
         SDL_Rect m_currentFrame;
         SDL_Texture* m_pTexture;
 };
+

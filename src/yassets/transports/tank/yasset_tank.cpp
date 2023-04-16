@@ -1,23 +1,22 @@
-
-
-#include "render_tank0.h"
+#include "yasset_tank.h"
+#include <render.h>
 
 // ---------------------------------------------------------------------
-// RenderTank0
+// YAssetTank
 
-RenderTank0::RenderTank0(
-    GameTank0State *pTank0State,
-    SDL_Texture* pTex,
-    SDL_Texture* pTexRocket,
-    int nTextureTileWidth,
-    int nTextureTileHeight,
-    int nPositionZ
-) : RenderObject(nPositionZ) {
-    m_pTank0State = pTank0State;
-    m_pTexture = pTex;
-    m_pTextureRocket = pTexRocket;
-    m_nTextureTileWidth = nTextureTileWidth;
-    m_nTextureTileHeight = nTextureTileHeight;
+YAssetTank::YAssetTank(
+    YAssetsService *pAssetsService,
+    SDL_Texture *pTextureTank,
+    SDL_Texture *pTextureRocket,
+    int nFrameWidth,
+    int nFrameHeight
+)
+: YAsset(pAssetsService), RenderObject(1000) {
+    // m_pTank0State = pTank0State;
+    m_pTexture = pTextureTank;
+    m_pTextureRocket = pTextureRocket;
+    m_nTextureTileWidth = nFrameWidth;
+    m_nTextureTileHeight = nFrameHeight;
 
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
@@ -26,7 +25,15 @@ RenderTank0::RenderTank0(
     m_nPrevPosition = 0;
 }
 
-void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
+void YAssetTank::setGameStateTank(GameTank0State *pTank0State) {
+    m_pTank0State = pTank0State;
+}
+
+void YAssetTank::setOrderZ(int nOrder) {
+    m_nPositionZ = nOrder;
+}
+
+void YAssetTank::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     long m_nSpeedAnimation = 200;
 
     long position = state.getElapsedTime() / m_nSpeedAnimation;
@@ -136,14 +143,14 @@ void RenderTank0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     }
 };
 
-bool RenderTank0::canDraw(const GameState& state) {
+bool YAssetTank::canDraw(const GameState& state) {
     return
         m_coordRender.isInsideRect(state.getWindowRect())
         || m_coordRenderEnd.isInsideRect(state.getWindowRect())
     ;
 }
 
-void RenderTank0::draw(SDL_Renderer* renderer) {
+void YAssetTank::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
 
@@ -155,6 +162,9 @@ void RenderTank0::draw(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
 };
+
+
+
 
 // ---------------------------------------------------------------------
 // RenderTank0Rocket

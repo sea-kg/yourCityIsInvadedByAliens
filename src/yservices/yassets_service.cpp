@@ -34,7 +34,7 @@ YAssetFactory::YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *
 SDL_Texture *YAssetFactory::loadTexture(const std::wstring &sImagePath) {
     SDL_Texture *pTexture = m_pAssetsService->getRenderWindow()->loadTexture(sImagePath);
     if (pTexture == NULL) {
-        YLog::throw_err(TAG, L"Could not load texture");
+        YLog::throw_err(TAG, L"Could not load texture by path {" + sImagePath + L"}");
     }
     return pTexture;
 }

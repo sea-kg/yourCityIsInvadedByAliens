@@ -46,6 +46,8 @@ list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
 
 # yassets
+list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yasset_tank.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yassets_factory_type_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/backgrounds/yasset_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/backgrounds/yassets_factory_type_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/images/yasset_image.cpp")
@@ -108,8 +110,6 @@ list (APPEND WSJCPP_SOURCES "src/render/roads/render_road0.h")
 list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/vegetations/render_vegetation_simple.h")
 
-# renders / transports
-list (APPEND WSJCPP_SOURCES "src/render/transports/render_tank0.cpp")
 
 ## renders / ui
 list (APPEND WSJCPP_SOURCES "src/render/ui/render_button_music_on_off.cpp")
