@@ -29,7 +29,7 @@ SOFTWARE.
 #include <ctime>
 #include <chrono>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 // ---------------------------------------------------------------------
 // SimpleNeuralNetwork
