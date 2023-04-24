@@ -186,6 +186,7 @@ CoordXY MainController::getCoordCenter() {
 }
 
 bool MainController::loadGameDataWithProgressBar() {
+    auto pMap = findYService<MapYService>();
     m_pLoaderController->init();
     m_pLoaderController->setProgressMax(10);
     m_pLoaderController->setProgressCurrent(0);
@@ -206,6 +207,9 @@ bool MainController::loadGameDataWithProgressBar() {
         m_nMapWidth,
         m_nMapHeight
     );
+    pMap->setMapSize(m_nMapWidth, m_nMapHeight);
+    
+
     m_pGameState->updatePlayerStartPosition(CoordXY(
         jsonDefaultMap[L"player-start-x"].getNumber(),
         jsonDefaultMap[L"player-start-y"].getNumber()
@@ -311,6 +315,8 @@ bool MainController::loadGameDataWithProgressBar() {
             5000
         )
     );
+    m_pMinimap = pAssets->createAsset<YAssetMinimap>(L"minimap1");
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pMinimap);
 
 
     // text

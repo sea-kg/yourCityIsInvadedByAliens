@@ -24,6 +24,23 @@ bool MapRoad::hasPoint(int x, int y) {
     ;
 }
 
+int MapRoad::getX() const {
+    return m_nX;
+}
+
+int MapRoad::getY() const {
+    return m_nY;
+}
+
+int MapRoad::getWidth() const {
+    return m_nWidth;
+}
+
+int MapRoad::getHeight() const {
+    return m_nHeight;
+}
+
+
 // ---------------------------------------------------------------------
 // MapYService
 
@@ -49,6 +66,10 @@ void MapYService::addRoad(const MapRoad &road) {
     m_vRoads.push_back(road);
 }
 
+const std::vector<MapRoad> &MapYService::getRoads() {
+    return m_vRoads;
+}
+
 bool MapYService::canDriveToPoint(int x, int y) {
     // TODO need optimization
     // YLog::info(TAG, std::to_wstring(m_vRoads.size()));
@@ -58,4 +79,17 @@ bool MapYService::canDriveToPoint(int x, int y) {
         }
     }
     return false;
+}
+
+void MapYService::setMapSize(int nMapWidth, int nMapHeight) {
+    m_nMapWidth = nMapWidth;
+    m_nMapHeight = nMapHeight;
+}
+
+int MapYService::getMapWidth() const {
+    return m_nMapWidth;
+}
+
+int MapYService::getMapHeight() const {
+    return m_nMapHeight;
 }

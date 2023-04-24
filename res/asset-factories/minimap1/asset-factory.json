@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "minimap1",
+    "asset-factory-type": "minimap",
+    "asset-factory-config": {
+        "background-minimap": "background-minimap1.png",
+        "image-height": 200,
+        "image-width": 200
+    }
+} 

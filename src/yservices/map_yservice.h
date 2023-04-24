@@ -9,6 +9,10 @@ class MapRoad {
     public:
         MapRoad(int x, int y, int w, int h);
         bool hasPoint(int x, int y);
+        int getX() const;
+        int getY() const;
+        int getWidth() const;
+        int getHeight() const;
     private:
         int m_nX;
         int m_nY;
@@ -27,9 +31,16 @@ class MapYService : public YServiceBase {
         virtual bool deinit() override;
 
         void addRoad(const MapRoad &road);
+        const std::vector<MapRoad> &getRoads();
         bool canDriveToPoint(int x, int y);
+        void setMapSize(int nMapWidth, int nMapHeight);
+        int getMapWidth() const;
+        int getMapHeight() const;
+
     private:
         std::wstring TAG;
         
         std::vector<MapRoad> m_vRoads;
+        int m_nMapWidth;
+        int m_nMapHeight;
 };

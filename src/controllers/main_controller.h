@@ -119,6 +119,7 @@ class MainController {
 
         // TODO mustbe chnaged from GameState?
         YAssetScreenBorderFlashHighlight *m_pScreenAttack;
+        YAssetMinimap *m_pMinimap;
 
         long m_nFpsNumberOfFrames;
         long m_nFpsStartTime;

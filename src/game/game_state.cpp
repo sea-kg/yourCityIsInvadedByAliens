@@ -113,6 +113,10 @@ void GameState::updatePlayerStartPosition(const CoordXY &playerStartPosition) {
     m_pAlienShipState->updatePosition(playerStartPosition);
 }
 
+const CoordXY &GameState::getPlayerPosition() const {
+    return m_pAlienShipState->getPosition();
+}
+
 void GameState::setMinPoint(const CoordXY &p) {
     m_minPoint = p;
 }

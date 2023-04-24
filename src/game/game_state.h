@@ -43,6 +43,7 @@ class GameState {
 
         GameAlienShipState *getAlienShipState();
         void updatePlayerStartPosition(const CoordXY &playerStartPosition);
+        const CoordXY &getPlayerPosition() const;
 
     private:
         bool m_bMouseCaptured;
