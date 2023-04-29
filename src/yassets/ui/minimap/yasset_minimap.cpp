@@ -41,7 +41,7 @@ YAssetMinimap::YAssetMinimap(
     m_nPrevPlayerPositionX = -1;
     m_nPrevPlayerPositionY = -1;
     m_nBufferPixelsSize = m_nWidth * m_nHeight; // * sizeof(Uint32);
-    m_pPlayerPositionPixelsLayer = new Uint32[m_nBufferPixelsSize];
+    m_pDynamicObjectsPixels = new Uint32[m_nBufferPixelsSize];
     m_pBackgroundMinimapPixels = new Uint32[m_nBufferPixelsSize];
     m_nShiftToLeftByX = 7;
 
@@ -106,11 +106,11 @@ void YAssetMinimap::redrawBackground() {
         m_pBackgroundMinimapPixels[i] = 0xFF009933;
     }
 
-    const std::vector<MapRoad> &vRoads = m_pMapService->getRoads();
+    const std::vector<MapRect> &vRoads = m_pMapService->getRoads();
     YLog::info(TAG, L"Roads: " + std::to_wstring(vRoads.size()));
 
     for (int i = 0; i < vRoads.size(); i++) {
-        const MapRoad &road = vRoads[i];
+        const MapRect &road = vRoads[i];
         int x0 = road.getX() * m_nWidthK;
         int y0 = road.getY() * m_nHeightK;
         int x1 = (road.getX() + road.getWidth()) * m_nWidthK;
@@ -128,23 +128,48 @@ void YAssetMinimap::redrawBackground() {
 void YAssetMinimap::redrawPlayerPosition() {
     // https://dzone.com/articles/sdl2-pixel-drawing
 
-    memcpy(m_pPlayerPositionPixelsLayer, m_pBackgroundMinimapPixels, m_nBufferPixelsSize * sizeof(Uint32));
+    memcpy(m_pDynamicObjectsPixels, m_pBackgroundMinimapPixels, m_nBufferPixelsSize * sizeof(Uint32));
 
-    // memset(m_pPlayerPositionPixelsLayer, 0xFF000000, m_nPlayerPositionPixelsLayerSize);
     if (m_nPrevPlayerPositionX >= 0 && m_nPrevPlayerPositionY >= 0) {
         int p = m_nWidth * m_nPrevPlayerPositionY + (m_nPrevPlayerPositionX - m_nShiftToLeftByX);
         // YLog::info(TAG, L"New player position " + std::to_wstring(i));
         // argb
-        m_pPlayerPositionPixelsLayer[p - m_nWidth - 1] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p - m_nWidth] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p - m_nWidth + 1] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p - 1] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p + 1] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p + m_nWidth - 1] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p + m_nWidth] = 0xFFFFFFFF;
-        m_pPlayerPositionPixelsLayer[p + m_nWidth + 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p - m_nWidth - 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p - m_nWidth] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p - m_nWidth + 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p - 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p + 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p + m_nWidth - 1] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p + m_nWidth] = 0xFFFFFFFF;
+        m_pDynamicObjectsPixels[p + m_nWidth + 1] = 0xFFFFFFFF;
     }
+
+    const std::vector<MapRect> &vBerries = m_pMapService->getAlienBerries();
+    for (int i = 0; i < vBerries.size(); i++) {
+        const MapRect &berry = vBerries[i];
+        int x0 = berry.getX() * m_nWidthK;
+        int y0 = berry.getY() * m_nHeightK;
+
+        int p = m_nWidth * y0 + (x0 - m_nShiftToLeftByX);
+        const int color = 0xFF36d9ff;
+        m_pDynamicObjectsPixels[p - 2*m_nWidth - 2] = color;
+        m_pDynamicObjectsPixels[p - 2*m_nWidth - 1] = color;
+        m_pDynamicObjectsPixels[p - 2*m_nWidth] = color;
+        m_pDynamicObjectsPixels[p - 2*m_nWidth + 1] = color;
+        m_pDynamicObjectsPixels[p - 2*m_nWidth + 2] = color;
+        m_pDynamicObjectsPixels[p - m_nWidth - 2] = color;
+        m_pDynamicObjectsPixels[p - 2] = color;
+
+        m_pDynamicObjectsPixels[p + 2] = color;
+        m_pDynamicObjectsPixels[p + m_nWidth + 2] = color;
+        m_pDynamicObjectsPixels[p + 2*m_nWidth - 1] = color;
+        m_pDynamicObjectsPixels[p + 2*m_nWidth - 2] = color;
+        m_pDynamicObjectsPixels[p + 2*m_nWidth] = color;
+        m_pDynamicObjectsPixels[p + 2*m_nWidth + 1] = color;
+        m_pDynamicObjectsPixels[p + 2*m_nWidth + 2] = color;
+    }
+
     int nPitch = m_nWidth * sizeof(Uint32);
-    SDL_UpdateTexture(m_pTexturePlayer, nullptr, m_pPlayerPositionPixelsLayer, nPitch);
+    SDL_UpdateTexture(m_pTexturePlayer, nullptr, m_pDynamicObjectsPixels, nPitch);
 }

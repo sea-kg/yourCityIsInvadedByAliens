@@ -3,11 +3,11 @@
 #include "yservices.h"
 
 // ---------------------------------------------------------------------
-// MapRoad
+// MapRect
 
-class MapRoad {
+class MapRect {
     public:
-        MapRoad(int x, int y, int w, int h);
+        MapRect(int x, int y, int w, int h);
         bool hasPoint(int x, int y);
         int getX() const;
         int getY() const;
@@ -30,9 +30,11 @@ class MapYService : public YServiceBase {
         virtual bool init() override;
         virtual bool deinit() override;
 
-        void addRoad(const MapRoad &road);
-        const std::vector<MapRoad> &getRoads();
+        void addRoad(const MapRect &road);
+        const std::vector<MapRect> &getRoads();
         bool canDriveToPoint(int x, int y);
+        void addAlienBerry(const MapRect &berry);
+        const std::vector<MapRect> &getAlienBerries();
         void setMapSize(int nMapWidth, int nMapHeight);
         int getMapWidth() const;
         int getMapHeight() const;
@@ -40,7 +42,8 @@ class MapYService : public YServiceBase {
     private:
         std::wstring TAG;
         
-        std::vector<MapRoad> m_vRoads;
+        std::vector<MapRect> m_vRoads;
+        std::vector<MapRect> m_vAlienBerries;
         int m_nMapWidth;
         int m_nMapHeight;
 };

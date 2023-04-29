@@ -188,7 +188,7 @@ CoordXY MainController::getCoordCenter() {
 bool MainController::loadGameDataWithProgressBar() {
     auto pMap = findYService<MapYService>();
     m_pLoaderController->init();
-    m_pLoaderController->setProgressMax(10);
+    m_pLoaderController->setProgressMax(12);
     m_pLoaderController->setProgressCurrent(0);
 
     m_pLoaderController->updateText(L"Loading... default map");
@@ -263,14 +263,16 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Generating transports...");
-    this->generateTransports(sDefaultPath);
+    this->generateTransports();
     m_pLoaderController->addToProgressCurrent(1);
 
+    // generate alien-berries
+    m_pLoaderController->updateText(L"Generating alien-berries...");
+    this->generateAlienBerries(1);
+    m_pLoaderController->addToProgressCurrent(1);
 
-    // sDefaultPath
     // default
     m_pLoaderController->updateText(L"Loading... textures");
-
     m_pWindow->getRenderWindow()->loadTextureBioplast(m_pSettings->getResourceDir() + L"/asset-factories/bioplasm1/bioplasm.png");
 
     // app
@@ -605,7 +607,7 @@ void MainController::loadRoads(
             const YJsonObject &roadItem = fillList[n];
             int nX = roadItem[L"x"].getNumber();
             int nY = roadItem[L"y"].getNumber();
-            pMap->addRoad(MapRoad(nX, nY, nTextureWidth, nTextureHeight));
+            pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
 
             std::wstring sRoadPart = roadItem[L"road-part"].getString();
             m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
@@ -722,9 +724,7 @@ void MainController::loadVegetations(
     }
 }
 
-void MainController::generateTransports(
-    const std::wstring &sDefaultPath
-) {
+void MainController::generateTransports() {
     auto pAssets = findYService<YAssetsService>();
     auto pMap = findYService<MapYService>();
     
@@ -743,5 +743,23 @@ void MainController::generateTransports(
             m_pWindow->getRenderWindow()->addTransportsObject(pTank);
             m_pMainAiThread->addAiObject(pAiTank0);        
         }
+    }
+}
+
+void MainController::generateAlienBerries(int nMaxGenerate) {
+    auto pAssets = findYService<YAssetsService>();
+    auto pMap = findYService<MapYService>();
+
+    int nGenerated = 0;
+    while (nGenerated < nMaxGenerate) {
+        int nX = std::rand() % (m_nMapWidth - 200) + 100;
+        int nY = std::rand() % (m_nMapHeight - 200) + 100;
+        auto *pBerry = pAssets->createAsset<YAssetAlienBerry>(L"berry1");
+        pBerry->setPosition(nX, nY);
+        YLog::info(TAG, L"Berry. X=" + std::to_wstring(nX) + L", Y=" + std::to_wstring(nY));
+        // TODO
+        m_pWindow->getRenderWindow()->addVegetationObject(pBerry);
+        pMap->addAlienBerry(MapRect(nX, nY, pBerry->getFrameWidth(), pBerry->getFrameHeight()));
+        nGenerated++;
     }
 }

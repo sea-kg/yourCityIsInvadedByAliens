@@ -1,0 +1,10 @@
+{
+    "asset-factory-id": "berry1",
+    "asset-factory-type": "alien-berry",
+    "asset-factory-config": {
+        "sprite": "berry1.png",
+        "frame-height": 100,
+        "frame-width": 100,
+        "frame-number": 10
+    }
+}

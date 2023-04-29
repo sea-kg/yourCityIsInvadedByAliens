@@ -41,7 +41,7 @@ class YAssetMinimap : public YAsset, public RenderObject {
         MapYService *m_pMapService;
         
         Uint32* m_pBackgroundMinimapPixels;
-        Uint32* m_pPlayerPositionPixelsLayer;
+        Uint32* m_pDynamicObjectsPixels;
         int m_nBufferPixelsSize;
         int m_nPrevPlayerPositionX;
         int m_nPrevPlayerPositionY;

@@ -12,6 +12,7 @@ LoaderController::LoaderController(
     m_pGameState = pGameState;
     m_nProgressCurrent = 0;
     m_nProgressMax = 100;
+    TAG = L"LoaderController";
 }
 
 void LoaderController::init() {
@@ -80,14 +81,11 @@ void LoaderController::setProgressCurrent(int nVal) {
     this->draw();
 };
 
-void LoaderController::addToProgressMax(int nVal) {
-    m_nProgressMax += nVal;
-    m_pAssetProgressBar->setProgressMax(m_nProgressMax);
-    this->draw();
-};
-
 void LoaderController::addToProgressCurrent(int nVal) {
     m_nProgressCurrent += nVal;
+    if (m_nProgressCurrent > m_nProgressMax) {
+        YLog::err(TAG, L"addToProgressCurrent added more then progress max: " + std::to_wstring(m_nProgressCurrent) + L", max: " + std::to_wstring(m_nProgressMax));
+    }
     m_pAssetProgressBar->setProgressCurrent(m_nProgressCurrent);
     this->draw();
 };

@@ -6,16 +6,16 @@
 
 
 // ---------------------------------------------------------------------
-// MapRoad
+// MapRect
 
-MapRoad::MapRoad(int x, int y, int w, int h) {
+MapRect::MapRect(int x, int y, int w, int h) {
     m_nX = x;
     m_nY = y;
     m_nWidth = w;
     m_nHeight = h;
 };
 
-bool MapRoad::hasPoint(int x, int y) {
+bool MapRect::hasPoint(int x, int y) {
     return
         (x >= m_nX)
         && (x <= (m_nX + m_nWidth))
@@ -24,19 +24,19 @@ bool MapRoad::hasPoint(int x, int y) {
     ;
 }
 
-int MapRoad::getX() const {
+int MapRect::getX() const {
     return m_nX;
 }
 
-int MapRoad::getY() const {
+int MapRect::getY() const {
     return m_nY;
 }
 
-int MapRoad::getWidth() const {
+int MapRect::getWidth() const {
     return m_nWidth;
 }
 
-int MapRoad::getHeight() const {
+int MapRect::getHeight() const {
     return m_nHeight;
 }
 
@@ -62,11 +62,11 @@ bool MapYService::deinit() {
     return true;
 }
 
-void MapYService::addRoad(const MapRoad &road) {
+void MapYService::addRoad(const MapRect &road) {
     m_vRoads.push_back(road);
 }
 
-const std::vector<MapRoad> &MapYService::getRoads() {
+const std::vector<MapRect> &MapYService::getRoads() {
     return m_vRoads;
 }
 
@@ -79,6 +79,14 @@ bool MapYService::canDriveToPoint(int x, int y) {
         }
     }
     return false;
+}
+
+void MapYService::addAlienBerry(const MapRect &berry) {
+    m_vAlienBerries.push_back(berry);
+}
+
+const std::vector<MapRect> &MapYService::getAlienBerries() {
+    return m_vAlienBerries;
 }
 
 void MapYService::setMapSize(int nMapWidth, int nMapHeight) {

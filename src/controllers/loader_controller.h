@@ -14,11 +14,11 @@ class LoaderController {
         void updateText(const std::wstring &sNewText);
         void setProgressMax(int nVal);
         void setProgressCurrent(int nVal);
-        void addToProgressMax(int nVal);
         void addToProgressCurrent(int nVal);
         void draw();
 
     private:
+        std::wstring TAG; 
         void addObject(RenderObject *pObject);
         GameState *m_pGameState;
 

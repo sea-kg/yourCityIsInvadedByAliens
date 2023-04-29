@@ -91,9 +91,8 @@ class MainController {
             const YJsonObject &jsonRoads
         );
 
-        void generateTransports(
-            const std::wstring &sDefaultPath
-        );
+        void generateTransports();
+        void generateAlienBerries(int nMaxGenerate);
         
         // TODO move to MapYService
         CoordXY m_minPointMap;

@@ -46,6 +46,8 @@ list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
 
 # yassets
+list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yasset_alien_berry.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yassets_factory_type_alien_berry.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yasset_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yassets_factory_type_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/ui/backgrounds/yasset_background.cpp")
