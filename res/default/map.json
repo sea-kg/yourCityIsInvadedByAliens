@@ -16,17 +16,6 @@
                 "end-x": 5000,
                 "end-y": 5000
             }
-        },
-        {
-            "texture": "textures/background-alien.png",
-            "width": 500,
-            "height": 500,
-            "fill-region": {
-                "start-x": 4000,
-                "start-y": 4000,
-                "end-x": 5000,
-                "end-y": 5000
-            }
         }
     ]
 }
