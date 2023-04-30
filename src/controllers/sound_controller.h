@@ -13,6 +13,8 @@ class SoundController {
         void update();
 
         void playAttacked();
+        void playTakeBerry();
+        void stopTakeBerry();
 
     private:
         std::wstring TAG;
@@ -27,4 +29,7 @@ class SoundController {
         
         std::wstring m_sAttackedPath;
         Mix_Chunk *m_pAttackedSoundEffect;
+        
+        std::wstring m_sTakeBerryPath;
+        Mix_Chunk *m_pTakeBerrySoundEffect;
 };

@@ -35,6 +35,7 @@ class MapYService : public YServiceBase {
         bool canDriveToPoint(int x, int y);
         void addAlienBerry(const MapRect &berry);
         const std::vector<MapRect> &getAlienBerries();
+        int findAlienBerryIndex(int x, int y);
         void setMapSize(int nMapWidth, int nMapHeight);
         int getMapWidth() const;
         int getMapHeight() const;

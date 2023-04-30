@@ -56,6 +56,7 @@ class MainController {
         std::wstring TAG;
         SettingsYService *m_pSettings;
         WindowYService *m_pWindow;
+        MapYService *m_pMap;
 
         void loadBackgrounds(
             const std::wstring &sDefaultPath,
@@ -131,4 +132,5 @@ class MainController {
         bool m_bGameLogicThreadStop;
         std::thread *m_pGameLogicThread;
         std::mutex m_mutexGameLogicThread;
+        int m_nCurrentTakeAlienBerry;
 };

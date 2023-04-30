@@ -21,6 +21,8 @@ SoundController::SoundController(
     
     m_pAttackedSoundEffect = nullptr;
     m_sAttackedPath = sResourceDir + L"/default/soundeffects/attacked.wav";
+    m_sTakeBerryPath = sResourceDir + L"/default/soundeffects/take_berry.wav";
+    
 }
 
 SoundController::~SoundController() {
@@ -58,6 +60,14 @@ void SoundController::init() {
     YLog::info(TAG, L"Trying load soundeffects from '" + m_sAttackedPath + L"'");
     m_pAttackedSoundEffect = Mix_LoadWAV(YCore::ws2s(m_sAttackedPath).c_str());
     if (!m_pAttackedSoundEffect) {
+        // YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'")
+        std::cout << "ERROR: " << Mix_GetError() << std::endl;
+        // this might be a critical error...
+    }
+
+    YLog::info(TAG, L"Trying load soundeffects from '" + m_sTakeBerryPath + L"'");
+    m_pTakeBerrySoundEffect = Mix_LoadWAV(YCore::ws2s(m_sTakeBerryPath).c_str());
+    if (!m_pTakeBerrySoundEffect) {
         // YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'")
         std::cout << "ERROR: " << Mix_GetError() << std::endl;
         // this might be a critical error...
@@ -108,4 +118,12 @@ void SoundController::update() {
 
 void SoundController::playAttacked() {
     Mix_PlayChannel(2, m_pAttackedSoundEffect, 0);
+}
+
+void SoundController::playTakeBerry() {
+    Mix_PlayChannel(3, m_pTakeBerrySoundEffect, 0);
+}
+
+void SoundController::stopTakeBerry() {
+    Mix_HaltChannel(3);
 }

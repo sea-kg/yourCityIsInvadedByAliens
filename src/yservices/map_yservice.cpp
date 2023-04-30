@@ -89,6 +89,15 @@ const std::vector<MapRect> &MapYService::getAlienBerries() {
     return m_vAlienBerries;
 }
 
+int MapYService::findAlienBerryIndex(int x, int y) {
+    for (int i = 0; i < m_vAlienBerries.size(); i++) {
+        if (m_vAlienBerries[i].hasPoint(x,y)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void MapYService::setMapSize(int nMapWidth, int nMapHeight) {
     m_nMapWidth = nMapWidth;
     m_nMapHeight = nMapHeight;

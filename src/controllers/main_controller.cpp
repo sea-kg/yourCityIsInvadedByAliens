@@ -31,6 +31,8 @@ MainController::MainController() {
     m_nCurrentState = MainState::LOADING;
     m_pSettings = findYService<SettingsYService>();
     m_pWindow = findYService<WindowYService>();
+    m_pMap = findYService<MapYService>();
+    m_nCurrentTakeAlienBerry = -1;
 }
 
 MainController::~MainController() {
@@ -186,7 +188,6 @@ CoordXY MainController::getCoordCenter() {
 }
 
 bool MainController::loadGameDataWithProgressBar() {
-    auto pMap = findYService<MapYService>();
     m_pLoaderController->init();
     m_pLoaderController->setProgressMax(12);
     m_pLoaderController->setProgressCurrent(0);
@@ -207,7 +208,7 @@ bool MainController::loadGameDataWithProgressBar() {
         m_nMapWidth,
         m_nMapHeight
     );
-    pMap->setMapSize(m_nMapWidth, m_nMapHeight);
+    m_pMap->setMapSize(m_nMapWidth, m_nMapHeight);
     
 
     m_pGameState->updatePlayerStartPosition(CoordXY(
@@ -463,6 +464,18 @@ void MainController::updatePlayerCoord() {
     std::wstring sCoordPlayer = L"X=" + std::to_wstring(playerCoord.x())
             + L"\nY=" + std::to_wstring(playerCoord.y());
     m_pCoordText->setText(sCoordPlayer);
+
+    int nBerryIndex = m_pMap->findAlienBerryIndex(playerCoord.x(), playerCoord.y());
+
+    if (nBerryIndex != m_nCurrentTakeAlienBerry) {
+        // YLog::info(TAG, L"nBerryIndex=" + std::to_wstring(nBerryIndex));
+        m_nCurrentTakeAlienBerry = nBerryIndex;
+        if (m_nCurrentTakeAlienBerry < 0) {
+            m_pSoundController->stopTakeBerry();
+        } else {
+            m_pSoundController->playTakeBerry();
+        }
+    }
 }
 
 void MainController::startFpsCounting() {
@@ -591,7 +604,6 @@ void MainController::loadRoads(
     const std::wstring &sDefaultPath,
     const YJsonObject &jsonRoads
 ) {
-    auto pMap = findYService<MapYService>();
     for (int i = 0; i < jsonRoads.length(); i++) {
         const YJsonObject &item = jsonRoads[i];
         std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
@@ -607,7 +619,7 @@ void MainController::loadRoads(
             const YJsonObject &roadItem = fillList[n];
             int nX = roadItem[L"x"].getNumber();
             int nY = roadItem[L"y"].getNumber();
-            pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
+            m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
 
             std::wstring sRoadPart = roadItem[L"road-part"].getString();
             m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
@@ -726,7 +738,6 @@ void MainController::loadVegetations(
 
 void MainController::generateTransports() {
     auto pAssets = findYService<YAssetsService>();
-    auto pMap = findYService<MapYService>();
     
     int nGenerated = 0;
     int nMaxGenerated = 100;
@@ -734,7 +745,7 @@ void MainController::generateTransports() {
     while (nGenerated < nMaxGenerated) {
         int nX = std::rand() % m_nMapWidth;
         int nY = std::rand() % m_nMapHeight;
-        if (pMap->canDriveToPoint(nX, nY)) {
+        if (m_pMap->canDriveToPoint(nX, nY)) {
             nGenerated++;
             GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);
@@ -748,7 +759,6 @@ void MainController::generateTransports() {
 
 void MainController::generateAlienBerries(int nMaxGenerate) {
     auto pAssets = findYService<YAssetsService>();
-    auto pMap = findYService<MapYService>();
 
     int nGenerated = 0;
     while (nGenerated < nMaxGenerate) {
@@ -759,7 +769,7 @@ void MainController::generateAlienBerries(int nMaxGenerate) {
         YLog::info(TAG, L"Berry. X=" + std::to_wstring(nX) + L", Y=" + std::to_wstring(nY));
         // TODO
         m_pWindow->getRenderWindow()->addVegetationObject(pBerry);
-        pMap->addAlienBerry(MapRect(nX, nY, pBerry->getFrameWidth(), pBerry->getFrameHeight()));
+        m_pMap->addAlienBerry(MapRect(nX, nY, pBerry->getFrameWidth(), pBerry->getFrameHeight()));
         nGenerated++;
     }
 }
