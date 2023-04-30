@@ -33,6 +33,7 @@ MainController::MainController() {
     m_pWindow = findYService<WindowYService>();
     m_pMap = findYService<MapYService>();
     m_nCurrentTakeAlienBerry = -1;
+    m_nTakedPlayerBerries = 0;
 }
 
 MainController::~MainController() {
@@ -337,6 +338,14 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
+    
+    // takeberry countdown
+    m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
+    m_pTakeBerryText->setOrderZ(5001);
+    m_pTakeBerryText->setAbsolutePosition(true);
+    m_pTakeBerryText->setPosition(-200, -200);
+    m_pTakeBerryText->setText(L"10");
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pTakeBerryText);
 
     m_pLoaderController->addToProgressCurrent(1);
     m_pLoaderController->updateText(L"Press 'space' for continue...");
@@ -468,12 +477,28 @@ void MainController::updatePlayerCoord() {
     int nBerryIndex = m_pMap->findAlienBerryIndex(playerCoord.x(), playerCoord.y());
 
     if (nBerryIndex != m_nCurrentTakeAlienBerry) {
+        m_pTakeBerryText->setPosition(m_pWindow->getWidth() / 2 - 270, m_pWindow->getHeight() / 2);
         // YLog::info(TAG, L"nBerryIndex=" + std::to_wstring(nBerryIndex));
         m_nCurrentTakeAlienBerry = nBerryIndex;
         if (m_nCurrentTakeAlienBerry < 0) {
             m_pSoundController->stopTakeBerry();
+            m_pTakeBerryText->hideText();
         } else {
             m_pSoundController->playTakeBerry();
+            m_pTakeBerryText->showText();
+            m_nTakeBerryStartTime = getCurrentTimeInMilliseconds();
+            m_nTakeBerryCoundDown = 10 - (getCurrentTimeInMilliseconds() - m_nTakeBerryStartTime) / 1000;
+        }
+    }
+
+    if (nBerryIndex >= 0 && nBerryIndex == m_nCurrentTakeAlienBerry) {
+        m_nTakeBerryCoundDown = 10 - (getCurrentTimeInMilliseconds() - m_nTakeBerryStartTime) / 1000;
+        m_pTakeBerryText->setText(std::to_wstring(m_nTakeBerryCoundDown));
+        if (m_nTakeBerryCoundDown == 0) {
+            m_pSoundController->stopTakeBerry();
+            m_pTakeBerryText->hideText();
+            m_nTakedPlayerBerries = m_nTakedPlayerBerries + 1;
+            // TODO - recreate berries + 1
         }
     }
 }

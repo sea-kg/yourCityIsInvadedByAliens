@@ -15,6 +15,9 @@ class YAssetText : public YAsset, public RenderObject {
         void setPosition(int nX, int nY);
         void setText(const std::wstring& sText);
         
+        void hideText();
+        void showText();
+
         // YAsset
         virtual void setOrderZ(int nOrder) override;
 
@@ -29,6 +32,7 @@ class YAssetText : public YAsset, public RenderObject {
         int m_nX;
         int m_nY;
         int m_nFontSize;
+        bool m_bShowText;
         std::wstring m_sText;
         std::wstring m_sUpdateText;
         SDL_Texture *m_pTexture;

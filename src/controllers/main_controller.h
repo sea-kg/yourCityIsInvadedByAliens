@@ -133,4 +133,8 @@ class MainController {
         std::thread *m_pGameLogicThread;
         std::mutex m_mutexGameLogicThread;
         int m_nCurrentTakeAlienBerry;
+        long m_nTakeBerryStartTime;
+        long m_nTakeBerryCoundDown;
+        YAssetText *m_pTakeBerryText;
+        int m_nTakedPlayerBerries;
 };

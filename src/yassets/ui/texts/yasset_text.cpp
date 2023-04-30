@@ -18,6 +18,7 @@ YAssetText::YAssetText(
     m_nFontSize = 25;
     m_nLetterHeight = nLetterHeight;
     m_nLetterWidth = nLetterWidth;
+    m_bShowText = true;
 }
 
 void YAssetText::setAbsolutePosition(bool bAbsolutePosition) {
@@ -27,12 +28,23 @@ void YAssetText::setAbsolutePosition(bool bAbsolutePosition) {
 void YAssetText::setPosition(int nX, int nY) {
     m_nX = nX;
     m_nY = nY;
+    m_needUpdate.setYes();
 }
 
 void YAssetText::setText(const std::wstring& sText) {
     m_sUpdateText = sText;
     m_needUpdate.setYes();
     // YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
+}
+
+void YAssetText::hideText() {
+    m_bShowText = false;
+    m_needUpdate.setYes();
+}
+
+void YAssetText::showText() {
+    m_bShowText = true;
+    m_needUpdate.setYes();
 }
 
 void YAssetText::setOrderZ(int nOrder) {
@@ -48,7 +60,7 @@ void YAssetText::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 };
 
 bool YAssetText::canDraw(const GameState& state) {
-    return true;
+    return m_bShowText;
 }
 
 void YAssetText::draw(SDL_Renderer* renderer) {
