@@ -1,6 +1,8 @@
 #include "sound_controller.h"
 #include "ylog.h"
 #include "ycore.h"
+#include <algorithm>
+#include <random>
 
 SoundController::SoundController(
     const std::wstring &sResourceDir,
@@ -15,10 +17,19 @@ SoundController::SoundController(
 
     // fight list
     
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 07 CountdownOff (OST Game Your City Is Invaded by Aliens).ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 05 CrapRat (OST Game Your City Is Invaded By Aliens).ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 09 RetroMagicMome  (OST Game Your City Is Invaded by Aliens).ogg");
     m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 01 InvitedByAliens.ogg");
     m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 02 Diphdo.ogg");
     m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 03 SuchMyEnimies.ogg");
-    
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 04 Tomorrow never been (OST Game Your City Is Invaded by Aliens).ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 06 Silly (Silent in the field) (OST Game Your City Is Invaded By Aliens).ogg");
+    m_vPlaylistFight.push_back(sResourceDir + L"/app/music/sea5kg - 08 MobiMy (OST Game Your City Invaded By Aliens).ogg");
+
+    // auto rng = std::default_random_engine {};
+    // std::shuffle(std::begin(m_vPlaylistFight), std::end(m_vPlaylistFight), rng);
+
     m_pAttackedSoundEffect = nullptr;
     m_sAttackedPath = sResourceDir + L"/default/soundeffects/attacked.wav";
     m_sTakeBerryPath = sResourceDir + L"/default/soundeffects/take_berry.wav";
@@ -41,6 +52,7 @@ void SoundController::init() {
             printf("Mix_OpenAudio: %s\n", Mix_GetError());
             exit(2);
         }
+        Mix_VolumeMusic(25);
 
         for (int i = 0; i < m_vPlaylistFight.size(); i++) {
             std::wstring sPathToFile = m_vPlaylistFight[i];

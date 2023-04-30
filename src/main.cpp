@@ -3,12 +3,18 @@
 #include <filesystem>
 #include <string>
 
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
+
 #ifdef _WIN32
 int wmain(int argc, wchar_t *argv[])
 #else
 int main(int argc, char *argv[])
 #endif
 {
+    std::srand(std::time(nullptr)); // use current time as seed for random generator
+    
     // TODO set to settings service
     auto dir = std::filesystem::weakly_canonical(std::filesystem::path(argv[0])).parent_path();
 
