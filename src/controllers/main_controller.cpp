@@ -270,7 +270,7 @@ bool MainController::loadGameDataWithProgressBar() {
 
     // generate alien-berries
     m_pLoaderController->updateText(L"Generating alien-berries...");
-    this->generateAlienBerries(1);
+    this->regenerateAlienBerries(1);
     m_pLoaderController->addToProgressCurrent(1);
 
     // default
@@ -474,7 +474,7 @@ void MainController::updatePlayerCoord() {
             + L"\nY=" + std::to_wstring(playerCoord.y());
     m_pCoordText->setText(sCoordPlayer);
 
-    int nBerryIndex = m_pMap->findAlienBerryIndex(playerCoord.x(), playerCoord.y());
+    int nBerryIndex = this->findAlienBerryIndex(playerCoord.x(), playerCoord.y());
 
     if (nBerryIndex != m_nCurrentTakeAlienBerry) {
         m_pTakeBerryText->setPosition(m_pWindow->getWidth() / 2 - 270, m_pWindow->getHeight() / 2);
@@ -782,7 +782,7 @@ void MainController::generateTransports() {
     }
 }
 
-void MainController::generateAlienBerries(int nMaxGenerate) {
+void MainController::regenerateAlienBerries(int nMaxGenerate) {
     auto pAssets = findYService<YAssetsService>();
 
     int nGenerated = 0;
@@ -790,11 +790,26 @@ void MainController::generateAlienBerries(int nMaxGenerate) {
         int nX = std::rand() % (m_nMapWidth - 200) + 100;
         int nY = std::rand() % (m_nMapHeight - 200) + 100;
         auto *pBerry = pAssets->createAsset<YAssetAlienBerry>(L"berry1");
-        pBerry->setPosition(nX, nY);
+        // TODO replace to YRect
+        auto *pBerryState = new GameAlienBerryState(YPos(nX, nY), pBerry->getFrameWidth(), pBerry->getFrameHeight());
+        pBerry->setState(pBerryState);
+        m_vAlienBerriesStates.push_back(pBerryState);
+
         YLog::info(TAG, L"Berry. X=" + std::to_wstring(nX) + L", Y=" + std::to_wstring(nY));
         // TODO
         m_pWindow->getRenderWindow()->addVegetationObject(pBerry);
+
+        // TODO need something else
         m_pMap->addAlienBerry(MapRect(nX, nY, pBerry->getFrameWidth(), pBerry->getFrameHeight()));
         nGenerated++;
     }
+}
+
+int MainController::findAlienBerryIndex(int x, int y) {
+    for (int i = 0; i < m_vAlienBerriesStates.size(); i++) {
+        if (m_vAlienBerriesStates[i]->hasPoint(x,y)) {
+            return i;
+        }
+    }
+    return -1;
 }

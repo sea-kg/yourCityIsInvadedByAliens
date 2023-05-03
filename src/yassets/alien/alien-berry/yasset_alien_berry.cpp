@@ -25,8 +25,8 @@ YAssetAlienBerry::YAssetAlienBerry(
     m_nPrevPosition = 0;
 }
 
-void YAssetAlienBerry::setPosition(int nX, int nY) {
-    m_position = CoordXY(nX, nY);
+void YAssetAlienBerry::setState(GameAlienBerryState *pState) {
+    m_pState = pState;
 }
 
 int YAssetAlienBerry::getFrameWidth() {
@@ -44,7 +44,7 @@ void YAssetAlienBerry::setOrderZ(int nOrder) {
 void YAssetAlienBerry::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     const long m_nSpeedAnimation = 200;
 
-    m_coordRender = m_position - state.getCoordLeftTop();
+    m_coordRender = CoordXY(m_pState->getPosition().getX(), m_pState->getPosition().getY()) - state.getCoordLeftTop();
 
     long nFrameNumber = (state.getElapsedTime() / m_nSpeedAnimation) % m_nFrameNumber;
 

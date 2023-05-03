@@ -4,6 +4,7 @@
 #include "render.h"
 #include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
+#include "game_alien_berry_state.h"
 #include "sound_controller.h"
 #include "loader_controller.h"
 #include "settings_yservice.h"
@@ -93,8 +94,9 @@ class MainController {
         );
 
         void generateTransports();
-        void generateAlienBerries(int nMaxGenerate);
-        
+        void regenerateAlienBerries(int nMaxGenerate);
+        int findAlienBerryIndex(int x, int y);
+
         // TODO move to MapYService
         CoordXY m_minPointMap;
         CoordXY m_maxPointMap;
@@ -132,6 +134,9 @@ class MainController {
         bool m_bGameLogicThreadStop;
         std::thread *m_pGameLogicThread;
         std::mutex m_mutexGameLogicThread;
+
+        // alien berries
+        std::vector<GameAlienBerryState *> m_vAlienBerriesStates;
         int m_nCurrentTakeAlienBerry;
         long m_nTakeBerryStartTime;
         long m_nTakeBerryCoundDown;

@@ -69,6 +69,9 @@ list (APPEND WSJCPP_SOURCES "src/yassets/weapons/alien-weapon/yassets_factory_ty
 
 # source files
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
+
+# states
+list (APPEND WSJCPP_SOURCES "src/game/game_alien_berry_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_alien_ship_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_bioplast_state.cpp")
 list (APPEND WSJCPP_SOURCES "src/game/game_rocket_state.cpp")

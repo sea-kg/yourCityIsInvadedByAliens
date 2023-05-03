@@ -1,6 +1,7 @@
 #pragma once
 
 #include <yassets_service.h>
+#include <game_alien_berry_state.h>
 
 class YAssetAlienBerry : public YAsset, public RenderObject {
     public:
@@ -13,7 +14,7 @@ class YAssetAlienBerry : public YAsset, public RenderObject {
         );
 
         // void setAbsolutePosition(bool bAbsolutePosition);
-        void setPosition(int nX, int nY);
+        void setState(GameAlienBerryState *pState);
 
         int getFrameWidth();
         int getFrameHeight();
@@ -29,10 +30,11 @@ class YAssetAlienBerry : public YAsset, public RenderObject {
     private:
         CoordXY m_coordRender;
         CoordXY m_coordRenderEnd;
+        GameAlienBerryState *m_pState;
+
         int m_nFrameWidth;
         int m_nFrameHeight;
         int m_nFrameNumber;
-        CoordXY m_position;
 
         long m_nPrevPosition;
 
