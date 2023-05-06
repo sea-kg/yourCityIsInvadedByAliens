@@ -81,22 +81,22 @@ bool MapYService::canDriveToPoint(int x, int y) {
     return false;
 }
 
-void MapYService::addAlienBerry(const MapRect &berry) {
-    m_vAlienBerries.push_back(berry);
+void MapYService::addAlienBerry(GameAlienBerryState *pBerryState) {
+    m_vAlienBerries.push_back(pBerryState);
 }
 
-const std::vector<MapRect> &MapYService::getAlienBerries() {
+const std::vector<GameAlienBerryState *> &MapYService::getAlienBerries() {
     return m_vAlienBerries;
 }
 
-int MapYService::findAlienBerryIndex(int x, int y) {
-    for (int i = 0; i < m_vAlienBerries.size(); i++) {
-        if (m_vAlienBerries[i].hasPoint(x,y)) {
-            return i;
-        }
-    }
-    return -1;
-}
+// int MapYService::findAlienBerryIndex(int x, int y) {
+//     for (int i = 0; i < m_vAlienBerries.size(); i++) {
+//         if (m_vAlienBerries[i].hasPoint(x,y)) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }
 
 void MapYService::setMapSize(int nMapWidth, int nMapHeight) {
     m_nMapWidth = nMapWidth;

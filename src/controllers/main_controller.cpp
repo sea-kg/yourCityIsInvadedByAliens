@@ -270,7 +270,7 @@ bool MainController::loadGameDataWithProgressBar() {
 
     // generate alien-berries
     m_pLoaderController->updateText(L"Generating alien-berries...");
-    this->regenerateAlienBerries(1);
+    this->generateAlienBerries(1);
     m_pLoaderController->addToProgressCurrent(1);
 
     // default
@@ -498,7 +498,11 @@ void MainController::updatePlayerCoord() {
             m_pSoundController->stopTakeBerry();
             m_pTakeBerryText->hideText();
             m_nTakedPlayerBerries = m_nTakedPlayerBerries + 1;
-            // TODO - recreate berries + 1
+            YPos p = this->generateRandomPositionAlienBerry();
+            // nBerryIndex
+            m_vAlienBerriesStates[nBerryIndex]->updatePosition(p);
+            this->generateAlienBerries(1);
+
         }
     }
 }
@@ -782,27 +786,34 @@ void MainController::generateTransports() {
     }
 }
 
-void MainController::regenerateAlienBerries(int nMaxGenerate) {
+void MainController::generateAlienBerries(int nMaxGenerate) {
     auto pAssets = findYService<YAssetsService>();
 
     int nGenerated = 0;
     while (nGenerated < nMaxGenerate) {
-        int nX = std::rand() % (m_nMapWidth - 200) + 100;
-        int nY = std::rand() % (m_nMapHeight - 200) + 100;
+        YPos p = generateRandomPositionAlienBerry();
         auto *pBerry = pAssets->createAsset<YAssetAlienBerry>(L"berry1");
         // TODO replace to YRect
-        auto *pBerryState = new GameAlienBerryState(YPos(nX, nY), pBerry->getFrameWidth(), pBerry->getFrameHeight());
+        auto *pBerryState = new GameAlienBerryState(p, pBerry->getFrameWidth(), pBerry->getFrameHeight());
         pBerry->setState(pBerryState);
         m_vAlienBerriesStates.push_back(pBerryState);
 
-        YLog::info(TAG, L"Berry. X=" + std::to_wstring(nX) + L", Y=" + std::to_wstring(nY));
+        YLog::info(TAG, L"Berry. X=" + std::to_wstring(p.getX()) + L", Y=" + std::to_wstring(p.getY()));
         // TODO
         m_pWindow->getRenderWindow()->addVegetationObject(pBerry);
 
         // TODO need something else
-        m_pMap->addAlienBerry(MapRect(nX, nY, pBerry->getFrameWidth(), pBerry->getFrameHeight()));
+        m_pMap->addAlienBerry(pBerryState);
         nGenerated++;
     }
+}
+
+YPos MainController::generateRandomPositionAlienBerry() {
+    // TODO: don't generate over buildings and over roads
+    // generate to free space
+    int nX = std::rand() % (m_nMapWidth - 200) + 100;
+    int nY = std::rand() % (m_nMapHeight - 200) + 100;
+    return YPos(nX, nY);
 }
 
 int MainController::findAlienBerryIndex(int x, int y) {

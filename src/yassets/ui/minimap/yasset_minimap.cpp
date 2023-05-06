@@ -145,11 +145,10 @@ void YAssetMinimap::redrawPlayerPosition() {
         m_pDynamicObjectsPixels[p + m_nWidth + 1] = 0xFFFFFFFF;
     }
 
-    const std::vector<MapRect> &vBerries = m_pMapService->getAlienBerries();
+    const std::vector<GameAlienBerryState *> &vBerries = m_pMapService->getAlienBerries();
     for (int i = 0; i < vBerries.size(); i++) {
-        const MapRect &berry = vBerries[i];
-        int x0 = berry.getX() * m_nWidthK;
-        int y0 = berry.getY() * m_nHeightK;
+        int x0 = vBerries[i]->getPosition().getX() * m_nWidthK;
+        int y0 = vBerries[i]->getPosition().getY() * m_nHeightK;
 
         int p = m_nWidth * y0 + (x0 - m_nShiftToLeftByX);
         const int color = 0xFF36d9ff;

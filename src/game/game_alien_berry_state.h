@@ -7,11 +7,7 @@ class GameAlienBerryState {
     public:
         GameAlienBerryState(const YPos &p0, int nWidth, int nHeight);
         const YPos &getPosition();
-        // void move();
-        bool hasDestroyed();
-        void destroy();
-        void explode();
-        bool isExploded();
+        void updatePosition(const YPos &);
 
         bool hasPoint(int x, int y);
         int getWidth() const;

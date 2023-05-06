@@ -1,6 +1,7 @@
 #pragma once
 
 #include "yservices.h"
+#include "game_alien_berry_state.h"
 
 // ---------------------------------------------------------------------
 // MapRect
@@ -33,9 +34,8 @@ class MapYService : public YServiceBase {
         void addRoad(const MapRect &road);
         const std::vector<MapRect> &getRoads();
         bool canDriveToPoint(int x, int y);
-        void addAlienBerry(const MapRect &berry);
-        const std::vector<MapRect> &getAlienBerries();
-        int findAlienBerryIndex(int x, int y);
+        void addAlienBerry(GameAlienBerryState *pBerryState);
+        const std::vector<GameAlienBerryState *> &getAlienBerries();
         void setMapSize(int nMapWidth, int nMapHeight);
         int getMapWidth() const;
         int getMapHeight() const;
@@ -44,7 +44,7 @@ class MapYService : public YServiceBase {
         std::wstring TAG;
         
         std::vector<MapRect> m_vRoads;
-        std::vector<MapRect> m_vAlienBerries;
+        std::vector<GameAlienBerryState *> m_vAlienBerries;
         int m_nMapWidth;
         int m_nMapHeight;
 };

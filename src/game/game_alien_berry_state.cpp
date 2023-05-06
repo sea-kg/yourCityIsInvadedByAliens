@@ -15,20 +15,8 @@ const YPos &GameAlienBerryState::getPosition() {
     return m_p0;
 }
 
-bool GameAlienBerryState::hasDestroyed() {
-    return m_bDestroyed;
-}
-
-void GameAlienBerryState::destroy() {
-    m_bDestroyed = true;
-}
-
-void GameAlienBerryState::explode() {
-    m_bExploded = true;
-}
-
-bool GameAlienBerryState::isExploded() {
-    return m_bExploded;
+void GameAlienBerryState::updatePosition(const YPos &p) {
+    m_p0 = p;
 }
 
 bool GameAlienBerryState::hasPoint(int x, int y) {

@@ -94,7 +94,8 @@ class MainController {
         );
 
         void generateTransports();
-        void regenerateAlienBerries(int nMaxGenerate);
+        void generateAlienBerries(int nMaxGenerate);
+        YPos generateRandomPositionAlienBerry();
         int findAlienBerryIndex(int x, int y);
 
         // TODO move to MapYService
