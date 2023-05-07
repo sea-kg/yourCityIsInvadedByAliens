@@ -27,8 +27,8 @@ class SoundController {
 
         std::vector<std::wstring> m_vPlaylistEmbient;
         
-        std::wstring m_sAttackedPath;
-        Mix_Chunk *m_pAttackedSoundEffect;
+        std::vector<std::wstring> m_vAttackedPaths;
+        std::vector<Mix_Chunk *> m_vAttackedSoundEffect;
         
         std::wstring m_sTakeBerryPath;
         Mix_Chunk *m_pTakeBerrySoundEffect;

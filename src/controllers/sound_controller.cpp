@@ -30,8 +30,10 @@ SoundController::SoundController(
     // auto rng = std::default_random_engine {};
     // std::shuffle(std::begin(m_vPlaylistFight), std::end(m_vPlaylistFight), rng);
 
-    m_pAttackedSoundEffect = nullptr;
-    m_sAttackedPath = sResourceDir + L"/default/soundeffects/attacked.wav";
+    m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked1.wav");
+    m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked2.wav");
+    m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked3.wav");
+
     m_sTakeBerryPath = sResourceDir + L"/default/soundeffects/take_berry.wav";
     
 }
@@ -69,13 +71,19 @@ void SoundController::init() {
         m_nCurrentMusicFightTrack = m_vPlaylistFightMusic.size() > 0 ? 0 : -1;
     }
 
-    YLog::info(TAG, L"Trying load soundeffects from '" + m_sAttackedPath + L"'");
-    m_pAttackedSoundEffect = Mix_LoadWAV(YCore::ws2s(m_sAttackedPath).c_str());
-    if (!m_pAttackedSoundEffect) {
-        // YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'")
-        std::cout << "ERROR: " << Mix_GetError() << std::endl;
-        // this might be a critical error...
+    for (int i = 0; i < m_vAttackedPaths.size(); i++) {
+        YLog::info(TAG, L"Trying load soundeffects from '" + m_vAttackedPaths[i] + L"'");
+        Mix_Chunk *pAttackedSoundEffect = Mix_LoadWAV(YCore::ws2s(m_vAttackedPaths[i]).c_str());
+        if (!pAttackedSoundEffect) {
+            // YLog::info(TAG, L"Trying load music from '" + sPathToFile + L"'")
+            std::cout << "ERROR: " << Mix_GetError() << std::endl;
+            // this might be a critical error...
+        } else {
+            m_vAttackedSoundEffect.push_back(pAttackedSoundEffect);
+        }
     }
+
+    
 
     YLog::info(TAG, L"Trying load soundeffects from '" + m_sTakeBerryPath + L"'");
     m_pTakeBerrySoundEffect = Mix_LoadWAV(YCore::ws2s(m_sTakeBerryPath).c_str());
@@ -129,7 +137,8 @@ void SoundController::update() {
 
 
 void SoundController::playAttacked() {
-    Mix_PlayChannel(2, m_pAttackedSoundEffect, 0);
+    Mix_Chunk *pAttackedSoundEffect = m_vAttackedSoundEffect[std::rand() % m_vAttackedSoundEffect.size()];
+    Mix_PlayChannel(2, pAttackedSoundEffect, 0);
 }
 
 void SoundController::playTakeBerry() {
