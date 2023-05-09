@@ -196,6 +196,7 @@ RenderTank0Rocket::~RenderTank0Rocket() {
     // delete m_pRocketState;
 }
 
+// isDestroyed
 void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
@@ -210,7 +211,7 @@ void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWin
     }
 
     m_nPrevPosition = position;
-    
+
     if (m_nLifeTime == m_nMaxLifeTime) {
         m_pRocketState->destroy();
         m_nLifeTime++;
@@ -223,7 +224,10 @@ void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWin
         m_nLifeTime++;
         if (m_nLifeTime > m_nMaxLifeTime + 2) {
             // remove object from rendering
-            this->destroy();
+            // TODO also need remove from states
+            this->removeFromRenderLater();
+            m_pRocketState->removeLater();
+            m_pRocketState = nullptr;
         }
         return;
     }

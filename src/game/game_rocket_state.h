@@ -13,10 +13,13 @@ class GameRocketState {
         void destroy();
         void explode();
         bool isExploded();
+        bool canBeRemoved();
+        void removeLater();
 
     private:
         YPos m_p0;
         bool m_bDestroyed;
         bool m_bExploded;
+        bool m_bCanBeRemoved;
         MoveObjectDirection m_nDirection;
 };

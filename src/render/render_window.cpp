@@ -37,14 +37,15 @@ void RanderWindowLayer::modifyObjects(const GameState& state, IRenderWindow *pWi
     std::vector<RenderObject *> vDestroyedObjects;
     for (auto pObj: m_vObjects) {
         pObj->modify(state, pWindow);
-        if (pObj->isDestroyed()) {
+        if (pObj->canBeRemovedFromRenderer()) {
             vDestroyedObjects.push_back(pObj);
         }
     }
+    // if some modify add more objects to modify it also
     if (nSize > m_vObjects.size()) {
         for (int i = nSize; i < m_vObjects.size(); i++) {
             m_vObjects[i]->modify(state, pWindow);
-            if (m_vObjects[i]->isDestroyed()) {
+            if (m_vObjects[i]->canBeRemovedFromRenderer()) {
                 vDestroyedObjects.push_back(m_vObjects[i]);
             }
         }
@@ -83,6 +84,7 @@ int RanderWindowLayer::getNumberOfObjects() {
 // RenderWindow
 
 RenderWindow::RenderWindow(const std::wstring &sTitle, int w, int h) {
+    TAG = L"RenderWindow";
     m_pWindow = NULL;
     m_bFullsreeen = false;
     m_pWindow = SDL_CreateWindow(
@@ -185,12 +187,51 @@ int RenderWindow::getNumberOfObjects() {
 void RenderWindow::addRocket(GameRocketState *pState, RenderObject *pObject) {
     m_vRockets.push_back(pState);
     addRocketsObject(pObject);
+    // YLog::info(TAG, L"m_vRockets: " + std::to_wstring(m_vRockets.size()));
+}
+
+const std::vector<GameRocketState *> &RenderWindow::getRockets() {
+    // cleanup unused rockets
+    std::vector<GameRocketState *> vRemovingRockets;
+    for (auto pObj : m_vRockets) {
+        if (pObj->canBeRemoved()) {
+            vRemovingRockets.push_back(pObj);
+        }
+    }
+    for (auto pObj : vRemovingRockets) {
+        auto it = std::find(m_vRockets.begin(), m_vRockets.end(), pObj);
+        if (it != m_vRockets.end()) {
+            m_vRockets.erase(it);
+        }
+        delete pObj;
+    }
+    return m_vRockets;
 }
 
 void RenderWindow::addBioplast(GameBioplastState *pState) {
     m_vBioplasts.push_back(pState);
     addRocketsObject(new RenderBioplast(pState, m_pTextureBioplast, 3000));
+    // YLog::info(TAG, L"m_vBioplasts: " + std::to_wstring(m_vBioplasts.size()));
 }
+
+const std::vector<GameBioplastState *> &RenderWindow::getBioplasts() {
+    // cleanup unused bioplasts
+    std::vector<GameBioplastState *> vRemovingBioplasts;
+    for (auto pObj : m_vBioplasts) {
+        if (pObj->canBeRemoved()) {
+            vRemovingBioplasts.push_back(pObj);
+        }
+    }
+    for (auto pObj : vRemovingBioplasts) {
+        auto it = std::find(m_vBioplasts.begin(), m_vBioplasts.end(), pObj);
+        if (it != m_vBioplasts.end()) {
+            m_vBioplasts.erase(it);
+        }
+        delete pObj;
+    }
+    return m_vBioplasts;
+}
+
 
 bool RenderWindow::toggleFullscreen() {
     m_bFullsreeen = !m_bFullsreeen;

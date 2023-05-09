@@ -8,6 +8,7 @@ GameRocketState::GameRocketState(const YPos &p0, MoveObjectDirection direction)
     m_p0 = p0;
     m_bDestroyed = false;
     m_bExploded = false;
+    m_bCanBeRemoved = false;
 }
 
 MoveObjectDirection GameRocketState::getDirection() {
@@ -53,4 +54,12 @@ void GameRocketState::explode() {
 
 bool GameRocketState::isExploded() {
     return m_bExploded;
+}
+
+bool GameRocketState::canBeRemoved() {
+    return m_bCanBeRemoved;
+}
+
+void GameRocketState::removeLater() {
+    m_bCanBeRemoved = true;
 }

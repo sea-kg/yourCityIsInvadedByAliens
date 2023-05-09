@@ -50,15 +50,15 @@ class RenderObject {
         RenderObject(int nPositionZ);
         virtual ~RenderObject();
         int getPositionZ();
-        bool isDestroyed();
-        void destroy();
+        bool canBeRemovedFromRenderer();
+        void removeFromRenderLater();
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow);
         virtual bool canDraw(const GameState& state) = 0;
         virtual void draw(SDL_Renderer* pRenderer) = 0;
         int randomNoise();
 
     protected:
-        bool m_bDestroyed;
+        bool m_bCanBeRemovedFromRenderer;
         int m_nPositionZ;
        
 };

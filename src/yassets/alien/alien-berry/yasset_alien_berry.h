@@ -44,37 +44,3 @@ class YAssetAlienBerry : public YAsset, public RenderObject {
 
 
 YASSET_DECLARE_INLINE(YAssetAlienBerry)
-
-class RenderAlienBerry0Rocket : public RenderObject {
-
-    public:
-        RenderAlienBerry0Rocket(
-            GameRocketState *pAlienBerry0State,
-            SDL_Texture* tex,
-            int nTextureTileWidth,
-            int nTextureTileHeight,
-            int nPositionZ = 0
-        );
-        virtual ~RenderAlienBerry0Rocket();
-
-        virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
-        virtual bool canDraw(const GameState& state) override;
-        virtual void draw(SDL_Renderer* renderer) override;
-
-    private:
-        YPos m_coordRender;
-        YPos m_coordRenderEnd;
-        YPos m_size;
-        long m_nPrevPosition;
-        int m_nLifeTime;
-        int m_nMaxLifeTime;
-        long m_nSpeedAnimation;
-        GameRocketState *m_pRocketState;
-
-        int m_nTextureTileWidth;
-        int m_nTextureTileHeight;
-
-        SDL_Rect m_currentFrame;
-        SDL_Texture* m_pTexture;
-};
-

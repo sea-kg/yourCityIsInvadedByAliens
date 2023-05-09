@@ -36,7 +36,7 @@ void RenderBioplast::modify(const GameState& state, IRenderWindow* pRenderWindow
     }
 
     m_nPrevPosition = position;
-    
+
     if (m_nLifeTime == m_nMaxLifeTime) {
         m_pBioplastState->destroy();
         m_nLifeTime++;
@@ -49,7 +49,10 @@ void RenderBioplast::modify(const GameState& state, IRenderWindow* pRenderWindow
         m_nLifeTime++;
         if (m_nLifeTime > m_nMaxLifeTime + 2) {
             // remove object from rendering
-            this->destroy();
+            // TODO also need remove from states
+            this->removeFromRenderLater();
+            m_pBioplastState->removeLater();
+            m_pBioplastState = nullptr;
         }
         return;
     }

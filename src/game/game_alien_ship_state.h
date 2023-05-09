@@ -22,8 +22,8 @@ class GameAlienShipState {
             int nTopPad,
             int nBottomPad
         );
-        void shot();
-        GameBioplastState *popRocket();
+        void bioplastShot();
+        GameBioplastState *popBioplast();
         void rocketAttack(GameRocketState *pRocket);
         int getHelthPoints();
         int getMaxHelthPoints();

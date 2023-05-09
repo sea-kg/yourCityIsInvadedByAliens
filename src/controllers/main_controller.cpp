@@ -424,15 +424,19 @@ void MainController::modifyObjects() {
     m_pWindow->getRenderWindow()->modifyObjects(*m_pGameState);
 
     CoordXY p0 = m_pGameState->getAlienShipState()->getPosition();
-    
+
     // calculate intersection rockets and player
-    for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
-        GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
+    const std::vector<GameRocketState *> &vRockets = m_pWindow->getRenderWindow()->getRockets();
+    // YLog::info(TAG, L"vRockets.size(): " + std::to_wstring(vRockets.size()));
+
+    for (int i = 0; i < vRockets.size(); i++) {
+        GameRocketState *pRocket = vRockets[i];
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
         YPos p1 = pRocket->getPosition();
         // distance
+        // TODO optimize calculate distance here
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
         if (nDistance < 30.0) {
             pRocket->explode();
@@ -444,15 +448,17 @@ void MainController::modifyObjects() {
     }
 
     // intersection player bioplasm and rocket
-    for (int i = 0; i < m_pWindow->getRenderWindow()->m_vRockets.size(); i++) {
-        GameRocketState *pRocket = m_pWindow->getRenderWindow()->m_vRockets[i];
+    const std::vector<GameBioplastState *> &vBioplasts = m_pWindow->getRenderWindow()->getBioplasts();
+
+    for (int i = 0; i < vRockets.size(); i++) {
+        GameRocketState *pRocket = vRockets[i];
         if (pRocket->isExploded() || pRocket->hasDestroyed()) {
             continue;
         }
         YPos p1 = pRocket->getPosition();
 
-        for (int b = 0; b < m_pWindow->getRenderWindow()->m_vBioplasts.size(); b++) {
-            GameBioplastState *pBioplast = m_pWindow->getRenderWindow()->m_vBioplasts[b];
+        for (int b = 0; b < vBioplasts.size(); b++) {
+            GameBioplastState *pBioplast = vBioplasts[b];
             CoordXY p2 = pBioplast->getPosition();
             // distance
             float nDistance = p1.getDistance(YPos(p2.x(), p2.y()));

@@ -59,13 +59,13 @@ void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWind
 
     if (m_pState->isShooting()) {
         std::cout << "Shooting!  ";
-        m_pState->shot();
+        m_pState->bioplastShot();
     }
 
-    GameBioplastState *pBioplastState = m_pState->popRocket();
+    GameBioplastState *pBioplastState = m_pState->popBioplast();
     while (pBioplastState != nullptr) {
         pRenderWindow->addBioplast(pBioplastState);
-        pBioplastState = m_pState->popRocket();
+        pBioplastState = m_pState->popBioplast();
     }
 };
 

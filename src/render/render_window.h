@@ -34,9 +34,12 @@ class RenderWindow : public IRenderWindow {
         virtual void addPanelsObject(RenderObject *pObject) override;
         virtual void addScreenEffectsObject(RenderObject *pObject) override;
         virtual void addLoaderObject(RenderObject *pObject) override;
-        
+
         virtual void addRocket(GameRocketState *pState, RenderObject *pObject) override;
+        const std::vector<GameRocketState *> &getRockets();
         virtual void addBioplast(GameBioplastState *pState) override;
+        const std::vector<GameBioplastState *> &getBioplasts();
+ 
         virtual int getNumberOfObjects() override;
 
         bool isFullscreen();
@@ -51,16 +54,13 @@ class RenderWindow : public IRenderWindow {
         void modifyObjects(const GameState& state);
         void drawObjects(const GameState& state);
         SDL_Renderer* getRenderer();
-
         void getWindowSize(int* w, int* h);
 
-        std::vector<GameRocketState *> m_vRockets;
-        std::vector<GameBioplastState *> m_vBioplasts;
-        
     private:
         int createRenderWindowLayer(const std::wstring &sName);
         RanderWindowLayer *getLayer(int nLayer);
 
+        std::wstring TAG;
         bool m_bFullsreeen;
         SDL_Window* m_pWindow;
         SDL_Renderer* m_pRenderer;
@@ -82,4 +82,7 @@ class RenderWindow : public IRenderWindow {
         int m_nLayerLoader;
 
         int m_nDebugLastDrawObjects;
+
+        std::vector<GameRocketState *> m_vRockets;
+        std::vector<GameBioplastState *> m_vBioplasts;
 };
