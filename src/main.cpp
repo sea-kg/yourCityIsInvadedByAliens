@@ -13,8 +13,10 @@ int wmain(int argc, wchar_t *argv[])
 int main(int argc, char *argv[])
 #endif
 {
+    YLog::info(L"main", YCore::s2ws("hello"));
+
     std::srand(std::time(nullptr)); // use current time as seed for random generator
-    
+
     // TODO set to settings service
     auto dir = std::filesystem::weakly_canonical(std::filesystem::path(argv[0])).parent_path();
 

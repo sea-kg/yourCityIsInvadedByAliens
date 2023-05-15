@@ -4,7 +4,13 @@
     #include <sys/time.h>
     #include <unistd.h>
     #include <arpa/inet.h>
-#else 
+
+    #pragma warning(push)
+    #pragma warning(disable: 4995)
+    #include <AtlBase.h>
+    #include <atlconv.h>
+    #pragma warning(pop)
+#else
     #include <direct.h>
     #define PATH_MAX 256
 #endif
@@ -26,7 +32,7 @@ std::wstring YCore::getCurrentDirectory() {
         if (getcwd(cwd, sizeof(cwd)) == NULL) {
             YLog::throw_err(L"getCurrentDirectory", L"Could not get current directory");
         }
-    #else 
+    #else
         if (_getcwd(cwd, sizeof(cwd)) == NULL) {
             YLog::throw_err(L"getCurrentDirectory", L"Could not get current directory");
         }
@@ -109,16 +115,31 @@ std::wstring YCore::join(const std::vector<std::wstring> &vWhat, const std::wstr
 }
 
 std::wstring YCore::s2ws(const std::string& str) {
-    using convert_typeX = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-    return converterX.from_bytes(str);
+    #if _WIN32
+        std::wstringstream cls;
+        cls << str.c_str();
+        return cls.str();
+    #else
+        using convert_typeX = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_typeX, wchar_t> converterX;
+        return converterX.from_bytes(str);
+    #endif
 }
 
 std::string YCore::ws2s(const std::wstring& wstr) {
-    using convert_typeX = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_typeX, wchar_t> converterX;
-    return converterX.to_bytes(wstr);
+    #if _WIN32
+        //setup converter
+        using convert_type = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_type, wchar_t> converter;
+
+        //use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
+        std::string converted_str = converter.to_bytes( wstr );
+        return converted_str;
+    #else
+        using convert_typeX = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_typeX, wchar_t> converterX;
+        return converterX.to_bytes(wstr);
+    #endif
 }
 
 // ---------------------------------------------------------------------
