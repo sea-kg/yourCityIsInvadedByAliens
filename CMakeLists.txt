@@ -155,7 +155,6 @@ find_package(SDL2_image REQUIRED)
 if ( SDL2_image_FOUND )
     list (APPEND WSJCPP_INCLUDE_DIRS ${SDL2_IMAGE_INCLUDE_DIRS})
     list (APPEND WSJCPP_LIBRARIES ${SDL2_IMAGE_LIBRARIES})
-    
 endif( SDL2_image_FOUND )
 ############################
 
