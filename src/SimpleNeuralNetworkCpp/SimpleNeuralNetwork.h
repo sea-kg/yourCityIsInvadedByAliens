@@ -120,7 +120,7 @@ class SimpleNeuralGenomList {
         int m_nMutateGenoms;
         int m_nMixGenoms;
         int m_nAllGenoms;
-        
+
         std::vector<SimpleNeuralGenom> m_vGenoms;
 };
 

@@ -25,6 +25,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/SimpleNeuralNetworkCpp")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/Roads2DGenerator")
 
 # ycore
 list (APPEND WSJCPP_SOURCES "src/ycore/ycore.cpp")
@@ -133,6 +134,8 @@ list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.h")
 list (APPEND WSJCPP_SOURCES "src/utils/utils_start_dialog.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/SimpleNeuralNetworkCpp/SimpleNeuralNetwork.cpp")
+
+list (APPEND WSJCPP_SOURCES "src/Roads2DGenerator/Roads2DGenerator.cpp")
 
 if(NOT APPLE)
   find_package(Threads)
