@@ -26,7 +26,6 @@ YAsset *YAssetFactoryImage::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -39,8 +38,9 @@ YAssetFactoryTypeImage::YAssetFactoryTypeImage(YAssetsService *pAssetsService)
     TAG = L"YAssetFactoryTypeImage";
 }
 
-std::wstring YAssetFactoryTypeImage::getFactoryTypeId() {
-    return L"image";
+const std::wstring &YAssetFactoryTypeImage::getFactoryTypeId() {
+    static const std::wstring sType = L"image";
+    return sType;
 }
 
 YAssetFactory *YAssetFactoryTypeImage::createFactory(

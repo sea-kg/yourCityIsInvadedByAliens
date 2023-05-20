@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ctime>
 
+
 #ifdef _WIN32
 int wmain(int argc, wchar_t *argv[])
 #else

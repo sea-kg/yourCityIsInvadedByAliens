@@ -9,7 +9,6 @@
 #include <fstream>
 #include <algorithm>
 #include "render_alienship.h"
-#include "roads/render_road0.h"
 #include "ycore.h"
 #include "ykeyboard.h"
 #include "render_background.h"
@@ -18,7 +17,8 @@
 #include "yassets_service.h"
 #include "window_yservice.h"
 #include "map_yservice.h"
-#include <yassets.h>
+#include "Roads2DGenerator.h"
+#include "yassets.h"
 
 // MainController
 
@@ -245,13 +245,8 @@ bool MainController::loadGameDataWithProgressBar() {
     loadBackgrounds(sDefaultPath, jsonDefaultMap[L"background"]);
     m_pLoaderController->addToProgressCurrent(1);
 
-    m_pLoaderController->updateText(L"Load roads...");
-    std::cout << "default/roads.json" << std::endl;
-    YJson jsonDefaultRoads(sDefaultPath + L"/roads.json");
-    if (jsonDefaultMap.isParserFailed()) {
-        return false;
-    }
-    this->loadRoads(sDefaultPath, jsonDefaultRoads[L"roads"]);
+    m_pLoaderController->updateText(L"Generation roads...");
+    this->generateRoads(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
 
@@ -707,35 +702,42 @@ void MainController::generateScreenHighlights() {
     m_pWindow->getRenderWindow()->addScreenEffectsObject(m_pScreenAttack);
 }
 
-void MainController::loadRoads(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonRoads
-) {
-    for (int i = 0; i < jsonRoads.length(); i++) {
-        const YJsonObject &item = jsonRoads[i];
-        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
-        if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
-        }
-        SDL_Texture* pTextureRoads = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item[L"width"].getNumber();
-        int nTextureHeight = item[L"height"].getNumber();
-        const YJsonObject &fillList = item[L"fill"];
+void MainController::generateRoads(const std::wstring &sDefaultPath) {
+    auto pAssets = findYService<YAssetsService>();
 
-        for (int n = 0; n < fillList.length(); n++) {
-            const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem[L"x"].getNumber();
-            int nY = roadItem[L"y"].getNumber();
+    // texture road
+    // TODO fix hardcode
+    int nTextureWidth = 120; // TODO hardcoded
+    int nTextureHeight = 120; // TODO hardcoded
+
+    int nGeneratedRoads = 0;
+    Roads2DGenerator road2gen(42, 42);
+    road2gen.generate(0.5);
+
+    std::vector<std::vector<std::string>> vRoads = road2gen.exportToTable();
+
+    for (int y = 0; y < vRoads.size(); y++) {
+        const std::vector<std::string> &vRow = vRoads[y];
+        for (int x = 0; x < vRow.size(); x++) {
+            std::wstring sRoadPart = YCore::s2ws(vRow[x]);
+            if (sRoadPart == L"") {
+                continue;
+            }
+            nGeneratedRoads++;
+            int nX = y * nTextureWidth + nTextureWidth;
+            int nY = x * nTextureHeight;
             m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
 
-            std::wstring sRoadPart = roadItem[L"road-part"].getString();
-            m_pWindow->getRenderWindow()->addRoadsObject(new RenderRoad0(
-                CoordXY(nX, nY),
-                pTextureRoads,
-                convertStringToRoadPart(sRoadPart)
-            ));
+            auto *pRoad = pAssets->createAsset<YAssetRoad>(L"road1");
+            pRoad->setAbsolutePosition(CoordXY(nX, nY));
+            pRoad->setRoadPart(sRoadPart);
+            m_pWindow->getRenderWindow()->addRoadsObject(pRoad);
         }
     }
+    if (nGeneratedRoads == 0) {
+        YLog::throw_err(TAG, L"Could not generate roads....");
+    }
+    YLog::info(TAG, L"Done.");
 }
 
 void MainController::loadAlienShip(

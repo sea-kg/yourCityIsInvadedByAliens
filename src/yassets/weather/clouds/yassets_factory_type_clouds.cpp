@@ -30,7 +30,6 @@ YAsset *YAssetFactoryClouds::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -43,8 +42,9 @@ YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService)
     TAG = L"YAssetFactoryTypeClouds";
 }
 
-std::wstring YAssetFactoryTypeClouds::getFactoryTypeId() {
-    return L"clouds";
+const std::wstring &YAssetFactoryTypeClouds::getFactoryTypeId() {
+    static const std::wstring sType = L"clouds";
+    return sType;
 }
 
 YAssetFactory *YAssetFactoryTypeClouds::createFactory(

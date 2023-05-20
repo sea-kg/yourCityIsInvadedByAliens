@@ -26,7 +26,6 @@ YAsset *YAssetFactoryMinimap::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -39,8 +38,9 @@ YAssetFactoryTypeMinimap::YAssetFactoryTypeMinimap(YAssetsService *pAssetsServic
     TAG = L"YAssetFactoryTypeMinimap";
 }
 
-std::wstring YAssetFactoryTypeMinimap::getFactoryTypeId() {
-    return L"minimap";
+const std::wstring &YAssetFactoryTypeMinimap::getFactoryTypeId() {
+    static const std::wstring sType = L"minimap";
+    return sType;
 }
 
 YAssetFactory *YAssetFactoryTypeMinimap::createFactory(

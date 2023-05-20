@@ -81,10 +81,7 @@ class MainController {
         void generateClouds();
         void generateScreenHighlights();
 
-        void loadRoads(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonRoads
-        );
+        void generateRoads(const std::wstring &sDefaultPath);
 
         void loadAlienShip(
             const std::wstring &sDefaultPath

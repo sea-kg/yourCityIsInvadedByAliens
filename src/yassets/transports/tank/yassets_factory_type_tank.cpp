@@ -30,7 +30,6 @@ YAsset *YAssetFactoryTank::createAsset() {
         m_nFrameWidth,
         m_nFrameHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -38,13 +37,14 @@ YAsset *YAssetFactoryTank::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeTank)
 
-YAssetFactoryTypeTank::YAssetFactoryTypeTank(YAssetsService *pAssetsService) 
+YAssetFactoryTypeTank::YAssetFactoryTypeTank(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeTank";
 }
 
-std::wstring YAssetFactoryTypeTank::getFactoryTypeId() {
-    return L"tank";
+const std::wstring &YAssetFactoryTypeTank::getFactoryTypeId() {
+    static const std::wstring sType = L"tank";
+    return sType;
 }
 
 YAssetFactory *YAssetFactoryTypeTank::createFactory(

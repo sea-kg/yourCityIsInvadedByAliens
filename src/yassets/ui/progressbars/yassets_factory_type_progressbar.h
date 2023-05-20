@@ -26,7 +26,7 @@ class YAssetFactoryProgressBar : public YAssetFactory {
 class YAssetFactoryTypeProgressBar : public YAssetFactoryType {
     public:
         YAssetFactoryTypeProgressBar(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

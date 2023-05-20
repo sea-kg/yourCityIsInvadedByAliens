@@ -33,7 +33,7 @@ class YAssetFactoryDialogHelp : public YAssetFactory {
 class YAssetFactoryTypeDialogHelp : public YAssetFactoryType {
     public:
         YAssetFactoryTypeDialogHelp(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

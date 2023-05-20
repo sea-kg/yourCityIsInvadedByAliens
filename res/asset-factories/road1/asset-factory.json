@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "road1",
+    "asset-factory-type": "road",
+    "asset-factory-config": {
+        "image": "road1.png",
+        "frame-height": 120,
+        "frame-width": 120
+    }
+}

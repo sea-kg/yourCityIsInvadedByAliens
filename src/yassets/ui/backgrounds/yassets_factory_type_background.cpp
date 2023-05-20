@@ -27,7 +27,6 @@ YAsset *YAssetFactoryBackground::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -40,8 +39,9 @@ YAssetFactoryTypeBackground::YAssetFactoryTypeBackground(YAssetsService *pAssets
     TAG = L"YAssetFactoryTypeBackground";
 }
 
-std::wstring YAssetFactoryTypeBackground::getFactoryTypeId() {
-    return L"background";
+const std::wstring &YAssetFactoryTypeBackground::getFactoryTypeId() {
+    static const std::wstring sType = L"background";
+    return sType;
 }
 
 YAssetFactory *YAssetFactoryTypeBackground::createFactory(

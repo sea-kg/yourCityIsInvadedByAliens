@@ -14,7 +14,7 @@ class YAssetFactoryClouds : public YAssetFactory {
             int nHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeClouds *m_pFactoryTypeFont;
         std::vector<std::wstring> m_vImages;
@@ -26,7 +26,7 @@ class YAssetFactoryClouds : public YAssetFactory {
 class YAssetFactoryTypeClouds : public YAssetFactoryType {
     public:
         YAssetFactoryTypeClouds(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

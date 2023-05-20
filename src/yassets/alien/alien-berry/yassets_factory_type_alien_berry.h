@@ -15,7 +15,7 @@ class YAssetFactoryAlienBerry : public YAssetFactory {
             int nFrameNumber
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeAlienBerry *m_pFactoryTypeAlienBerry;
         std::wstring m_sSpriteAlienBerryPath;
@@ -28,7 +28,7 @@ class YAssetFactoryAlienBerry : public YAssetFactory {
 class YAssetFactoryTypeAlienBerry : public YAssetFactoryType {
     public:
         YAssetFactoryTypeAlienBerry(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

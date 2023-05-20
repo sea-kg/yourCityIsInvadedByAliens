@@ -14,7 +14,7 @@ class YAssetFactoryBackground : public YAssetFactory {
             int nHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeBackground *m_pFactoryTypeFont;
         std::wstring m_sImagePath;
@@ -26,7 +26,7 @@ class YAssetFactoryBackground : public YAssetFactory {
 class YAssetFactoryTypeBackground : public YAssetFactoryType {
     public:
         YAssetFactoryTypeBackground(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

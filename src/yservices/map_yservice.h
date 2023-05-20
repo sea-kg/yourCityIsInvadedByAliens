@@ -42,7 +42,7 @@ class MapYService : public YServiceBase {
 
     private:
         std::wstring TAG;
-        
+
         std::vector<MapRect> m_vRoads;
         std::vector<GameAlienBerryState *> m_vAlienBerries;
         int m_nMapWidth;

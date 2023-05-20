@@ -2,33 +2,30 @@
 
 #include <yassets_service.h>
 
-class YAssetFactoryTypeTank;
+class YAssetFactoryTypeRoad;
 
-class YAssetFactoryTank : public YAssetFactory {
+class YAssetFactoryRoad : public YAssetFactory {
     public:
-        YAssetFactoryTank(
+        YAssetFactoryRoad(
             YAssetsService *pAssetsService,
-            YAssetFactoryTypeTank *pFactoryTypeTank,
-            const std::wstring &sSpriteTankPath,
-            const std::wstring &sSpriteRocketPath,
+            YAssetFactoryTypeRoad *pFactoryTypeRoad,
+            const std::wstring &sRoadImageTilesPath,
             int nFrameWidth,
             int nFrameHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
-        YAssetFactoryTypeTank *m_pFactoryTypeTank;
-        std::wstring m_sSpriteTankPath;
-        std::wstring m_sSpriteRocketPath;
-        SDL_Texture * m_pTextureTank;
-        SDL_Texture * m_pTextureRocket;
+        YAssetFactoryTypeRoad *m_pFactoryTypeRoad;
+        std::wstring m_sRoadImageTilesPath;
+        SDL_Texture * m_pTextureRoad;
         int m_nFrameWidth;
         int m_nFrameHeight;
 };
 
-class YAssetFactoryTypeTank : public YAssetFactoryType {
+class YAssetFactoryTypeRoad : public YAssetFactoryType {
     public:
-        YAssetFactoryTypeTank(YAssetsService *pAssetsService);
+        YAssetFactoryTypeRoad(YAssetsService *pAssetsService);
         virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
