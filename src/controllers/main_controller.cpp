@@ -145,6 +145,7 @@ int MainController::startUI() {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
         }
         updateFps();
+        updateScore();
     }
 
     m_pWindow->getRenderWindow()->cleanUp();
@@ -323,13 +324,21 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pWindow->getRenderWindow()->addPanelsObject(m_pMinimap);
 
 
-    // text
+    // FPS text
     m_pFpsText = pAssets->createAsset<YAssetText>(L"text1");
     m_pFpsText->setOrderZ(5001);
     m_pFpsText->setAbsolutePosition(true);
-    m_pFpsText->setPosition(m_pWindow->getWidth() - 270, 20);
+    m_pFpsText->setPosition(m_pWindow->getWidth() - 1250, 20);
     m_pFpsText->setText(L"FPS: ...");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
+
+    //Score text
+    m_pScoreText = pAssets->createAsset<YAssetText>(L"text1");
+    m_pScoreText->setOrderZ(5001);
+    m_pScoreText->setAbsolutePosition(true);
+    m_pScoreText->setPosition(m_pWindow->getWidth() - 270, 20);
+    m_pScoreText->setText(L"Score: ");
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pScoreText);
 
     // coordinates of player
     m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
@@ -530,6 +539,10 @@ void MainController::updateFps() {
         m_nFpsStartTime = getCurrentTimeInMilliseconds();
         m_nFpsNumberOfFrames = 0;
     }
+}
+void MainController::updateScore()
+{
+    m_pScoreText->setText(L"Score: " + std::to_wstring(m_nTakedPlayerBerries));
 }
 
 void MainController::updateFpsValue(int nFps) {

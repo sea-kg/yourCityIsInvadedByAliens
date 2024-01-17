@@ -47,6 +47,7 @@ class MainController {
         void startFpsCounting();
         void updateFps();
         void updateFpsValue(int nFps);
+        void updateScore();
 
         SoundController *getSoundController();
 
@@ -119,6 +120,7 @@ class MainController {
 
         YAssetText *m_pCoordText;
         YAssetText *m_pFpsText;
+        YAssetText *m_pScoreText;
 
         // TODO mustbe chnaged from GameState?
         YAssetScreenBorderFlashHighlight *m_pScreenAttack;
