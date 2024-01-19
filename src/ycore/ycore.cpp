@@ -4,15 +4,14 @@
     #include <sys/time.h>
     #include <unistd.h>
     #include <arpa/inet.h>
-
+#else
+    #include <direct.h>
+    #define PATH_MAX 256
     #pragma warning(push)
     #pragma warning(disable: 4995)
     #include <AtlBase.h>
     #include <atlconv.h>
     #pragma warning(pop)
-#else
-    #include <direct.h>
-    #define PATH_MAX 256
 #endif
 #include <sys/stat.h>
 #include <sys/types.h>
