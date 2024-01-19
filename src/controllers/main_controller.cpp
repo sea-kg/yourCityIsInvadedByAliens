@@ -130,11 +130,11 @@ int MainController::startUI() {
                 nTopPad,
                 nBottomPad
             );
-
+            
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
-            
+
         }
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
@@ -143,6 +143,13 @@ int MainController::startUI() {
             std::this_thread::sleep_for(std::chrono::milliseconds(nFrameTime));
         } else {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
+        }
+        if (m_nCurrentState == MainState::GAME_ACTION)
+        {
+            if (m_nHealthPoints == 1)
+            {
+                setMainState(MainState::GAME_OVER);
+            }
         }
         updateFps();
         updateScore();
@@ -413,8 +420,10 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         }
     } else if (getMainState() == MainState::GAME_ACTION) {
         m_pGameState->getAlienShipState()->updateStateByKeyboard(pKeyboard);
+       
     }
 }
+
 
 bool MainController::isFullscreen() {
     return m_pWindow->getRenderWindow()->isFullscreen();
@@ -569,6 +578,8 @@ void MainController::setMainState(const MainState &newMainState) {
         YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
     } else if (m_nCurrentState == MainState::GAME_EXIT) {
         YLog::info(TAG, L"setMainState MainState::GAME_EXIT");
+    } else if (m_nCurrentState == MainState::GAME_OVER) {
+        YLog::info(TAG, L"setMainState MainState::GAME_OVER");
     } else {
         YLog::info(TAG, L"setMainState ???");
     }

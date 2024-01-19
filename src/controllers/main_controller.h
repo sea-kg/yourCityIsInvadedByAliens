@@ -14,6 +14,7 @@ enum class MainState {
     LOADING,
     WAITING_SPACE,
     GAME_ACTION,
+    GAME_OVER,
     GAME_EXIT
 };
 
@@ -112,6 +113,7 @@ class MainController {
         
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
+        GameAlienShipState *m_nHealthPoints;
 
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
