@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------
 // GameTank0State
 
-GameTank0State::GameTank0State(const CoordXY &p0) 
+GameTank0State::GameTank0State(const CoordXY &p0)
 : m_nDirection(MoveObjectDirection::UP) {
     TAG = L"GameTank0State";
     m_p0 = p0;

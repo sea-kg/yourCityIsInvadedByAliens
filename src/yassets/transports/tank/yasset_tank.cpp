@@ -198,6 +198,10 @@ RenderTank0Rocket::~RenderTank0Rocket() {
 
 // isDestroyed
 void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWindow) {
+    if (state.isPauseGame()) {
+        return;
+    }
+
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {

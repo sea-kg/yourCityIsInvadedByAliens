@@ -50,13 +50,13 @@ bool MainController::init() {
     if (!this->initSoundController()) {
         return false;
     }
-    
+
     m_pSoundController = new SoundController(
         m_pSettings->getResourceDir(),
         this->getGameState()
     );
     m_pSoundController->init();
-    
+
     m_pLoaderController = new LoaderController(
         m_pWindow->getRenderWindow(),
         m_pGameState
@@ -112,6 +112,8 @@ int MainController::startUI() {
             //     std::cout << "MainState::WAITING_SPACE" << std::endl;
             //     setMainState(MainState::WAITING_SPACE);
             // }
+        } else if (getMainState() == MainState::GAME_HELP) {
+            // TODO render dialog
         } else if (getMainState() == MainState::GAME_ACTION) {
             // window must move to the player
             /*
@@ -134,7 +136,6 @@ int MainController::startUI() {
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
-            
         }
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
@@ -211,7 +212,6 @@ bool MainController::loadGameDataWithProgressBar() {
         m_nMapHeight
     );
     m_pMap->setMapSize(m_nMapWidth, m_nMapHeight);
-    
 
     m_pGameState->updatePlayerStartPosition(CoordXY(
         jsonDefaultMap[L"player-start-x"].getNumber(),
@@ -347,7 +347,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
-    
+
     // takeberry countdown
     m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
     m_pTakeBerryText->setOrderZ(5001);
@@ -388,18 +388,16 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         } else {
             // TODO pause
         }
+
+        // return from help satte
+        if (getMainState() == MainState::GAME_HELP) {
+            setMainState(MainState::GAME_ACTION);
+            setPauseGame(false);
+        }
     }
 
     if (pKeyboard->isF12()) {
         toggleFullscreen();
-    }
-
-    if (pKeyboard->isF1()) {
-        // pMainController->getWindow()->toggleFullscreen();
-        // TODO show help and pause of the game
-        // if (!this->showStartDialog()) {
-        //     return;
-        // }
     }
 
     if (getMainState() == MainState::WAITING_SPACE) {
@@ -413,6 +411,17 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         }
     } else if (getMainState() == MainState::GAME_ACTION) {
         m_pGameState->getAlienShipState()->updateStateByKeyboard(pKeyboard);
+
+        // show help window
+        if (pKeyboard->isF1()) {
+            setMainState(MainState::GAME_HELP);
+            setPauseGame(true);
+        }
+    } else if (getMainState() == MainState::GAME_HELP) {
+        if (pKeyboard->isF1()) {
+            setMainState(MainState::GAME_ACTION);
+            setPauseGame(false);
+        }
     }
 }
 
@@ -565,12 +574,29 @@ void MainController::setMainState(const MainState &newMainState) {
         YLog::info(TAG, L"setMainState MainState::LOADING");
     } else if (m_nCurrentState == MainState::WAITING_SPACE) {
         YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
+    } else if (m_nCurrentState == MainState::GAME_HELP) {
+        YLog::info(TAG, L"setMainState MainState::GAME_HELP");
     } else if (m_nCurrentState == MainState::GAME_ACTION) {
         YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
     } else if (m_nCurrentState == MainState::GAME_EXIT) {
         YLog::info(TAG, L"setMainState MainState::GAME_EXIT");
     } else {
         YLog::info(TAG, L"setMainState ???");
+    }
+}
+
+bool MainController::isPauseGame() {
+    return m_pGameState->isPauseGame();
+}
+
+
+void MainController::setPauseGame(bool bPause) {
+    if (bPause) {
+        m_pMainAiThread->pause();
+        m_pGameState->setPauseGame(true);
+    } else {
+        m_pMainAiThread->unpause();
+        m_pGameState->setPauseGame(false);
     }
 }
 
@@ -615,7 +641,7 @@ void MainController::generateBackground(
 ) {
     for (int x = startXY.x(); x <= endXY.x(); x += nTextureWidth) {
         for (int y = startXY.y(); y <= endXY.y(); y += nTextureHeight) {
-            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));        
+            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));
         }
     }
 }
@@ -628,7 +654,7 @@ void MainController::generateClouds() {
         nX += m_minPointMap.x();
         int nY = std::rand() % m_nMapHeight;
         nY += m_minPointMap.y();
-        
+
         auto *pClouds = pAssets->createAsset<YAssetClouds>(L"clouds1");
         pClouds->setPosition(nX, nY);
         m_pWindow->getRenderWindow()->addCloudsObject(pClouds);
@@ -682,7 +708,7 @@ void MainController::loadRoads(
 void MainController::loadAlienShip(
     const std::wstring &sDefaultPath
 ) {
-    
+
     std::wstring sFilenamePng = sDefaultPath + L"/sprites/alien-ship0.png";
     if (!YCore::fileExists(sFilenamePng)) {
         YLog::throw_err(TAG, L"File not exists " + sFilenamePng);
@@ -694,7 +720,7 @@ void MainController::loadAlienShip(
     if (!YCore::fileExists(sFilenameJson)) {
         YLog::throw_err(TAG, L"File not exists " + sFilenameJson);
     }
-    
+
     YJson jsonAlienShip(sFilenameJson);
     if (jsonAlienShip.isParserFailed()) {
         YLog::throw_err(TAG, L"Could not parse file " + sFilenameJson);
@@ -786,7 +812,7 @@ void MainController::loadVegetations(
 
 void MainController::generateTransports() {
     auto pAssets = findYService<YAssetsService>();
-    
+
     int nGenerated = 0;
     int nMaxGenerated = 100;
 
@@ -800,7 +826,7 @@ void MainController::generateTransports() {
             auto *pTank = pAssets->createAsset<YAssetTank>(L"tank1");
             pTank->setGameStateTank(pTankState);
             m_pWindow->getRenderWindow()->addTransportsObject(pTank);
-            m_pMainAiThread->addAiObject(pAiTank0);        
+            m_pMainAiThread->addAiObject(pAiTank0);
         }
     }
 }

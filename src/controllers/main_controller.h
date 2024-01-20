@@ -13,6 +13,7 @@
 enum class MainState {
     LOADING,
     WAITING_SPACE,
+    GAME_HELP,
     GAME_ACTION,
     GAME_EXIT
 };
@@ -21,7 +22,7 @@ class MainController {
     public:
         MainController();
         ~MainController();
-        
+
         // std::wstring getResourceDir();
         bool init();
         bool initSoundController();
@@ -54,6 +55,9 @@ class MainController {
         MainState getMainState();
         void setMainState(const MainState &newMainState);
 
+        bool isPauseGame();
+        void setPauseGame(bool bPause);
+
     private:
         std::wstring TAG;
         SettingsYService *m_pSettings;
@@ -74,7 +78,7 @@ class MainController {
         void generateTanks();
         void generateClouds();
         void generateScreenHighlights();
-        
+
         void loadRoads(
             const std::wstring &sDefaultPath,
             const YJsonObject &jsonRoads
@@ -109,7 +113,7 @@ class MainController {
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
-        
+
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
 

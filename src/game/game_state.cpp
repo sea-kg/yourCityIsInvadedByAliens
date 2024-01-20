@@ -18,6 +18,7 @@ GameState::GameState(int windowWidth, int windowHeight) {
     m_windowRect = YRect(YPos(0, 0), YPos(windowWidth, windowHeight));
     m_bIsChangedWindowSize = true;
     m_bPlayMusic = false;
+    m_bPauseGame = false;
     m_pAlienShipState = new GameAlienShipState(m_playerStartPosition);
     m_bShowLoader = true;
 }
@@ -94,6 +95,14 @@ void GameState::togglePlayMusic() {
 
 bool GameState::isPlayMusic() const {
     return m_bPlayMusic;
+}
+
+bool GameState::isPauseGame() const {
+    return m_bPauseGame;
+}
+
+void GameState::setPauseGame(bool bPauseGame) {
+    m_bPauseGame = bPauseGame;
 }
 
 void GameState::setShowLoader(bool bShowLoader) {
