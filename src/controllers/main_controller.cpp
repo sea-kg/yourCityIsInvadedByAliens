@@ -143,9 +143,12 @@ int MainController::startUI() {
                setMainState(MainState::GAME_OVER);
                stopAllThreads();
             }
-
-
         }
+        else if (getMainState() == MainState::GAME_OVER)
+        {
+        //TODO GAMEOVER Window
+        }
+
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
