@@ -117,6 +117,10 @@ int MainController::startUI() {
             /*
                 360 - w/2 - 320/2
             */
+
+          
+                
+            
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -134,6 +138,11 @@ int MainController::startUI() {
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
+            if (pAlientShipState->getHelthPoints() <= 0)
+            {
+               setMainState(MainState::GAME_OVER);
+            }
+
 
         }
         // normalize framerate to 60 fps
@@ -143,13 +152,6 @@ int MainController::startUI() {
             std::this_thread::sleep_for(std::chrono::milliseconds(nFrameTime));
         } else {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
-        }
-        if (m_nCurrentState == MainState::GAME_ACTION)
-        {
-            if (m_nHealthPoints == 1)
-            {
-                setMainState(MainState::GAME_OVER);
-            }
         }
         updateFps();
         updateScore();

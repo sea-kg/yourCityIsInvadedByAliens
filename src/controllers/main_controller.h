@@ -113,7 +113,6 @@ class MainController {
         
         GameState *m_pGameState;
         MainAiThread *m_pMainAiThread;
-        GameAlienShipState *m_nHealthPoints;
 
         SDL_Texture* m_pTextureCursor;
         SDL_Texture* m_pTextureLeftPanel;
