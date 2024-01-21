@@ -36,6 +36,7 @@ class MainController {
         void deinitLoaderController();
         bool showStartDialog();
         void startAllThreads();
+        void stopAllThreads();
         void handleKeyboardCommand(YKeyboard *pKeyboard);
         // window
         bool isFullscreen();

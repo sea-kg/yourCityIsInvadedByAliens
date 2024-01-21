@@ -141,6 +141,7 @@ int MainController::startUI() {
             if (pAlientShipState->getHelthPoints() <= 0)
             {
                setMainState(MainState::GAME_OVER);
+               stopAllThreads();
             }
 
 
@@ -388,6 +389,11 @@ bool MainController::showStartDialog() {
 
 void MainController::startAllThreads() {
     m_pMainAiThread->start();
+}
+
+void MainController::stopAllThreads()
+{
+    m_pMainAiThread->stop();
 }
 
 void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
