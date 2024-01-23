@@ -17,6 +17,9 @@ class MainAiThread {
     public:
         MainAiThread();
         void start();
+        bool isPause();
+        void pause();
+        void unpause();
         void stop();
         void run();
 
@@ -27,6 +30,7 @@ class MainAiThread {
 
         std::wstring TAG;
         bool m_bStop;
+        bool m_bPause;
         std::thread *m_pThread;
         std::vector<AiObject *> m_vObjects;
         std::mutex m_vMutexObjects;

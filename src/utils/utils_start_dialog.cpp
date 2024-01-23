@@ -93,7 +93,7 @@ bool UtilsStartDialog::start() {
     bool bPaused = true;
     bool bQuit = false;
     m_pGameState->setMouseCaptured(false);
-    
+
     while (bPaused) {
         SDL_Event event;
         const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
