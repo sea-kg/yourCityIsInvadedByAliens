@@ -142,13 +142,14 @@ int MainController::startUI() {
             updatePlayerCoord();
             if (pAlientShipState->getHelthPoints() <= 0)
             {
-               setMainState(MainState::GAME_OVER);
-               stopAllThreads();
+                setPauseGame(true);
+                setMainState(MainState::GAME_OVER);
             }
         }
         else if (getMainState() == MainState::GAME_OVER)
         {
-        //TODO GAMEOVER Window
+        //TODO render GAMEOVER Window
+            
         }
 
         // normalize framerate to 60 fps
@@ -395,10 +396,6 @@ void MainController::startAllThreads() {
     m_pMainAiThread->start();
 }
 
-void MainController::stopAllThreads()
-{
-    m_pMainAiThread->stop();
-}
 
 void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
     if (pKeyboard->isEscape()) {
