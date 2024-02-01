@@ -28,10 +28,13 @@ class GameState {
 
         void setMouseCaptured(bool bMouseCaptured);
         bool isMouseCaptured() const;
-        
+
         void setPlayMusic(bool bPlayMusic);
         void togglePlayMusic();
         bool isPlayMusic() const;
+
+        bool isPauseGame() const;
+        void setPauseGame(bool bPauseGame);
 
         void setMinPoint(const CoordXY &p);
         const CoordXY &getMinPoint();
@@ -48,6 +51,7 @@ class GameState {
     private:
         bool m_bMouseCaptured;
         bool m_bPlayMusic;
+        bool m_bPauseGame;
         bool m_bShowLoader;
         long m_nElapsedTime;
         long m_nStartTime;
@@ -55,7 +59,7 @@ class GameState {
         CoordXY m_coordLeftTop;
         CoordXY m_maxPoint;
         CoordXY m_minPoint;
-        
+
         bool m_bIsChangedWindowSize;
         int m_nWindowWidth;
         int m_nWindowHeight;

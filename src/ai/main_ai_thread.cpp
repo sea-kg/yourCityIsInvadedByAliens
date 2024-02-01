@@ -10,6 +10,7 @@ void* processJobsThreadWorker(void *arg) {
 MainAiThread::MainAiThread() {
     TAG = L"MainAiThread";
     m_bStop = false;
+    m_bPause = false;
     m_pThread = nullptr;
 }
 
@@ -22,10 +23,25 @@ void MainAiThread::stop() {
     m_bStop = true;
 }
 
+bool MainAiThread::isPause() {
+    return m_bPause;
+}
+
+void MainAiThread::pause() {
+    m_bPause = true;
+}
+
+void MainAiThread::unpause() {
+    m_bPause = false;
+}
+
 void MainAiThread::run() {
     YLog::info(TAG, L"Starting...");
     while (!m_bStop) {
         std::lock_guard<std::mutex> guard(m_vMutexObjects);
+        if (m_bPause) {
+            continue; // pause state
+        }
         int nSize = m_vObjects.size();
         for (int i = 0; i < nSize; i++) {
             m_vObjects[i]->makeStep();
