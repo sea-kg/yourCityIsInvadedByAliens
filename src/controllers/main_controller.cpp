@@ -148,10 +148,13 @@ int MainController::startUI() {
         }
         else if (getMainState() == MainState::GAME_OVER)
         {
-        //TODO render GAMEOVER Window
+            //TODO
+            std::wstring backgroundPath = m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/bootscreen-background1";
+            YJson jsonBackground(backgroundPath + L"/asset-factory.json");
             
+            loadBackgrounds(backgroundPath, jsonBackground[L"background"]);
         }
-
+       
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
