@@ -9,7 +9,7 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_bShooting = false;
     m_nMovePrevTime = 0;
     m_nSpeedMoving = 25;
-    m_nMaxHealthPoints = 10;
+    m_nMaxHealthPoints = 5;
     m_nHealthPoints = m_nMaxHealthPoints;
     m_moveDirection = MoveObjectDirection::NONE;
 }
