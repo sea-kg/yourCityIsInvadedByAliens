@@ -142,17 +142,24 @@ int MainController::startUI() {
             updatePlayerCoord();
             if (pAlientShipState->getHelthPoints() <= 0)
             {
-                setPauseGame(true);
+                //setPauseGame(true);
                 setMainState(MainState::GAME_OVER);
             }
         }
         else if (getMainState() == MainState::GAME_OVER)
         {
             //TODO
-            std::wstring backgroundPath = m_pSettings->getResourceDir() + L"/asset-factories-bootscreen/bootscreen-background1";
-            YJson jsonBackground(backgroundPath + L"/asset-factory.json");
+            setPauseGame(true);
+           
+            auto* pAssets = findYService<YAssetsService>();
+
+            auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
+
+            m_pLoaderController->addObject(pAssetBackground);
             
-            loadBackgrounds(backgroundPath, jsonBackground[L"background"]);
+
+            
+            
         }
        
         // normalize framerate to 60 fps
@@ -270,7 +277,7 @@ bool MainController::loadGameDataWithProgressBar() {
     YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
     if (jsonDefaultBuildings.isParserFailed()) {
         return false;
-    }
+    } 
     this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
     m_pLoaderController->addToProgressCurrent(1);
 
@@ -299,6 +306,7 @@ bool MainController::loadGameDataWithProgressBar() {
     // app
     m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/left-panel-info.png");
     m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/player-power.png");
+    m_pTextureGameOver = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/game-over.png");
 
     this->loadAlienShip(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
