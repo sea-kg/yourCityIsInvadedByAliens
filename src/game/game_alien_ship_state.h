@@ -27,6 +27,8 @@ class GameAlienShipState {
         void rocketAttack(GameRocketState *pRocket);
         int getHelthPoints();
         int getMaxHelthPoints();
+        int setHealthPoints(int h);
+        int setMaxHealthPoints(int h);
         void updatePosition(const CoordXY &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
 

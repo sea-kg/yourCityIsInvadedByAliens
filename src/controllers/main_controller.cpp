@@ -150,15 +150,28 @@ int MainController::startUI() {
         {
             //TODO
             setPauseGame(true);
-           
+          
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             auto* pAssets = findYService<YAssetsService>();
 
             auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
 
             m_pLoaderController->addObject(pAssetBackground);
-            
+            auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
+            pAssetLogo1->setAbsolutePosition(true);
 
-            
+            pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
+            m_pLoaderController->addObject(pAssetLogo1);
+                 //GameOver text
+            m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
+            m_pGameOverText->setOrderZ(5001);
+            m_pGameOverText->setAbsolutePosition(true);
+            m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
+            m_pGameOverText->setText(L"\t\t Game Over!\n\nPress SPACE to try again");
+
+            m_pLoaderController->addObject(m_pGameOverText);
+
+
             
         }
        
@@ -306,7 +319,6 @@ bool MainController::loadGameDataWithProgressBar() {
     // app
     m_pTextureLeftPanel = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/left-panel-info.png");
     m_pTexturePlayerPower0 = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/player-power.png");
-    m_pTextureGameOver = m_pWindow->getRenderWindow()->loadTexture(m_pSettings->getResourceDir() + L"/app/textures/game-over.png");
 
     this->loadAlienShip(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
@@ -365,6 +377,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pScoreText->setPosition(m_pWindow->getWidth() - 270, 20);
     m_pScoreText->setText(L"Score: ");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pScoreText);
+
 
     // coordinates of player
     m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
@@ -449,6 +462,15 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
+    }else if (getMainState() == MainState::GAME_OVER){
+        if(pKeyboard->isSpace()){
+            m_pGameState->getAlienShipState()->setHealthPoints(5);
+            setMainState(MainState::GAME_ACTION);
+            deinitLoaderController();
+
+            setPauseGame(false);
+            
+        }   
     }
 }
 
