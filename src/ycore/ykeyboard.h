@@ -25,6 +25,7 @@ class YKeyboard {
         bool isL();
         bool isG();
         bool isH();
+        bool isEnter();
         std::wstring toString();
     private:
         const Uint8 *m_pKeyboardStateArray;

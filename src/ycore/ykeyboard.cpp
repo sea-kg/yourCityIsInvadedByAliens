@@ -161,6 +161,11 @@ bool YKeyboard::isH() {
     return m_pKeyboardStateArray[SDL_SCANCODE_H];
 }
 
+bool YKeyboard::isEnter()
+{
+    return m_pKeyboardStateArray[SDL_SCANCODE_RETURN];
+}
+
 std::wstring YKeyboard::toString() {
     return L"TODO";
 }

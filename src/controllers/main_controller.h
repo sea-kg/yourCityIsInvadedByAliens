@@ -30,6 +30,7 @@ class MainController {
         int startUI();
         void startGameLogicThread();
         void runGameLogicThread();
+        void stopMainAIThread();
 
         GameState *getGameState();
         CoordXY getCoordCenter();
@@ -50,6 +51,7 @@ class MainController {
         void updateFps();
         void updateFpsValue(int nFps);
         void updateScore();
+        void resetScore();
 
         SoundController *getSoundController();
 

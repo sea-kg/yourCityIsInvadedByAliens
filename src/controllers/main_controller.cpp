@@ -122,7 +122,7 @@ int MainController::startUI() {
 
           
                 
-            
+            m_pLoaderController->addObject(m_pScoreText);
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -140,37 +140,33 @@ int MainController::startUI() {
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
+            updateScore();
             if (pAlientShipState->getHelthPoints() <= 0)
             {
-                //setPauseGame(true);
                 setMainState(MainState::GAME_OVER);
+
             }
         }
         else if (getMainState() == MainState::GAME_OVER)
         {
             //TODO
-            setPauseGame(true);
-          
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            auto* pAssets = findYService<YAssetsService>();
+            //setPauseGame(true);
+            stopMainAIThread();
+            //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            //auto* pAssets = findYService<YAssetsService>();
 
-            auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
+            //auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
 
-            m_pLoaderController->addObject(pAssetBackground);
-            auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
-            pAssetLogo1->setAbsolutePosition(true);
+            //m_pLoaderController->addObject(pAssetBackground);
+            //auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
+            //pAssetLogo1->setAbsolutePosition(true);
 
-            pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
-            m_pLoaderController->addObject(pAssetLogo1);
-                 //GameOver text
-            m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
-            m_pGameOverText->setOrderZ(5001);
-            m_pGameOverText->setAbsolutePosition(true);
-            m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
-            m_pGameOverText->setText(L"\t\t Game Over!\n\nPress SPACE to try again");
+            //pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
+            //m_pLoaderController->addObject(pAssetLogo1);
+
 
             m_pLoaderController->addObject(m_pGameOverText);
-
+            //m_pLoaderController->addObject(m_pScoreText);
 
             
         }
@@ -184,7 +180,6 @@ int MainController::startUI() {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
         }
         updateFps();
-        updateScore();
     }
 
     m_pWindow->getRenderWindow()->cleanUp();
@@ -387,6 +382,18 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
+    //GameOver text
+    m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
+    m_pGameOverText->setOrderZ(5001);
+    m_pGameOverText->setAbsolutePosition(true);
+    m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
+    m_pGameOverText->setText(L"     Game Over!\n\nPress ENTER to try again");
+
+
+    auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
+    pAssetLogo1->setAbsolutePosition(true);
+    pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
+
     // takeberry countdown
     m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
     m_pTakeBerryText->setOrderZ(5001);
@@ -418,6 +425,11 @@ bool MainController::showStartDialog() {
 
 void MainController::startAllThreads() {
     m_pMainAiThread->start();
+}
+
+void MainController::stopMainAIThread()
+{
+    m_pMainAiThread->stop();
 }
 
 
@@ -463,11 +475,12 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setPauseGame(false);
         }
     }else if (getMainState() == MainState::GAME_OVER){
-        if(pKeyboard->isSpace()){
-            m_pGameState->getAlienShipState()->setHealthPoints(5);
+        if(pKeyboard->isEnter()){
+            m_pGameState->getAlienShipState()->resetHealthPoints();
+            resetScore();
             setMainState(MainState::GAME_ACTION);
             deinitLoaderController();
-
+            startAllThreads();
             setPauseGame(false);
             
         }   
@@ -602,6 +615,11 @@ void MainController::updateFps() {
 void MainController::updateScore()
 {
     m_pScoreText->setText(L"Score: " + std::to_wstring(m_nTakedPlayerBerries));
+}
+
+void MainController::resetScore()
+{
+    m_nTakedPlayerBerries = 0;
 }
 
 void MainController::updateFpsValue(int nFps) {

@@ -69,6 +69,7 @@ void LoaderController::updateText(const std::wstring &sNewText) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
+
 void LoaderController::setProgressMax(int nVal) {
     m_nProgressMax = nVal;
     m_pAssetProgressBar->setProgressMax(nVal);

@@ -29,6 +29,7 @@ class GameAlienShipState {
         int getMaxHelthPoints();
         int setHealthPoints(int h);
         int setMaxHealthPoints(int h);
+        void resetHealthPoints();
         void updatePosition(const CoordXY &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
 
