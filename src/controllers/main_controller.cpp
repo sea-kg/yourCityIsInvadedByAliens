@@ -151,6 +151,9 @@ int MainController::startUI() {
         {
             //TODO
             //setPauseGame(true);
+            m_pGameState->getAlienShipState()->setShooting(false);
+            
+            
             stopMainAIThread();
             //std::this_thread::sleep_for(std::chrono::milliseconds(500));
             //auto* pAssets = findYService<YAssetsService>();
@@ -160,7 +163,6 @@ int MainController::startUI() {
             //m_pLoaderController->addObject(pAssetBackground);
             //auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
             //pAssetLogo1->setAbsolutePosition(true);
-
             //pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
             //m_pLoaderController->addObject(pAssetLogo1);
 
@@ -481,7 +483,8 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             deinitLoaderController();
             startAllThreads();
-            setPauseGame(false);
+            
+            //setPauseGame(false);
             
         }   
     }
