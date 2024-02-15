@@ -122,7 +122,7 @@ int MainController::startUI() {
 
           
                 
-            m_pLoaderController->addObject(m_pScoreText);
+            //m_pLoaderController->addObject(m_pScoreText);
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -154,7 +154,7 @@ int MainController::startUI() {
             m_pGameState->getAlienShipState()->setShooting(false);
             
             
-            stopMainAIThread();
+            //stopMainAIThread();
             //std::this_thread::sleep_for(std::chrono::milliseconds(500));
             //auto* pAssets = findYService<YAssetsService>();
 
@@ -522,12 +522,15 @@ void MainController::modifyObjects() {
         // distance
         // TODO optimize calculate distance here
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
-        if (nDistance < 30.0) {
-            pRocket->explode();
-            m_pGameState->getAlienShipState()->rocketAttack(pRocket);
-            YLog::info(TAG, L"Attacked");
-            m_pScreenAttack->flash(1000, 10);
-            m_pSoundController->playAttacked();
+        if (getMainState() == MainState::GAME_ACTION)
+        {
+            if (nDistance < 30.0) {
+                pRocket->explode();
+                m_pGameState->getAlienShipState()->rocketAttack(pRocket);
+                YLog::info(TAG, L"Attacked");
+                m_pScreenAttack->flash(1000, 10);
+                m_pSoundController->playAttacked();
+            }
         }
     }
 
