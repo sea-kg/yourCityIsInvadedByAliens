@@ -133,8 +133,8 @@ bool YKeyboard::isF4() {
     return m_pKeyboardStateArray[SDL_SCANCODE_F4];
 }
 
-bool YKeyboard::isF12() {
-    return m_pKeyboardStateArray[SDL_SCANCODE_F12];
+bool YKeyboard::isF11() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_F11];
 }
 
 bool YKeyboard::isSpace() {

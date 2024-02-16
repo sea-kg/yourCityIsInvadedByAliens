@@ -18,7 +18,7 @@ class YKeyboard {
         bool isRight();
         bool isF1();
         bool isF4();
-        bool isF12();
+        bool isF11();
         bool isSpace();
         bool isEscape();
         bool isK();

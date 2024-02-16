@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "game-over-screen",
+    "asset-factory-type": "background",
+    "asset-factory-config": {
+        "image": "game-over-screen.png",
+        "image-height": 720,
+        "image-width": 1280
+    }
+}

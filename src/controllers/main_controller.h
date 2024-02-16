@@ -30,7 +30,6 @@ class MainController {
         int startUI();
         void startGameLogicThread();
         void runGameLogicThread();
-        void stopMainAIThread();
 
         GameState *getGameState();
         CoordXY getCoordCenter();
