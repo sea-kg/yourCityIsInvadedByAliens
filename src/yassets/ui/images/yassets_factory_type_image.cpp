@@ -34,7 +34,7 @@ YAsset *YAssetFactoryImage::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeImage)
 
-YAssetFactoryTypeImage::YAssetFactoryTypeImage(YAssetsService *pAssetsService) 
+YAssetFactoryTypeImage::YAssetFactoryTypeImage(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeImage";
 }
@@ -56,7 +56,7 @@ YAssetFactory *YAssetFactoryTypeImage::createFactory(
     int nHeight = jsonFactoryConfig[L"image-height"].getNumber();
 
     return new YAssetFactoryImage(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sImagePath,
         nWidth,
