@@ -39,7 +39,7 @@ class RenderWindow : public IRenderWindow {
         const std::vector<GameRocketState *> &getRockets();
         virtual void addBioplast(GameBioplastState *pState) override;
         const std::vector<GameBioplastState *> &getBioplasts();
- 
+
         virtual int getNumberOfObjects() override;
 
         bool isFullscreen();
