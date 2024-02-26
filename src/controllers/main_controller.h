@@ -128,6 +128,7 @@ class MainController {
         YAssetText *m_pFpsText;
         YAssetText *m_pScoreText;
         YAssetText *m_pGameOverText;
+        YAssetDialogHelp *m_pDialogHelp;
 
         // TODO mustbe chnaged from GameState?
         YAssetScreenBorderFlashHighlight *m_pScreenAttack;

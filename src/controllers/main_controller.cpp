@@ -351,7 +351,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pFpsText->setText(L"FPS: ...");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
-    //Score text
+    // score text
     m_pScoreText = pAssets->createAsset<YAssetText>(L"text1");
     m_pScoreText->setOrderZ(5001);
     m_pScoreText->setAbsolutePosition(true);
@@ -359,6 +359,9 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pScoreText->setText(L"Score: ");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pScoreText);
 
+    m_pDialogHelp = pAssets->createAsset<YAssetDialogHelp>(L"dialog_help1");
+    m_pDialogHelp->setOrderZ(6001);
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pDialogHelp);
 
     // coordinates of player
     m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
@@ -448,9 +451,11 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         if (pKeyboard->isF1()) {
             setMainState(MainState::GAME_HELP);
             setPauseGame(true);
+            m_pDialogHelp->setShow(true);
         }
     } else if (getMainState() == MainState::GAME_HELP) {
         if (pKeyboard->isF1()) {
+            m_pDialogHelp->setShow(false);
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
