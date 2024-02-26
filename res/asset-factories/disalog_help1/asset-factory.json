@@ -1,0 +1,12 @@
+{
+    "asset-factory-id": "dialog_help1",
+    "asset-factory-type": "dialog_help",
+    "asset-factory-config": {
+        "image-content": "help-compiled.png",
+        "image-content-height": 596,
+        "image-content-width": 596,
+        "image-background": "dialog-background.png",
+        "image-background-height": 360,
+        "image-background-width": 360
+    }
+}
