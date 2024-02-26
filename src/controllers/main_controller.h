@@ -15,6 +15,7 @@ enum class MainState {
     WAITING_SPACE,
     GAME_HELP,
     GAME_ACTION,
+    GAME_OVER,
     GAME_EXIT
 };
 
@@ -49,6 +50,7 @@ class MainController {
         void updateFps();
         void updateFpsValue(int nFps);
         void updateScore();
+        void resetScore();
 
         SoundController *getSoundController();
 
@@ -125,7 +127,7 @@ class MainController {
         YAssetText *m_pCoordText;
         YAssetText *m_pFpsText;
         YAssetText *m_pScoreText;
-        YAssetDialogHelp *m_pDialogHelp;
+        YAssetText *m_pGameOverText;
 
         // TODO mustbe chnaged from GameState?
         YAssetScreenBorderFlashHighlight *m_pScreenAttack;

@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "help1",
+    "asset-factory-type": "image",
+    "asset-factory-config": {
+        "image": "help.png",
+        "image-height": 500,
+        "image-width": 500
+    }
+}

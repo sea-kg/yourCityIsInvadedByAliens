@@ -119,6 +119,10 @@ int MainController::startUI() {
             /*
                 360 - w/2 - 320/2
             */
+
+          
+                
+            //m_pLoaderController->addObject(m_pScoreText);
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -132,11 +136,27 @@ int MainController::startUI() {
                 nTopPad,
                 nBottomPad
             );
-
+            
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
+            updateScore();
+            if (pAlientShipState->getHelthPoints() <= 0)
+            {
+                setMainState(MainState::GAME_OVER);
+
+            }
         }
+        else if (getMainState() == MainState::GAME_OVER)
+        {
+            //MEMORY LEAK!!!!
+            m_pGameState->getAlienShipState()->setShooting(false);
+            //auto* pAssets = findYService<YAssetsService>();
+            //auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"game-over-screen");
+            //m_pLoaderController->addObject(pAssetBackground);
+            //m_pLoaderController->addObject(m_pGameOverText);
+        }
+       
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
@@ -146,7 +166,6 @@ int MainController::startUI() {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
         }
         updateFps();
-        updateScore();
     }
 
     m_pWindow->getRenderWindow()->cleanUp();
@@ -252,7 +271,7 @@ bool MainController::loadGameDataWithProgressBar() {
     YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
     if (jsonDefaultBuildings.isParserFailed()) {
         return false;
-    }
+    } 
     this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
     m_pLoaderController->addToProgressCurrent(1);
 
@@ -332,7 +351,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pFpsText->setText(L"FPS: ...");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pFpsText);
 
-    // score text
+    //Score text
     m_pScoreText = pAssets->createAsset<YAssetText>(L"text1");
     m_pScoreText->setOrderZ(5001);
     m_pScoreText->setAbsolutePosition(true);
@@ -340,9 +359,6 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pScoreText->setText(L"Score: ");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pScoreText);
 
-    m_pDialogHelp = pAssets->createAsset<YAssetDialogHelp>(L"dialog_help1");
-    m_pDialogHelp->setOrderZ(6001);
-    m_pWindow->getRenderWindow()->addPanelsObject(m_pDialogHelp);
 
     // coordinates of player
     m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
@@ -351,6 +367,18 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
+
+    //GameOver text
+    m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
+    m_pGameOverText->setOrderZ(5001);
+    m_pGameOverText->setAbsolutePosition(true);
+    m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
+    m_pGameOverText->setText(L"Press ENTER to try again");
+
+
+    auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
+    pAssetLogo1->setAbsolutePosition(true);
+    pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
 
     // takeberry countdown
     m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
@@ -400,7 +428,7 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         }
     }
 
-    if (pKeyboard->isF12()) {
+    if (pKeyboard->isF11()) {
         toggleFullscreen();
     }
 
@@ -420,16 +448,22 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         if (pKeyboard->isF1()) {
             setMainState(MainState::GAME_HELP);
             setPauseGame(true);
-            m_pDialogHelp->setShow(true);
         }
     } else if (getMainState() == MainState::GAME_HELP) {
         if (pKeyboard->isF1()) {
-            m_pDialogHelp->setShow(false);
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
+    }else if (getMainState() == MainState::GAME_OVER){
+        if(pKeyboard->isEnter()){
+            m_pGameState->getAlienShipState()->resetHealthPoints();
+            resetScore();
+            setMainState(MainState::GAME_ACTION);
+            deinitLoaderController(); 
+        }   
     }
 }
+
 
 bool MainController::isFullscreen() {
     return m_pWindow->getRenderWindow()->isFullscreen();
@@ -462,12 +496,15 @@ void MainController::modifyObjects() {
         // distance
         // TODO optimize calculate distance here
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
-        if (nDistance < 30.0) {
-            pRocket->explode();
-            m_pGameState->getAlienShipState()->rocketAttack(pRocket);
-            YLog::info(TAG, L"Attacked");
-            m_pScreenAttack->flash(1000, 10);
-            m_pSoundController->playAttacked();
+        if (getMainState() == MainState::GAME_ACTION)
+        {
+            if (nDistance < 30.0) {
+                pRocket->explode();
+                m_pGameState->getAlienShipState()->rocketAttack(pRocket);
+                YLog::info(TAG, L"Attacked");
+                m_pScreenAttack->flash(1000, 10);
+                m_pSoundController->playAttacked();
+            }
         }
     }
 
@@ -560,6 +597,11 @@ void MainController::updateScore()
     m_pScoreText->setText(L"Score: " + std::to_wstring(m_nTakedPlayerBerries));
 }
 
+void MainController::resetScore()
+{
+    m_nTakedPlayerBerries = 0;
+}
+
 void MainController::updateFpsValue(int nFps) {
     m_pFpsText->setText(L"FPS: ~" + std::to_wstring(nFps));
     std::cout << "FPS: ~" << nFps << std::endl;
@@ -586,6 +628,8 @@ void MainController::setMainState(const MainState &newMainState) {
         YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
     } else if (m_nCurrentState == MainState::GAME_EXIT) {
         YLog::info(TAG, L"setMainState MainState::GAME_EXIT");
+    } else if (m_nCurrentState == MainState::GAME_OVER) {
+        YLog::info(TAG, L"setMainState MainState::GAME_OVER");
     } else {
         YLog::info(TAG, L"setMainState ???");
     }

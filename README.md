@@ -44,9 +44,6 @@ Run:
 
 ### Windows  (msvc2015 x86):
 
-Virtual machines for developers:
-[https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/](https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/)
-
 Requirements:
 - Visual Studio 2015 (x86)
 - CMake
@@ -67,7 +64,7 @@ Just run a script for download SDL2 libraries and build project:
 Keyboard:
  - Moving arrow's keys or `W` `A` `S` `D`
  - Shooting: `Space`
-
+ 
 ## Target platforms
 
 - linux (Ubuntu 20.04) - **Compiled**

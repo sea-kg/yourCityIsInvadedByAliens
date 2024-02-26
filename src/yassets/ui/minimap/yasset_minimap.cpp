@@ -45,32 +45,6 @@ YAssetMinimap::YAssetMinimap(
     m_pBackgroundMinimapPixels = new Uint32[m_nBufferPixelsSize];
     m_nShiftToLeftByX = 7;
 
-    if (true) {
-        // copy pixels from background texture
-        SDL_RenderCopy(
-            m_pAssetsService->getRenderWindow()->getRenderer(),
-            m_pTextureBackground,
-            &m_currentFrame,
-            &m_currentFrame
-        );
-        SDL_Surface *pSshot = SDL_CreateRGBSurface(
-            0, m_nWidth, m_nHeight, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000
-        );
-        SDL_RenderReadPixels(
-            m_pAssetsService->getRenderWindow()->getRenderer(),
-            &m_currentFrame,
-            SDL_PIXELFORMAT_ARGB8888,
-            pSshot->pixels,
-            pSshot->pitch
-        );
-        memcpy(m_pBackgroundMinimapPixels, pSshot->pixels, m_nBufferPixelsSize * sizeof(Uint32));
-        SDL_FreeSurface(pSshot);
-    } else {
-        for (int i = 0; i < m_nBufferPixelsSize; i++) {
-            m_pBackgroundMinimapPixels[i] = 0xFF009933;
-        }
-    }
-
     redrawBackground();
     redrawPlayerPosition();
 }
@@ -123,10 +97,15 @@ void YAssetMinimap::draw(SDL_Renderer* renderer) {
     dst.y = m_nY;
     dst.w = m_nWidth;
     dst.h = m_nHeight;
+    // SDL_RenderCopy(renderer, m_pTextureBackground, &m_currentFrame, &dst);
     SDL_RenderCopy(renderer, m_pTexturePlayer, &m_currentFrame, &dst);
 }
 
 void YAssetMinimap::redrawBackground() {
+    for (int i = 0; i < m_nBufferPixelsSize; i++) {
+        m_pBackgroundMinimapPixels[i] = 0xFF009933;
+    }
+
     const std::vector<MapRect> &vRoads = m_pMapService->getRoads();
     YLog::info(TAG, L"Roads: " + std::to_wstring(vRoads.size()));
 
