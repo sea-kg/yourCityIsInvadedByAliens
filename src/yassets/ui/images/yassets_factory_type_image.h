@@ -14,7 +14,7 @@ class YAssetFactoryImage : public YAssetFactory {
             int nHeight
         );
         virtual YAsset *createAsset() override;
-
+        
     private:
         YAssetFactoryTypeImage *m_pFactoryTypeFont;
         std::wstring m_sImagePath;

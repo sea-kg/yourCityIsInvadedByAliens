@@ -60,4 +60,5 @@ class RenderObject {
     protected:
         bool m_bCanBeRemovedFromRenderer;
         int m_nPositionZ;
+       
 };
