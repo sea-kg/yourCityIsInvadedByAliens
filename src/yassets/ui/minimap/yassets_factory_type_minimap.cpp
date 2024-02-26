@@ -34,7 +34,7 @@ YAsset *YAssetFactoryMinimap::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeMinimap)
 
-YAssetFactoryTypeMinimap::YAssetFactoryTypeMinimap(YAssetsService *pAssetsService) 
+YAssetFactoryTypeMinimap::YAssetFactoryTypeMinimap(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeMinimap";
 }
@@ -56,7 +56,7 @@ YAssetFactory *YAssetFactoryTypeMinimap::createFactory(
     int nHeight = jsonFactoryConfig[L"image-height"].getNumber();
 
     return new YAssetFactoryMinimap(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sMinimapPath,
         nWidth,
