@@ -120,6 +120,7 @@ int MainController::startUI() {
                 360 - w/2 - 320/2
             */
 
+
           
                 
             //m_pLoaderController->addObject(m_pScoreText);
@@ -155,6 +156,9 @@ int MainController::startUI() {
             //auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"game-over-screen");
             //m_pLoaderController->addObject(pAssetBackground);
             //m_pLoaderController->addObject(m_pGameOverText);
+            m_pGameOverText->showText();
+            m_pDialogGameOver->setShow(true);
+            
         }
        
         // normalize framerate to 60 fps
@@ -377,11 +381,12 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pGameOverText->setAbsolutePosition(true);
     m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
     m_pGameOverText->setText(L"Press ENTER to try again");
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pGameOverText);
+    m_pGameOverText->hideText();
 
-
-    auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
-    pAssetLogo1->setAbsolutePosition(true);
-    pAssetLogo1->setPosition(m_pWindow->getHeight()/2, m_pWindow->getWidth()/2  - 600);
+    m_pDialogGameOver = pAssets->createAsset<YAssetDialogHelp>(L"game-over-screen");
+    m_pDialogGameOver->setOrderZ(6001);
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pDialogGameOver);
 
     // takeberry countdown
     m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
@@ -464,7 +469,8 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             m_pGameState->getAlienShipState()->resetHealthPoints();
             resetScore();
             setMainState(MainState::GAME_ACTION);
-            deinitLoaderController(); 
+            m_pDialogGameOver->setShow(false);
+            m_pGameOverText->hideText();
         }   
     }
 }
