@@ -150,15 +150,11 @@ int MainController::startUI() {
         }
         else if (getMainState() == MainState::GAME_OVER)
         {
-            //MEMORY LEAK!!!!
             m_pGameState->getAlienShipState()->setShooting(false);
-            //auto* pAssets = findYService<YAssetsService>();
-            //auto* pAssetBackground = pAssets->createAsset<YAssetBackground>(L"game-over-screen");
-            //m_pLoaderController->addObject(pAssetBackground);
-            //m_pLoaderController->addObject(m_pGameOverText);
+            m_pSoundController->stopTakeBerry();
+            m_nCurrentTakeAlienBerry = -1;
             m_pGameOverText->showText();
             m_pDialogGameOver->setShow(true);
-            
         }
        
         // normalize framerate to 60 fps
