@@ -16,10 +16,10 @@ class LoaderController {
         void setProgressCurrent(int nVal);
         void addToProgressCurrent(int nVal);
         void draw();
-        void addObject(RenderObject* pObject);
 
     private:
         std::wstring TAG; 
+        void addObject(RenderObject* pObject);
         GameState *m_pGameState;
 
         RenderWindow *m_pRenderWindow;
