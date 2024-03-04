@@ -263,7 +263,7 @@ bool MainController::loadGameDataWithProgressBar() {
     YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
     if (jsonDefaultBuildings.isParserFailed()) {
         return false;
-    } 
+    }
     this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
     m_pLoaderController->addToProgressCurrent(1);
 

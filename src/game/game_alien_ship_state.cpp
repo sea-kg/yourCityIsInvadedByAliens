@@ -155,6 +155,7 @@ int GameAlienShipState::getHelthPoints() {
 int GameAlienShipState::getMaxHelthPoints() {
     return m_nMaxHealthPoints;
 }
+
 int GameAlienShipState::setHealthPoints(int h) {
     m_nHealthPoints = h;
     return m_nHealthPoints;
