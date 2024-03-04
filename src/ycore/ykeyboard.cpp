@@ -161,8 +161,7 @@ bool YKeyboard::isH() {
     return m_pKeyboardStateArray[SDL_SCANCODE_H];
 }
 
-bool YKeyboard::isEnter()
-{
+bool YKeyboard::isEnter() {
     return m_pKeyboardStateArray[SDL_SCANCODE_RETURN];
 }
 

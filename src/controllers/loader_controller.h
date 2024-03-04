@@ -19,7 +19,7 @@ class LoaderController {
 
     private:
         std::wstring TAG; 
-        void addObject(RenderObject* pObject);
+        void addObject(RenderObject *pObject);
         GameState *m_pGameState;
 
         RenderWindow *m_pRenderWindow;

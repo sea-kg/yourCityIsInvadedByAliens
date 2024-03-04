@@ -119,7 +119,6 @@ int MainController::startUI() {
             /*
                 360 - w/2 - 320/2
             */
-
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -133,7 +132,6 @@ int MainController::startUI() {
                 nTopPad,
                 nBottomPad
             );
-            
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
@@ -454,8 +452,8 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
-    }else if (getMainState() == MainState::GAME_OVER){
-        if(pKeyboard->isEnter()){
+    }else if (getMainState() == MainState::GAME_OVER) {
+        if(pKeyboard->isEnter()) {
             m_pGameState->getAlienShipState()->resetHealthPoints();
             resetScore();
             setMainState(MainState::GAME_ACTION);
@@ -497,8 +495,7 @@ void MainController::modifyObjects() {
         // distance
         // TODO optimize calculate distance here
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
-        if (getMainState() == MainState::GAME_ACTION)
-        {
+        if (getMainState() == MainState::GAME_ACTION) {
             if (nDistance < 30.0) {
                 pRocket->explode();
                 m_pGameState->getAlienShipState()->rocketAttack(pRocket);
@@ -593,13 +590,11 @@ void MainController::updateFps() {
         m_nFpsNumberOfFrames = 0;
     }
 }
-void MainController::updateScore()
-{
+void MainController::updateScore() {
     m_pScoreText->setText(L"Score: " + std::to_wstring(m_nTakedPlayerBerries));
 }
 
-void MainController::resetScore()
-{
+void MainController::resetScore() {
     m_nTakedPlayerBerries = 0;
 }
 
