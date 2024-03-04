@@ -120,10 +120,6 @@ int MainController::startUI() {
                 360 - w/2 - 320/2
             */
 
-
-          
-                
-            //m_pLoaderController->addObject(m_pScoreText);
             int nLeftPad = getCoordCenter().x();
             int nRightPad = getCoordCenter().x() - 320;
             int nTopPad = getCoordCenter().y();
@@ -142,10 +138,8 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
-            if (pAlientShipState->getHelthPoints() <= 0)
-            {
+            if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
-
             }
         }
         else if (getMainState() == MainState::GAME_OVER)
