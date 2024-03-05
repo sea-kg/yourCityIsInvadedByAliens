@@ -140,8 +140,7 @@ int MainController::startUI() {
                 setMainState(MainState::GAME_OVER);
             }
         }
-        else if (getMainState() == MainState::GAME_OVER)
-        {
+        else if (getMainState() == MainState::GAME_OVER) {
             m_pGameState->getAlienShipState()->setShooting(false);
             m_pSoundController->stopTakeBerry();
             m_nCurrentTakeAlienBerry = -1;
@@ -452,7 +451,7 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
-    }else if (getMainState() == MainState::GAME_OVER) {
+    } else if (getMainState() == MainState::GAME_OVER) {
         if(pKeyboard->isEnter()) {
             m_pGameState->getAlienShipState()->resetHealthPoints();
             resetScore();
