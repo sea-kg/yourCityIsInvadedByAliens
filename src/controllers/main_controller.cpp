@@ -139,8 +139,7 @@ int MainController::startUI() {
             if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
             }
-        }
-        else if (getMainState() == MainState::GAME_OVER) {
+        } else if (getMainState() == MainState::GAME_OVER) {
             m_pGameState->getAlienShipState()->setShooting(false);
             m_pSoundController->stopTakeBerry();
             m_nCurrentTakeAlienBerry = -1;
