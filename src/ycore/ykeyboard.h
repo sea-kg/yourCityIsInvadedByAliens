@@ -18,13 +18,14 @@ class YKeyboard {
         bool isRight();
         bool isF1();
         bool isF4();
-        bool isF12();
+        bool isF11();
         bool isSpace();
         bool isEscape();
         bool isK();
         bool isL();
         bool isG();
         bool isH();
+        bool isEnter();
         std::wstring toString();
     private:
         const Uint8 *m_pKeyboardStateArray;

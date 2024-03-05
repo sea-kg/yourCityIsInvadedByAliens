@@ -132,11 +132,21 @@ int MainController::startUI() {
                 nTopPad,
                 nBottomPad
             );
-
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
+            updateScore();
+            if (pAlientShipState->getHelthPoints() <= 0) {
+                setMainState(MainState::GAME_OVER);
+            }
+        } else if (getMainState() == MainState::GAME_OVER) {
+            m_pGameState->getAlienShipState()->setShooting(false);
+            m_pSoundController->stopTakeBerry();
+            m_nCurrentTakeAlienBerry = -1;
+            m_pGameOverText->showText();
+            m_pDialogGameOver->setShow(true);
         }
+       
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
@@ -146,7 +156,6 @@ int MainController::startUI() {
             YLog::info(TAG, L"Warning " + std::to_wstring(nFrameTime));
         }
         updateFps();
-        updateScore();
     }
 
     m_pWindow->getRenderWindow()->cleanUp();
@@ -352,6 +361,19 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
+    //GameOver text
+    m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
+    m_pGameOverText->setOrderZ(5001);
+    m_pGameOverText->setAbsolutePosition(true);
+    m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
+    m_pGameOverText->setText(L"Press ENTER to try again");
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pGameOverText);
+    m_pGameOverText->hideText();
+
+    m_pDialogGameOver = pAssets->createAsset<YAssetDialogHelp>(L"game-over-screen");
+    m_pDialogGameOver->setOrderZ(6001);
+    m_pWindow->getRenderWindow()->addPanelsObject(m_pDialogGameOver);
+
     // takeberry countdown
     m_pTakeBerryText = pAssets->createAsset<YAssetText>(L"text1");
     m_pTakeBerryText->setOrderZ(5001);
@@ -400,7 +422,7 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
         }
     }
 
-    if (pKeyboard->isF12()) {
+    if (pKeyboard->isF11()) {
         toggleFullscreen();
     }
 
@@ -428,8 +450,17 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             setMainState(MainState::GAME_ACTION);
             setPauseGame(false);
         }
+    } else if (getMainState() == MainState::GAME_OVER) {
+        if(pKeyboard->isEnter()) {
+            m_pGameState->getAlienShipState()->resetHealthPoints();
+            resetScore();
+            setMainState(MainState::GAME_ACTION);
+            m_pDialogGameOver->setShow(false);
+            m_pGameOverText->hideText();
+        }   
     }
 }
+
 
 bool MainController::isFullscreen() {
     return m_pWindow->getRenderWindow()->isFullscreen();
@@ -462,12 +493,14 @@ void MainController::modifyObjects() {
         // distance
         // TODO optimize calculate distance here
         double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
-        if (nDistance < 30.0) {
-            pRocket->explode();
-            m_pGameState->getAlienShipState()->rocketAttack(pRocket);
-            YLog::info(TAG, L"Attacked");
-            m_pScreenAttack->flash(1000, 10);
-            m_pSoundController->playAttacked();
+        if (getMainState() == MainState::GAME_ACTION) {
+            if (nDistance < 30.0) {
+                pRocket->explode();
+                m_pGameState->getAlienShipState()->rocketAttack(pRocket);
+                YLog::info(TAG, L"Attacked");
+                m_pScreenAttack->flash(1000, 10);
+                m_pSoundController->playAttacked();
+            }
         }
     }
 
@@ -555,9 +588,12 @@ void MainController::updateFps() {
         m_nFpsNumberOfFrames = 0;
     }
 }
-void MainController::updateScore()
-{
+void MainController::updateScore() {
     m_pScoreText->setText(L"Score: " + std::to_wstring(m_nTakedPlayerBerries));
+}
+
+void MainController::resetScore() {
+    m_nTakedPlayerBerries = 0;
 }
 
 void MainController::updateFpsValue(int nFps) {
@@ -586,6 +622,8 @@ void MainController::setMainState(const MainState &newMainState) {
         YLog::info(TAG, L"setMainState MainState::WAITING_SPACE");
     } else if (m_nCurrentState == MainState::GAME_EXIT) {
         YLog::info(TAG, L"setMainState MainState::GAME_EXIT");
+    } else if (m_nCurrentState == MainState::GAME_OVER) {
+        YLog::info(TAG, L"setMainState MainState::GAME_OVER");
     } else {
         YLog::info(TAG, L"setMainState ???");
     }
