@@ -127,7 +127,6 @@ class MainController {
         YAssetText *m_pCoordText;
         YAssetText *m_pFpsText;
         YAssetText *m_pScoreText;
-        YAssetText *m_pGameOverText;
         YAssetDialogHelp *m_pDialogHelp;
         YAssetDialogHelp *m_pDialogGameOver;
 

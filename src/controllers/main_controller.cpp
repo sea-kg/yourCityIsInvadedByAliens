@@ -143,10 +143,9 @@ int MainController::startUI() {
             m_pGameState->getAlienShipState()->setShooting(false);
             m_pSoundController->stopTakeBerry();
             m_nCurrentTakeAlienBerry = -1;
-            m_pGameOverText->showText();
             m_pDialogGameOver->setShow(true);
         }
-       
+
         // normalize framerate to 60 fps
         long nFrameTime = 10 - (nStartTime - getCurrentTimeInMilliseconds());
         if (nFrameTime > 0) {
@@ -361,15 +360,6 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 
-    //GameOver text
-    m_pGameOverText = pAssets->createAsset<YAssetText>(L"text1");
-    m_pGameOverText->setOrderZ(5001);
-    m_pGameOverText->setAbsolutePosition(true);
-    m_pGameOverText->setPosition(m_pWindow->getWidth()/2 -250, m_pWindow -> getHeight()/2 + 150);
-    m_pGameOverText->setText(L"Press ENTER to try again");
-    m_pWindow->getRenderWindow()->addPanelsObject(m_pGameOverText);
-    m_pGameOverText->hideText();
-
     m_pDialogGameOver = pAssets->createAsset<YAssetDialogHelp>(L"game-over-screen");
     m_pDialogGameOver->setOrderZ(6001);
     m_pWindow->getRenderWindow()->addPanelsObject(m_pDialogGameOver);
@@ -456,8 +446,7 @@ void MainController::handleKeyboardCommand(YKeyboard *pKeyboard) {
             resetScore();
             setMainState(MainState::GAME_ACTION);
             m_pDialogGameOver->setShow(false);
-            m_pGameOverText->hideText();
-        }   
+        }
     }
 }
 
