@@ -1,5 +1,5 @@
 #include "ykeyboard.h"
-
+#include "ylog.h"
 
 
 // ---------------------------------------------------------------------
@@ -13,13 +13,24 @@ void YKeyboard::pollState() {
     m_pKeyboardStateArray = SDL_GetKeyboardState(NULL);
 }
 
+void YKeyboard::toLogPressedButtons() {
+    std::wstring sLog = L"\n---\n";
+    sLog += std::wstring(L"Arrow Space: ") + (m_pKeyboardStateArray[SDL_SCANCODE_DOWN] ? L"Pressed" : L"No") + L"\n";
+    sLog += std::wstring(L"Arrow Up: ") + (m_pKeyboardStateArray[SDL_SCANCODE_UP] ? L"Pressed" : L"No") + L"\n";
+    sLog += std::wstring(L"Arrow Left: ") + (m_pKeyboardStateArray[SDL_SCANCODE_LEFT] ? L"Pressed" : L"No") + L"\n";
+    sLog += std::wstring(L"Arrow Right: ") + (m_pKeyboardStateArray[SDL_SCANCODE_RIGHT] ? L"Pressed" : L"No") + L"\n";
+    sLog += std::wstring(L"Arrow Down: ") + (m_pKeyboardStateArray[SDL_SCANCODE_DOWN] ? L"Pressed" : L"No") + L"\n";
+    sLog += L"---\n";
+    YLog::info(L"updateStateByKeyboard", sLog);
+}
+
 bool YKeyboard::isUp() {
     bool bArrowUp =
         m_pKeyboardStateArray[SDL_SCANCODE_UP]
         && !m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         m_pKeyboardStateArray[SDL_SCANCODE_W]
         && !m_pKeyboardStateArray[SDL_SCANCODE_A]
         && !m_pKeyboardStateArray[SDL_SCANCODE_D]
@@ -33,7 +44,7 @@ bool YKeyboard::isUpLeft() {
         && m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         m_pKeyboardStateArray[SDL_SCANCODE_W]
         && m_pKeyboardStateArray[SDL_SCANCODE_A]
         && !m_pKeyboardStateArray[SDL_SCANCODE_D]
@@ -47,7 +58,7 @@ bool YKeyboard::isUpRight() {
         && !m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         m_pKeyboardStateArray[SDL_SCANCODE_W]
         && !m_pKeyboardStateArray[SDL_SCANCODE_A]
         && m_pKeyboardStateArray[SDL_SCANCODE_D]
@@ -61,7 +72,7 @@ bool YKeyboard::isDown() {
         && !m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         !m_pKeyboardStateArray[SDL_SCANCODE_W]
         && !m_pKeyboardStateArray[SDL_SCANCODE_A]
         && !m_pKeyboardStateArray[SDL_SCANCODE_D]
@@ -75,7 +86,7 @@ bool YKeyboard::isDownLeft() {
         && m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         !m_pKeyboardStateArray[SDL_SCANCODE_W]
         && m_pKeyboardStateArray[SDL_SCANCODE_A]
         && !m_pKeyboardStateArray[SDL_SCANCODE_D]
@@ -84,17 +95,17 @@ bool YKeyboard::isDownLeft() {
 }
 
 bool YKeyboard::isDownRight() {
-    bool bArrowUp =
+    bool bArrowDownRight =
         !m_pKeyboardStateArray[SDL_SCANCODE_UP]
         && !m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdDownRight =
         !m_pKeyboardStateArray[SDL_SCANCODE_W]
         && !m_pKeyboardStateArray[SDL_SCANCODE_A]
         && m_pKeyboardStateArray[SDL_SCANCODE_D]
         && m_pKeyboardStateArray[SDL_SCANCODE_S];
-    return bArrowUp || bWasdUp;
+    return bArrowDownRight || bWasdDownRight;
 }
 
 bool YKeyboard::isLeft() {
@@ -103,7 +114,7 @@ bool YKeyboard::isLeft() {
         && m_pKeyboardStateArray[SDL_SCANCODE_LEFT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_RIGHT]
         && !m_pKeyboardStateArray[SDL_SCANCODE_DOWN];
-    bool bWasdUp = 
+    bool bWasdUp =
         !m_pKeyboardStateArray[SDL_SCANCODE_W]
         && m_pKeyboardStateArray[SDL_SCANCODE_A]
         && !m_pKeyboardStateArray[SDL_SCANCODE_D]

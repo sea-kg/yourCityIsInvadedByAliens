@@ -8,6 +8,7 @@ class YKeyboard {
     public:
         YKeyboard();
         void pollState();
+        void toLogPressedButtons();
         bool isUp();
         bool isUpLeft();
         bool isUpRight();
@@ -29,4 +30,5 @@ class YKeyboard {
         std::wstring toString();
     private:
         const Uint8 *m_pKeyboardStateArray;
+        std::wstring TAG;
 };

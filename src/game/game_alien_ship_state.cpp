@@ -1,5 +1,6 @@
 #include "game_alien_ship_state.h"
 #include <iostream>
+#include "ylog.h"
 
 // ---------------------------------------------------------------------
 // GameAlienShipState
@@ -113,7 +114,7 @@ void GameAlienShipState::rocketAttack(GameRocketState *pRocket) {
     m_nHealthPoints--;
     MoveObjectDirection rocketMoveDirection = pRocket->getDirection();
 
-    // move ship after rocket 
+    // move ship after rocket
     int nStep = 15;
     CoordXY p0;
     switch(rocketMoveDirection) {
@@ -176,6 +177,7 @@ void GameAlienShipState::updatePosition(const CoordXY &p0) {
 
 void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
     if (pKeyboard->isSpace()) {
+        // pKeyboard->toLogPressedButtons();
         this->setShooting(true);
     } else if (pKeyboard->isL() || pKeyboard->isH()) {
 
@@ -194,6 +196,7 @@ void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
     } else if (pKeyboard->isDownLeft()) {
         this->setMoveDirection(MoveObjectDirection::DOWN_LEFT);
     } else if (pKeyboard->isDownRight()) {
+        // YLog::info(L"updateStateByKeyboard", L"MoveObjectDirection::DOWN_RIGHT");
         this->setMoveDirection(MoveObjectDirection::DOWN_RIGHT);
     } else if (pKeyboard->isLeft()) {
         this->setMoveDirection(MoveObjectDirection::LEFT);
