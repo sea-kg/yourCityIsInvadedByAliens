@@ -22,8 +22,8 @@ class GameAlienShipState {
             int nTopPad,
             int nBottomPad
         );
-        void bioplastShot();
-        GameBioplastState *popBioplast();
+        //void bioplastShot();
+        //GameBioplastState *popBioplast();
         void rocketAttack(GameRocketState *pRocket);
         int getHelthPoints();
         int getMaxHelthPoints();
@@ -39,7 +39,7 @@ class GameAlienShipState {
         long m_nMovePrevTime;
         long m_nSpeedMoving;
         bool m_bShooting;
-        std::vector<GameBioplastState *> m_vBioplasts;
+        //std::vector<GameBioplastState *> m_vBioplasts;
         int m_nHealthPoints;
         int m_nMaxHealthPoints;
 };
