@@ -21,6 +21,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/controllers")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/game")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/render")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/strategies/shooting")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
@@ -42,8 +43,10 @@ list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
-# yassets_factories
+# strategies
+list (APPEND WSJCPP_SOURCES "src/strategies/shooting/random_shooting.cpp")
 
+# yassets_factories
 
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yasset_alien_berry.cpp")
