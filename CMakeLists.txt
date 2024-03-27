@@ -44,7 +44,7 @@ list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
 # strategies
-list (APPEND WSJCPP_SOURCES "src/strategies/shooting/random_shooting.cpp")
+list (APPEND WSJCPP_SOURCES "src/strategies/shooting/random_shooting_strategy.cpp")
 
 # yassets_factories
 

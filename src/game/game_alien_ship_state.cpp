@@ -1,7 +1,7 @@
 #include "game_alien_ship_state.h"
 #include <iostream>
 #include "ylog.h"
-
+#include "random_shooting_strategy.h"
 // ---------------------------------------------------------------------
 // GameAlienShipState
 
@@ -13,6 +13,9 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_nMaxHealthPoints = 64;
     m_nHealthPoints = m_nMaxHealthPoints;
     m_moveDirection = MoveObjectDirection::NONE;
+
+    m_vShootingStrategies.push_back(new RandomShootingStrategy());
+    m_pCurrentShootingStrategy = m_vShootingStrategies[0];
 }
 
 const CoordXY &GameAlienShipState::getPosition() {
@@ -94,20 +97,18 @@ void GameAlienShipState::move(
     m_p0.update(p0);
 }
 
-//void GameAlienShipState::bioplastShot() {
-//    int nX = std::rand() % 500 - 250;
-//    int nY = std::rand() % 500 - 250;
-//    m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(nX,nY)));
-//}
+void GameAlienShipState::bioplastShot() {
+    m_pCurrentShootingStrategy->shoot(m_p0, m_vBioplasts);
+}
 
-//GameBioplastState *GameAlienShipState::popBioplast() {
-//    GameBioplastState *pRet = nullptr;
-//    if (!m_vBioplasts.empty()) {
-//        pRet = m_vBioplasts.back();
-//        m_vBioplasts.pop_back();
-//    }
-//    return pRet;
-//}
+GameBioplastState *GameAlienShipState::popBioplast() {
+   GameBioplastState *pRet = nullptr;
+   if (!m_vBioplasts.empty()) {
+       pRet = m_vBioplasts.back();
+       m_vBioplasts.pop_back();
+   }
+   return pRet;
+}
 
 void GameAlienShipState::rocketAttack(GameRocketState *pRocket) {
     std::cout << "GameAlienShipState::rocketAttack, negative hit points" << std::endl;

@@ -10,7 +10,7 @@ RenderAlienShip0::RenderAlienShip0(
     bool bShadow,
     SDL_Texture* tex,
     int nPositionZ
-) 
+)
 : RenderObject(nPositionZ) {
     TAG = L"RenderAlienShip0";
     m_bShadow = bShadow;
@@ -59,13 +59,13 @@ void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWind
 
     if (m_pState->isShooting()) {
         std::cout << "Shooting!  ";
-        m_pShootingState->shoot();
+        m_pState->bioplastShot();
     }
 
-    GameBioplastState *pBioplastState = m_pShootingState->popBioplast();
+    GameBioplastState *pBioplastState = m_pState->popBioplast();
     while (pBioplastState != nullptr) {
         pRenderWindow->addBioplast(pBioplastState);
-        pBioplastState = m_pShootingState->popBioplast();
+        pBioplastState = m_pState->popBioplast();
     }
 };
 
@@ -78,7 +78,6 @@ void RenderAlienShip0::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    
     if (m_bShadow) {
         dst.x = m_coordPositionRendering.x() - m_nFrameWidth/4;
         dst.y = m_coordPositionRendering.y() - m_nFrameHeight/4;
