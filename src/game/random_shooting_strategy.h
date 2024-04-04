@@ -1,10 +1,10 @@
 #pragma once
-#include "shooting_strategy.h"
+#include "ishooting_strategy.h"
 #include <vector>
 #include "game_bioplast_state.h"
-class RandomShooting : public ShootingStrategy {
+class RandomShooting : public IShootingStrategy {
 public:
-	RandomShooting();
+	RandomShootingStrategy();
 	void shoot() override;
 	GameBioplastState* popBioplast();
 

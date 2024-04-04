@@ -1,5 +1,5 @@
 #pragma once
-class ShootingStrategy {
+class IShootingStrategy {
 public:
 	virtual void shoot() = 0;
 
