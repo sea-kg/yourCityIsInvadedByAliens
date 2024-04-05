@@ -5,6 +5,7 @@
 #include "game_bioplast_state.h"
 #include "game_rocket_state.h"
 #include "ykeyboard.h"
+#include "ishooting_strategy.h"
 
 class GameAlienShipState {
     public:
@@ -22,8 +23,6 @@ class GameAlienShipState {
             int nTopPad,
             int nBottomPad
         );
-        //void bioplastShot();
-        //GameBioplastState *popBioplast();
         void rocketAttack(GameRocketState *pRocket);
         int getHelthPoints();
         int getMaxHelthPoints();
@@ -32,6 +31,9 @@ class GameAlienShipState {
         void resetHealthPoints();
         void updatePosition(const CoordXY &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
+        IShootingStrategy *getCurrentShootingStrategy();
+        IShootingStrategy *setRandomShootingStrategy();
+        IShootingStrategy *resetShootingStrategy();
 
     private:
         CoordXY m_p0;
@@ -39,7 +41,8 @@ class GameAlienShipState {
         long m_nMovePrevTime;
         long m_nSpeedMoving;
         bool m_bShooting;
-        //std::vector<GameBioplastState *> m_vBioplasts;
         int m_nHealthPoints;
         int m_nMaxHealthPoints;
+        IShootingStrategy *m_pCurrentShootingStrategy;
+        std::vector<IShootingStrategy *> m_vShootingStrategies;
 };

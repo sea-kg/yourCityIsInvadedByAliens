@@ -25,6 +25,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/SimpleNeuralNetworkCpp")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/strategies/shooting")
 
 # ycore
 list (APPEND WSJCPP_SOURCES "src/ycore/ycore.cpp")
@@ -41,6 +42,10 @@ list (APPEND WSJCPP_SOURCES "src/yservices/settings_yservice.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/yassets_service.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/window_yservice.cpp")
 list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
+
+#shooting_strategy
+list (APPEND WSJCPP_SOURCES "src/strategies/shooting/random_shooting_strategy.cpp")
+list (APPEND WSJCPP_SOURCES "src/strategies/shooting/shooting_up_strategy.cpp")
 
 # yassets_factories
 

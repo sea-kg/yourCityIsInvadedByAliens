@@ -2,7 +2,7 @@
 #include "render_window.h"
 
 #include "game_state.h"
-#include "random_shooting.h"
+#include "ishooting_strategy.h"
 #include "game_alien_ship_state.h"
 
 #include <vector>
@@ -26,7 +26,7 @@ class RenderAlienShip0 : public RenderObject {
     private:
         std::wstring TAG;
         GameAlienShipState *m_pState;
-        RandomShooting *m_pShootingState;
+        IShootingStrategy *m_pShootingStrategy;
         CoordXY m_coordPositionRendering;
         int m_nFrameWidth;
         int m_nFrameHeight;

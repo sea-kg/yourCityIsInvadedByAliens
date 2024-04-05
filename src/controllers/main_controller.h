@@ -9,6 +9,7 @@
 #include "loader_controller.h"
 #include "settings_yservice.h"
 #include "window_yservice.h"
+#include "ishooting_strategy.h"
 
 enum class MainState {
     LOADING,
@@ -51,6 +52,7 @@ class MainController {
         void updateFpsValue(int nFps);
         void updateScore();
         void resetScore();
+        int getScore();
 
         SoundController *getSoundController();
 

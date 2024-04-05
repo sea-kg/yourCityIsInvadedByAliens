@@ -19,6 +19,7 @@
 #include "window_yservice.h"
 #include "map_yservice.h"
 #include <yassets.h>
+#include "ishooting_strategy.h"
 
 // MainController
 
@@ -136,6 +137,9 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
+            if (getScore() == 5) {
+                pAlientShipState->setRandomShootingStrategy();
+            }
             if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
             }
@@ -144,6 +148,7 @@ int MainController::startUI() {
             m_pSoundController->stopTakeBerry();
             m_nCurrentTakeAlienBerry = -1;
             m_pDialogGameOver->setShow(true);
+            pAlientShipState->resetShootingStrategy();
         }
 
         // normalize framerate to 60 fps
@@ -583,6 +588,10 @@ void MainController::updateScore() {
 
 void MainController::resetScore() {
     m_nTakedPlayerBerries = 0;
+}
+
+int MainController::getScore() {
+    return m_nTakedPlayerBerries;
 }
 
 void MainController::updateFpsValue(int nFps) {

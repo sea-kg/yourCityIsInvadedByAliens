@@ -1,13 +1,11 @@
 #include "random_shooting_strategy.h"
-#include "game_alien_ship_state.h"
 
-RandomShootingStrategy::RandomShootingStrategy() {};
-
-void RandomShootingStrategy::shoot() {
+void RandomShootingStrategy::shoot(const CoordXY& p0) {
 	int nX = std::rand() % 500 - 250;
 	int nY = std::rand() % 500 - 250;
-	m_vBioplasts.push_back(new GameBioplastState(m_p0, m_p0 + CoordXY(nX, nY)));
+	m_vBioplasts.push_back(new GameBioplastState(p0, p0 + CoordXY(nX, nY)));
 }
+
 GameBioplastState *RandomShootingStrategy::popBioplast() {
 	GameBioplastState *pRet = nullptr;
     if (!m_vBioplasts.empty()) {
