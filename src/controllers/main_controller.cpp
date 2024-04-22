@@ -34,6 +34,7 @@ MainController::MainController() {
     m_pMap = findYService<MapYService>();
     m_nCurrentTakeAlienBerry = -1;
     m_nTakedPlayerBerries = 0;
+    m_nScoreforRandomShooting;
 }
 
 MainController::~MainController() {
@@ -136,7 +137,7 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
-            if (getScore() == 5) {
+            if (getScore() == m_nScoreforRandomShooting) {
                 pAlientShipState->setRandomShootingStrategy();
             }
             if (pAlientShipState->getHelthPoints() <= 0) {
