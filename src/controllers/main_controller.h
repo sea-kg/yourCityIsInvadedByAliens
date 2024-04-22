@@ -52,7 +52,7 @@ class MainController {
         void updateFpsValue(int nFps);
         void updateScore();
         void resetScore();
-        int getScore();
+        int getScore() const;
 
         SoundController *getSoundController();
 
