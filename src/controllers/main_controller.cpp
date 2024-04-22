@@ -590,7 +590,7 @@ void MainController::resetScore() {
     m_nTakedPlayerBerries = 0;
 }
 
-int MainController::getScore() {
+int MainController::getScore() const {
     return m_nTakedPlayerBerries;
 }
 
