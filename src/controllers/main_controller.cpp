@@ -1,13 +1,12 @@
-
-#include "main_controller.h"
+#include <fstream>
+#include <algorithm>
 #include <iostream>
+#include "main_controller.h"
 #include "render.h"
 #include "render_ui.h"
 #include "ai_tank0.h"
 #include "loader_controller.h"
 #include "utils_start_dialog.h"
-#include <fstream>
-#include <algorithm>
 #include "render_alienship.h"
 #include "roads/render_road0.h"
 #include "ycore.h"
@@ -18,8 +17,8 @@
 #include "yassets_service.h"
 #include "window_yservice.h"
 #include "map_yservice.h"
-#include <yassets.h>
-#include "ishooting_strategy.h"
+#include "yassets.h"
+
 
 // MainController
 
