@@ -15,9 +15,7 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_nMaxHealthPoints = 64;
     m_nHealthPoints = m_nMaxHealthPoints;
     m_moveDirection = MoveObjectDirection::NONE;
-    m_vShootingStrategies.push_back(new ShootingUpStrategy());
-    m_vShootingStrategies.push_back(new RandomShootingStrategy());
-    m_pCurrentShootingStrategy = m_vShootingStrategies[0];
+    m_pShootingStrategyLogic = new ShootingStrategyLogic();
 }
 
 const CoordXY &GameAlienShipState::getPosition() {
@@ -165,22 +163,6 @@ void GameAlienShipState::updatePosition(const CoordXY &p0) {
     m_p0 = p0;
 }
 
-IShootingStrategy *GameAlienShipState::getCurrentShootingStrategy() {
-    return m_pCurrentShootingStrategy;
-}
-
-IShootingStrategy *GameAlienShipState::setRandomShootingStrategy() {
-    if (m_pCurrentShootingStrategy != m_vShootingStrategies[1]) {
-        m_pCurrentShootingStrategy = m_vShootingStrategies[1];
-    }
-    return m_pCurrentShootingStrategy;
-}
-
-IShootingStrategy *GameAlienShipState::resetShootingStrategy() {
-    m_pCurrentShootingStrategy = m_vShootingStrategies[0];
-    return m_pCurrentShootingStrategy;
-}
-
 void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
     if (pKeyboard->isSpace()) {
         // pKeyboard->toLogPressedButtons();
@@ -211,4 +193,8 @@ void GameAlienShipState::updateStateByKeyboard(YKeyboard *pKeyboard) {
     } else {
         this->setMoveDirection(MoveObjectDirection::NONE);
     }
+}
+
+ShootingStrategyLogic *GameAlienShipState::getShootingStrategyLogic() const {
+    return m_pShootingStrategyLogic;
 }

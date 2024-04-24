@@ -10,6 +10,7 @@
 #include "settings_yservice.h"
 #include "window_yservice.h"
 #include "ishooting_strategy.h"
+#include "shooting_strategy_logic.h"
 
 enum class MainState {
     LOADING,
@@ -52,7 +53,6 @@ class MainController {
         void updateFpsValue(int nFps);
         void updateScore();
         void resetScore();
-        int getScore() const;
 
         SoundController *getSoundController();
 
@@ -139,7 +139,6 @@ class MainController {
         long m_nFpsNumberOfFrames;
         long m_nFpsStartTime;
         long m_nFpsElapsed;
-        const int m_nScoreforRandomShooting = 5;
 
         SoundController *m_pSoundController;
         LoaderController *m_pLoaderController;

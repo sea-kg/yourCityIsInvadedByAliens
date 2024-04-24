@@ -4,6 +4,7 @@
 #include "game_state.h"
 #include "ishooting_strategy.h"
 #include "game_alien_ship_state.h"
+#include "shooting_strategy_logic.h"
 
 #include <vector>
 #include <string>

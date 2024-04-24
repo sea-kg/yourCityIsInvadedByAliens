@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "random_shooting_strategy.h"
 
 void RandomShootingStrategy::shoot(const CoordXY& p0) {

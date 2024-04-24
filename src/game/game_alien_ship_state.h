@@ -6,6 +6,7 @@
 #include "game_rocket_state.h"
 #include "ykeyboard.h"
 #include "ishooting_strategy.h"
+#include "shooting_strategy_logic.h"
 
 class GameAlienShipState {
     public:
@@ -31,9 +32,7 @@ class GameAlienShipState {
         void resetHealthPoints();
         void updatePosition(const CoordXY &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
-        IShootingStrategy *getCurrentShootingStrategy();
-        IShootingStrategy *setRandomShootingStrategy();
-        IShootingStrategy *resetShootingStrategy();
+        ShootingStrategyLogic *getShootingStrategyLogic() const;
 
     private:
         CoordXY m_p0;
@@ -43,6 +42,5 @@ class GameAlienShipState {
         bool m_bShooting;
         int m_nHealthPoints;
         int m_nMaxHealthPoints;
-        IShootingStrategy *m_pCurrentShootingStrategy;
-        std::vector<IShootingStrategy *> m_vShootingStrategies;
+        ShootingStrategyLogic *m_pShootingStrategyLogic;
 };

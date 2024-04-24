@@ -34,7 +34,6 @@ MainController::MainController() {
     m_pMap = findYService<MapYService>();
     m_nCurrentTakeAlienBerry = -1;
     m_nTakedPlayerBerries = 0;
-    m_nScoreforRandomShooting;
 }
 
 MainController::~MainController() {
@@ -76,6 +75,7 @@ int MainController::startUI() {
     YKeyboard *pKeyboard = new YKeyboard();
     CoordXY coordCenter = getCoordCenter();
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+
     startGameLogicThread();
 
     startFpsCounting();
@@ -137,9 +137,6 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
-            if (getScore() == m_nScoreforRandomShooting) {
-                pAlientShipState->setRandomShootingStrategy();
-            }
             if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
             }
@@ -148,7 +145,6 @@ int MainController::startUI() {
             m_pSoundController->stopTakeBerry();
             m_nCurrentTakeAlienBerry = -1;
             m_pDialogGameOver->setShow(true);
-            pAlientShipState->resetShootingStrategy();
         }
 
         // normalize framerate to 60 fps
@@ -555,6 +551,8 @@ void MainController::updatePlayerCoord() {
             m_pSoundController->stopTakeBerry();
             m_pTakeBerryText->hideText();
             m_nTakedPlayerBerries = m_nTakedPlayerBerries + 1;
+            GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+            pAlientShipState->getShootingStrategyLogic()->switchCurrentShootingStrategy(m_nTakedPlayerBerries);
             YPos p = this->generateRandomPositionAlienBerry();
             // nBerryIndex
             m_vAlienBerriesStates[nBerryIndex]->updatePosition(p);
@@ -588,10 +586,8 @@ void MainController::updateScore() {
 
 void MainController::resetScore() {
     m_nTakedPlayerBerries = 0;
-}
-
-int MainController::getScore() const {
-    return m_nTakedPlayerBerries;
+    GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+    pAlientShipState->getShootingStrategyLogic()->switchCurrentShootingStrategy(m_nTakedPlayerBerries);
 }
 
 void MainController::updateFpsValue(int nFps) {

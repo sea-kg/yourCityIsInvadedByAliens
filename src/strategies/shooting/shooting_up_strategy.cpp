@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "shooting_up_strategy.h"
 
 void ShootingUpStrategy::shoot(const CoordXY& p0) {
