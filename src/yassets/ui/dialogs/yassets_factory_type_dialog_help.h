@@ -40,5 +40,6 @@ class YAssetFactoryTypeDialogHelp : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"dialog-help"};
         std::wstring TAG;
 };

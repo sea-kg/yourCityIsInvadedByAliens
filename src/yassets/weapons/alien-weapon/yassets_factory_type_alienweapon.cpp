@@ -36,14 +36,13 @@ YAsset *YAssetFactoryAlienWeapon::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeAlienWeapon)
 
-YAssetFactoryTypeAlienWeapon::YAssetFactoryTypeAlienWeapon(YAssetsService *pAssetsService) 
+YAssetFactoryTypeAlienWeapon::YAssetFactoryTypeAlienWeapon(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeAlienWeapon";
 }
 
 const std::wstring &YAssetFactoryTypeAlienWeapon::getFactoryTypeId() {
-    static const std::wstring sType = L"alien-weapon";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeAlienWeapon::createFactory(

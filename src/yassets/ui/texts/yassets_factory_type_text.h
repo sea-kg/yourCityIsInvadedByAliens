@@ -35,5 +35,6 @@ class YAssetFactoryTypeText : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"text"};
         std::wstring TAG;
 };

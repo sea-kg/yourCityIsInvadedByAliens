@@ -39,8 +39,7 @@ YAssetFactoryTypeRoad::YAssetFactoryTypeRoad(YAssetsService *pAssetsService)
 }
 
 const std::wstring &YAssetFactoryTypeRoad::getFactoryTypeId() {
-    static const std::wstring sType = L"road";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeRoad::createFactory(

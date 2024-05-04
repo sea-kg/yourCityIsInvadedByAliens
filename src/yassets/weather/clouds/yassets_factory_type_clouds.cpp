@@ -37,14 +37,13 @@ YAsset *YAssetFactoryClouds::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeClouds)
 
-YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService) 
+YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeClouds";
 }
 
 const std::wstring &YAssetFactoryTypeClouds::getFactoryTypeId() {
-    static const std::wstring sType = L"clouds";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeClouds::createFactory(

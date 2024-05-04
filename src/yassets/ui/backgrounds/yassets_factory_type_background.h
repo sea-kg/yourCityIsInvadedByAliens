@@ -33,5 +33,6 @@ class YAssetFactoryTypeBackground : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"background"};
         std::wstring TAG;
 };

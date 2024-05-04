@@ -43,8 +43,7 @@ YAssetFactoryTypeAlienBerry::YAssetFactoryTypeAlienBerry(YAssetsService *pAssets
 }
 
 const std::wstring &YAssetFactoryTypeAlienBerry::getFactoryTypeId() {
-    static const std::wstring sType = L"alien-berry";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeAlienBerry::createFactory(

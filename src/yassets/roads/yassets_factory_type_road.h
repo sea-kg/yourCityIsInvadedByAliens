@@ -33,5 +33,6 @@ class YAssetFactoryTypeRoad : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"road"};
         std::wstring TAG;
 };

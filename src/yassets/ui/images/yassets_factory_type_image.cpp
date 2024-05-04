@@ -39,8 +39,7 @@ YAssetFactoryTypeImage::YAssetFactoryTypeImage(YAssetsService *pAssetsService)
 }
 
 const std::wstring &YAssetFactoryTypeImage::getFactoryTypeId() {
-    static const std::wstring sType = L"image";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeImage::createFactory(

@@ -57,5 +57,6 @@ class YAssetFactoryTypeScreenBorderFlashHighlight : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"screen-border-flash-highlight"};
         std::wstring TAG;
 };

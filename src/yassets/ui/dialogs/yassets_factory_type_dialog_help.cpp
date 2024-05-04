@@ -51,8 +51,7 @@ YAssetFactoryTypeDialogHelp::YAssetFactoryTypeDialogHelp(YAssetsService *pAssets
 }
 
 const std::wstring &YAssetFactoryTypeDialogHelp::getFactoryTypeId() {
-    static const std::wstring sType = L"dialog_help";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeDialogHelp::createFactory(

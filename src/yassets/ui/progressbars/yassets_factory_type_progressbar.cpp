@@ -39,8 +39,7 @@ YAssetFactoryTypeProgressBar::YAssetFactoryTypeProgressBar(YAssetsService *pAsse
 }
 
 const std::wstring &YAssetFactoryTypeProgressBar::getFactoryTypeId() {
-    static const std::wstring sType = L"progressbar";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeProgressBar::createFactory(
@@ -56,7 +55,7 @@ YAssetFactory *YAssetFactoryTypeProgressBar::createFactory(
     int nHeight = jsonFactoryConfig[L"progress-height"].getNumber();
 
     return new YAssetFactoryProgressBar(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sImagePath,
         nWidth,

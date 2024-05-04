@@ -14,7 +14,7 @@ class YAssetFactoryProgressBar : public YAssetFactory {
             int nHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeProgressBar *m_pFactoryTypeFont;
         std::wstring m_sImagePath;
@@ -33,5 +33,6 @@ class YAssetFactoryTypeProgressBar : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"progressbar"};
         std::wstring TAG;
 };

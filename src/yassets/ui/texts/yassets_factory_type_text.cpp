@@ -36,14 +36,13 @@ YAsset *YAssetFactoryText::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeText)
 
-YAssetFactoryTypeText::YAssetFactoryTypeText(YAssetsService *pAssetsService) 
+YAssetFactoryTypeText::YAssetFactoryTypeText(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeText";
 }
 
 const std::wstring &YAssetFactoryTypeText::getFactoryTypeId() {
-    static const std::wstring sType = L"text";
-    return sType;
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeText::createFactory(

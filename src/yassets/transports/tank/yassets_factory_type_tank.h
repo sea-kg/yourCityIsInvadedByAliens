@@ -15,7 +15,7 @@ class YAssetFactoryTank : public YAssetFactory {
             int nFrameHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeTank *m_pFactoryTypeTank;
         std::wstring m_sSpriteTankPath;
@@ -36,5 +36,6 @@ class YAssetFactoryTypeTank : public YAssetFactoryType {
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"tank"};
         std::wstring TAG;
 };

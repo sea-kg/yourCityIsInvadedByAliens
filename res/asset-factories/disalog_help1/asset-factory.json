@@ -1,6 +1,6 @@
 {
     "asset-factory-id": "dialog_help1",
-    "asset-factory-type": "dialog_help",
+    "asset-factory-type": "dialog-help",
     "asset-factory-config": {
         "image-content": "help-compiled.png",
         "image-content-height": 596,
