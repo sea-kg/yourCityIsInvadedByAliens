@@ -26,7 +26,6 @@ YAsset *YAssetFactoryProgressBar::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -34,13 +33,13 @@ YAsset *YAssetFactoryProgressBar::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeProgressBar)
 
-YAssetFactoryTypeProgressBar::YAssetFactoryTypeProgressBar(YAssetsService *pAssetsService) 
+YAssetFactoryTypeProgressBar::YAssetFactoryTypeProgressBar(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeProgressBar";
 }
 
-std::wstring YAssetFactoryTypeProgressBar::getFactoryTypeId() {
-    return L"progressbar";
+const std::wstring &YAssetFactoryTypeProgressBar::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeProgressBar::createFactory(
@@ -56,7 +55,7 @@ YAssetFactory *YAssetFactoryTypeProgressBar::createFactory(
     int nHeight = jsonFactoryConfig[L"progress-height"].getNumber();
 
     return new YAssetFactoryProgressBar(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sImagePath,
         nWidth,

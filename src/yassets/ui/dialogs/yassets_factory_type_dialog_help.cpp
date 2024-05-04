@@ -38,7 +38,6 @@ YAsset *YAssetFactoryDialogHelp::createAsset() {
         m_nDialogBackgroundWidth,
         m_nDialogBackgroundHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -51,8 +50,8 @@ YAssetFactoryTypeDialogHelp::YAssetFactoryTypeDialogHelp(YAssetsService *pAssets
     TAG = L"YAssetFactoryTypeDialogHelp";
 }
 
-std::wstring YAssetFactoryTypeDialogHelp::getFactoryTypeId() {
-    return L"dialog_help";
+const std::wstring &YAssetFactoryTypeDialogHelp::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeDialogHelp::createFactory(

@@ -42,8 +42,8 @@ YAssetFactoryTypeAlienBerry::YAssetFactoryTypeAlienBerry(YAssetsService *pAssets
     TAG = L"YAssetFactoryTypeAlienBerry";
 }
 
-std::wstring YAssetFactoryTypeAlienBerry::getFactoryTypeId() {
-    return L"alien-berry";
+const std::wstring &YAssetFactoryTypeAlienBerry::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeAlienBerry::createFactory(

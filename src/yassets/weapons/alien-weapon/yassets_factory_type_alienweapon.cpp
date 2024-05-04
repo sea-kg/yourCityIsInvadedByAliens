@@ -29,7 +29,6 @@ YAsset *YAssetFactoryAlienWeapon::createAsset() {
         m_nFrameHeight,
         m_nFrameNumber
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -37,13 +36,13 @@ YAsset *YAssetFactoryAlienWeapon::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeAlienWeapon)
 
-YAssetFactoryTypeAlienWeapon::YAssetFactoryTypeAlienWeapon(YAssetsService *pAssetsService) 
+YAssetFactoryTypeAlienWeapon::YAssetFactoryTypeAlienWeapon(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeAlienWeapon";
 }
 
-std::wstring YAssetFactoryTypeAlienWeapon::getFactoryTypeId() {
-    return L"alien-weapon";
+const std::wstring &YAssetFactoryTypeAlienWeapon::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeAlienWeapon::createFactory(

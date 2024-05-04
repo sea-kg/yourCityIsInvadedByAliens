@@ -1,7 +1,7 @@
 #pragma once
 
-#include <yassets_service.h>
-#include <game_tank0_state.h>
+#include "yassets_service.h"
+#include "game_tank0_state.h"
 
 class YAssetTank : public YAsset, public RenderObject {
     public:

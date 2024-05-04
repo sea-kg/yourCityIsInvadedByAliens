@@ -27,7 +27,6 @@ YAsset *YAssetFactoryBackground::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -35,13 +34,13 @@ YAsset *YAssetFactoryBackground::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeBackground)
 
-YAssetFactoryTypeBackground::YAssetFactoryTypeBackground(YAssetsService *pAssetsService) 
+YAssetFactoryTypeBackground::YAssetFactoryTypeBackground(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeBackground";
 }
 
-std::wstring YAssetFactoryTypeBackground::getFactoryTypeId() {
-    return L"background";
+const std::wstring &YAssetFactoryTypeBackground::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeBackground::createFactory(
@@ -57,7 +56,7 @@ YAssetFactory *YAssetFactoryTypeBackground::createFactory(
     int nHeight = jsonFactoryConfig[L"image-height"].getNumber();
 
     return new YAssetFactoryBackground(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sImagePath,
         nWidth,

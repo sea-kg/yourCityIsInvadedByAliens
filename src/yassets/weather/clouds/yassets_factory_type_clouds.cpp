@@ -30,7 +30,6 @@ YAsset *YAssetFactoryClouds::createAsset() {
         m_nWidth,
         m_nHeight
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -38,13 +37,13 @@ YAsset *YAssetFactoryClouds::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeClouds)
 
-YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService) 
+YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeClouds";
 }
 
-std::wstring YAssetFactoryTypeClouds::getFactoryTypeId() {
-    return L"clouds";
+const std::wstring &YAssetFactoryTypeClouds::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeClouds::createFactory(

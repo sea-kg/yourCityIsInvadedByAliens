@@ -30,12 +30,13 @@ SoundController::SoundController(
     // auto rng = std::default_random_engine {};
     // std::shuffle(std::begin(m_vPlaylistFight), std::end(m_vPlaylistFight), rng);
 
+    // TODO redesign load from map.json
     m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked1.wav");
     m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked2.wav");
     m_vAttackedPaths.push_back(sResourceDir + L"/default/soundeffects/attacked3.wav");
 
     m_sTakeBerryPath = sResourceDir + L"/default/soundeffects/take_berry.wav";
-    
+
 }
 
 SoundController::~SoundController() {

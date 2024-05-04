@@ -1,6 +1,6 @@
 {
     "asset-factory-id": "game-over-screen",
-    "asset-factory-type": "dialog_help",
+    "asset-factory-type": "dialog-help",
     "asset-factory-config": {
         "image-content": "game-over-screen.png",
         "image-content-height": 720,

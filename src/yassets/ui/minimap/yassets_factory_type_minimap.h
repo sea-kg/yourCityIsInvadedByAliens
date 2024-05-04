@@ -14,7 +14,7 @@ class YAssetFactoryMinimap : public YAssetFactory {
             int nHeight
         );
         virtual YAsset *createAsset() override;
-        
+
     private:
         YAssetFactoryTypeMinimap *m_pFactoryTypeFont;
         std::wstring m_sMinimapPath;
@@ -26,12 +26,13 @@ class YAssetFactoryMinimap : public YAssetFactory {
 class YAssetFactoryTypeMinimap : public YAssetFactoryType {
     public:
         YAssetFactoryTypeMinimap(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"minimap"};
         std::wstring TAG;
 };

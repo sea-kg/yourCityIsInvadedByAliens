@@ -62,7 +62,6 @@ YAsset *YAssetFactoryScreenBorderFlashHighlight::createAsset() {
         m_nMiddleAreaMinY,
         m_nMiddleAreaMaxY
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -70,13 +69,13 @@ YAsset *YAssetFactoryScreenBorderFlashHighlight::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeScreenBorderFlashHighlight)
 
-YAssetFactoryTypeScreenBorderFlashHighlight::YAssetFactoryTypeScreenBorderFlashHighlight(YAssetsService *pAssetsService) 
+YAssetFactoryTypeScreenBorderFlashHighlight::YAssetFactoryTypeScreenBorderFlashHighlight(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeScreenBorderFlashHighlight";
 }
 
-std::wstring YAssetFactoryTypeScreenBorderFlashHighlight::getFactoryTypeId() {
-    return L"screen-border-flash-highlight";
+const std::wstring &YAssetFactoryTypeScreenBorderFlashHighlight::getFactoryTypeId() {
+    return m_sType;
 }
 
 YAssetFactory *YAssetFactoryTypeScreenBorderFlashHighlight::createFactory(

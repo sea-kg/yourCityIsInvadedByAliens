@@ -17,5 +17,10 @@
                 "end-y": 5000
             }
         }
+    ],
+    "attacked-sound-effects": [
+        "soundeffects/attacked1.wav",
+        "soundeffects/attacked2.wav",
+        "soundeffects/attacked3.wav"
     ]
 }

@@ -26,12 +26,13 @@ class YAssetFactoryImage : public YAssetFactory {
 class YAssetFactoryTypeImage : public YAssetFactoryType {
     public:
         YAssetFactoryTypeImage(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"image"};
         std::wstring TAG;
 };

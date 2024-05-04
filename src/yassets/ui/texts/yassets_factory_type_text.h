@@ -28,12 +28,13 @@ class YAssetFactoryText : public YAssetFactory {
 class YAssetFactoryTypeText : public YAssetFactoryType {
     public:
         YAssetFactoryTypeText(YAssetsService *pAssetsService);
-        virtual std::wstring getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,
             const YJsonObject &jsonFactoryConfig
         ) override;
     private:
+        static const inline std::wstring m_sType{L"text"};
         std::wstring TAG;
 };
