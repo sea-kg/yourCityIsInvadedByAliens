@@ -15,6 +15,9 @@ class YAssetRoad : public YAsset, public RenderObject {
         void setRoadPart(const std::wstring &sRoadPart);
         void setAbsolutePosition(const CoordXY &coordPos);
 
+        int getFrameWeight() const;
+        int getFrameHeight() const;
+
         // YAsset
         virtual void setOrderZ(int nOrder) override;
 

@@ -705,14 +705,24 @@ void MainController::generateScreenHighlights() {
 void MainController::generateRoads(const std::wstring &sDefaultPath) {
     auto pAssets = findYService<YAssetsService>();
 
-    // texture road
-    // TODO fix hardcode
-    int nTextureWidth = 120; // TODO hardcoded
-    int nTextureHeight = 120; // TODO hardcoded
+    static const std::wstring sRoadAssetId = L"road1";
+
+    int nTextureWidth = 0;
+    int nTextureHeight = 0;
+
+    {
+        auto *pRoad = pAssets->createAsset<YAssetRoad>(sRoadAssetId);
+        nTextureWidth = pRoad->getFrameWeight();
+        nTextureHeight = pRoad->getFrameHeight();
+        delete pRoad;
+    }
+    int nRoadCeilW = m_nMapWidth / nTextureWidth;
+    int nRoadCeilH = m_nMapHeight / nTextureHeight;
 
     int nGeneratedRoads = 0;
-    Roads2DGenerator road2gen(42, 42);
-    road2gen.generate(0.5);
+    Roads2DGenerator road2gen(nRoadCeilW, nRoadCeilH);
+    float nDensity = 0.5;
+    road2gen.generate(nDensity);
 
     std::vector<std::vector<std::string>> vRoads = road2gen.exportToTable();
 
@@ -728,7 +738,7 @@ void MainController::generateRoads(const std::wstring &sDefaultPath) {
             int nY = x * nTextureHeight;
             m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
 
-            auto *pRoad = pAssets->createAsset<YAssetRoad>(L"road1");
+            auto *pRoad = pAssets->createAsset<YAssetRoad>(sRoadAssetId);
             pRoad->setAbsolutePosition(CoordXY(nX, nY));
             pRoad->setRoadPart(sRoadPart);
             m_pWindow->getRenderWindow()->addRoadsObject(pRoad);

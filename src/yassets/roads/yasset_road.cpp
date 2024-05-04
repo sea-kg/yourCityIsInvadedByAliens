@@ -82,6 +82,14 @@ void YAssetRoad::setAbsolutePosition(const CoordXY &coordPos) {
     m_coordPosEnd = coordPos + CoordXY(m_nTextureTileWidth, m_nTextureTileHeight);
 }
 
+int YAssetRoad::getFrameWeight() const {
+    return m_nTextureTileWidth;
+}
+
+int YAssetRoad::getFrameHeight() const {
+    return m_nTextureTileHeight;
+}
+
 void YAssetRoad::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_coordRender = m_coordPos - state.getCoordLeftTop();
     m_coordRenderEnd = m_coordPosEnd - state.getCoordLeftTop();
