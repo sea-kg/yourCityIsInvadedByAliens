@@ -19,8 +19,8 @@ YAssetFactoryImage::YAssetFactoryImage(
     m_pTexture = loadTexture(m_sImagePath);
 }
 
-YAsset *YAssetFactoryImage::createAsset() {
-    return new YAssetImage(
+std::unique_ptr<YAsset> YAssetFactoryImage::createAsset() {
+    return std::make_unique<YAssetImage>(
         m_pAssetsService,
         m_pTexture,
         m_nWidth,

@@ -21,8 +21,8 @@ YAssetFactoryText::YAssetFactoryText(
     m_nLetterWidth = nLetterWidth;
 }
 
-YAsset *YAssetFactoryText::createAsset() {
-    return new YAssetText(
+std::unique_ptr<YAsset> YAssetFactoryText::createAsset() {
+    return std::make_unique<YAssetText>(
         m_pAssetsService,
         m_pTexture,
         m_vAlphabets,

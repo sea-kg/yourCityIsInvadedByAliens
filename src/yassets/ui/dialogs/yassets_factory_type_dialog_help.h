@@ -16,7 +16,7 @@ class YAssetFactoryDialogHelp : public YAssetFactory {
             int nDialogBackgroundWidth,
             int nDialogBackgroundHeight
         );
-        virtual YAsset *createAsset() override;
+        virtual std::unique_ptr<YAsset> createAsset() override;
 
     private:
         YAssetFactoryTypeDialogHelp *m_pFactoryTypeFont;

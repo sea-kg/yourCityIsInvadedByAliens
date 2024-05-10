@@ -25,8 +25,8 @@ class YAssetFactoryScreenBorderFlashHighlight : public YAssetFactory {
             int nMiddleAreaMinY,
             int nMiddleAreaMaxY
         );
-        virtual YAsset *createAsset() override;
-        
+        virtual std::unique_ptr<YAsset> createAsset() override;
+
     private:
         YAssetFactoryTypeScreenBorderFlashHighlight *m_pFactoryType;
         std::wstring m_sImagePath;

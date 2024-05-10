@@ -20,8 +20,8 @@ YAssetFactoryBackground::YAssetFactoryBackground(
     m_pTexture = loadTexture(m_sImagePath);
 }
 
-YAsset *YAssetFactoryBackground::createAsset() {
-    return new YAssetBackground(
+std::unique_ptr<YAsset> YAssetFactoryBackground::createAsset() {
+    return std::make_unique<YAssetBackground>(
         m_pAssetsService,
         m_pTexture,
         m_nWidth,

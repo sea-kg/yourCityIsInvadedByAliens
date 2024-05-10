@@ -14,7 +14,7 @@ class YAssetFactoryText : public YAssetFactory {
             int nLetterHeight,
             int nLetterWidth
         );
-        virtual YAsset *createAsset() override;
+        virtual std::unique_ptr<YAsset> createAsset() override;
 
     private:
         YAssetFactoryTypeText *m_pFactoryTypeFont;

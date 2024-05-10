@@ -19,8 +19,8 @@ YAssetFactoryProgressBar::YAssetFactoryProgressBar(
     m_pTexture = loadTexture(m_sImagePath);
 }
 
-YAsset *YAssetFactoryProgressBar::createAsset() {
-    return new YAssetProgressBar(
+std::unique_ptr<YAsset> YAssetFactoryProgressBar::createAsset() {
+    return std::make_unique<YAssetProgressBar>(
         m_pAssetsService,
         m_pTexture,
         m_nWidth,
