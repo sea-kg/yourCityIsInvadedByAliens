@@ -11,8 +11,8 @@
             "width": 500,
             "height": 500,
             "fill-region": {
-                "start-x": 0,
-                "start-y": 0,
+                "start-x": -500,
+                "start-y": -500,
                 "end-x": 5000,
                 "end-y": 5000
             }

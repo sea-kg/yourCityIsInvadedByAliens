@@ -127,10 +127,10 @@ int MainController::startUI() {
                 getGameState()->getElapsedTime(),
                 getGameState()->getMinPoint(),
                 getGameState()->getMaxPoint(),
-                nLeftPad,
-                nRightPad,
-                nTopPad,
-                nBottomPad
+                0, // nLeftPad,
+                0, // nRightPad,
+                0, // nTopPad,
+                0 // nBottomPad
             );
             CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);

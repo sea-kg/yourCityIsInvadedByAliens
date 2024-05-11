@@ -156,6 +156,10 @@ bool YKeyboard::isEscape() {
     return m_pKeyboardStateArray[SDL_SCANCODE_ESCAPE];
 }
 
+bool YKeyboard::isB() {
+    return m_pKeyboardStateArray[SDL_SCANCODE_B];
+}
+
 bool YKeyboard::isK() {
     return m_pKeyboardStateArray[SDL_SCANCODE_K];
 }
