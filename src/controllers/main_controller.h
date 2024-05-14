@@ -139,6 +139,7 @@ class MainController {
         long m_nFpsNumberOfFrames;
         long m_nFpsStartTime;
         long m_nFpsElapsed;
+        const int m_nScoreforRandomShooting = 5;
 
         SoundController *m_pSoundController;
         LoaderController *m_pLoaderController;

@@ -1,6 +1,7 @@
 #include <cstdlib>
 
 #include "shooting_up_strategy.h"
+#include <cstdlib>
 
 void ShootingUpStrategy::shoot(const CoordXY& p0) {
 	int nX = std::rand() % 100 - 50;

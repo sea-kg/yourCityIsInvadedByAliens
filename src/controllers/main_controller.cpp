@@ -34,6 +34,7 @@ MainController::MainController() {
     m_pMap = findYService<MapYService>();
     m_nCurrentTakeAlienBerry = -1;
     m_nTakedPlayerBerries = 0;
+    m_nScoreforRandomShooting;
 }
 
 MainController::~MainController() {
@@ -137,6 +138,7 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
+
             if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
             }
@@ -589,6 +591,7 @@ void MainController::resetScore() {
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
     pAlientShipState->getShootingStrategyLogic()->switchCurrentShootingStrategy(m_nTakedPlayerBerries);
 }
+
 
 void MainController::updateFpsValue(int nFps) {
     m_pFpsText->setText(L"FPS: ~" + std::to_wstring(nFps));
