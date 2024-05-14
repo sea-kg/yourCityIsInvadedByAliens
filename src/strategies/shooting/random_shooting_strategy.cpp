@@ -1,4 +1,6 @@
 #include "random_shooting_strategy.h"
+#include <cstdlib>
+
 
 void RandomShootingStrategy::shoot(const CoordXY& p0) {
 	int nX = std::rand() % 500 - 250;
