@@ -22,8 +22,8 @@ YAssetFactoryTank::YAssetFactoryTank(
     m_pTextureRocket = loadTexture(m_sSpriteRocketPath);
 }
 
-YAsset *YAssetFactoryTank::createAsset() {
-    return new YAssetTank(
+std::unique_ptr<YAsset> YAssetFactoryTank::createAsset() {
+    return std::make_unique<YAssetTank>(
         m_pAssetsService,
         m_pTextureTank,
         m_pTextureRocket,

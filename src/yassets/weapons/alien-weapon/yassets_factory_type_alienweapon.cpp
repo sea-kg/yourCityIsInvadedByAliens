@@ -21,8 +21,8 @@ YAssetFactoryAlienWeapon::YAssetFactoryAlienWeapon(
     m_nFrameNumber = nFrameNumber;
 }
 
-YAsset *YAssetFactoryAlienWeapon::createAsset() {
-    return new YAssetAlienWeapon(
+std::unique_ptr<YAsset> YAssetFactoryAlienWeapon::createAsset() {
+    return std::make_unique<YAssetAlienWeapon>(
         m_pAssetsService,
         m_pTexture,
         m_nFrameWidth,
@@ -60,7 +60,7 @@ YAssetFactory *YAssetFactoryTypeAlienWeapon::createFactory(
     int nFrameNumber = jsonFactoryConfig[L"frame-number"].getNumber();
 
     return new YAssetFactoryAlienWeapon(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sSpritePath,
         nFrameWidth,

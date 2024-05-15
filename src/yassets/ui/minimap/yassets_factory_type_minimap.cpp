@@ -19,8 +19,8 @@ YAssetFactoryMinimap::YAssetFactoryMinimap(
     m_pTexture = loadTexture(m_sMinimapPath);
 }
 
-YAsset *YAssetFactoryMinimap::createAsset() {
-    return new YAssetMinimap(
+std::unique_ptr<YAsset> YAssetFactoryMinimap::createAsset() {
+    return std::make_unique<YAssetMinimap>(
         m_pAssetsService,
         m_pTexture,
         m_nWidth,

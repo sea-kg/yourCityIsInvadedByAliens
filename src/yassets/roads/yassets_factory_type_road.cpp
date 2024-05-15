@@ -19,8 +19,8 @@ YAssetFactoryRoad::YAssetFactoryRoad(
     m_pTextureRoad = loadTexture(m_sRoadImageTilesPath);
 }
 
-YAsset *YAssetFactoryRoad::createAsset() {
-    return new YAssetRoad(
+std::unique_ptr<YAsset> YAssetFactoryRoad::createAsset() {
+    return std::make_unique<YAssetRoad>(
         m_pAssetsService,
         m_pTextureRoad,
         m_nFrameWidth,

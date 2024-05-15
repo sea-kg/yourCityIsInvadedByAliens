@@ -17,14 +17,14 @@ LoaderController::LoaderController(
 
 void LoaderController::init() {
     auto *pAssets = findYService<YAssetsService>();
-    
+
     auto *pAssetBackground = pAssets->createAsset<YAssetBackground>(L"bootscreen-background1");
     this->addObject(pAssetBackground);
-    
+
     auto *pAssetLogo1 = pAssets->createAsset<YAssetImage>(L"logo1");
     pAssetLogo1->setAbsolutePosition(true);
 
-    // TODO redesign 
+    // TODO redesign
     int nBackW = 1280;
     int nBackH = 720;
     int nWindowWidth, nWindowHeight;

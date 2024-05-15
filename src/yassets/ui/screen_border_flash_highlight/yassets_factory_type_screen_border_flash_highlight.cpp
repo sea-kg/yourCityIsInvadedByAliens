@@ -43,8 +43,8 @@ YAssetFactoryScreenBorderFlashHighlight::YAssetFactoryScreenBorderFlashHighlight
     m_nMiddleAreaMaxY = nMiddleAreaMaxY;
 }
 
-YAsset *YAssetFactoryScreenBorderFlashHighlight::createAsset() {
-    return new YAssetScreenBorderFlashHighlight(
+std::unique_ptr<YAsset> YAssetFactoryScreenBorderFlashHighlight::createAsset() {
+    return std::make_unique<YAssetScreenBorderFlashHighlight>(
         m_pAssetsService,
         m_pTexture,
         m_nWidth,

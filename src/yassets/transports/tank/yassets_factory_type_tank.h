@@ -14,7 +14,7 @@ class YAssetFactoryTank : public YAssetFactory {
             int nFrameWidth,
             int nFrameHeight
         );
-        virtual YAsset *createAsset() override;
+        virtual std::unique_ptr<YAsset> createAsset() override;
 
     private:
         YAssetFactoryTypeTank *m_pFactoryTypeTank;

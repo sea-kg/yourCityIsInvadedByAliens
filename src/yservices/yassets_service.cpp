@@ -157,11 +157,11 @@ bool YAssetsService::loadAllAssetFactory(const std::wstring &sPath, std::wstring
     return bRet;
 }
 
-YAsset *YAssetsService::createAsset(const std::wstring &sAssetFactoryId) {
+std::unique_ptr<YAsset> YAssetsService::createAsset(const std::wstring &sAssetFactoryId) {
     if (m_mapYAssetsFactories.find(sAssetFactoryId) == m_mapYAssetsFactories.end()) {
         YLog::throw_err(TAG, L"Not found asset-factory-id: " + sAssetFactoryId);
     }
-    return m_mapYAssetsFactories[sAssetFactoryId]->createAsset();
+    return std::unique_ptr<YAsset>{m_mapYAssetsFactories[sAssetFactoryId]->createAsset()};
 }
 
 std::vector<IYAssetFactoryFactoryType*> *g_pYAssetFactoryFactoryType = nullptr;

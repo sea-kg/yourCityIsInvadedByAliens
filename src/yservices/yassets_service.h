@@ -8,6 +8,7 @@
 #include <ylog.h>
 #include <ycore.h>
 #include <yjson.h>
+#include <memory>
 
 class YAssetsService;
 
@@ -49,7 +50,7 @@ class YAssetFactory {
     // friend class YAssetsService;
     public:
         YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *pFactoryType);
-        virtual YAsset *createAsset() = 0;
+        virtual std::unique_ptr<YAsset> createAsset() = 0;
 
     protected:
         std::wstring TAG;
@@ -74,8 +75,8 @@ class YAssetsService : public YServiceBase {
         bool hasFactoryType(const std::wstring &sFactoryTypeId);
         bool loadAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
         bool loadAllAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
-        
-        YAsset *createAsset(const std::wstring &sAssetFactoryId);
+
+        std::unique_ptr<YAsset> createAsset(const std::wstring &sAssetFactoryId);
         template<class T> T *createAsset(const std::wstring &sAssetFactoryId);
 
         static void registerFactoryFactoryType(IYAssetFactoryFactoryType* pService);
@@ -92,8 +93,9 @@ class YAssetsService : public YServiceBase {
 #define YASSET_DECLARE_INLINE( classname ) \
     template<> inline \
     classname *YAssetsService::createAsset< classname >(const std::wstring &sAssetFactoryId) { \
-        YAsset *pAsset = this->createAsset(sAssetFactoryId); \
-        classname *pAssetRet = dynamic_cast<classname *>(pAsset); \
+        std::unique_ptr<YAsset> asset{this->createAsset(sAssetFactoryId)}; \
+        classname *pAssetRet = dynamic_cast<classname *>(asset.get()); \
+		asset.release(); \
         if (pAssetRet == nullptr) { \
             YLog::throw_err(TAG, L"Could not cast for " + sAssetFactoryId + L" to "); \
         } \

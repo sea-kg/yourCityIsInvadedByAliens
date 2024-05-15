@@ -21,15 +21,14 @@ YAssetFactoryAlienBerry::YAssetFactoryAlienBerry(
     m_pTextureAlienBerry = loadTexture(m_sSpriteAlienBerryPath);
 }
 
-YAsset *YAssetFactoryAlienBerry::createAsset() {
-    return new YAssetAlienBerry(
+std::unique_ptr<YAsset> YAssetFactoryAlienBerry::createAsset() {
+    return std::make_unique<YAssetAlienBerry>(
         m_pAssetsService,
         m_pTextureAlienBerry,
         m_nFrameWidth,
         m_nFrameHeight,
         m_nFrameNumber
     );
-    return nullptr;
 }
 
 // ---------------------------------------------------------------------

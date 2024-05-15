@@ -14,7 +14,7 @@ class YAssetFactoryAlienWeapon : public YAssetFactory {
             int nFrameHeight,
             int nFrameNumber
         );
-        virtual YAsset *createAsset() override;
+        virtual std::unique_ptr<YAsset> createAsset() override;
 
     private:
         YAssetFactoryTypeAlienWeapon *m_pFactoryTypeFont;

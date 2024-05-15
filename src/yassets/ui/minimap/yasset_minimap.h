@@ -26,7 +26,7 @@ class YAssetMinimap : public YAsset, public RenderObject {
     private:
         void redrawBackground();
         void redrawPlayerPosition();
-        
+
         std::wstring TAG;
         bool m_bAbsolutePosition;
         int m_nX;

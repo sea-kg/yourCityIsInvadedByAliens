@@ -13,7 +13,7 @@ class YAssetFactoryClouds : public YAssetFactory {
             int nWidth,
             int nHeight
         );
-        virtual YAsset *createAsset() override;
+        virtual std::unique_ptr<YAsset> createAsset() override;
 
     private:
         YAssetFactoryTypeClouds *m_pFactoryTypeFont;

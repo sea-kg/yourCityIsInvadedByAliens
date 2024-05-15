@@ -22,9 +22,9 @@ YAssetFactoryClouds::YAssetFactoryClouds(
     }
 }
 
-YAsset *YAssetFactoryClouds::createAsset() {
+std::unique_ptr<YAsset> YAssetFactoryClouds::createAsset() {
     int nCloudType = std::rand() % m_vTextures.size();
-    return new YAssetClouds(
+    return std::make_unique<YAssetClouds>(
         m_pAssetsService,
         m_vTextures[nCloudType],
         m_nWidth,

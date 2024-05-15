@@ -28,8 +28,8 @@ YAssetFactoryDialogHelp::YAssetFactoryDialogHelp(
     m_nDialogBackgroundHeight = nDialogBackgroundHeight;
 }
 
-YAsset *YAssetFactoryDialogHelp::createAsset() {
-    return new YAssetDialogHelp(
+std::unique_ptr<YAsset> YAssetFactoryDialogHelp::createAsset() {
+    return std::make_unique<YAssetDialogHelp>(
         m_pAssetsService,
         m_pTextureHelp,
         m_nHelpWidth,
