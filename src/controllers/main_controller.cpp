@@ -1,13 +1,12 @@
-
-#include "main_controller.h"
+#include <fstream>
+#include <algorithm>
 #include <iostream>
+#include "main_controller.h"
 #include "render.h"
 #include "render_ui.h"
 #include "ai_tank0.h"
 #include "loader_controller.h"
 #include "utils_start_dialog.h"
-#include <fstream>
-#include <algorithm>
 #include "render_alienship.h"
 #include "ycore.h"
 #include "ykeyboard.h"
@@ -34,6 +33,7 @@ MainController::MainController() {
     m_pMap = findYService<MapYService>();
     m_nCurrentTakeAlienBerry = -1;
     m_nTakedPlayerBerries = 0;
+    m_nScoreforRandomShooting;
 }
 
 MainController::~MainController() {
@@ -75,6 +75,7 @@ int MainController::startUI() {
     YKeyboard *pKeyboard = new YKeyboard();
     CoordXY coordCenter = getCoordCenter();
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+
     startGameLogicThread();
 
     startFpsCounting();
@@ -136,6 +137,7 @@ int MainController::startUI() {
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
+
             if (pAlientShipState->getHelthPoints() <= 0) {
                 setMainState(MainState::GAME_OVER);
             }
@@ -545,6 +547,8 @@ void MainController::updatePlayerCoord() {
             m_pSoundController->stopTakeBerry();
             m_pTakeBerryText->hideText();
             m_nTakedPlayerBerries = m_nTakedPlayerBerries + 1;
+            GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+            pAlientShipState->getShootingStrategyLogic()->onScoreChanged(m_nTakedPlayerBerries);
             YPos p = this->generateRandomPositionAlienBerry();
             // nBerryIndex
             m_vAlienBerriesStates[nBerryIndex]->updatePosition(p);
@@ -578,7 +582,10 @@ void MainController::updateScore() {
 
 void MainController::resetScore() {
     m_nTakedPlayerBerries = 0;
+    GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
+    pAlientShipState->getShootingStrategyLogic()->onScoreChanged(m_nTakedPlayerBerries);
 }
+
 
 void MainController::updateFpsValue(int nFps) {
     m_pFpsText->setText(L"FPS: ~" + std::to_wstring(nFps));
