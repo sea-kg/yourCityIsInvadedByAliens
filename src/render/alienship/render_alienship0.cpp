@@ -10,7 +10,7 @@ RenderAlienShip0::RenderAlienShip0(
     bool bShadow,
     SDL_Texture* tex,
     int nPositionZ
-) 
+)
 : RenderObject(nPositionZ) {
     TAG = L"RenderAlienShip0";
     m_bShadow = bShadow;
@@ -44,6 +44,7 @@ RenderAlienShip0::RenderAlienShip0(
 
 void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     long position = state.getElapsedTime() / m_nSpeedAnimation;
+    IShootingStrategy *m_pShootingStrategy = m_pState->getShootingStrategyLogic()->getCurrentShootingStrategy();
 
     if (m_nPrevPosition == position) {
         m_coordPositionRendering = m_pState->getPosition() - state.getCoordLeftTop();
@@ -59,13 +60,13 @@ void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWind
 
     if (m_pState->isShooting()) {
         std::cout << "Shooting!  ";
-        m_pState->bioplastShot();
+        m_pShootingStrategy->shoot(m_pState->getPosition());
     }
 
-    GameBioplastState *pBioplastState = m_pState->popBioplast();
+    GameBioplastState *pBioplastState = m_pShootingStrategy->popBioplast();
     while (pBioplastState != nullptr) {
         pRenderWindow->addBioplast(pBioplastState);
-        pBioplastState = m_pState->popBioplast();
+        pBioplastState = m_pShootingStrategy->popBioplast();
     }
 };
 
@@ -78,7 +79,7 @@ void RenderAlienShip0::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    
+
     if (m_bShadow) {
         dst.x = m_coordPositionRendering.x() - m_nFrameWidth/4;
         dst.y = m_coordPositionRendering.y() - m_nFrameHeight/4;
