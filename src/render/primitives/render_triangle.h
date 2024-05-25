@@ -5,9 +5,9 @@ class RenderTriangle : public RenderObject {
 
     public:
         RenderTriangle(
-            const CoordXY &p1,
-            const CoordXY &p2,
-            const CoordXY &p3,
+            const YPos &p1,
+            const YPos &p2,
+            const YPos &p3,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;

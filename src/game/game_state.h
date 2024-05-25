@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "coordxy.h"
 #include <iostream>
 #include "game_building.h"
 #include "move_object_direction.h"
@@ -16,9 +15,8 @@ class GameState {
         void updateElapsedTime();
         void addBuilding(GameBuilding *);
         long getElapsedTime() const;
-        const CoordXY &getCoordLeftTop() const;
-        void setCoordLeftTop(const CoordXY &);
-        const YPos &getYPosLeftTop() const;
+        const YPos &getCoordLeftTop() const;
+        void setCoordLeftTop(const YPos &);
 
         bool isChangedWindowSize() const;
         int getWindowWidth() const;
@@ -36,17 +34,17 @@ class GameState {
         bool isPauseGame() const;
         void setPauseGame(bool bPauseGame);
 
-        void setMinPoint(const CoordXY &p);
-        const CoordXY &getMinPoint();
-        void setMaxPoint(const CoordXY &p);
-        const CoordXY &getMaxPoint();
+        void setMinPoint(const YPos &p);
+        const YPos &getMinPoint();
+        void setMaxPoint(const YPos &p);
+        const YPos &getMaxPoint();
 
         void setShowLoader(bool bShowLoader);
         bool isShowLoader() const;
 
         GameAlienShipState *getAlienShipState();
-        void updatePlayerStartPosition(const CoordXY &playerStartPosition);
-        const CoordXY &getPlayerPosition() const;
+        void updatePlayerStartPosition(const YPos &playerStartPosition);
+        const YPos &getPlayerPosition() const;
 
     private:
         bool m_bMouseCaptured;
@@ -55,10 +53,9 @@ class GameState {
         bool m_bShowLoader;
         long m_nElapsedTime;
         long m_nStartTime;
-        YPos m_posLeftTop;
-        CoordXY m_coordLeftTop;
-        CoordXY m_maxPoint;
-        CoordXY m_minPoint;
+        YPos m_coordLeftTop;
+        YPos m_maxPoint;
+        YPos m_minPoint;
 
         bool m_bIsChangedWindowSize;
         int m_nWindowWidth;
@@ -67,5 +64,5 @@ class GameState {
         std::vector<GameBuilding *> m_vBuildings;
 
         GameAlienShipState *m_pAlienShipState;
-        CoordXY m_playerStartPosition;
+        YPos m_playerStartPosition;
 };

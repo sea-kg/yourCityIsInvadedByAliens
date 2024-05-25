@@ -4,7 +4,7 @@
 // RenderMouse
 
 RenderMouse::RenderMouse(
-    const CoordXY &p1,
+    const YPos &p1,
     SDL_Texture* pTextureCursorTarget,
     int nPositionZ
 ) : RenderObject(nPositionZ),
@@ -32,13 +32,13 @@ bool RenderMouse::canDraw(const GameState& state) {
 
 void RenderMouse::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
-    dst.x = m_p1.x() - 12;
-    dst.y = m_p1.y() - 12;
+    dst.x = m_p1.getX() - 12;
+    dst.y = m_p1.getY() - 12;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
     SDL_RenderCopy(renderer, m_pTextureCursorTarget, &m_currentFrame, &dst);
 }
 
-void RenderMouse::updateCoord(const CoordXY &p0) {
+void RenderMouse::updateCoord(const YPos &p0) {
     m_p1 = p0;
 }

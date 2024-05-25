@@ -38,11 +38,11 @@ void UtilsStartDialog::init() {
     auto *pTextureButtonStart = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/button-start.png");
     SDL_Point size;
     SDL_QueryTexture(pTextureButtonStart, NULL, NULL, &size.x, &size.y);
-    m_posButtonStartTopLeft = CoordXY(
+    m_posButtonStartTopLeft = YPos(
         nWindowWidth/2 - size.x/2,
         nWindowHeight/2 - size.y/2 - 80
     );
-    m_posButtonStartBottomRight = m_posButtonStartTopLeft + CoordXY(size.x, size.y);
+    m_posButtonStartBottomRight = m_posButtonStartTopLeft + YPos(size.x, size.y);
     m_pRenderButtonStart = new RenderButtonSimple(
         pTextureButtonStart,
         m_posButtonStartTopLeft,
@@ -53,13 +53,13 @@ void UtilsStartDialog::init() {
     auto *pTextureButtonMisicOnOff = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/music-on-off.png");
     SDL_Point size2;
     SDL_QueryTexture(pTextureButtonMisicOnOff, NULL, NULL, &size2.x, &size2.y);
-    m_posTopLeftMusicOnOff = CoordXY(
+    m_posTopLeftMusicOnOff = YPos(
         nWindowWidth/2 - size2.x/2,
         nWindowHeight/2 + 50
     );
-    m_posBottomRightMusicOnOff = CoordXY(
-        m_posTopLeftMusicOnOff.x() + size2.x,
-        m_posTopLeftMusicOnOff.y() + size2.y/2
+    m_posBottomRightMusicOnOff = YPos(
+        m_posTopLeftMusicOnOff.getX() + size2.x,
+        m_posTopLeftMusicOnOff.getY() + size2.y/2
     );
     m_pRenderButtonMusicOnOff = new RenderButtonMusicOnOff(
         pTextureButtonMisicOnOff,
@@ -70,7 +70,7 @@ void UtilsStartDialog::init() {
 
     SDL_Texture* pTextureCursor = m_pRenderWindow->loadTexture(m_sResourceDir + L"/app/textures/mouse-target.png");
     m_pMouseCursor = new RenderMouse(
-        CoordXY(nWindowWidth/2,nWindowHeight/2),
+        YPos(nWindowWidth/2,nWindowHeight/2),
         pTextureCursor,
         10000
     );
@@ -107,7 +107,7 @@ bool UtilsStartDialog::start() {
             }
             if (event.type == SDL_MOUSEMOTION) {
                if (m_pGameState->isMouseCaptured()) {
-                   m_mousePosition = CoordXY(event.motion.x, event.motion.y);
+                   m_mousePosition = YPos(event.motion.x, event.motion.y);
                    m_pMouseCursor->updateCoord(m_mousePosition);
                    m_pRenderButtonMusicOnOff->setAnimate(
                        m_mousePosition.isInsideRect(m_posTopLeftMusicOnOff, m_posBottomRightMusicOnOff)

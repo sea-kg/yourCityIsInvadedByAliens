@@ -4,8 +4,8 @@
 // RenderButtonMusicOnOff
 
 RenderButtonMusicOnOff::RenderButtonMusicOnOff(
-    SDL_Texture* tex, 
-    CoordXY pos,
+    SDL_Texture* tex,
+    YPos pos,
     int nPositionZ
 ) : RenderObject(nPositionZ) {
     m_position = pos;
@@ -40,8 +40,8 @@ void RenderButtonMusicOnOff::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
     SDL_Rect dst;
-    dst.x = m_position.x();
-    dst.y = m_position.y();
+    dst.x = m_position.getX();
+    dst.y = m_position.getY();
     float nCoef = 1;
     if (m_bAnimate) {
         nCoef = 1.2;
@@ -52,7 +52,7 @@ void RenderButtonMusicOnOff::draw(SDL_Renderer* renderer) {
     if (m_bPlayMusic) {
         dst.w = m_currentFrameMusicOn.w * nCoef;
         dst.h = m_currentFrameMusicOn.h * nCoef;
-        SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameMusicOn, &dst);    
+        SDL_RenderCopy(renderer, m_pTexture, &m_currentFrameMusicOn, &dst);
     } else {
         dst.w = m_currentFrameMusicOff.w * nCoef;
         dst.h = m_currentFrameMusicOff.h * nCoef;

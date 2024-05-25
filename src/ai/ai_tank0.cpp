@@ -12,7 +12,7 @@ void AiTank0::makeStep() {
         m_pTank0State->rechargeRocket();
         return;
     }
-    const CoordXY &xy = m_pTank0State->getPosition();
+    const YPos &xy = m_pTank0State->getPosition();
 
     // TODO prepare input data for NeuralNetwork
 
@@ -22,8 +22,8 @@ void AiTank0::makeStep() {
     } else if (nRandom == 1) {
         m_pTank0State->turnRight();
     } else if (nRandom == 2) {
-        CoordXY new_xy = m_pTank0State->calculateMoveForward();
-        if (m_pMap->canDriveToPoint(new_xy.x(), new_xy.y())) {
+        YPos new_xy = m_pTank0State->calculateMoveForward();
+        if (m_pMap->canDriveToPoint(new_xy.getX(), new_xy.getY())) {
             m_pTank0State->moveForward();
         }
     } else if (nRandom == 3) {

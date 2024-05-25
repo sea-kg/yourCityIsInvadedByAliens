@@ -9,7 +9,7 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(
     SDL_Texture* tex,
     RenderPlayerPower *pRenderPlayerPower,
     int nPositionZ
-) 
+)
 : RenderObject(nPositionZ) {
     m_pTexture = tex;
     m_pRenderPlayerPower = pRenderPlayerPower;
@@ -18,12 +18,12 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(
     int nBottomHeight = 105;
     int nWidth = 320;
     int nHeight = 500;
-    
+
     m_currentFrameTop.x = 0;
     m_currentFrameTop.y = 0;
     m_currentFrameTop.w = nWidth;
     m_currentFrameTop.h = nTopHeight;
-    
+
     m_currentFrameMiddle.x = 0;
     m_currentFrameMiddle.y = nTopHeight;
     m_currentFrameMiddle.w = nWidth;
@@ -36,11 +36,11 @@ RenderLeftPanelInfo::RenderLeftPanelInfo(
 }
 
 void RenderLeftPanelInfo::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    
+
     m_nWindowWidth = state.getWindowWidth();
     m_nWindowHeight = state.getWindowHeight();
 
-    m_pRenderPlayerPower->updatePosition(CoordXY(
+    m_pRenderPlayerPower->updatePosition(YPos(
         m_nWindowWidth - 290,
         100
     ));

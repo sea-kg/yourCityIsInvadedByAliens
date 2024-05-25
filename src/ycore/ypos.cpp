@@ -1,5 +1,8 @@
-#include "ypos.h"
 #include <cmath>
+
+#include "ypos.h"
+#include "yrect.h"
+
 // ---------------------------------------------------------------------
 // YPos
 
@@ -77,6 +80,15 @@ bool YPos::isInsideRect(const YPos& topLeft, const YPos& bottomRight) const {
         && m_nX <= bottomRight.getX()
         && m_nY >= topLeft.getY()
         && m_nY <= bottomRight.getY()
+    ;
+}
+
+bool YPos::isInsideRect(const YRect &rect) {
+    return
+           m_nX >= rect.getMinX()
+        && m_nX <= rect.getMaxX()
+        && m_nY >= rect.getMinY()
+        && m_nY <= rect.getMaxY()
     ;
 }
 

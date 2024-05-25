@@ -18,12 +18,12 @@ class UtilsStartDialog {
         void addObject(RenderObject *pObject);
         std::wstring m_sResourceDir;
         GameState *m_pGameState;
-        CoordXY m_posTopLeftMusicOnOff;
-        CoordXY m_posBottomRightMusicOnOff;
-        CoordXY m_posButtonStartTopLeft;
-        CoordXY m_posButtonStartBottomRight;
+        YPos m_posTopLeftMusicOnOff;
+        YPos m_posBottomRightMusicOnOff;
+        YPos m_posButtonStartTopLeft;
+        YPos m_posButtonStartBottomRight;
 
-        CoordXY m_mousePosition;
+        YPos m_mousePosition;
         RenderWindow *m_pRenderWindow;
         RenderButtonMusicOnOff *m_pRenderButtonMusicOnOff;
         RenderButtonSimple *m_pRenderButtonStart;

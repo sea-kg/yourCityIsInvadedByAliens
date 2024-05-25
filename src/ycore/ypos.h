@@ -1,5 +1,7 @@
 #pragma once
 
+class YRect;
+
 class YPos {
     public:
         YPos();
@@ -19,6 +21,7 @@ class YPos {
         bool operator<(const YPos& other) const;
 
         bool isInsideRect(const YPos& topLeft, const YPos& bottomRight) const;
+        bool isInsideRect(const YRect &rect);
         float getDistance(const YPos& pos) const;
 
     private:

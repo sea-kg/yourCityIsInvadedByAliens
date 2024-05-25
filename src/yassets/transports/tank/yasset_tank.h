@@ -27,8 +27,8 @@ class YAssetTank : public YAsset, public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
+        YPos m_coordRender;
+        YPos m_coordRenderEnd;
         int m_nTextureTileWidth;
         int m_nTextureTileHeight;
 

@@ -81,11 +81,11 @@ void RenderAlienShip0::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
 
     if (m_bShadow) {
-        dst.x = m_coordPositionRendering.x() - m_nFrameWidth/4;
-        dst.y = m_coordPositionRendering.y() - m_nFrameHeight/4;
+        dst.x = m_coordPositionRendering.getX() - m_nFrameWidth/4;
+        dst.y = m_coordPositionRendering.getY() - m_nFrameHeight/4;
     } else {
-        dst.x = m_coordPositionRendering.x() - m_nFrameWidth/2;
-        dst.y = m_coordPositionRendering.y() - m_nFrameHeight/2;
+        dst.x = m_coordPositionRendering.getX() - m_nFrameWidth/2;
+        dst.y = m_coordPositionRendering.getY() - m_nFrameHeight/2;
     }
 
     dst.w = m_currentFrame.w;

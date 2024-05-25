@@ -3,7 +3,7 @@
 
 class RandomShootingStrategy : public IShootingStrategy {
     public:
-        virtual void shoot(const CoordXY& p0) override;
+        virtual void shoot(const YPos& p0) override;
         virtual GameBioplastState *popBioplast() override;
 
     private:

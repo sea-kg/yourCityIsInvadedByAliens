@@ -1,7 +1,7 @@
 #include "none_shooting_strategy.h"
 #include <cstdlib>
 
-void NoneShootingStrategy::shoot(const CoordXY& p0) {
+void NoneShootingStrategy::shoot(const YPos& p0) {
     // nothing to do
 }
 

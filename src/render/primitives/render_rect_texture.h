@@ -5,9 +5,9 @@ class RenderRectTexture : public RenderObject {
 
     public:
         RenderRectTexture(
-            const CoordXY &p0,
+            const YPos &p0,
             SDL_Texture* tex,
-            int nTextureWidth, 
+            int nTextureWidth,
             int nTextureHeight,
             int nPositionZ = 0
         );
@@ -16,10 +16,10 @@ class RenderRectTexture : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordPos;
-        CoordXY m_coordPosEnd;
-        CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
+        YPos m_coordPos;
+        YPos m_coordPosEnd;
+        YPos m_coordRender;
+        YPos m_coordRenderEnd;
 
         SDL_Rect currentFrame;
         SDL_Texture* m_pTexture;

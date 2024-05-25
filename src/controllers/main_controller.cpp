@@ -73,7 +73,7 @@ bool MainController::initSoundController() {
 
 int MainController::startUI() {
     YKeyboard *pKeyboard = new YKeyboard();
-    CoordXY coordCenter = getCoordCenter();
+    YPos coordCenter = getCoordCenter();
     GameAlienShipState *pAlientShipState = m_pGameState->getAlienShipState();
 
     startGameLogicThread();
@@ -120,10 +120,10 @@ int MainController::startUI() {
             /*
                 360 - w/2 - 320/2
             */
-            int nLeftPad = getCoordCenter().x();
-            int nRightPad = getCoordCenter().x() - 320;
-            int nTopPad = getCoordCenter().y();
-            int nBottomPad = getCoordCenter().y();
+            int nLeftPad = getCoordCenter().getX();
+            int nRightPad = getCoordCenter().getX() - 320;
+            int nTopPad = getCoordCenter().getY();
+            int nBottomPad = getCoordCenter().getY();
             pAlientShipState->move(
                 getGameState()->getElapsedTime(),
                 getGameState()->getMinPoint(),
@@ -133,7 +133,7 @@ int MainController::startUI() {
                 0, // nTopPad,
                 0 // nBottomPad
             );
-            CoordXY newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + CoordXY(320/2, 0);
+            YPos newLeftTop = pAlientShipState->getPosition() - getCoordCenter() + YPos(320/2, 0);
             getGameState()->setCoordLeftTop(newLeftTop);
             updatePlayerCoord();
             updateScore();
@@ -193,8 +193,8 @@ GameState *MainController::getGameState() {
     return m_pGameState;
 }
 
-CoordXY MainController::getCoordCenter() {
-    return CoordXY(
+YPos MainController::getCoordCenter() {
+    return YPos(
         m_pWindow->getWidth()/2,
         m_pWindow->getHeight()/2
     );
@@ -212,18 +212,18 @@ bool MainController::loadGameDataWithProgressBar() {
     if (jsonDefaultMap.isParserFailed()) {
         return false;
     }
-    m_minPointMap = CoordXY(0,0);
+    m_minPointMap = YPos(0,0);
     m_sMapName = jsonDefaultMap[L"title"].getString();
     m_nMaxClouds = jsonDefaultMap[L"max-clouds"].getNumber();
     m_nMapWidth = jsonDefaultMap[L"width"].getNumber();
     m_nMapHeight = jsonDefaultMap[L"height"].getNumber();
-    m_maxPointMap = CoordXY(
+    m_maxPointMap = YPos(
         m_nMapWidth,
         m_nMapHeight
     );
     m_pMap->setMapSize(m_nMapWidth, m_nMapHeight);
 
-    m_pGameState->updatePlayerStartPosition(CoordXY(
+    m_pGameState->updatePlayerStartPosition(YPos(
         jsonDefaultMap[L"player-start-x"].getNumber(),
         jsonDefaultMap[L"player-start-y"].getNumber()
     ));
@@ -464,7 +464,7 @@ void MainController::clearWindow() {
 void MainController::modifyObjects() {
     m_pWindow->getRenderWindow()->modifyObjects(*m_pGameState);
 
-    CoordXY p0 = m_pGameState->getAlienShipState()->getPosition();
+    YPos p0 = m_pGameState->getAlienShipState()->getPosition();
 
     // calculate intersection rockets and player
     const std::vector<GameRocketState *> &vRockets = m_pWindow->getRenderWindow()->getRockets();
@@ -478,7 +478,7 @@ void MainController::modifyObjects() {
         YPos p1 = pRocket->getPosition();
         // distance
         // TODO optimize calculate distance here
-        double nDistance = p1.getDistance(YPos(p0.x(), p0.y()));
+        double nDistance = p1.getDistance(YPos(p0.getX(), p0.getY()));
         if (getMainState() == MainState::GAME_ACTION) {
             if (nDistance < 30.0) {
                 pRocket->explode();
@@ -502,9 +502,9 @@ void MainController::modifyObjects() {
 
         for (int b = 0; b < vBioplasts.size(); b++) {
             GameBioplastState *pBioplast = vBioplasts[b];
-            CoordXY p2 = pBioplast->getPosition();
+            YPos p2 = pBioplast->getPosition();
             // distance
-            float nDistance = p1.getDistance(YPos(p2.x(), p2.y()));
+            float nDistance = p1.getDistance(p2);
             if (nDistance < 15.0) {
                 pRocket->explode();
                 // m_pAlientShipState->rocketAttack();
@@ -518,12 +518,12 @@ void MainController::drawObjects() {
 }
 
 void MainController::updatePlayerCoord() {
-    const CoordXY &playerCoord = m_pGameState->getAlienShipState()->getPosition();
-    std::wstring sCoordPlayer = L"X=" + std::to_wstring(playerCoord.x())
-            + L"\nY=" + std::to_wstring(playerCoord.y());
+    const YPos &playerCoord = m_pGameState->getAlienShipState()->getPosition();
+    std::wstring sCoordPlayer = L"X=" + std::to_wstring(playerCoord.getX())
+            + L"\nY=" + std::to_wstring(playerCoord.getY());
     m_pCoordText->setText(sCoordPlayer);
 
-    int nBerryIndex = this->findAlienBerryIndex(playerCoord.x(), playerCoord.y());
+    int nBerryIndex = this->findAlienBerryIndex(playerCoord);
 
     if (nBerryIndex != m_nCurrentTakeAlienBerry) {
         m_pTakeBerryText->setPosition(m_pWindow->getWidth() / 2 - 270, m_pWindow->getHeight() / 2);
@@ -649,11 +649,11 @@ void MainController::loadBackgrounds(
         int nTextureWidth = item[L"width"].getNumber();
         int nTextureHeight = item[L"height"].getNumber();
         const YJsonObject &fillRegion = item[L"fill-region"];
-        CoordXY startXY(
+        YPos startXY(
             fillRegion[L"start-x"].getNumber(),
             fillRegion[L"start-y"].getNumber()
         );
-        CoordXY endXY(
+        YPos endXY(
             fillRegion[L"end-x"].getNumber(),
             fillRegion[L"end-y"].getNumber()
         );
@@ -671,12 +671,12 @@ void MainController::generateBackground(
     SDL_Texture* pTextureBackground,
     int nTextureWidth,
     int nTextureHeight,
-    const CoordXY &startXY,
-    const CoordXY &endXY
+    const YPos &startXY,
+    const YPos &endXY
 ) {
-    for (int x = startXY.x(); x <= endXY.x(); x += nTextureWidth) {
-        for (int y = startXY.y(); y <= endXY.y(); y += nTextureHeight) {
-            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(CoordXY(x, y), pTextureBackground));
+    for (int x = startXY.getX(); x <= endXY.getX(); x += nTextureWidth) {
+        for (int y = startXY.getY(); y <= endXY.getY(); y += nTextureHeight) {
+            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(YPos(x, y), pTextureBackground));
         }
     }
 }
@@ -686,9 +686,9 @@ void MainController::generateClouds() {
 
     for (int i = 0; i < m_nMaxClouds; i++) {
         int nX = std::rand() % m_nMapWidth;
-        nX += m_minPointMap.x();
+        nX += m_minPointMap.getX();
         int nY = std::rand() % m_nMapHeight;
-        nY += m_minPointMap.y();
+        nY += m_minPointMap.getY();
 
         auto *pClouds = pAssets->createAsset<YAssetClouds>(L"clouds1");
         pClouds->setPosition(nX, nY);
@@ -746,7 +746,7 @@ void MainController::generateRoads(const std::wstring &sDefaultPath) {
             m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
 
             auto *pRoad = pAssets->createAsset<YAssetRoad>(sRoadAssetId);
-            pRoad->setAbsolutePosition(CoordXY(nX, nY));
+            pRoad->setAbsolutePosition(YPos(nX, nY));
             pRoad->setRoadPart(sRoadPart);
             m_pWindow->getRenderWindow()->addRoadsObject(pRoad);
         }
@@ -873,7 +873,7 @@ void MainController::generateTransports() {
         int nY = std::rand() % m_nMapHeight;
         if (m_pMap->canDriveToPoint(nX, nY)) {
             nGenerated++;
-            GameTank0State *pTankState = new GameTank0State(CoordXY(nX,nY));
+            GameTank0State *pTankState = new GameTank0State(YPos(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);
             auto *pTank = pAssets->createAsset<YAssetTank>(L"tank1");
             pTank->setGameStateTank(pTankState);
@@ -913,7 +913,9 @@ YPos MainController::generateRandomPositionAlienBerry() {
     return YPos(nX, nY);
 }
 
-int MainController::findAlienBerryIndex(int x, int y) {
+int MainController::findAlienBerryIndex(const YPos &p) {
+    int x = p.getX();
+    int y = p.getY();
     for (int i = 0; i < m_vAlienBerriesStates.size(); i++) {
         if (m_vAlienBerriesStates[i]->hasPoint(x,y)) {
             return i;

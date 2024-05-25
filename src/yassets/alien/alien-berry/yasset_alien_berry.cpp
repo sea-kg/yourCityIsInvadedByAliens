@@ -44,7 +44,7 @@ void YAssetAlienBerry::setOrderZ(int nOrder) {
 void YAssetAlienBerry::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     const long m_nSpeedAnimation = 200;
 
-    m_coordRender = CoordXY(m_pState->getPosition().getX(), m_pState->getPosition().getY()) - state.getCoordLeftTop();
+    m_coordRender = m_pState->getPosition() - state.getCoordLeftTop();
 
     long nFrameNumber = (state.getElapsedTime() / m_nSpeedAnimation) % m_nFrameNumber;
 
@@ -66,8 +66,8 @@ void YAssetAlienBerry::draw(SDL_Renderer* renderer) {
     // emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x = m_coordRender.x(); // - m_nTextureTileWidth/2;
-    dst.y = m_coordRender.y(); // - m_nTextureTileHeight/2;
+    dst.x = m_coordRender.getX(); // - m_nTextureTileWidth/2;
+    dst.y = m_coordRender.getY(); // - m_nTextureTileHeight/2;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 

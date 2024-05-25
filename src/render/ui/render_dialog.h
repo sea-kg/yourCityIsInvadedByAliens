@@ -17,8 +17,8 @@ class RenderDialog : public RenderObject {
 
     private:
 
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
+        YPos m_coordCenter;
+        YPos m_coordReal;
         int m_nWindowWidth;
         int m_nWindowHeight;
         int m_nDialogWidth;

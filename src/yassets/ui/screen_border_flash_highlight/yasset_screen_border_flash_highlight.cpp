@@ -133,7 +133,7 @@ void YAssetScreenBorderFlashHighlight::modify(const GameState& state, IRenderWin
 // 
     // if (m_nPrevValue == value) {
     //     m_nTimeFading -= 
-    //     // m_coordRender = m_position - state.getYPosLeftTop();
+    //     // m_coordRender = m_position - state.getCoordLeftTop();
     //     return; // skip - already desition done
     // }
 // 

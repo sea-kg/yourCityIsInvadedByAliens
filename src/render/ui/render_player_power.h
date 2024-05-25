@@ -11,14 +11,14 @@ class RenderPlayerPower : public RenderObject {
             GameAlienShipState *pAlienShipState,
             int nPositionZ = 0
         );
-        void updatePosition(CoordXY pos);
+        void updatePosition(YPos pos);
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
         SDL_Texture* m_pTexture;
-        CoordXY m_position;
+        YPos m_position;
         SDL_Rect m_currentFrame;
         GameAlienShipState *m_pAlienShipState;
 };

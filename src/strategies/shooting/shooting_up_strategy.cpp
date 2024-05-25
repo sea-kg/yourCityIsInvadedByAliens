@@ -2,10 +2,10 @@
 
 #include "shooting_up_strategy.h"
 
-void ShootingUpStrategy::shoot(const CoordXY& p0) {
+void ShootingUpStrategy::shoot(const YPos& p0) {
     int nX = std::rand() % 100 - 50;
     int nY = std::rand() % 500;
-    m_vBioplasts.push_back(new GameBioplastState(p0, p0 + CoordXY(nX, nY)));
+    m_vBioplasts.push_back(new GameBioplastState(p0, p0 + YPos(nX, nY)));
 }
 
 GameBioplastState *ShootingUpStrategy::popBioplast() {

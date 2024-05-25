@@ -40,9 +40,9 @@ void YAssetTank::modify(const GameState& state, IRenderWindow* pRenderWindow) {
 
     if (m_nPrevPosition == position) {
         m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
-        m_coordRenderEnd = CoordXY(
-            m_pTank0State->getPosition().x() + m_nTextureTileWidth,
-            m_pTank0State->getPosition().y() + m_nTextureTileHeight
+        m_coordRenderEnd = YPos(
+            m_pTank0State->getPosition().getX() + m_nTextureTileWidth,
+            m_pTank0State->getPosition().getY() + m_nTextureTileHeight
         );
         return; // skip - already desition done
     }
@@ -50,9 +50,9 @@ void YAssetTank::modify(const GameState& state, IRenderWindow* pRenderWindow) {
     m_nPrevPosition = position;
 
     m_coordRender = m_pTank0State->getPosition() - state.getCoordLeftTop();
-    m_coordRenderEnd = CoordXY(
-        m_pTank0State->getPosition().x() + m_nTextureTileWidth,
-        m_pTank0State->getPosition().y() + m_nTextureTileHeight
+    m_coordRenderEnd = YPos(
+        m_pTank0State->getPosition().getX() + m_nTextureTileWidth,
+        m_pTank0State->getPosition().getY() + m_nTextureTileHeight
     );
 
     MoveObjectDirection dr = m_pTank0State->getDirection();
@@ -155,8 +155,8 @@ void YAssetTank::draw(SDL_Renderer* renderer) {
     emptyColor.changeRenderColor(renderer);
 
     SDL_Rect dst;
-    dst.x = m_coordRender.x() - m_nTextureTileWidth/2;
-    dst.y = m_coordRender.y() - m_nTextureTileHeight/2;
+    dst.x = m_coordRender.getX() - m_nTextureTileWidth/2;
+    dst.y = m_coordRender.getY() - m_nTextureTileHeight/2;
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
@@ -205,8 +205,8 @@ void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWin
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos();
-        m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos() + m_size;
+        m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
+        m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop() + m_size;
         return; // skip - already desition done
     }
 
@@ -239,8 +239,8 @@ void RenderTank0Rocket::modify(const GameState& state, IRenderWindow* pRenderWin
     m_pRocketState->move();
     m_nLifeTime++;
 
-    m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos();
-    m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop().toYPos() + m_size;
+    m_coordRender = m_pRocketState->getPosition() - state.getCoordLeftTop();
+    m_coordRenderEnd = m_pRocketState->getPosition() - state.getCoordLeftTop() + m_size;
     MoveObjectDirection dr = m_pRocketState->getDirection();
 
     int nWidth = 50;

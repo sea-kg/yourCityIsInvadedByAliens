@@ -19,7 +19,7 @@ RenderVegetationSimple::RenderVegetationSimple(
     m_currentFrame.w = m_nWidth;
     m_currentFrame.h = m_nHeight;
 
-    m_coordAbsolute = CoordXY(pos.getX(), pos.getY());
+    m_coordAbsolute = pos;
     // m_maxPos = pos + YPos(200,300);
 }
 
@@ -38,8 +38,8 @@ bool RenderVegetationSimple::canDraw(const GameState& state) {
 void RenderVegetationSimple::draw(SDL_Renderer* renderer) {
 
     SDL_Rect dst;
-    dst.x = m_coordRender.x();
-    dst.y = m_coordRender.y();
+    dst.x = m_coordRender.getX();
+    dst.y = m_coordRender.getY();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 

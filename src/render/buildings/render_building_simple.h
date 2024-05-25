@@ -14,8 +14,8 @@ class RenderBuildingSimple : public RenderObject {
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
     private:
-        CoordXY m_coordAbsolute;
-        CoordXY m_coordRender;
+        YPos m_coordAbsolute;
+        YPos m_coordRender;
         YPos m_minPos;
         YPos m_maxPos;
         // GameBuilding *m_pBuilding;
