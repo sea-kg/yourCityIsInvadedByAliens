@@ -27,10 +27,16 @@ class YAssetRoad : public YAsset, public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        YPos m_coordPos;
-        YPos m_coordPosEnd;
-        YPos m_coordRender;
-        YPos m_coordRenderEnd;
+        YPos m_coordAbsolutePositionTopLeft;
+        YPos m_coordAbsolutePositionTopRight;
+        YPos m_coordAbsolutePositionBottomLeft;
+        YPos m_coordAbsolutePositionBottomRight;
+
+        YPos m_coordRenderTopLeft;
+        YPos m_coordRenderTopRight;
+        YPos m_coordRenderBottomLeft;
+        YPos m_coordRenderBottomRight;
+
         int m_nTextureTileWidth;
         int m_nTextureTileHeight;
 

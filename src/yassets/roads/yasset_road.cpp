@@ -78,8 +78,10 @@ void YAssetRoad::setRoadPart(const std::wstring &sRoadPart) {
 }
 
 void YAssetRoad::setAbsolutePosition(const YPos &coordPos) {
-    m_coordPos = coordPos;
-    m_coordPosEnd = coordPos + YPos(m_nTextureTileWidth, m_nTextureTileHeight);
+    m_coordAbsolutePositionTopLeft = coordPos; // + YPos(0, 0);
+    m_coordAbsolutePositionTopRight = coordPos + YPos(m_nTextureTileWidth, 0);
+    m_coordAbsolutePositionBottomLeft = coordPos + YPos(0, m_nTextureTileHeight);
+    m_coordAbsolutePositionBottomRight = coordPos + YPos(m_nTextureTileWidth, m_nTextureTileHeight);
 }
 
 int YAssetRoad::getFrameWeight() const {
@@ -91,23 +93,27 @@ int YAssetRoad::getFrameHeight() const {
 }
 
 void YAssetRoad::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    m_coordRender = m_coordPos - state.getCoordLeftTop();
-    m_coordRenderEnd = m_coordPosEnd - state.getCoordLeftTop();
+    m_coordRenderTopLeft = m_coordAbsolutePositionTopLeft - state.getCoordLeftTop();
+    m_coordRenderTopRight = m_coordAbsolutePositionTopRight - state.getCoordLeftTop();
+    m_coordRenderBottomLeft = m_coordAbsolutePositionBottomLeft - state.getCoordLeftTop();
+    m_coordRenderBottomRight = m_coordAbsolutePositionBottomRight - state.getCoordLeftTop();
     return;
 }
 
 bool YAssetRoad::canDraw(const GameState& state) {
     return
-        m_coordRender.isInsideRect(state.getWindowRect())
-        || m_coordRenderEnd.isInsideRect(state.getWindowRect())
+        m_coordRenderTopLeft.isInsideRect(state.getWindowRect())
+        || m_coordRenderTopRight.isInsideRect(state.getWindowRect())
+        || m_coordRenderBottomLeft.isInsideRect(state.getWindowRect())
+        || m_coordRenderBottomRight.isInsideRect(state.getWindowRect())
     ;
 }
 
 void YAssetRoad::draw(SDL_Renderer* renderer) {
 
     SDL_Rect dst;
-    dst.x = m_coordRender.getX();
-    dst.y = m_coordRender.getY();
+    dst.x = m_coordRenderTopLeft.getX();
+    dst.y = m_coordRenderTopLeft.getY();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
