@@ -4,8 +4,8 @@
 // RenderButtonSimple
 
 RenderButtonSimple::RenderButtonSimple(
-    SDL_Texture* tex, 
-    CoordXY pos,
+    SDL_Texture* tex,
+    YPos pos,
     int nPositionZ
 ) : RenderObject(nPositionZ) {
     m_position = pos;
@@ -34,8 +34,8 @@ void RenderButtonSimple::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
     SDL_Rect dst;
-    dst.x = m_position.x();
-    dst.y = m_position.y();
+    dst.x = m_position.getX();
+    dst.y = m_position.getY();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 
@@ -47,7 +47,7 @@ void RenderButtonSimple::draw(SDL_Renderer* renderer) {
         dst.w = m_currentFrame.w * nCoef;
         dst.h = m_currentFrame.h * nCoef;
     }
-    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);    
+    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
 };
 
 void RenderButtonSimple::setAnimate(bool bAnimate) {

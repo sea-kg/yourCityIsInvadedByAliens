@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "coordxy.h"
 #include "move_object_direction.h"
 #include "game_bioplast_state.h"
 #include "game_rocket_state.h"
@@ -10,15 +9,15 @@
 
 class GameAlienShipState {
     public:
-        GameAlienShipState(const CoordXY &p0);
-        const CoordXY &getPosition();
+        GameAlienShipState(const YPos &p0);
+        const YPos &getPosition();
         void setShooting(bool bShooting);
         bool isShooting() const;
         void setMoveDirection(MoveObjectDirection direction);
         void move(
             long nElapsedTime,
-            const CoordXY &minPointMap,
-            const CoordXY &maxPointMap,
+            const YPos &minPointMap,
+            const YPos &maxPointMap,
             int nLeftPad,
             int nRightPad,
             int nTopPad,
@@ -30,12 +29,12 @@ class GameAlienShipState {
         int setHealthPoints(int h);
         int setMaxHealthPoints(int h);
         void resetHealthPoints();
-        void updatePosition(const CoordXY &m_p0);
+        void updatePosition(const YPos &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
         ShootingStrategyLogic *getShootingStrategyLogic() const;
 
     private:
-        CoordXY m_p0;
+        YPos m_p0;
         MoveObjectDirection m_moveDirection;
         long m_nMovePrevTime;
         long m_nSpeedMoving;

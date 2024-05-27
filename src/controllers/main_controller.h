@@ -34,7 +34,7 @@ class MainController {
         void runGameLogicThread();
 
         GameState *getGameState();
-        CoordXY getCoordCenter();
+        YPos getCoordCenter();
         bool loadGameDataWithProgressBar();
         void deinitLoaderController();
         bool showStartDialog();
@@ -76,8 +76,8 @@ class MainController {
             SDL_Texture* pTextureBackground,
             int nTextureWidth,
             int nTextureHeight,
-            const CoordXY &startXY,
-            const CoordXY &endXY
+            const YPos &startXY,
+            const YPos &endXY
         );
         void generateTanks();
         void generateClouds();
@@ -102,11 +102,11 @@ class MainController {
         void generateTransports();
         void generateAlienBerries(int nMaxGenerate);
         YPos generateRandomPositionAlienBerry();
-        int findAlienBerryIndex(int x, int y);
+        int findAlienBerryIndex(const YPos &p);
 
         // TODO move to MapYService
-        CoordXY m_minPointMap;
-        CoordXY m_maxPointMap;
+        YPos m_minPointMap;
+        YPos m_maxPointMap;
         int m_nMapWidth;
         int m_nMapHeight;
         int m_nMaxClouds;

@@ -1,5 +1,6 @@
 
 #pragma once
+
 #include "render.h"
 
 class RenderButtonMusicOnOff : public RenderObject {
@@ -7,7 +8,7 @@ class RenderButtonMusicOnOff : public RenderObject {
     public:
         RenderButtonMusicOnOff(
             SDL_Texture* tex,
-            CoordXY pos,
+            YPos pos,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
@@ -17,7 +18,7 @@ class RenderButtonMusicOnOff : public RenderObject {
 
     private:
         SDL_Texture* m_pTexture;
-        CoordXY m_position;
+        YPos m_position;
         int m_nTextureWidth;
         int m_nTextureHeight;
         bool m_bPlayMusic;

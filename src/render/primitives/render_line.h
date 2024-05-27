@@ -5,8 +5,8 @@ class RenderLine : public RenderObject {
 
     public:
         RenderLine(
-            const CoordXY &p1,
-            const CoordXY &p2,
+            const YPos &p1,
+            const YPos &p2,
             const RenderColor &color,
             int nPositionZ = 0
         );
@@ -14,16 +14,16 @@ class RenderLine : public RenderObject {
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
-        const CoordXY &getAbsoluteCoord1();
-        const CoordXY &getAbsoluteCoord2();
-        const CoordXY &getCoord1();
-        const CoordXY &getCoord2();
-        void updateAbsoluteCoords(const CoordXY &p1, const CoordXY &p2);
+        const YPos &getAbsoluteCoord1();
+        const YPos &getAbsoluteCoord2();
+        const YPos &getCoord1();
+        const YPos &getCoord2();
+        void updateAbsoluteCoords(const YPos &p1, const YPos &p2);
 
     private:
-        CoordXY m_startCoord1;
-        CoordXY m_startCoord2;
-        CoordXY m_coord1;
-        CoordXY m_coord2;
+        YPos m_startCoord1;
+        YPos m_startCoord2;
+        YPos m_coord1;
+        YPos m_coord2;
         RenderColor m_color;
 };

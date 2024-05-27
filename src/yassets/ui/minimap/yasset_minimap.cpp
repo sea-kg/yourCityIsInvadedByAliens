@@ -102,9 +102,9 @@ void YAssetMinimap::modify(const GameState& state, IRenderWindow* pRenderWindow)
         m_nY = m_nWindowHeight - m_nHeight - 50;
     }
 
-    const CoordXY &pos = state.getPlayerPosition();
-    int nPlayerPositionX = (pos.x() * m_nWidthK);
-    int nPlayerPositionY = (pos.y() * m_nHeightK);
+    const YPos &pos = state.getPlayerPosition();
+    int nPlayerPositionX = (pos.getX() * m_nWidthK);
+    int nPlayerPositionY = (pos.getY() * m_nHeightK);
 
     if (nPlayerPositionX != m_nPrevPlayerPositionX || m_nPrevPlayerPositionY != nPlayerPositionY) {
         m_nPrevPlayerPositionX = nPlayerPositionX;

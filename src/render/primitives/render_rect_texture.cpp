@@ -4,15 +4,15 @@
 // RenderRectTexture
 
 RenderRectTexture::RenderRectTexture(
-    const CoordXY &p0, 
+    const YPos &p0,
     SDL_Texture* tex,
-    int nTextureWidth, 
+    int nTextureWidth,
     int nTextureHeight,
     int nPositionZ
 ) : RenderObject(nPositionZ) {
     m_pTexture = tex;
     m_coordPos = p0;
-    m_coordPosEnd = CoordXY(p0.x() + nTextureWidth, p0.y() + nTextureHeight);
+    m_coordPosEnd = YPos(p0.getX() + nTextureWidth, p0.getY() + nTextureHeight);
     currentFrame.x = 0;
     currentFrame.y = 0;
     currentFrame.w = nTextureWidth;
@@ -34,8 +34,8 @@ bool RenderRectTexture::canDraw(const GameState& state) {
 void RenderRectTexture::draw(SDL_Renderer* renderer) {
     SDL_Rect dst;
     // 4 is scale
-    dst.x = m_coordRender.x();
-    dst.y = m_coordRender.y();
+    dst.x = m_coordRender.getX();
+    dst.y = m_coordRender.getY();
     dst.w = currentFrame.w;
     dst.h = currentFrame.h;
 

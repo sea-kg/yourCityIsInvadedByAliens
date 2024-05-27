@@ -16,8 +16,8 @@ class RenderLeftPanelInfo : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordCenter;
-        CoordXY m_coordReal;
+        YPos m_coordCenter;
+        YPos m_coordReal;
         long m_nPrevPosition;
         int m_nWindowWidth;
         int m_nWindowHeight;

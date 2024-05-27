@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------
 // GameTank0State
 
-GameTank0State::GameTank0State(const CoordXY &p0)
+GameTank0State::GameTank0State(const YPos &p0)
 : m_nDirection(MoveObjectDirection::UP) {
     TAG = L"GameTank0State";
     m_p0 = p0;
@@ -15,22 +15,22 @@ GameTank0State::GameTank0State(const CoordXY &p0)
     m_nMoveStep = 10;
 
     m_vMoveVectors.resize(9);
-    m_vMoveVectors[int(MoveObjectDirection::NONE)] = CoordXY(0, 0);
-    m_vMoveVectors[int(MoveObjectDirection::UP)] = CoordXY(0, -1);
-    m_vMoveVectors[int(MoveObjectDirection::DOWN)] = CoordXY(0, 1);
-    m_vMoveVectors[int(MoveObjectDirection::UP_LEFT)] = CoordXY(-1, -1);
-    m_vMoveVectors[int(MoveObjectDirection::DOWN_LEFT)] = CoordXY(-1, 1);
-    m_vMoveVectors[int(MoveObjectDirection::UP_RIGHT)] = CoordXY(1, -1);
-    m_vMoveVectors[int(MoveObjectDirection::DOWN_RIGHT)] = CoordXY(1, 1);
-    m_vMoveVectors[int(MoveObjectDirection::LEFT)] = CoordXY(-1, 0);
-    m_vMoveVectors[int(MoveObjectDirection::RIGHT)] = CoordXY(1, 0);
+    m_vMoveVectors[int(MoveObjectDirection::NONE)] = YPos(0, 0);
+    m_vMoveVectors[int(MoveObjectDirection::UP)] = YPos(0, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN)] = YPos(0, 1);
+    m_vMoveVectors[int(MoveObjectDirection::UP_LEFT)] = YPos(-1, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN_LEFT)] = YPos(-1, 1);
+    m_vMoveVectors[int(MoveObjectDirection::UP_RIGHT)] = YPos(1, -1);
+    m_vMoveVectors[int(MoveObjectDirection::DOWN_RIGHT)] = YPos(1, 1);
+    m_vMoveVectors[int(MoveObjectDirection::LEFT)] = YPos(-1, 0);
+    m_vMoveVectors[int(MoveObjectDirection::RIGHT)] = YPos(1, 0);
 }
 
 MoveObjectDirection GameTank0State::getDirection() {
     return m_nDirection;
 }
 
-const CoordXY &GameTank0State::getPosition() {
+const YPos &GameTank0State::getPosition() {
     return m_p0;
 }
 
@@ -92,9 +92,9 @@ void GameTank0State::turnRight() {
     }
 }
 
-CoordXY GameTank0State::calculateMoveForward() {
-    const CoordXY &vMove = m_vMoveVectors[int(m_nDirection)];
-    CoordXY xy = m_p0 + CoordXY(vMove.x() * m_nMoveStep, vMove.y() * m_nMoveStep);
+YPos GameTank0State::calculateMoveForward() {
+    const YPos &vMove = m_vMoveVectors[int(m_nDirection)];
+    YPos xy = m_p0 + YPos(vMove.getX() * m_nMoveStep, vMove.getY() * m_nMoveStep);
     return xy;
 }
 
@@ -108,7 +108,7 @@ bool GameTank0State::hasRocket() {
 
 void GameTank0State::shotRocket() {
     m_bHasRocket = false;
-    m_vRockets.push_back(new GameRocketState(YPos(m_p0.x(), m_p0.y()), m_nDirection));
+    m_vRockets.push_back(new GameRocketState(YPos(m_p0.getX(), m_p0.getY()), m_nDirection));
 }
 
 void GameTank0State::rechargeRocket() {

@@ -3,6 +3,6 @@
 
 class IShootingStrategy {
     public:
-        virtual void shoot(const CoordXY &p0) = 0;
+        virtual void shoot(const YPos &p0) = 0;
         virtual GameBioplastState *popBioplast() = 0;
 };

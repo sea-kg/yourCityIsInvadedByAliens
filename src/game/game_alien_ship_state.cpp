@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------
 // GameAlienShipState
 
-GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
+GameAlienShipState::GameAlienShipState(const YPos &p0) {
     m_p0 = p0;
     m_bShooting = false;
     m_nMovePrevTime = 0;
@@ -18,7 +18,7 @@ GameAlienShipState::GameAlienShipState(const CoordXY &p0) {
     m_pShootingStrategyLogic = new ShootingStrategyLogic();
 }
 
-const CoordXY &GameAlienShipState::getPosition() {
+const YPos &GameAlienShipState::getPosition() {
     return m_p0;
 }
 
@@ -36,8 +36,8 @@ void GameAlienShipState::setMoveDirection(MoveObjectDirection direction) {
 
 void GameAlienShipState::move(
     long nElapsedTime,
-    const CoordXY &minPointMap,
-    const CoordXY &maxPointMap,
+    const YPos &minPointMap,
+    const YPos &maxPointMap,
     int nLeftPad,
     int nRightPad,
     int nTopPad,
@@ -52,47 +52,47 @@ void GameAlienShipState::move(
     m_nMovePrevTime = position;
 
     int nStep = 5;
-    CoordXY p0;
+    YPos p0;
     switch(m_moveDirection) {
         case MoveObjectDirection::UP:
-            p0 = m_p0 + CoordXY(0, -1*nStep);
+            p0 = m_p0 + YPos(0, -1*nStep);
             break;
         case MoveObjectDirection::UP_LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, -1*nStep);
+            p0 = m_p0 + YPos(-1*nStep, -1*nStep);
             break;
         case MoveObjectDirection::UP_RIGHT:
-            p0 = m_p0 + CoordXY(nStep, -1*nStep);
+            p0 = m_p0 + YPos(nStep, -1*nStep);
             break;
         case MoveObjectDirection::DOWN:
-            p0 = m_p0 + CoordXY(0, nStep);
+            p0 = m_p0 + YPos(0, nStep);
             break;
         case MoveObjectDirection::DOWN_LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, nStep);
+            p0 = m_p0 + YPos(-1*nStep, nStep);
             break;
         case MoveObjectDirection::DOWN_RIGHT:
-            p0 = m_p0 + CoordXY(nStep, nStep);
+            p0 = m_p0 + YPos(nStep, nStep);
             break;
         case MoveObjectDirection::LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, 0);
+            p0 = m_p0 + YPos(-1*nStep, 0);
             break;
         case MoveObjectDirection::RIGHT:
-            p0 = m_p0 + CoordXY(nStep, 0);
+            p0 = m_p0 + YPos(nStep, 0);
             break;
         default:
             p0 = m_p0;
     }
     // game map borders
-    if (p0.x() > maxPointMap.x() - nRightPad) {
-        p0.setX(maxPointMap.x() - nRightPad);
+    if (p0.getX() > maxPointMap.getX() - nRightPad) {
+        p0.setX(maxPointMap.getX() - nRightPad);
     }
-    if (p0.x() < minPointMap.x() + nLeftPad) {
-        p0.setX(minPointMap.x() + nLeftPad);
+    if (p0.getX() < minPointMap.getX() + nLeftPad) {
+        p0.setX(minPointMap.getX() + nLeftPad);
     }
-    if (p0.y() > maxPointMap.y() - nBottomPad) {
-        p0.setY(maxPointMap.y() - nBottomPad);
+    if (p0.getY() > maxPointMap.getY() - nBottomPad) {
+        p0.setY(maxPointMap.getY() - nBottomPad);
     }
-    if (p0.y() < minPointMap.y() + nTopPad) {
-        p0.setY(minPointMap.y() + nTopPad);
+    if (p0.getY() < minPointMap.getY() + nTopPad) {
+        p0.setY(minPointMap.getY() + nTopPad);
     }
     m_p0.update(p0);
 }
@@ -104,31 +104,31 @@ void GameAlienShipState::rocketAttack(GameRocketState *pRocket) {
 
     // move ship after rocket
     int nStep = 15;
-    CoordXY p0;
+    YPos p0;
     switch(rocketMoveDirection) {
         case MoveObjectDirection::UP:
-            p0 = m_p0 + CoordXY(0, -1*nStep);
+            p0 = m_p0 + YPos(0, -1*nStep);
             break;
         case MoveObjectDirection::UP_LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, -1*nStep);
+            p0 = m_p0 + YPos(-1*nStep, -1*nStep);
             break;
         case MoveObjectDirection::UP_RIGHT:
-            p0 = m_p0 + CoordXY(nStep, -1*nStep);
+            p0 = m_p0 + YPos(nStep, -1*nStep);
             break;
         case MoveObjectDirection::DOWN:
-            p0 = m_p0 + CoordXY(0, nStep);
+            p0 = m_p0 + YPos(0, nStep);
             break;
         case MoveObjectDirection::DOWN_LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, nStep);
+            p0 = m_p0 + YPos(-1*nStep, nStep);
             break;
         case MoveObjectDirection::DOWN_RIGHT:
-            p0 = m_p0 + CoordXY(nStep, nStep);
+            p0 = m_p0 + YPos(nStep, nStep);
             break;
         case MoveObjectDirection::LEFT:
-            p0 = m_p0 + CoordXY(-1*nStep, 0);
+            p0 = m_p0 + YPos(-1*nStep, 0);
             break;
         case MoveObjectDirection::RIGHT:
-            p0 = m_p0 + CoordXY(nStep, 0);
+            p0 = m_p0 + YPos(nStep, 0);
             break;
         default:
             p0 = m_p0;
@@ -159,7 +159,7 @@ void GameAlienShipState::resetHealthPoints() {
     m_nHealthPoints = m_nMaxHealthPoints;
 }
 
-void GameAlienShipState::updatePosition(const CoordXY &p0) {
+void GameAlienShipState::updatePosition(const YPos &p0) {
     m_p0 = p0;
 }
 

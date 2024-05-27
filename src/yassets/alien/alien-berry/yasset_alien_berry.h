@@ -28,8 +28,8 @@ class YAssetAlienBerry : public YAsset, public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
+        YPos m_coordRender;
+        YPos m_coordRenderEnd;
         GameAlienBerryState *m_pState;
 
         int m_nFrameWidth;

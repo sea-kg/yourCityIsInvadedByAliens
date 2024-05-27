@@ -42,7 +42,7 @@ void YAssetClouds::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     long position = state.getElapsedTime() / m_nSpeedAnimation;
 
     if (m_nPrevPosition == position) {
-        m_coordRender = m_position - state.getYPosLeftTop();
+        m_coordRender = m_position - state.getCoordLeftTop();
         // m_rectRegionPos = YRect(p0.x(), p0.x() + 300, p0.y(), p0.y() + 300);
         return; // skip - already desition done
     }
@@ -50,12 +50,12 @@ void YAssetClouds::modify(const GameState& state, IRenderWindow* pRenderWindow) 
     m_nPrevPosition = position;
     this->move();
 
-    m_coordRender = m_position - state.getYPosLeftTop();
+    m_coordRender = m_position - state.getCoordLeftTop();
     m_coordRenderEnd = m_coordRender + m_size;
 
     m_rectRegionRender = YRect(
-        m_position - state.getYPosLeftTop(),
-        m_position + m_size - state.getYPosLeftTop()
+        m_position - state.getCoordLeftTop(),
+        m_position + m_size - state.getCoordLeftTop()
     );
 };
 

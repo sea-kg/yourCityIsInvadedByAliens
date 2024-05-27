@@ -4,9 +4,9 @@
 // RenderTriangle
 
 RenderTriangle::RenderTriangle(
-    const CoordXY &p1,
-    const CoordXY &p2,
-    const CoordXY &p3,
+    const YPos &p1,
+    const YPos &p2,
+    const YPos &p3,
     int nPositionZ
 ) : RenderObject(nPositionZ),
     m_color(255,255,255,255),

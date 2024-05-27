@@ -9,7 +9,7 @@ class RenderBackground : public RenderObject {
 
     public:
         RenderBackground(
-            const CoordXY &p0,
+            const YPos &p0,
             SDL_Texture* tex,
             int nPositionZ = 0
         );
@@ -18,9 +18,9 @@ class RenderBackground : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordPos;
+        YPos m_coordPos;
         YRect m_rectRegionPos;
-        CoordXY m_coordRender;
+        YPos m_coordRender;
         YRect m_rectRegionRender;
 
         SDL_Rect m_currentFrame;

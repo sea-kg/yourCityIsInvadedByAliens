@@ -18,10 +18,10 @@ class RenderBioplast : public RenderObject {
         virtual void draw(SDL_Renderer* renderer) override;
 
     private:
-        CoordXY m_coordPos;
-        CoordXY m_coordPosEnd;
-        CoordXY m_coordRender;
-        CoordXY m_coordRenderEnd;
+        YPos m_coordPos;
+        YPos m_coordPosEnd;
+        YPos m_coordRender;
+        YPos m_coordRenderEnd;
         long m_nPrevPosition;
         int m_nLifeTime;
         int m_nMaxLifeTime;

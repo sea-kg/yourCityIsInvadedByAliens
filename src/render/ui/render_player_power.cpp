@@ -8,7 +8,7 @@ RenderPlayerPower::RenderPlayerPower(
     GameAlienShipState *pAlienShipState,
     int nPositionZ
 ) : RenderObject(nPositionZ) {
-    m_position = CoordXY(0,0);
+    m_position = YPos(0,0);
     m_pTexture = tex;
     m_pAlienShipState = pAlienShipState;
 
@@ -18,7 +18,7 @@ RenderPlayerPower::RenderPlayerPower(
     m_currentFrame.h = 50;
 }
 
-void RenderPlayerPower::updatePosition(CoordXY pos) {
+void RenderPlayerPower::updatePosition(YPos pos) {
     m_position = pos;
 }
 
@@ -44,9 +44,9 @@ void RenderPlayerPower::draw(SDL_Renderer* renderer) {
     RenderColor emptyColor(0, 0, 0, 0);
     emptyColor.changeRenderColor(renderer);
     SDL_Rect dst;
-    dst.x = m_position.x();
-    dst.y = m_position.y();
+    dst.x = m_position.getX();
+    dst.y = m_position.getY();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
-    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);    
+    SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
 };

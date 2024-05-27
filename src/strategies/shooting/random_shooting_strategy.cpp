@@ -4,10 +4,10 @@
 #include <cstdlib>
 
 
-void RandomShootingStrategy::shoot(const CoordXY& p0) {
+void RandomShootingStrategy::shoot(const YPos& p0) {
     int nX = std::rand() % 500 - 250;
     int nY = std::rand() % 500 - 250;
-    m_vBioplasts.push_back(new GameBioplastState(p0, p0 + CoordXY(nX, nY)));
+    m_vBioplasts.push_back(new GameBioplastState(p0, p0 + YPos(nX, nY)));
 }
 
 GameBioplastState *RandomShootingStrategy::popBioplast() {

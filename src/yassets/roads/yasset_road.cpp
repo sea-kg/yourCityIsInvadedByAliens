@@ -77,9 +77,9 @@ void YAssetRoad::setRoadPart(const std::wstring &sRoadPart) {
     m_currentFrame.y = m_nTextureTileHeight * nTile;
 }
 
-void YAssetRoad::setAbsolutePosition(const CoordXY &coordPos) {
+void YAssetRoad::setAbsolutePosition(const YPos &coordPos) {
     m_coordPos = coordPos;
-    m_coordPosEnd = coordPos + CoordXY(m_nTextureTileWidth, m_nTextureTileHeight);
+    m_coordPosEnd = coordPos + YPos(m_nTextureTileWidth, m_nTextureTileHeight);
 }
 
 int YAssetRoad::getFrameWeight() const {
@@ -106,8 +106,8 @@ bool YAssetRoad::canDraw(const GameState& state) {
 void YAssetRoad::draw(SDL_Renderer* renderer) {
 
     SDL_Rect dst;
-    dst.x = m_coordRender.x();
-    dst.y = m_coordRender.y();
+    dst.x = m_coordRender.getX();
+    dst.y = m_coordRender.getY();
     dst.w = m_currentFrame.w;
     dst.h = m_currentFrame.h;
 

@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------------
 // GameBioplastState
 
-GameBioplastState::GameBioplastState(const CoordXY &pStart, const CoordXY &pEnd) {
+GameBioplastState::GameBioplastState(const YPos &pStart, const YPos &pEnd) {
     m_p0 = pStart;
     m_pStart = pStart;
     m_pEnd = pEnd;
@@ -12,22 +12,22 @@ GameBioplastState::GameBioplastState(const CoordXY &pStart, const CoordXY &pEnd)
     m_bCanBeRemoved = false;
 
     // distance
-    double dx = m_pStart.x() - m_pEnd.x();
-    double dy = m_pStart.y() - m_pEnd.y();
+    double dx = m_pStart.getX() - m_pEnd.getX();
+    double dy = m_pStart.getY() - m_pEnd.getY();
     m_nDistance = 0.0;
     m_nDistance = sqrt(dx * dx + dy * dy);
 
     // int nStep
-    m_step = CoordXY(dx/10, dy/10); // TODO 10 must be size of bioplast
+    m_step = YPos(dx/10, dy/10); // TODO 10 must be size of bioplast
 }
 
-const CoordXY &GameBioplastState::getPosition() {
+const YPos &GameBioplastState::getPosition() {
     return m_p0;
 }
 
 void GameBioplastState::move() {
     m_p0 += m_step;
-    if (m_p0.y() > m_pEnd.y()) {
+    if (m_p0.getY() > m_pEnd.getY()) {
         m_bDestroyed = true;
     }
 }

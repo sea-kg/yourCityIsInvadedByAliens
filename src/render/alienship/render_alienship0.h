@@ -27,7 +27,7 @@ class RenderAlienShip0 : public RenderObject {
     private:
         std::wstring TAG;
         GameAlienShipState *m_pState;
-        CoordXY m_coordPositionRendering;
+        YPos m_coordPositionRendering;
         int m_nFrameWidth;
         int m_nFrameHeight;
         int m_nFramesCount;

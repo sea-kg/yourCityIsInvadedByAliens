@@ -7,7 +7,7 @@ class RenderButtonSimple : public RenderObject {
     public:
         RenderButtonSimple(
             SDL_Texture* tex,
-            CoordXY pos,
+            YPos pos,
             int nPositionZ = 0
         );
         virtual void modify(const GameState& state, IRenderWindow* pRenderWindow) override;
@@ -17,7 +17,7 @@ class RenderButtonSimple : public RenderObject {
 
     private:
         SDL_Texture* m_pTexture;
-        CoordXY m_position;
+        YPos m_position;
         int m_nTextureWidth;
         int m_nTextureHeight;
         bool m_bAnimate;

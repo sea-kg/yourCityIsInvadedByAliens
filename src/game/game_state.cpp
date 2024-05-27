@@ -39,17 +39,12 @@ long GameState::getElapsedTime() const {
     return m_nElapsedTime;
 }
 
-const CoordXY &GameState::getCoordLeftTop() const {
+const YPos &GameState::getCoordLeftTop() const {
     return m_coordLeftTop;
 }
 
-const YPos &GameState::getYPosLeftTop() const {
-    return m_posLeftTop;
-}
-
-void GameState::setCoordLeftTop(const CoordXY &newCoordLeftTop) {
+void GameState::setCoordLeftTop(const YPos &newCoordLeftTop) {
     m_coordLeftTop = newCoordLeftTop;
-    m_posLeftTop = YPos(newCoordLeftTop.x(), newCoordLeftTop.y());
 }
 
 bool GameState::isChangedWindowSize() const {
@@ -117,28 +112,28 @@ GameAlienShipState *GameState::getAlienShipState() {
     return m_pAlienShipState;
 }
 
-void GameState::updatePlayerStartPosition(const CoordXY &playerStartPosition) {
+void GameState::updatePlayerStartPosition(const YPos &playerStartPosition) {
     m_playerStartPosition = playerStartPosition;
     m_pAlienShipState->updatePosition(playerStartPosition);
 }
 
-const CoordXY &GameState::getPlayerPosition() const {
+const YPos &GameState::getPlayerPosition() const {
     return m_pAlienShipState->getPosition();
 }
 
-void GameState::setMinPoint(const CoordXY &p) {
+void GameState::setMinPoint(const YPos &p) {
     m_minPoint = p;
 }
 
-const CoordXY &GameState::getMinPoint() {
+const YPos &GameState::getMinPoint() {
     return m_minPoint;
 }
 
-void GameState::setMaxPoint(const CoordXY &p) {
+void GameState::setMaxPoint(const YPos &p) {
     m_maxPoint = p;
 }
 
-const CoordXY &GameState::getMaxPoint() {
+const YPos &GameState::getMaxPoint() {
     return m_maxPoint;
 }
 
