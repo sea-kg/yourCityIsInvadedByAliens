@@ -11,10 +11,10 @@
             "width": 500,
             "height": 500,
             "fill-region": {
-                "start-x": -500,
-                "start-y": -500,
-                "end-x": 5000,
-                "end-y": 5000
+                "start-x": -1500,
+                "start-y": -1500,
+                "end-x": 6000,
+                "end-y": 6000
             }
         }
     ],

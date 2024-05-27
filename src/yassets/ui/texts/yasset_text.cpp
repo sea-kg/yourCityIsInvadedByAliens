@@ -19,6 +19,9 @@ YAssetText::YAssetText(
     m_nLetterHeight = nLetterHeight;
     m_nLetterWidth = nLetterWidth;
     m_bShowText = true;
+    m_nAnchor = YAssetTextAnchor::TOP_LEFT;
+    m_nWindowWidth = 0;
+    m_nWindowHeight = 0;
 }
 
 void YAssetText::setAbsolutePosition(bool bAbsolutePosition) {
@@ -26,14 +29,21 @@ void YAssetText::setAbsolutePosition(bool bAbsolutePosition) {
 }
 
 void YAssetText::setPosition(int nX, int nY) {
-    m_nX = nX;
-    m_nY = nY;
+    m_nOriginalX = nX;
+    m_nOriginalY = nY;
+    m_needUpdate.setYes();
+}
+
+void YAssetText::setAnchor(YAssetTextAnchor nAnchor) {
+    m_nAnchor = nAnchor;
     m_needUpdate.setYes();
 }
 
 void YAssetText::setText(const std::wstring& sText) {
-    m_sUpdateText = sText;
-    m_needUpdate.setYes();
+    if (m_sUpdateText != sText) {
+        m_sUpdateText = sText;
+        m_needUpdate.setYes();
+    }
     // YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
 }
 
@@ -52,10 +62,34 @@ void YAssetText::setOrderZ(int nOrder) {
 }
 
 void YAssetText::modify(const GameState& state, IRenderWindow* pRenderWindow) {
-    // nothing i think
+
+    if (state.getWindowWidth() != m_nWindowWidth) {
+        m_nWindowWidth = state.getWindowWidth();
+        m_needUpdate.setYes();
+    };
+    if (state.getWindowHeight() != m_nWindowHeight) {
+        m_nWindowHeight = state.getWindowHeight();
+        m_needUpdate.setYes();
+    };
+
     if (m_needUpdate.isAndDoReset()) {
+        // YLog::info(TAG, L"m_sUpdateText = " + m_sUpdateText);
         m_sText = m_sUpdateText;
-        // TODO recalculate positions here
+        m_nX = m_nOriginalX;
+        m_nY = m_nOriginalY;
+        if (m_nAnchor == YAssetTextAnchor::TOP_LEFT) {
+            m_nX = m_nOriginalX;
+            m_nY = m_nOriginalY;
+        } else if (m_nAnchor == YAssetTextAnchor::TOP_RIGHT) {
+            m_nX = state.getWindowWidth() - m_nOriginalX;
+            m_nY = m_nOriginalY;
+        } else if (m_nAnchor == YAssetTextAnchor::BOTTOM_LEFT) {
+            m_nX = m_nOriginalX;
+            m_nY = state.getWindowHeight() - m_nOriginalY;
+        } else if (m_nAnchor == YAssetTextAnchor::BOTTOM_RIGHT) {
+            m_nX = state.getWindowWidth() - m_nOriginalX;
+            m_nY = state.getWindowHeight() - m_nOriginalY;
+        }
     }
 };
 

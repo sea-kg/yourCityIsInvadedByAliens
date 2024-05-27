@@ -341,7 +341,8 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pScoreText = pAssets->createAsset<YAssetText>(L"text1");
     m_pScoreText->setOrderZ(5001);
     m_pScoreText->setAbsolutePosition(true);
-    m_pScoreText->setPosition(m_pWindow->getWidth() - 270, 20);
+    m_pScoreText->setPosition(270, 20);
+    m_pScoreText->setAnchor(YAssetTextAnchor::TOP_RIGHT);
     m_pScoreText->setText(L"Score: ");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pScoreText);
 
@@ -353,7 +354,8 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pCoordText = pAssets->createAsset<YAssetText>(L"text1");
     m_pCoordText->setOrderZ(5001);
     m_pCoordText->setAbsolutePosition(true);
-    m_pCoordText->setPosition(m_pWindow->getWidth() - 270, 50);
+    m_pCoordText->setPosition(270, 50);
+    m_pCoordText->setAnchor(YAssetTextAnchor::TOP_RIGHT);
     m_pCoordText->setText(L"x = ? y = ?");
     m_pWindow->getRenderWindow()->addPanelsObject(m_pCoordText);
 

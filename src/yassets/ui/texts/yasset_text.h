@@ -2,6 +2,13 @@
 
 #include <yassets_service.h>
 
+enum class YAssetTextAnchor {
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
+};
+
 class YAssetText : public YAsset, public RenderObject {
     public:
         YAssetText(
@@ -13,8 +20,9 @@ class YAssetText : public YAsset, public RenderObject {
         );
         void setAbsolutePosition(bool bAbsolutePosition);
         void setPosition(int nX, int nY);
+        void setAnchor(YAssetTextAnchor nAnchor);
         void setText(const std::wstring& sText);
-        
+
         void hideText();
         void showText();
 
@@ -29,6 +37,9 @@ class YAssetText : public YAsset, public RenderObject {
     private:
         std::wstring TAG;
         bool m_bAbsolutePosition;
+        YAssetTextAnchor m_nAnchor;
+        int m_nOriginalX;
+        int m_nOriginalY;
         int m_nX;
         int m_nY;
         int m_nFontSize;
@@ -39,6 +50,10 @@ class YAssetText : public YAsset, public RenderObject {
         std::vector<std::wstring> m_vAlphabets;
         int m_nLetterHeight;
         int m_nLetterWidth;
+
+        // WindowSize
+        int m_nWindowWidth;
+        int m_nWindowHeight;
 
         void findPosition(SDL_Rect &frame, wchar_t c);
 };
