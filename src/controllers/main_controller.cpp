@@ -215,6 +215,7 @@ bool MainController::loadGameDataWithProgressBar() {
     m_minPointMap = YPos(0,0);
     m_sMapName = jsonDefaultMap[L"title"].getString();
     m_nMaxClouds = jsonDefaultMap[L"max-clouds"].getNumber();
+    m_nMaxBuildings = jsonDefaultMap[L"max-buildings"].getNumber();
     m_nMapWidth = jsonDefaultMap[L"width"].getNumber();
     m_nMapHeight = jsonDefaultMap[L"height"].getNumber();
     m_maxPointMap = YPos(
@@ -236,10 +237,11 @@ bool MainController::loadGameDataWithProgressBar() {
         std::wstring sFactoryPath = sPath + vAssets[i];
         YLog::info(TAG, L"Try loading '" + sFactoryPath + L"'");
         std::wstring sError;
-        if (!pAssets->loadAssetFactory(sFactoryPath, sError)) {
+        std::wstring sAssetFactoryType;
+        if (!pAssets->loadAssetFactory(sFactoryPath, sAssetFactoryType, sError)) {
             YLog::throw_err(TAG, sError);
         } else {
-            YLog::info(TAG, L"Loaded and registered factory '" + vAssets[i] + L"' from " + sFactoryPath);
+            YLog::info(TAG, L"Loaded and registered factory '" + vAssets[i] + L"' from " + sFactoryPath + L", factory type: " + sAssetFactoryType);
         }
     }
 
@@ -252,13 +254,8 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->addToProgressCurrent(1);
 
 
-    m_pLoaderController->updateText(L"Load buildings...");
-    std::cout << L"default/buildings.json" << std::endl;
-    YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
-    if (jsonDefaultBuildings.isParserFailed()) {
-        return false;
-    }
-    this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
+    m_pLoaderController->updateText(L"Generating buildings...");
+    this->generateBuildings(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Load vegetations...");
@@ -745,7 +742,7 @@ void MainController::generateRoads(const std::wstring &sDefaultPath) {
             nGeneratedRoads++;
             int nX = y * nTextureWidth + nTextureWidth;
             int nY = x * nTextureHeight;
-            m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
+            m_pMap->addRoad(YRect(nX, nY, nX + nTextureWidth, nY + nTextureHeight));
 
             auto *pRoad = pAssets->createAsset<YAssetRoad>(sRoadAssetId);
             pRoad->setAbsolutePosition(YPos(nX, nY));
@@ -806,33 +803,42 @@ void MainController::loadAlienShip(
 }
 
 
-void MainController::loadBuildings(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonRoads
-) {
-    for (int i = 0; i < jsonRoads.length(); i++) {
-        const YJsonObject &item = jsonRoads[i];
-        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
-        if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
-        }
-        SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item[L"width"].getNumber();
-        int nTextureHeight = item[L"height"].getNumber();
-        const YJsonObject &fillList = item[L"fill"];
+void MainController::generateBuildings(const std::wstring &sDefaultPath) {
+    YLog::info(TAG, L"generateBuildings....");
+    auto pAssets = findYService<YAssetsService>();
+    int nBuildings = 0;
+    // m_nMaxBuildings;
 
-        for (int n = 0; n < fillList.length(); n++) {
-            const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem[L"x"].getNumber();
-            int nY = roadItem[L"y"].getNumber();
-            m_pWindow->getRenderWindow()->addBuildingsObject(new RenderBuildingSimple(
-                YPos(nX, nY),
-                nTextureWidth,
-                nTextureHeight,
-                pTextureBuilding
-            ));
-        }
+    std::vector<std::wstring> vFactoriyIDs = pAssets->findFactoryIDsByFactoryType(L"building");
+    for (int i = 0; i < vFactoriyIDs.size(); i++) {
+        YLog::info(TAG, L"Found building " + vFactoriyIDs[i]);
     }
+    int nInfinityProtect = 0;
+    while (nBuildings < m_nMaxBuildings) {
+        int nX = (std::rand() % (m_nMapWidth - 1000)) + 500;
+        int nY = (std::rand() % (m_nMapHeight - 1000)) + 500;
+        std::wstring sFactoryId = vFactoriyIDs[std::rand() % vFactoriyIDs.size()];
+        auto *pBuilding = pAssets->createAsset<YAssetBuilding>(sFactoryId);
+        YRect rectBuilding(nX, nY, nX + pBuilding->getWidth(), nY + pBuilding->getHeight());
+        if (!m_pMap->isFreeRect(rectBuilding)) {
+            nInfinityProtect++;
+            if (nInfinityProtect > 5000) {
+                YLog::info(TAG, L"InfinityProtect generated buildings " + std::to_wstring(nBuildings) + L" from " + std::to_wstring(m_nMaxBuildings));
+                break;
+            }
+            delete pBuilding;
+            continue; // next generation
+        }
+        m_pMap->addBuilding(rectBuilding);
+        nInfinityProtect = 0;
+
+        pBuilding->setAbsolutePosition(YPos(nX, nY));
+
+        m_pWindow->getRenderWindow()->addBuildingsObject(pBuilding);
+        nBuildings++;
+    }
+
+    YLog::info(TAG, L"generateBuildings... done");
 }
 
 void MainController::loadVegetations(
@@ -873,7 +879,7 @@ void MainController::generateTransports() {
     while (nGenerated < nMaxGenerated) {
         int nX = std::rand() % m_nMapWidth;
         int nY = std::rand() % m_nMapHeight;
-        if (m_pMap->canDriveToPoint(nX, nY)) {
+        if (m_pMap->canDriveToPoint(YPos(nX, nY))) {
             nGenerated++;
             GameTank0State *pTankState = new GameTank0State(YPos(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);

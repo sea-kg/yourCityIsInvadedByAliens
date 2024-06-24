@@ -31,6 +31,10 @@ YAssetFactory::YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *
     m_pFactoryType = pFactoryType;
 }
 
+YAssetFactoryType *YAssetFactory::getFactoryType() {
+    return m_pFactoryType;
+}
+
 SDL_Texture *YAssetFactory::loadTexture(const std::wstring &sImagePath) {
     SDL_Texture *pTexture = m_pAssetsService->getRenderWindow()->loadTexture(sImagePath);
     if (pTexture == NULL) {
@@ -97,7 +101,7 @@ bool YAssetsService::hasFactoryType(const std::wstring &sFactoryTypeId) {
     return m_mapYAssetsFactoryTypes.find(sFactoryTypeId) != m_mapYAssetsFactoryTypes.end();
 }
 
-bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &sError) {
+bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &sAssetFactoryType, std::wstring &sError) {
     auto *pSettings = findYService<SettingsYService>();
     std::wstring sResourceDir = pSettings->getResourceDir();
 
@@ -107,15 +111,15 @@ bool YAssetsService::loadAssetFactory(const std::wstring &sPath, std::wstring &s
         YLog::err(TAG, sError);
         return false;
     }
-    
+
     YJson jsonAssetFactory(sAssetsInfoPath);
     if (jsonAssetFactory.isParserFailed()) {
         sError = L"Could not parse asset-factory" + sAssetsInfoPath;
         YLog::err(TAG, sError);
         return false;
     }
-    
-    std::wstring sAssetFactoryType = jsonAssetFactory[L"asset-factory-type"].getString();
+
+    sAssetFactoryType = jsonAssetFactory[L"asset-factory-type"].getString();
     if (!hasFactoryType(sAssetFactoryType)) {
         sError = L"Not found asset Factory type: " + sAssetFactoryType;
         YLog::err(TAG, sError);
@@ -147,14 +151,26 @@ bool YAssetsService::loadAllAssetFactory(const std::wstring &sPath, std::wstring
         YLog::info(TAG, L"Try loading '" + sFactoryPath + L"'");
 
         std::wstring sError;
-        if (!this->loadAssetFactory(sFactoryPath, sError)) {
+        std::wstring sAssetFactoryType;
+        if (!this->loadAssetFactory(sFactoryPath, sAssetFactoryType, sError)) {
             sRetError += sError + L"\n";
             bRet = false;
         } else {
-            YLog::info(TAG, L"Loaded and registered factory '" + vAssetsBootscreen[i] + L"' from " + sFactoryPath);
+            YLog::info(TAG, L"Loaded and registered factory '" + vAssetsBootscreen[i] + L"' from " + sFactoryPath + L", factory type: " + sAssetFactoryType);
         }
     }
     return bRet;
+}
+
+std::vector<std::wstring> YAssetsService::findFactoryIDsByFactoryType(const std::wstring &sFactoryTypeId) {
+    std::vector<std::wstring> vRet;
+    std::map<std::wstring, YAssetFactory*>::iterator it;
+    for (it = m_mapYAssetsFactories.begin(); it != m_mapYAssetsFactories.end(); ++it) {
+        if (it->second->getFactoryType()->getFactoryTypeId() == sFactoryTypeId) {
+            vRet.push_back(it->first);
+        }
+    }
+    return vRet;
 }
 
 std::unique_ptr<YAsset> YAssetsService::createAsset(const std::wstring &sAssetFactoryId) {

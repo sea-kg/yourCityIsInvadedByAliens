@@ -1,6 +1,7 @@
 {
     "title": "Map#001",
     "max-clouds": 500,
+    "max-buildings": 200,
     "width": 5000,
     "height": 5000,
     "player-start-x": 1000,

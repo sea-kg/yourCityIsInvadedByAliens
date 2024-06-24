@@ -89,10 +89,7 @@ class MainController {
             const std::wstring &sDefaultPath
         );
 
-        void loadBuildings(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonRoads
-        );
+        void generateBuildings(const std::wstring &sDefaultPath);
 
         void loadVegetations(
             const std::wstring &sDefaultPath,
@@ -110,6 +107,7 @@ class MainController {
         int m_nMapWidth;
         int m_nMapHeight;
         int m_nMaxClouds;
+        int m_nMaxBuildings;
         std::wstring m_sMapName;
 
         int m_nProgressBarStatus;

@@ -55,6 +55,8 @@ list (APPEND WSJCPP_SOURCES "src/strategies/shooting/none_shooting_strategy.cpp"
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yasset_alien_berry.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yassets_factory_type_alien_berry.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/buildings/yasset_building.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/buildings/yassets_factory_type_building.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yasset_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yassets_factory_type_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/roads/yasset_road.cpp")
@@ -185,3 +187,8 @@ include_directories(${WSJCPP_INCLUDE_DIRS})
 add_executable (yourCityIsInvadedByAliens ${WSJCPP_SOURCES})
 
 target_link_libraries(yourCityIsInvadedByAliens ${WSJCPP_LIBRARIES} )
+
+
+# enable testing functionality
+enable_testing()
+add_subdirectory(tests)
