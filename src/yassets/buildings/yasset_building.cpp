@@ -18,10 +18,7 @@ YAssetBuilding::YAssetBuilding(
     m_nTextureHeight(nHeight),
     m_currentFrame({0,0,nWidth,nHeight})
 {
-    // m_currentFrame.x = 0;
-    // m_currentFrame.y = 0;
-    // m_currentFrame.w = m_nTextureWidth;
-    // m_currentFrame.h = m_nTextureHeight;
+    // nothing
 }
 
 void YAssetBuilding::setOrderZ(int nOrder) {
@@ -29,18 +26,18 @@ void YAssetBuilding::setOrderZ(int nOrder) {
 }
 
 void YAssetBuilding::setAbsolutePosition(const YPos &pos) {
-    m_coordAbsolutePositionTopLeft = pos; // + YPos(0, 0);
-    m_coordAbsolutePositionTopRight = pos + YPos(m_nTextureWidth, 0);
-    m_coordAbsolutePositionBottomLeft = pos + YPos(0, m_nTextureHeight);
-    m_coordAbsolutePositionBottomRight = pos + YPos(m_nTextureWidth, m_nTextureHeight);
+    m_coordAbsolutePositionTopLeft = pos;
+    m_coordAbsolutePositionTopRight = YPos(pos.getX() + m_currentFrame.w, pos.getY());
+    m_coordAbsolutePositionBottomLeft = YPos(pos.getX(), pos.getY() + m_currentFrame.h);
+    m_coordAbsolutePositionBottomRight = YPos(pos.getX() + m_currentFrame.w, pos.getY() + m_currentFrame.h);
 }
 
 int YAssetBuilding::getWidth() const {
-    return m_nTextureWidth;
+    return m_currentFrame.w;
 }
 
 int YAssetBuilding::getHeight() const {
-    return m_nTextureHeight;
+    return m_currentFrame.h;
 }
 
 void YAssetBuilding::modify(const GameState& state, IRenderWindow* pRenderWindow) {
@@ -62,11 +59,11 @@ bool YAssetBuilding::canDraw(const GameState& state) {
 
 void YAssetBuilding::draw(SDL_Renderer* renderer) {
 
-    SDL_Rect dst;
-    dst.x = m_coordRenderTopLeft.getX();
-    dst.y = m_coordRenderTopLeft.getY();
-    dst.w = m_currentFrame.w;
-    dst.h = m_currentFrame.h;
-
+    SDL_Rect dst{
+        m_coordRenderTopLeft.getX(),
+        m_coordRenderTopLeft.getY(),
+        m_currentFrame.w,
+        m_currentFrame.h
+    };
     SDL_RenderCopy(renderer, m_pTexture, &m_currentFrame, &dst);
 }
