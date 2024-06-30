@@ -127,11 +127,7 @@ void YAssetMinimap::draw(SDL_Renderer* renderer) {
 }
 
 void YAssetMinimap::redrawBackground() {
-    const std::vector<YRect> &vRoads = m_pMapService->getRoads();
-    YLog::info(TAG, L"Roads: " + std::to_wstring(vRoads.size()));
-
-    for (int i = 0; i < vRoads.size(); i++) {
-        const YRect &road = vRoads[i];
+    for (auto road : m_pMapService->getRoads()) {
         int x0 = road.getMinX() * m_nWidthK;
         int y0 = road.getMinY() * m_nHeightK;
         int x1 = road.getMaxX() * m_nWidthK;
