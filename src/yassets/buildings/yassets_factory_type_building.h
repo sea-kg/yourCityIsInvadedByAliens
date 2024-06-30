@@ -34,5 +34,5 @@ class YAssetFactoryTypeBuilding : public YAssetFactoryType {
         ) override;
     private:
         static const inline std::wstring m_sType{L"building"};
-        std::wstring TAG;
+        static const inline TAG{L"YAssetFactoryTypeBuilding"};
 };

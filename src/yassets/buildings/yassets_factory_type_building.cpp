@@ -34,8 +34,9 @@ std::unique_ptr<YAsset> YAssetFactoryBuilding::createAsset() {
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeBuilding)
 
 YAssetFactoryTypeBuilding::YAssetFactoryTypeBuilding(YAssetsService *pAssetsService)
-    : YAssetFactoryType(pAssetsService) {
-    TAG = L"YAssetFactoryTypeBuilding";
+    : YAssetFactoryType(pAssetsService)
+{
+    // nothing
 }
 
 const std::wstring &YAssetFactoryTypeBuilding::getFactoryTypeId() {
