@@ -164,8 +164,7 @@ bool YAssetsService::loadAllAssetFactory(const std::wstring &sPath, std::wstring
 
 std::vector<std::wstring> YAssetsService::findFactoryIDsByFactoryType(const std::wstring &sFactoryTypeId) {
     std::vector<std::wstring> vRet;
-    std::map<std::wstring, YAssetFactory*>::iterator it;
-    for (it = m_mapYAssetsFactories.begin(); it != m_mapYAssetsFactories.end(); ++it) {
+    for (auto it = m_mapYAssetsFactories.begin(); it != m_mapYAssetsFactories.end(); ++it) {
         if (it->second->getFactoryType()->getFactoryTypeId() == sFactoryTypeId) {
             vRet.push_back(it->first);
         }
