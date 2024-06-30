@@ -13,7 +13,7 @@ YAssetDialogHelp::YAssetDialogHelp(
     int nDialogBackgroundWidth,
     int nDialogBackgroundHeight
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     m_bShow = false;
     m_pTextureHelp = pTextureHelp;
     m_nHelpWidth = nHelpWidth;

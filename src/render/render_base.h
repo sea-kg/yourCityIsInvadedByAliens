@@ -47,7 +47,7 @@ class IRenderWindow {
 class RenderObject {
 
     public:
-        RenderObject(int nPositionZ);
+        RenderObject(int nPositionZ = 1000);
         virtual ~RenderObject();
         int getPositionZ();
         bool canBeRemovedFromRenderer();

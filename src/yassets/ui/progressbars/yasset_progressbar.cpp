@@ -11,7 +11,7 @@ YAssetProgressBar::YAssetProgressBar(
     int nWidth,
     int nHeight
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     m_pTexture = pTexture;
     m_nProgressCurrent = 0;
     m_nProgressMax = 100;

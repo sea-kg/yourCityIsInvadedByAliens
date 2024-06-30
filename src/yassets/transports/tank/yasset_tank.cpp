@@ -11,7 +11,7 @@ YAssetTank::YAssetTank(
     int nFrameWidth,
     int nFrameHeight
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     // m_pTank0State = pTank0State;
     m_pTexture = pTextureTank;
     m_pTextureRocket = pTextureRocket;

@@ -10,11 +10,11 @@ YAssetBackground::YAssetBackground(
     int nWidth,
     int nHeight
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     m_pTexture = pTexture;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
-    
+
     m_currentFrame.x = 0;
     m_currentFrame.y = 0;
     m_currentFrame.w = m_nWidth;

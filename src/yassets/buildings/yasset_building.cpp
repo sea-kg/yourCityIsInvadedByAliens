@@ -12,7 +12,6 @@ YAssetBuilding::YAssetBuilding(
     int nHeight
 ) :
     YAsset(pAssetsService),
-    RenderObject(1000),
     m_pTexture(pTexture),
     m_nTextureWidth(nWidth),
     m_nTextureHeight(nHeight),

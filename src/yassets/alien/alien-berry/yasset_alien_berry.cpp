@@ -11,7 +11,7 @@ YAssetAlienBerry::YAssetAlienBerry(
     int nFrameHeight,
     int nFrameNumber
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     // m_pAlienBerry0State = pAlienBerry0State;
     m_pTexture = pTextureAlienBerry;
     m_nFrameWidth = nFrameWidth;
