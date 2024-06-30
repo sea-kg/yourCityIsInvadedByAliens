@@ -15,23 +15,24 @@ YAssetBuilding::YAssetBuilding(
     RenderObject(1000),
     m_pTexture(pTexture),
     m_nTextureWidth(nWidth),
-    m_nTextureHeight(nHeight)
+    m_nTextureHeight(nHeight),
+    m_currentFrame({0,0,nWidth,nHeight})
 {
-    m_currentFrame.x = 0;
-    m_currentFrame.y = 0;
-    m_currentFrame.w = m_nTextureWidth;
-    m_currentFrame.h = m_nTextureHeight;
+    // m_currentFrame.x = 0;
+    // m_currentFrame.y = 0;
+    // m_currentFrame.w = m_nTextureWidth;
+    // m_currentFrame.h = m_nTextureHeight;
 }
 
 void YAssetBuilding::setOrderZ(int nOrder) {
     m_nPositionZ = nOrder;
 }
 
-void YAssetBuilding::setAbsolutePosition(const YPos &coordPos) {
-    m_coordAbsolutePositionTopLeft = coordPos; // + YPos(0, 0);
-    m_coordAbsolutePositionTopRight = coordPos + YPos(m_nTextureWidth, 0);
-    m_coordAbsolutePositionBottomLeft = coordPos + YPos(0, m_nTextureHeight);
-    m_coordAbsolutePositionBottomRight = coordPos + YPos(m_nTextureWidth, m_nTextureHeight);
+void YAssetBuilding::setAbsolutePosition(const YPos &pos) {
+    m_coordAbsolutePositionTopLeft = pos; // + YPos(0, 0);
+    m_coordAbsolutePositionTopRight = pos + YPos(m_nTextureWidth, 0);
+    m_coordAbsolutePositionBottomLeft = pos + YPos(0, m_nTextureHeight);
+    m_coordAbsolutePositionBottomRight = pos + YPos(m_nTextureWidth, m_nTextureHeight);
 }
 
 int YAssetBuilding::getWidth() const {
