@@ -213,7 +213,6 @@ bool MainController::loadGameDataWithProgressBar() {
         return false;
     }
     m_minPointMap = YPos(0,0);
-    m_sMapName = jsonDefaultMap[L"title"].getString();
     m_nMaxClouds = jsonDefaultMap[L"max-clouds"].getNumber();
     m_nMaxBuildings = jsonDefaultMap[L"max-buildings"].getNumber();
     m_nMapWidth = jsonDefaultMap[L"width"].getNumber();

@@ -108,7 +108,6 @@ class MainController {
         int m_nMapHeight;
         int m_nMaxClouds;
         int m_nMaxBuildings;
-        std::wstring m_sMapName;
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
