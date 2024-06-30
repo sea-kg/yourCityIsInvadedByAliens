@@ -26,7 +26,7 @@ class YAssetFactoryBuilding : public YAssetFactory {
 class YAssetFactoryTypeBuilding : public YAssetFactoryType {
     public:
         YAssetFactoryTypeBuilding(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() const override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,
@@ -34,5 +34,5 @@ class YAssetFactoryTypeBuilding : public YAssetFactoryType {
         ) override;
     private:
         static const inline std::wstring m_sType{L"building"};
-        static const inline TAG{L"YAssetFactoryTypeBuilding"};
+        static const inline std::wstring TAG{L"YAssetFactoryTypeBuilding"};
 };

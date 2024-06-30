@@ -29,7 +29,7 @@ class YAssetFactoryType {
     friend class YAssetsService;
     public:
         YAssetFactoryType(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() = 0;
+        virtual const std::wstring &getFactoryTypeId() const = 0;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

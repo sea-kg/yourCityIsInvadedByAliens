@@ -50,7 +50,7 @@ YAssetFactoryTypeDialogHelp::YAssetFactoryTypeDialogHelp(YAssetsService *pAssets
     TAG = L"YAssetFactoryTypeDialogHelp";
 }
 
-const std::wstring &YAssetFactoryTypeDialogHelp::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeDialogHelp::getFactoryTypeId() const {
     return m_sType;
 }
 

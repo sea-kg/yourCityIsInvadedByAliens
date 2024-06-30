@@ -39,7 +39,7 @@ YAssetFactoryTypeBuilding::YAssetFactoryTypeBuilding(YAssetsService *pAssetsServ
     // nothing
 }
 
-const std::wstring &YAssetFactoryTypeBuilding::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeBuilding::getFactoryTypeId() const {
     return m_sType;
 }
 
