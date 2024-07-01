@@ -127,7 +127,7 @@ void YAssetMinimap::draw(SDL_Renderer* renderer) {
 }
 
 void YAssetMinimap::redrawBackground() {
-    for (auto road : m_pMapService->getRoads()) {
+    for (const auto &road : m_pMapService->getRoads()) {
         int x0 = road.getMinX() * m_nWidthK;
         int y0 = road.getMinY() * m_nHeightK;
         int x1 = road.getMaxX() * m_nWidthK;
