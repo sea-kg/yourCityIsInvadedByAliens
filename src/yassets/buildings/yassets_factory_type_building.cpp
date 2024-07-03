@@ -10,12 +10,13 @@ YAssetFactoryBuilding::YAssetFactoryBuilding(
     const std::wstring &sBuildingImagePath,
     int nWidth,
     int nHeight
-) : YAssetFactory(pAssetsService, pFactoryTypeBuilding) {
-    TAG = L"YAssetFactoryBuilding";
-    m_pFactoryTypeBuilding = pFactoryTypeBuilding;
-    m_sBuildingImagePath = sBuildingImagePath;
-    m_nWidth = nWidth;
-    m_nHeight = nHeight;
+) : YAssetFactory(pAssetsService, pFactoryTypeBuilding),
+    TAG(L"YAssetFactoryBuilding"),
+    m_nWidth(nWidth),
+    m_nHeight(nHeight),
+    m_pFactoryTypeBuilding(pFactoryTypeBuilding),
+    m_sBuildingImagePath(sBuildingImagePath)
+{
     m_pTextureBuilding = loadTexture(sBuildingImagePath);
 }
 
