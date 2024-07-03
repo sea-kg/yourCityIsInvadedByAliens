@@ -1,9 +1,9 @@
 #pragma once
 #include "ishooting_strategy.h"
 
-class ShootingUpStrategy : public IShootingStrategy {
+class MovementShootingStrategy : public IShootingStrategy {
     public:
-        virtual void shoot(const YPos& p0) override;
+        virtual void shoot(const YPos& p0, MoveObjectDirection direction) override;
         virtual GameBioplastState *popBioplast() override;
 
     private:

@@ -32,6 +32,7 @@ class GameAlienShipState {
         void updatePosition(const YPos &m_p0);
         void updateStateByKeyboard(YKeyboard *pKeyboard);
         ShootingStrategyLogic *getShootingStrategyLogic() const;
+        MoveObjectDirection getMoveDirection() const;
 
     private:
         YPos m_p0;

@@ -49,7 +49,7 @@ list (APPEND WSJCPP_SOURCES "src/yservices/map_yservice.cpp")
 
 #shooting_strategy
 list (APPEND WSJCPP_SOURCES "src/strategies/shooting/random_shooting_strategy.cpp")
-list (APPEND WSJCPP_SOURCES "src/strategies/shooting/shooting_up_strategy.cpp")
+list (APPEND WSJCPP_SOURCES "src/strategies/shooting/movement_shooting_strategy.cpp")
 list (APPEND WSJCPP_SOURCES "src/strategies/shooting/shooting_strategy_logic.cpp")
 list (APPEND WSJCPP_SOURCES "src/strategies/shooting/none_shooting_strategy.cpp")
 

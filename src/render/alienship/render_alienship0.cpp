@@ -60,7 +60,10 @@ void RenderAlienShip0::modify(const GameState& state, IRenderWindow* pRenderWind
 
     if (m_pState->isShooting()) {
         std::cout << "Shooting!  ";
-        m_pShootingStrategy->shoot(m_pState->getPosition());
+        m_pShootingStrategy->shoot(
+            m_pState->getPosition(),
+            m_pState->getMoveDirection()
+        );
     }
 
     GameBioplastState *pBioplastState = m_pShootingStrategy->popBioplast();

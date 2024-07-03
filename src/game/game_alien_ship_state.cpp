@@ -2,7 +2,7 @@
 #include <iostream>
 #include "ylog.h"
 #include "random_shooting_strategy.h"
-#include "shooting_up_strategy.h"
+#include "movement_shooting_strategy.h"
 
 // ---------------------------------------------------------------------
 // GameAlienShipState
@@ -32,6 +32,10 @@ bool GameAlienShipState::isShooting() const {
 
 void GameAlienShipState::setMoveDirection(MoveObjectDirection direction) {
     m_moveDirection = direction;
+}
+
+MoveObjectDirection GameAlienShipState::getMoveDirection() const {
+    return m_moveDirection;
 }
 
 void GameAlienShipState::move(
