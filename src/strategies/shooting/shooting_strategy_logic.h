@@ -4,13 +4,13 @@
 #include <memory>
 
 #include "ishooting_strategy.h"
-#include "shooting_up_strategy.h"
+#include "movement_shooting_strategy.h"
 #include "random_shooting_strategy.h"
 #include "none_shooting_strategy.h"
 
 enum class ShootingStrategies {
     None,
-    ShootingUpStrategy,
+    MovementShootingStrategy,
     RandomShootingStrategy
 };
 
