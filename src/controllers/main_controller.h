@@ -68,17 +68,7 @@ class MainController {
         WindowYService *m_pWindow;
         MapYService *m_pMap;
 
-        void loadBackgrounds(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonBackground
-        );
-        void generateBackground(
-            SDL_Texture* pTextureBackground,
-            int nTextureWidth,
-            int nTextureHeight,
-            const YPos &startXY,
-            const YPos &endXY
-        );
+        void generateBackgrounds(const YJson &jsonDefaultMap);
         void generateTanks();
         void generateClouds();
         void generateScreenHighlights();

@@ -119,7 +119,6 @@ list (APPEND WSJCPP_SOURCES "src/render/primitives/render_line.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_rect_texture.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_triangle.cpp")
 
-list (APPEND WSJCPP_SOURCES "src/render/render_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_base.cpp")
 
 # renders / vegetations

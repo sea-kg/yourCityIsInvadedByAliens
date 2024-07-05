@@ -10,7 +10,6 @@
 #include "render_alienship.h"
 #include "ycore.h"
 #include "ykeyboard.h"
-#include "render_background.h"
 #include "buildings/render_building_simple.h"
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
@@ -245,7 +244,7 @@ bool MainController::loadGameDataWithProgressBar() {
     }
 
     m_pLoaderController->updateText(L"Generating background...");
-    loadBackgrounds(sDefaultPath, jsonDefaultMap[L"background"]);
+    generateBackgrounds(jsonDefaultMap);
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Generation roads...");
@@ -633,48 +632,28 @@ void MainController::setPauseGame(bool bPause) {
     }
 }
 
-void MainController::loadBackgrounds(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonBackground
-) {
-    for (int i = 0; i < jsonBackground.length(); i++) {
-        const YJsonObject &item = jsonBackground[i];
-        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
-        if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
-        }
-        SDL_Texture* pTextureBackground = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item[L"width"].getNumber();
-        int nTextureHeight = item[L"height"].getNumber();
-        const YJsonObject &fillRegion = item[L"fill-region"];
-        YPos startXY(
-            fillRegion[L"start-x"].getNumber(),
-            fillRegion[L"start-y"].getNumber()
-        );
-        YPos endXY(
-            fillRegion[L"end-x"].getNumber(),
-            fillRegion[L"end-y"].getNumber()
-        );
-        generateBackground(
-            pTextureBackground,
-            nTextureWidth,
-            nTextureHeight,
-            startXY,
-            endXY
-        );
-    }
-}
+void MainController::generateBackgrounds(const YJson &jsonDefaultMap) {
+    auto *pAssets = findYService<YAssetsService>();
+    std::wstring sAssetId = jsonDefaultMap[L"background-asset"].getString();
+    int nPaddingTextureCount = jsonDefaultMap[L"background-padding-texture-count"].getNumber();
 
-void MainController::generateBackground(
-    SDL_Texture* pTextureBackground,
-    int nTextureWidth,
-    int nTextureHeight,
-    const YPos &startXY,
-    const YPos &endXY
-) {
-    for (int x = startXY.getX(); x <= endXY.getX(); x += nTextureWidth) {
-        for (int y = startXY.getY(); y <= endXY.getY(); y += nTextureHeight) {
-            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(YPos(x, y), pTextureBackground));
+    // TODO redesign - need add calls from fabric (it know weight and height of texture)
+    auto *pBackgroundTile = pAssets->createAsset<YAssetBackground>(sAssetId);
+    int nTextureWidth = pBackgroundTile->getWidth();
+    int nTextureHeight = pBackgroundTile->getHeight();
+    delete pBackgroundTile;
+
+    // it's need for fullscreen
+    int nStartX = - nTextureWidth * nPaddingTextureCount;
+    int nEndX = jsonDefaultMap[L"width"].getNumber() + nTextureWidth * nPaddingTextureCount;
+    int nStartY = - nTextureHeight * nPaddingTextureCount;
+    int nEndY = jsonDefaultMap[L"height"].getNumber() + nTextureHeight * nPaddingTextureCount;
+
+     for (int x = nStartX; x <= nEndX; x += nTextureWidth) {
+        for (int y = nStartY; y <= nEndY; y += nTextureHeight) {
+            auto *pBackgroundTile0 = pAssets->createAsset<YAssetBackground>(sAssetId);
+            pBackgroundTile0->setAbsolutePosition(YPos(x, y));
+            m_pWindow->getRenderWindow()->addGroundObject(pBackgroundTile0);
         }
     }
 }
