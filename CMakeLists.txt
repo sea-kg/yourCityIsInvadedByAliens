@@ -24,9 +24,13 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/configs")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/SimpleNeuralNetworkCpp")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/Roads2DGenerator")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/strategies/shooting")
+
+# configs
+list (APPEND WSJCPP_SOURCES "src/configs/config_default_map.cpp")
 
 # ycore
 list (APPEND WSJCPP_SOURCES "src/ycore/ycore.cpp")

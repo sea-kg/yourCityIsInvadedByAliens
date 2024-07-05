@@ -2,6 +2,7 @@
 #include <string>
 #include "render_window.h"
 #include "render.h"
+#include "config_default_map.h"
 #include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
 #include "game_alien_berry_state.h"
@@ -11,6 +12,7 @@
 #include "window_yservice.h"
 #include "ishooting_strategy.h"
 #include "shooting_strategy_logic.h"
+
 
 enum class MainState {
     LOADING,
@@ -68,7 +70,7 @@ class MainController {
         WindowYService *m_pWindow;
         MapYService *m_pMap;
 
-        void generateBackgrounds(const YJson &jsonDefaultMap);
+        void generateBackgrounds();
         void generateTanks();
         void generateClouds();
         void generateScreenHighlights();
@@ -91,13 +93,7 @@ class MainController {
         YPos generateRandomPositionAlienBerry();
         int findAlienBerryIndex(const YPos &p);
 
-        // TODO move to MapYService
-        YPos m_minPointMap;
-        YPos m_maxPointMap;
-        int m_nMapWidth;
-        int m_nMapHeight;
-        int m_nMaxClouds;
-        int m_nMaxBuildings;
+        std::shared_ptr<ConfigDefaultMap> m_cfgDefaultMap;
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;
