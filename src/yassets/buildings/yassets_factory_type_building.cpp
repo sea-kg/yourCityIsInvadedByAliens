@@ -11,12 +11,12 @@ YAssetFactoryBuilding::YAssetFactoryBuilding(
     int nWidth,
     int nHeight
 ) : YAssetFactory(pAssetsService, pFactoryTypeBuilding),
-    TAG(L"YAssetFactoryBuilding"),
     m_nWidth(nWidth),
     m_nHeight(nHeight),
     m_pFactoryTypeBuilding(pFactoryTypeBuilding),
     m_sBuildingImagePath(sBuildingImagePath)
 {
+    TAG = L"YAssetFactoryBuilding";
     m_pTextureBuilding = loadTexture(sBuildingImagePath);
 }
 
