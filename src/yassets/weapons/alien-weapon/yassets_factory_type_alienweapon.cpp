@@ -41,7 +41,7 @@ YAssetFactoryTypeAlienWeapon::YAssetFactoryTypeAlienWeapon(YAssetsService *pAsse
     TAG = L"YAssetFactoryTypeAlienWeapon";
 }
 
-const std::wstring &YAssetFactoryTypeAlienWeapon::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeAlienWeapon::getFactoryTypeId() const {
     return m_sType;
 }
 

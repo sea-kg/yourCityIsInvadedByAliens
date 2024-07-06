@@ -39,7 +39,7 @@ class YAssetMinimap : public YAsset, public RenderObject {
         SDL_Texture *m_pTexturePlayer;
         SDL_Rect m_currentFrame;
         MapYService *m_pMapService;
-        
+
         Uint32* m_pBackgroundMinimapPixels;
         Uint32* m_pDynamicObjectsPixels;
         int m_nBufferPixelsSize;

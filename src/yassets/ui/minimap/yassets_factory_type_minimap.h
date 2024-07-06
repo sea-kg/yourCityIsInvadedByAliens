@@ -26,7 +26,7 @@ class YAssetFactoryMinimap : public YAssetFactory {
 class YAssetFactoryTypeMinimap : public YAssetFactoryType {
     public:
         YAssetFactoryTypeMinimap(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() const override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

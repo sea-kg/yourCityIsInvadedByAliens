@@ -28,7 +28,7 @@ class YAssetFactoryAlienBerry : public YAssetFactory {
 class YAssetFactoryTypeAlienBerry : public YAssetFactoryType {
     public:
         YAssetFactoryTypeAlienBerry(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() const override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

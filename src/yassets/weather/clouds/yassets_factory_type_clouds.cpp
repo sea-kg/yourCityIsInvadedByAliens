@@ -42,7 +42,7 @@ YAssetFactoryTypeClouds::YAssetFactoryTypeClouds(YAssetsService *pAssetsService)
     TAG = L"YAssetFactoryTypeClouds";
 }
 
-const std::wstring &YAssetFactoryTypeClouds::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeClouds::getFactoryTypeId() const {
     return m_sType;
 }
 

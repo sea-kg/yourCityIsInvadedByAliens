@@ -41,7 +41,7 @@ YAssetFactoryTypeText::YAssetFactoryTypeText(YAssetsService *pAssetsService)
     TAG = L"YAssetFactoryTypeText";
 }
 
-const std::wstring &YAssetFactoryTypeText::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeText::getFactoryTypeId() const {
     return m_sType;
 }
 

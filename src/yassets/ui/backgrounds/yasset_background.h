@@ -19,6 +19,10 @@ class YAssetBackground : public YAsset, public RenderObject {
         virtual bool canDraw(const GameState& state) override;
         virtual void draw(SDL_Renderer* renderer) override;
 
+        void setAbsolutePosition(const YPos &p0);
+        int getWidth() const;
+        int getHeight() const;
+
     private:
         std::wstring TAG;
         int m_nWidth;
@@ -27,6 +31,11 @@ class YAssetBackground : public YAsset, public RenderObject {
         int m_nWindowHeight;
         SDL_Texture *m_pTexture;
         SDL_Rect m_currentFrame;
+
+        YPos m_coordPos;
+        YRect m_rectRegionPos;
+        YPos m_coordRender;
+        YRect m_rectRegionRender;
 };
 
 

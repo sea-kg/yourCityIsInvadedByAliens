@@ -36,12 +36,12 @@ std::unique_ptr<YAsset> YAssetFactoryAlienBerry::createAsset() {
 
 REGISTRY_YASSET_FACTORY_TYPE(YAssetFactoryTypeAlienBerry)
 
-YAssetFactoryTypeAlienBerry::YAssetFactoryTypeAlienBerry(YAssetsService *pAssetsService) 
+YAssetFactoryTypeAlienBerry::YAssetFactoryTypeAlienBerry(YAssetsService *pAssetsService)
     : YAssetFactoryType(pAssetsService) {
     TAG = L"YAssetFactoryTypeAlienBerry";
 }
 
-const std::wstring &YAssetFactoryTypeAlienBerry::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeAlienBerry::getFactoryTypeId() const {
     return m_sType;
 }
 
@@ -61,7 +61,7 @@ YAssetFactory *YAssetFactoryTypeAlienBerry::createFactory(
     int nFrameNumber = jsonFactoryConfig[L"frame-number"].getNumber();
 
     return new YAssetFactoryAlienBerry(
-        m_pAssetsService, 
+        m_pAssetsService,
         this,
         sSpriteAlienBerryPath,
         nFrameWidth,

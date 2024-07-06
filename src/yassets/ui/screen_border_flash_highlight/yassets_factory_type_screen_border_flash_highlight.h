@@ -50,7 +50,7 @@ class YAssetFactoryScreenBorderFlashHighlight : public YAssetFactory {
 class YAssetFactoryTypeScreenBorderFlashHighlight : public YAssetFactoryType {
     public:
         YAssetFactoryTypeScreenBorderFlashHighlight(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() const override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

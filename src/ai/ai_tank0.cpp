@@ -23,7 +23,7 @@ void AiTank0::makeStep() {
         m_pTank0State->turnRight();
     } else if (nRandom == 2) {
         YPos new_xy = m_pTank0State->calculateMoveForward();
-        if (m_pMap->canDriveToPoint(new_xy.getX(), new_xy.getY())) {
+        if (m_pMap->canDriveToPoint(new_xy)) {
             m_pTank0State->moveForward();
         }
     } else if (nRandom == 3) {

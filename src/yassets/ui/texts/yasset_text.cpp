@@ -12,7 +12,7 @@ YAssetText::YAssetText(
     int nLetterHeight,
     int nLetterWidth
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     m_pTexture = pTexture;
     m_vAlphabets = vAlphabets;
     m_nFontSize = 25;

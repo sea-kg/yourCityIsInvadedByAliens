@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "building5",
+    "asset-factory-type": "building",
+    "asset-factory-config": {
+        "image": "building5.png",
+        "width": 400,
+        "height": 400
+    }
+}

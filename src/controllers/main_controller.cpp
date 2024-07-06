@@ -10,7 +10,6 @@
 #include "render_alienship.h"
 #include "ycore.h"
 #include "ykeyboard.h"
-#include "render_background.h"
 #include "buildings/render_building_simple.h"
 #include "vegetations/render_vegetation_simple.h"
 #include "yassets_service.h"
@@ -25,7 +24,6 @@ MainController::MainController() {
     TAG = L"MainController";
     m_nProgressBarStatus = 0;
     m_nProgressBarMax = 100;
-    m_nMaxClouds = 10000;
     m_pMainAiThread = new MainAiThread();
     m_nCurrentState = MainState::LOADING;
     m_pSettings = findYService<SettingsYService>();
@@ -206,27 +204,13 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->setProgressCurrent(0);
 
     m_pLoaderController->updateText(L"Loading... default map");
-    std::cout << L"default/map.json" << std::endl;
-    std::wstring sDefaultPath = m_pSettings->getResourceDir() + L"/default";
-    YJson jsonDefaultMap(sDefaultPath + L"/map.json");
-    if (jsonDefaultMap.isParserFailed()) {
-        return false;
-    }
-    m_minPointMap = YPos(0,0);
-    m_sMapName = jsonDefaultMap[L"title"].getString();
-    m_nMaxClouds = jsonDefaultMap[L"max-clouds"].getNumber();
-    m_nMapWidth = jsonDefaultMap[L"width"].getNumber();
-    m_nMapHeight = jsonDefaultMap[L"height"].getNumber();
-    m_maxPointMap = YPos(
-        m_nMapWidth,
-        m_nMapHeight
-    );
-    m_pMap->setMapSize(m_nMapWidth, m_nMapHeight);
+    m_cfgDefaultMap = ConfigDefaultMap::loadConfig(m_pSettings->getResourceDir() + L"/default");
 
-    m_pGameState->updatePlayerStartPosition(YPos(
-        jsonDefaultMap[L"player-start-x"].getNumber(),
-        jsonDefaultMap[L"player-start-y"].getNumber()
-    ));
+    std::wstring sDefaultPath = m_pSettings->getResourceDir() + L"/default";
+
+    m_pMap->setMapSize(m_cfgDefaultMap->getWidth(), m_cfgDefaultMap->getHeight());
+
+    m_pGameState->updatePlayerStartPosition(m_cfgDefaultMap->getPlayerStartPos());
     m_pLoaderController->addToProgressCurrent(1);
 
     auto *pAssets = findYService<YAssetsService>();
@@ -236,15 +220,16 @@ bool MainController::loadGameDataWithProgressBar() {
         std::wstring sFactoryPath = sPath + vAssets[i];
         YLog::info(TAG, L"Try loading '" + sFactoryPath + L"'");
         std::wstring sError;
-        if (!pAssets->loadAssetFactory(sFactoryPath, sError)) {
+        std::wstring sAssetFactoryType;
+        if (!pAssets->loadAssetFactory(sFactoryPath, sAssetFactoryType, sError)) {
             YLog::throw_err(TAG, sError);
         } else {
-            YLog::info(TAG, L"Loaded and registered factory '" + vAssets[i] + L"' from " + sFactoryPath);
+            YLog::info(TAG, L"Loaded and registered factory '" + vAssets[i] + L"' from " + sFactoryPath + L", factory type: " + sAssetFactoryType);
         }
     }
 
     m_pLoaderController->updateText(L"Generating background...");
-    loadBackgrounds(sDefaultPath, jsonDefaultMap[L"background"]);
+    this->generateBackgrounds();
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Generation roads...");
@@ -252,13 +237,8 @@ bool MainController::loadGameDataWithProgressBar() {
     m_pLoaderController->addToProgressCurrent(1);
 
 
-    m_pLoaderController->updateText(L"Load buildings...");
-    std::cout << L"default/buildings.json" << std::endl;
-    YJson jsonDefaultBuildings(sDefaultPath + L"/buildings.json");
-    if (jsonDefaultBuildings.isParserFailed()) {
-        return false;
-    }
-    this->loadBuildings(sDefaultPath, jsonDefaultBuildings[L"buildings"]);
+    m_pLoaderController->updateText(L"Generating buildings...");
+    this->generateBuildings(sDefaultPath);
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Load vegetations...");
@@ -307,8 +287,8 @@ bool MainController::loadGameDataWithProgressBar() {
 
     m_pLoaderController->updateText(L"Loading... buildings");
 
-    m_pGameState->setMinPoint(m_minPointMap);
-    m_pGameState->setMaxPoint(m_maxPointMap);
+    m_pGameState->setMinPoint(m_cfgDefaultMap->getMinPointMap());
+    m_pGameState->setMaxPoint(m_cfgDefaultMap->getMaxPointMap());
     m_pLoaderController->addToProgressCurrent(1);
 
     m_pLoaderController->updateText(L"Generating clouds...");
@@ -637,48 +617,27 @@ void MainController::setPauseGame(bool bPause) {
     }
 }
 
-void MainController::loadBackgrounds(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonBackground
-) {
-    for (int i = 0; i < jsonBackground.length(); i++) {
-        const YJsonObject &item = jsonBackground[i];
-        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
-        if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
-        }
-        SDL_Texture* pTextureBackground = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item[L"width"].getNumber();
-        int nTextureHeight = item[L"height"].getNumber();
-        const YJsonObject &fillRegion = item[L"fill-region"];
-        YPos startXY(
-            fillRegion[L"start-x"].getNumber(),
-            fillRegion[L"start-y"].getNumber()
-        );
-        YPos endXY(
-            fillRegion[L"end-x"].getNumber(),
-            fillRegion[L"end-y"].getNumber()
-        );
-        generateBackground(
-            pTextureBackground,
-            nTextureWidth,
-            nTextureHeight,
-            startXY,
-            endXY
-        );
-    }
-}
+void MainController::generateBackgrounds() {
+    auto *pAssets = findYService<YAssetsService>();
+    int nPaddingTextureCount = m_cfgDefaultMap->getBackgroundPaddingTextureCount();
 
-void MainController::generateBackground(
-    SDL_Texture* pTextureBackground,
-    int nTextureWidth,
-    int nTextureHeight,
-    const YPos &startXY,
-    const YPos &endXY
-) {
-    for (int x = startXY.getX(); x <= endXY.getX(); x += nTextureWidth) {
-        for (int y = startXY.getY(); y <= endXY.getY(); y += nTextureHeight) {
-            m_pWindow->getRenderWindow()->addGroundObject(new RenderBackground(YPos(x, y), pTextureBackground));
+    // TODO redesign - need add calls from fabric (it know weight and height of texture)
+    auto *pBackgroundTile = pAssets->createAsset<YAssetBackground>(m_cfgDefaultMap->getBackgroundAssetId());
+    int nTextureWidth = pBackgroundTile->getWidth();
+    int nTextureHeight = pBackgroundTile->getHeight();
+    delete pBackgroundTile;
+
+    // it's need for fullscreen
+    int nStartX = - nTextureWidth * nPaddingTextureCount;
+    int nEndX = m_cfgDefaultMap->getWidth() + nTextureWidth * nPaddingTextureCount;
+    int nStartY = - nTextureHeight * nPaddingTextureCount;
+    int nEndY = m_cfgDefaultMap->getHeight() + nTextureHeight * nPaddingTextureCount;
+
+     for (int x = nStartX; x <= nEndX; x += nTextureWidth) {
+        for (int y = nStartY; y <= nEndY; y += nTextureHeight) {
+            auto *pBackgroundTile0 = pAssets->createAsset<YAssetBackground>(m_cfgDefaultMap->getBackgroundAssetId());
+            pBackgroundTile0->setAbsolutePosition(YPos(x, y));
+            m_pWindow->getRenderWindow()->addGroundObject(pBackgroundTile0);
         }
     }
 }
@@ -686,11 +645,11 @@ void MainController::generateBackground(
 void MainController::generateClouds() {
     auto *pAssets = findYService<YAssetsService>();
 
-    for (int i = 0; i < m_nMaxClouds; i++) {
-        int nX = std::rand() % m_nMapWidth;
-        nX += m_minPointMap.getX();
-        int nY = std::rand() % m_nMapHeight;
-        nY += m_minPointMap.getY();
+    for (int i = 0; i < m_cfgDefaultMap->getMaxClouds(); i++) {
+        int nX = std::rand() % m_cfgDefaultMap->getWidth();
+        nX += m_cfgDefaultMap->getMinPointMap().getX();
+        int nY = std::rand() % m_cfgDefaultMap->getHeight();
+        nY += m_cfgDefaultMap->getMinPointMap().getY();
 
         auto *pClouds = pAssets->createAsset<YAssetClouds>(L"clouds1");
         pClouds->setPosition(nX, nY);
@@ -725,8 +684,8 @@ void MainController::generateRoads(const std::wstring &sDefaultPath) {
         nTextureHeight = pRoad->getFrameHeight();
         delete pRoad;
     }
-    int nRoadCeilW = m_nMapWidth / nTextureWidth;
-    int nRoadCeilH = m_nMapHeight / nTextureHeight;
+    int nRoadCeilW = m_cfgDefaultMap->getWidth() / nTextureWidth;
+    int nRoadCeilH = m_cfgDefaultMap->getHeight() / nTextureHeight;
 
     int nGeneratedRoads = 0;
     Roads2DGenerator road2gen(nRoadCeilW, nRoadCeilH);
@@ -745,7 +704,7 @@ void MainController::generateRoads(const std::wstring &sDefaultPath) {
             nGeneratedRoads++;
             int nX = y * nTextureWidth + nTextureWidth;
             int nY = x * nTextureHeight;
-            m_pMap->addRoad(MapRect(nX, nY, nTextureWidth, nTextureHeight));
+            m_pMap->addRoad(YRect(nX, nY, nX + nTextureWidth, nY + nTextureHeight));
 
             auto *pRoad = pAssets->createAsset<YAssetRoad>(sRoadAssetId);
             pRoad->setAbsolutePosition(YPos(nX, nY));
@@ -806,33 +765,41 @@ void MainController::loadAlienShip(
 }
 
 
-void MainController::loadBuildings(
-    const std::wstring &sDefaultPath,
-    const YJsonObject &jsonRoads
-) {
-    for (int i = 0; i < jsonRoads.length(); i++) {
-        const YJsonObject &item = jsonRoads[i];
-        std::wstring sTexturePath = sDefaultPath + L"/" + item[L"texture"].getString();
-        if (!YCore::fileExists(sTexturePath)) {
-            YLog::throw_err(TAG, L"File '" + sTexturePath + L"' not found");
-        }
-        SDL_Texture* pTextureBuilding = m_pWindow->getRenderWindow()->loadTexture(sTexturePath);
-        int nTextureWidth = item[L"width"].getNumber();
-        int nTextureHeight = item[L"height"].getNumber();
-        const YJsonObject &fillList = item[L"fill"];
+void MainController::generateBuildings(const std::wstring &sDefaultPath) {
+    YLog::info(TAG, L"generateBuildings....");
+    auto pAssets = findYService<YAssetsService>();
+    int nBuildings = 0;
 
-        for (int n = 0; n < fillList.length(); n++) {
-            const YJsonObject &roadItem = fillList[n];
-            int nX = roadItem[L"x"].getNumber();
-            int nY = roadItem[L"y"].getNumber();
-            m_pWindow->getRenderWindow()->addBuildingsObject(new RenderBuildingSimple(
-                YPos(nX, nY),
-                nTextureWidth,
-                nTextureHeight,
-                pTextureBuilding
-            ));
-        }
+    std::vector<std::wstring> vFactoriyIDs = pAssets->findFactoryIDsByFactoryType(L"building");
+    for (int i = 0; i < vFactoriyIDs.size(); i++) {
+        YLog::info(TAG, L"Found building " + vFactoriyIDs[i]);
     }
+    int nInfinityProtect = 0;
+    while (nBuildings < m_cfgDefaultMap->getMaxBuildings()) {
+        int nX = (std::rand() % (m_cfgDefaultMap->getWidth() - 1000)) + 500;
+        int nY = (std::rand() % (m_cfgDefaultMap->getHeight() - 1000)) + 500;
+        std::wstring sFactoryId = vFactoriyIDs[std::rand() % vFactoriyIDs.size()];
+        auto *pBuilding = pAssets->createAsset<YAssetBuilding>(sFactoryId);
+        YRect rectBuilding(nX, nY, nX + pBuilding->getWidth(), nY + pBuilding->getHeight());
+        if (!m_pMap->isFreeRect(rectBuilding)) {
+            nInfinityProtect++;
+            if (nInfinityProtect > 5000) {
+                YLog::info(TAG, L"InfinityProtect generated buildings " + std::to_wstring(nBuildings) + L" from " + std::to_wstring(m_cfgDefaultMap->getMaxBuildings()));
+                break;
+            }
+            delete pBuilding;
+            continue; // next generation
+        }
+        m_pMap->addBuilding(rectBuilding);
+        nInfinityProtect = 0;
+
+        pBuilding->setAbsolutePosition(YPos(nX, nY));
+
+        m_pWindow->getRenderWindow()->addBuildingsObject(pBuilding);
+        nBuildings++;
+    }
+
+    YLog::info(TAG, L"generateBuildings... done");
 }
 
 void MainController::loadVegetations(
@@ -871,9 +838,9 @@ void MainController::generateTransports() {
     int nMaxGenerated = 100;
 
     while (nGenerated < nMaxGenerated) {
-        int nX = std::rand() % m_nMapWidth;
-        int nY = std::rand() % m_nMapHeight;
-        if (m_pMap->canDriveToPoint(nX, nY)) {
+        int nX = std::rand() % m_cfgDefaultMap->getWidth();
+        int nY = std::rand() % m_cfgDefaultMap->getHeight();
+        if (m_pMap->canDriveToPoint(YPos(nX, nY))) {
             nGenerated++;
             GameTank0State *pTankState = new GameTank0State(YPos(nX,nY));
             AiTank0 *pAiTank0 = new AiTank0(pTankState);
@@ -910,8 +877,8 @@ void MainController::generateAlienBerries(int nMaxGenerate) {
 YPos MainController::generateRandomPositionAlienBerry() {
     // TODO: don't generate over buildings and over roads
     // generate to free space
-    int nX = std::rand() % (m_nMapWidth - 200) + 100;
-    int nY = std::rand() % (m_nMapHeight - 200) + 100;
+    int nX = std::rand() % (m_cfgDefaultMap->getWidth() - 200) + 100;
+    int nY = std::rand() % (m_cfgDefaultMap->getHeight() - 200) + 100;
     return YPos(nX, nY);
 }
 

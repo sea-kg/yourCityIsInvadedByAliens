@@ -1,23 +1,12 @@
 {
-    "title": "Map#001",
     "max-clouds": 500,
+    "max-buildings": 200,
     "width": 5000,
     "height": 5000,
     "player-start-x": 1000,
     "player-start-y": 1000,
-    "background": [
-        {
-            "texture": "textures/background0.png",
-            "width": 500,
-            "height": 500,
-            "fill-region": {
-                "start-x": -1500,
-                "start-y": -1500,
-                "end-x": 6000,
-                "end-y": 6000
-            }
-        }
-    ],
+    "background-asset": "background2",
+    "background-padding-texture-count": 4,
     "attacked-sound-effects": [
         "soundeffects/attacked1.wav",
         "soundeffects/attacked2.wav",

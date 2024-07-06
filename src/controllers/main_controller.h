@@ -2,6 +2,7 @@
 #include <string>
 #include "render_window.h"
 #include "render.h"
+#include "config_default_map.h"
 #include "main_ai_thread.h"
 #include "game_alien_ship_state.h"
 #include "game_alien_berry_state.h"
@@ -11,6 +12,7 @@
 #include "window_yservice.h"
 #include "ishooting_strategy.h"
 #include "shooting_strategy_logic.h"
+
 
 enum class MainState {
     LOADING,
@@ -68,17 +70,7 @@ class MainController {
         WindowYService *m_pWindow;
         MapYService *m_pMap;
 
-        void loadBackgrounds(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonBackground
-        );
-        void generateBackground(
-            SDL_Texture* pTextureBackground,
-            int nTextureWidth,
-            int nTextureHeight,
-            const YPos &startXY,
-            const YPos &endXY
-        );
+        void generateBackgrounds();
         void generateTanks();
         void generateClouds();
         void generateScreenHighlights();
@@ -89,10 +81,7 @@ class MainController {
             const std::wstring &sDefaultPath
         );
 
-        void loadBuildings(
-            const std::wstring &sDefaultPath,
-            const YJsonObject &jsonRoads
-        );
+        void generateBuildings(const std::wstring &sDefaultPath);
 
         void loadVegetations(
             const std::wstring &sDefaultPath,
@@ -104,13 +93,7 @@ class MainController {
         YPos generateRandomPositionAlienBerry();
         int findAlienBerryIndex(const YPos &p);
 
-        // TODO move to MapYService
-        YPos m_minPointMap;
-        YPos m_maxPointMap;
-        int m_nMapWidth;
-        int m_nMapHeight;
-        int m_nMaxClouds;
-        std::wstring m_sMapName;
+        std::shared_ptr<ConfigDefaultMap> m_cfgDefaultMap;
 
         int m_nProgressBarStatus;
         int m_nProgressBarMax;

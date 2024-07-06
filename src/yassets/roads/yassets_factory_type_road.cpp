@@ -38,7 +38,7 @@ YAssetFactoryTypeRoad::YAssetFactoryTypeRoad(YAssetsService *pAssetsService)
     TAG = L"YAssetFactoryTypeRoad";
 }
 
-const std::wstring &YAssetFactoryTypeRoad::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeRoad::getFactoryTypeId() const {
     return m_sType;
 }
 

@@ -56,7 +56,6 @@ YAssetRoad::YAssetRoad(
     int nFrameHeight
 ) :
     YAsset(pAssetsService),
-    RenderObject(1000),
     m_pTexture(pTexture),
     m_nTextureTileWidth(nFrameWidth),
     m_nTextureTileHeight(nFrameHeight)

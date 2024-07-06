@@ -39,7 +39,7 @@ YAssetFactoryTypeBackground::YAssetFactoryTypeBackground(YAssetsService *pAssets
     TAG = L"YAssetFactoryTypeBackground";
 }
 
-const std::wstring &YAssetFactoryTypeBackground::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeBackground::getFactoryTypeId() const {
     return m_sType;
 }
 

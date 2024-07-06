@@ -74,7 +74,7 @@ YAssetFactoryTypeScreenBorderFlashHighlight::YAssetFactoryTypeScreenBorderFlashH
     TAG = L"YAssetFactoryTypeScreenBorderFlashHighlight";
 }
 
-const std::wstring &YAssetFactoryTypeScreenBorderFlashHighlight::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeScreenBorderFlashHighlight::getFactoryTypeId() const {
     return m_sType;
 }
 

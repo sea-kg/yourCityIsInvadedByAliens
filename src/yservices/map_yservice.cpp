@@ -5,31 +5,43 @@
 #include <ycore.h>
 
 
+/*
 // ---------------------------------------------------------------------
 // MapRect
 
 MapRect::MapRect(int x, int y, int w, int h) {
-    m_nX = x;
-    m_nY = y;
+    m_nX0 = x;
+    m_nY0 = y;
+    m_nX1 = x + w;
+    m_nY1 = y + h;
     m_nWidth = w;
     m_nHeight = h;
 };
 
-bool MapRect::hasPoint(int x, int y) {
+bool MapRect::hasPoint(int x, int y) const {
     return
-        (x >= m_nX)
-        && (x <= (m_nX + m_nWidth))
-        && (y >= m_nY)
-        && (y <= (m_nY + m_nHeight))
+        (x >= m_nX0)
+        && (x <= m_nX1)
+        && (y >= m_nY0)
+        && (y <= m_nY1)
+    ;
+}
+
+bool MapRect::hasIntersection(const MapRect& r) const {
+    return
+        (r.getX0() >= m_nX0)
+        && (x <= m_nX1)
+        && (y >= m_nY0)
+        && (y <= m_nY1)
     ;
 }
 
 int MapRect::getX() const {
-    return m_nX;
+    return m_nX0;
 }
 
 int MapRect::getY() const {
-    return m_nY;
+    return m_nY0;
 }
 
 int MapRect::getWidth() const {
@@ -39,7 +51,7 @@ int MapRect::getWidth() const {
 int MapRect::getHeight() const {
     return m_nHeight;
 }
-
+*/
 
 // ---------------------------------------------------------------------
 // MapYService
@@ -62,23 +74,42 @@ bool MapYService::deinit() {
     return true;
 }
 
-void MapYService::addRoad(const MapRect &road) {
+void MapYService::addRoad(const YRect &road) {
     m_vRoads.push_back(road);
 }
 
-const std::vector<MapRect> &MapYService::getRoads() {
+const std::vector<YRect> &MapYService::getRoads() {
     return m_vRoads;
 }
 
-bool MapYService::canDriveToPoint(int x, int y) {
+void MapYService::addBuilding(const YRect &building) {
+    m_vBuildings.push_back(building);
+    YLog::info(TAG, std::to_wstring(m_vBuildings.size()));
+}
+
+bool MapYService::canDriveToPoint(const YPos &p) const {
     // TODO need optimization
     // YLog::info(TAG, std::to_wstring(m_vRoads.size()));
     for (int i = 0; i < m_vRoads.size(); i++) {
-        if (m_vRoads[i].hasPoint(x, y)) {
+        if (m_vRoads[i].hasPos(p)) {
             return true;
         }
     }
     return false;
+}
+
+bool MapYService::isFreeRect(const YRect &r) const {
+    for (int i = 0; i < m_vRoads.size(); i++) {
+        if (m_vRoads[i].hasIntersection(r)) {
+            return false;
+        }
+    }
+    for (int i = 0; i < m_vBuildings.size(); i++) {
+        if (m_vBuildings[i].hasIntersection(r)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void MapYService::addAlienBerry(GameAlienBerryState *pBerryState) {

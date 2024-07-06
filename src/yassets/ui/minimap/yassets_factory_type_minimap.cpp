@@ -38,7 +38,7 @@ YAssetFactoryTypeMinimap::YAssetFactoryTypeMinimap(YAssetsService *pAssetsServic
     TAG = L"YAssetFactoryTypeMinimap";
 }
 
-const std::wstring &YAssetFactoryTypeMinimap::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeMinimap::getFactoryTypeId() const {
     return m_sType;
 }
 

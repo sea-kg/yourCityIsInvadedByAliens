@@ -26,7 +26,7 @@ class YAssetFactoryBackground : public YAssetFactory {
 class YAssetFactoryTypeBackground : public YAssetFactoryType {
     public:
         YAssetFactoryTypeBackground(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() override;
+        virtual const std::wstring &getFactoryTypeId() const override;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,

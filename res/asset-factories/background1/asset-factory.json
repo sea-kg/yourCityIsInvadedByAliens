@@ -1,0 +1,9 @@
+{
+    "asset-factory-id": "background1",
+    "asset-factory-type": "background",
+    "asset-factory-config": {
+        "image": "background1.png",
+        "image-height": 500,
+        "image-width": 500
+    }
+}

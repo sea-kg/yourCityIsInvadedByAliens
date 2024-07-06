@@ -10,7 +10,7 @@ YAssetImage::YAssetImage(
     int nWidth,
     int nHeight
 )
-: YAsset(pAssetsService), RenderObject(1000) {
+: YAsset(pAssetsService) {
     m_pTexture = pTexture;
     m_nWidth = nWidth;
     m_nHeight = nHeight;

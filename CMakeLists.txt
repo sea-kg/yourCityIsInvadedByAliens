@@ -24,9 +24,13 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/utils")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ycore")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yassets")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/yservices")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/configs")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/SimpleNeuralNetworkCpp")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/Roads2DGenerator")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/strategies/shooting")
+
+# configs
+list (APPEND WSJCPP_SOURCES "src/configs/config_default_map.cpp")
 
 # ycore
 list (APPEND WSJCPP_SOURCES "src/ycore/ycore.cpp")
@@ -55,6 +59,8 @@ list (APPEND WSJCPP_SOURCES "src/strategies/shooting/none_shooting_strategy.cpp"
 # yassets
 list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yasset_alien_berry.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/alien/alien-berry/yassets_factory_type_alien_berry.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/buildings/yasset_building.cpp")
+list (APPEND WSJCPP_SOURCES "src/yassets/buildings/yassets_factory_type_building.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yasset_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/transports/tank/yassets_factory_type_tank.cpp")
 list (APPEND WSJCPP_SOURCES "src/yassets/roads/yasset_road.cpp")
@@ -117,7 +123,6 @@ list (APPEND WSJCPP_SOURCES "src/render/primitives/render_line.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_rect_texture.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/primitives/render_triangle.cpp")
 
-list (APPEND WSJCPP_SOURCES "src/render/render_background.cpp")
 list (APPEND WSJCPP_SOURCES "src/render/render_base.cpp")
 
 # renders / vegetations
@@ -185,3 +190,8 @@ include_directories(${WSJCPP_INCLUDE_DIRS})
 add_executable (yourCityIsInvadedByAliens ${WSJCPP_SOURCES})
 
 target_link_libraries(yourCityIsInvadedByAliens ${WSJCPP_LIBRARIES} )
+
+
+# enable testing functionality
+enable_testing()
+add_subdirectory(tests)

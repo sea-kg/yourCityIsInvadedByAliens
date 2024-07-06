@@ -38,7 +38,7 @@ YAssetFactoryTypeProgressBar::YAssetFactoryTypeProgressBar(YAssetsService *pAsse
     TAG = L"YAssetFactoryTypeProgressBar";
 }
 
-const std::wstring &YAssetFactoryTypeProgressBar::getFactoryTypeId() {
+const std::wstring &YAssetFactoryTypeProgressBar::getFactoryTypeId() const {
     return m_sType;
 }
 

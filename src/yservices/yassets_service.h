@@ -29,7 +29,7 @@ class YAssetFactoryType {
     friend class YAssetsService;
     public:
         YAssetFactoryType(YAssetsService *pAssetsService);
-        virtual const std::wstring &getFactoryTypeId() = 0;
+        virtual const std::wstring &getFactoryTypeId() const = 0;
         virtual YAssetFactory *createFactory(
             const std::wstring &sAssetFactoryPath,
             const std::wstring &sFactoryId,
@@ -50,6 +50,7 @@ class YAssetFactory {
     // friend class YAssetsService;
     public:
         YAssetFactory(YAssetsService *pAssetsService, YAssetFactoryType *pFactoryType);
+        YAssetFactoryType *getFactoryType();
         virtual std::unique_ptr<YAsset> createAsset() = 0;
 
     protected:
@@ -73,9 +74,9 @@ class YAssetsService : public YServiceBase {
         RenderWindow *getRenderWindow();
         void registerFactoryType(YAssetFactoryType *);
         bool hasFactoryType(const std::wstring &sFactoryTypeId);
-        bool loadAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
+        bool loadAssetFactory(const std::wstring &sPath, std::wstring &sAssetFactoryType, std::wstring &sRetError);
         bool loadAllAssetFactory(const std::wstring &sPath, std::wstring &sRetError);
-
+        std::vector<std::wstring> findFactoryIDsByFactoryType(const std::wstring &sPath);
         std::unique_ptr<YAsset> createAsset(const std::wstring &sAssetFactoryId);
         template<class T> T *createAsset(const std::wstring &sAssetFactoryId);
 
